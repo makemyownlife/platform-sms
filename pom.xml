@@ -8,13 +8,14 @@
     <artifactId>platform-sms</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
+
     <modules>
         <module>platform-sms-client</module>
         <module>platform-sms-core</module>
         <module>platform-sms-dao</module>
         <module>platform-sms-worker</module>
-        <module>platform-api</module>
         <module>platform-sms-api</module>
+        <module>platform-sms-console</module>
     </modules>
 
 
