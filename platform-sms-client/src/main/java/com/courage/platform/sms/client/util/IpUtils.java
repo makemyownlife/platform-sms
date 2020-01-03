@@ -12,12 +12,6 @@ import java.util.Enumeration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * @Description:  IP tools
- *
- * @Author : yongwang.chen
- * @Date   : 7:53 PM 24/05/2018
- */
 public final class IpUtils {
 
 	private static final Logger logger = LoggerFactory.getLogger(IpUtils.class);
