@@ -3,7 +3,7 @@ package com.courage.platform.sms.client;
 /**
  * 短信平台sdk配置
  */
-public class PlatformSmsConfig {
+public class SmsConfig {
 
     private String smsServiceUrl;
 
