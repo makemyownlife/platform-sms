@@ -2,4 +2,3 @@
 platform:
   appKey: xxxxx
   appSecret: xxxx
-  smsApiUrl: http://xxxxxx
