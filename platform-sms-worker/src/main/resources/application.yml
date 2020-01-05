@@ -1,0 +1,20 @@
+#########################################本地开发环境#########################################
+spring:
+  application:
+  name: "platformsmsworker"
+  http:
+    encoding:
+      charset: "UTF-8"
+      enabled: true
+      force: true
+  profiles:
+    active: prod
+server:
+  port: 8082
+  servlet:
+    context-path: /
+
+logging:
+  config: "classpath:logback.xml"
+
+

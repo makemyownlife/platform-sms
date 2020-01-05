@@ -46,11 +46,11 @@
                 <scope>import</scope>
             </dependency>
         </dependencies>
+        
     </dependencyManagement>
 
-
     <build>
-        <finalName>smsapi</finalName>
+        <finalName>platformsmsapi</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
