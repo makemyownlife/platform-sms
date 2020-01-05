@@ -17,6 +17,7 @@
         <module>platform-sms-api</module>
         <module>platform-sms-console</module>
         <module>platform-sms-client-spring-boot-starter</module>
+        <module>platform-sms-demo</module>
     </modules>
 
 </project>
