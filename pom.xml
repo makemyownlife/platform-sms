@@ -20,4 +20,10 @@
         <module>platform-sms-demo</module>
     </modules>
 
+    <dependencyManagement>
+
+
+
+    </dependencyManagement>
+
 </project>

@@ -5,5 +5,6 @@ package com.courage.platform.sms.api;
  */
 public class SmsApiApplication {
 
+  // private final static
 
 }
