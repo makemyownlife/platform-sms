@@ -1,6 +1,6 @@
 package com.courage.platform.sms.dao;
 
-import com.hshc.sms.dao.domain.SmsTemplate;
+import com.courage.platform.sms.dao.domain.SmsTemplate;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -23,4 +23,5 @@ public interface SmsTemplateDao {
     void updateSmsTemplate(SmsTemplate smsTemplate);
 
     void deleteSmsTemplateByIds(@Param("ids") String[] ids);
+
 }
