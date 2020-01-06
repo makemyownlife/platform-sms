@@ -32,6 +32,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.courage</groupId>
+            <artifactId>platform-sms-dao</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -81,8 +87,5 @@
             </plugin>
         </plugins>
     </build>
-
-
-
 
 </project>

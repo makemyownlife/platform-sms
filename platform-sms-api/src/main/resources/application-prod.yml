@@ -1,3 +1,6 @@
-platform:
-  appKey: xxxxx
-  appSecret: xxxx
+mdsdb:
+  name: tech_platform
+  ip: 192.168.31.240
+  username: root
+  password: ilxw
+
