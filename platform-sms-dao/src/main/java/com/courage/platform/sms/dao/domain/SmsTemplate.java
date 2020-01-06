@@ -2,10 +2,6 @@ package com.courage.platform.sms.dao.domain;
 
 import java.util.Date;
 
-/**
- * @author zhangjiarong
- * 2018/7/12
- */
 public class SmsTemplate {
 
     private int id;
