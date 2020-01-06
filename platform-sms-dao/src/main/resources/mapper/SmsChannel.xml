@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.courage.platform.sms.dao.SmsChannelDao" >
+
+    <resultMap id="SmsChannel" type="com.courage.platform.sms.dao.domain.SmsChannel" >
+        <result column="id" property="id" />
+        <result column="channel_id" property="channelId" />
+        <result column="channel_name" property="channelName" />
+        <result column="channel_type" property="channelType" />
+        <result column="channel_impl" property="channelImpl" />
+        <result column="channel_user" property="channelUser" />
+        <result column="channel_password" property="channelPassword" />
+        <result column="channel_url" property="channelUrl" />
+        <result column="ext_property" property="extProperty"/>
+        <result column="status" property="status" />
+        <result column="send_order" property="sendOrder" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		t.id,
+		t.channel_id,
+		t.channel_name,
+		t.channel_type,
+		t.channel_impl,
+		t.channel_user,
+		t.channel_password,
+		t.channel_url,
+		t.ext_property,
+		t.status,
+		t.send_order,
+		t.create_time,
+		t.update_time
+	</sql>
+
+    <select id="findAllChannel" resultMap="SmsChannel">
+        SELECT <include refid="Base_Column_List" />
+        FROM t_sms_channel AS t
+        ORDER BY t.id ASC
+    </select>
+
+    <select id="findUsedChannel"  resultMap="SmsChannel">
+        SELECT <include refid="Base_Column_List" />
+        FROM t_sms_channel AS t
+        WHERE t.status = 1
+        ORDER BY t.id ASC
+    </select>
+
+    <select id="findChannelById"  parameterType="java.lang.Integer" resultMap="SmsChannel">
+        SELECT <include refid="Base_Column_List" />
+        FROM t_sms_channel AS t
+        WHERE t.id = #{id}
+    </select>
+
+    <select id="findSmsChannelByParams"  parameterType="java.util.Map" resultMap="SmsChannel">
+        SELECT <include refid="Base_Column_List" />
+        FROM t_sms_channel AS t
+        WHERE 1 = 1
+        <if test="channelId != 0 and channelId != null">
+            and t.channel_id = #{channelId}
+        </if>
+        <if test="channelName != null and channelName !=''">
+            and t.channel_name = #{channelName}
+        </if>
+        <if test="channelType != null and channelType !=''">
+            and t.channel_type = #{channelType}
+        </if>
+        <if test="status != null and status !=''">
+            and t.status = #{status}
+        </if>
+        ORDER BY t.id ASC
+        LIMIT #{startNum},#{limit}
+    </select>
+
+    <select id="findCountByParams"  parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM t_sms_channel AS t
+        WHERE 1 = 1
+        <if test="channelId != 0 and channelId != null">
+            and t.channel_id = #{channelId}
+        </if>
+        <if test="channelName != null and channelName !=''">
+            and t.channel_name = #{channelName}
+        </if>
+        <if test="channelType != null and channelType !=''">
+            and t.channel_type = #{channelType}
+        </if>
+        <if test="status != null and status !=''">
+            and t.status = #{status}
+        </if>
+    </select>
+
+    <insert id = "saveSmsChannel" parameterType="com.courage.platform.sms.dao.domain.SmsChannel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_sms_channel(
+        channel_id,
+		channel_name,
+		channel_type,
+		channel_impl,
+		channel_user,
+		channel_password,
+		channel_url,
+		ext_property,
+		status,
+		send_order,
+		create_time,
+		update_time
+        )values (
+        #{channelId},
+		#{channelName},
+		#{channelType},
+		#{channelImpl},
+		#{channelUser},
+		#{channelPassword},
+		#{channelUrl},
+		#{extProperty},
+		#{status},
+		#{sendOrder},
+        NOW(),
+        NOW())
+    </insert>
+
+    <update id="updateSmsChannel" parameterType="com.courage.platform.sms.dao.domain.SmsChannel">
+        UPDATE t_sms_channel t
+            SET t.channel_id = #{channelId},
+                t.channel_name = #{channelName},
+                t.channel_type = #{channelType},
+                t.channel_impl = #{channelImpl},
+                t.channel_user = #{channelUser},
+                t.channel_password = #{channelPassword},
+                t.channel_url = #{channelUrl},
+                t.ext_property = #{extProperty},
+                t.status = #{status},
+                t.send_order = #{sendOrder},
+                t.create_time= #{createTime},
+                t.update_time = NOW()
+         WHERE id = #{id};
+    </update>
+
+    <delete id="deleteSmsChannelByIds">
+        delete from t_sms_channel  where id in (
+        <foreach collection="ids" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+</mapper>

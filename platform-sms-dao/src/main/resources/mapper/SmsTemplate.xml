@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.courage.platform.sms.dao.SmsTemplateDao" >
+
+    <resultMap id="SmsTemplate" type="com.courage.platform.sms.dao.domain.SmsTemplate" >
+        <result column="id" property="id" />
+        <result column="template_name" property="templateName" />
+        <result column="content" property="content" />
+        <result column="channel" property="channel" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		t.id,
+		t.template_name,
+		t.content,
+		t.channel,
+		t.status,
+		t.create_time,
+		t.update_time
+	</sql>
+
+    <select id="findSmsTemplateById" parameterType="java.lang.Integer" resultMap="SmsTemplate">
+        SELECT <include refid="Base_Column_List" />
+        FROM t_sms_template AS t
+        WHERE t.id = #{id}
+    </select>
+
+    <select id="findAll"  resultMap="SmsTemplate">
+        SELECT <include refid="Base_Column_List" />
+        FROM t_sms_template AS t
+        ORDER BY t.id ASC
+    </select>
+
+    <select id="findSmsTemplateByParams"  parameterType="java.util.Map" resultMap="SmsTemplate">
+        SELECT <include refid="Base_Column_List" />
+        FROM t_sms_template AS t
+        WHERE 1 = 1
+        <if test="id != 0 and id != null">
+            and t.id = #{id}
+        </if>
+        <if test="templateName != null and templateName !=''">
+            and t.template_name LIKE CONCAT ('%',#{templateName},'%')
+        </if>
+        <if test="channel != null and channel !=''">
+            and t.channel LIKE CONCAT ('%',#{channel},'%')
+        </if>
+        ORDER BY t.id ASC
+        LIMIT #{startNum},#{limit}
+    </select>
+
+    <select id="findCountByParams"  parameterType="java.util.Map"  resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM t_sms_template AS t
+        WHERE 1 = 1
+        <if test="id != 0 and id != null">
+            and t.id = #{id}
+        </if>
+        <if test="templateName != null and templateName !=''">
+            and t.template_name LIKE CONCAT ('%',#{templateName},'%')
+        </if>
+        <if test="channel != null and channel !=''">
+            and t.channel LIKE CONCAT ('%',#{channel},'%')
+        </if>
+    </select>
+
+    <insert id = "saveSmsTemplate" parameterType="com.courage.platform.sms.dao.domain.SmsTemplate" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_sms_template(
+        template_name,
+        content,
+        channel,
+        status,
+        create_time,
+        update_time
+        )values (
+        #{templateName},
+        #{content},
+        #{channel},
+        #{status},
+        NOW(),
+        NOW())
+    </insert>
+
+    <update id="updateSmsTemplate" parameterType="com.courage.platform.sms.dao.domain.SmsTemplate">
+        UPDATE t_sms_template t
+            SET t.template_name = #{templateName},
+                t.content = #{content},
+                t.channel = #{channel},
+                t.status = #{status},
+                t.create_time= #{createTime},
+                t.update_time = NOW()
+         WHERE id = #{id};
+    </update>
+
+    <delete id="deleteSmsTemplateByIds">
+        delete from t_sms_template  where id in (
+        <foreach collection="ids" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+</mapper>

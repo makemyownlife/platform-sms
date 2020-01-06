@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.courage.platform.sms.dao.SmsRecordDao">
+
+    <insert id="addSmsRecord" parameterType="map" useGeneratedKeys="true" keyProperty="params.id">
+        INSERT INTO t_sms_record (sms_id, mobile,content,channel,send_status,type,app_id,sender_ip,attime) VALUES
+        (
+        <choose>
+            <when test="params.sms_id != null">#{params.sms_id},</when>
+            <otherwise>"",</otherwise>
+        </choose>
+        <choose>
+            <when test="params.mobile != null">#{params.mobile},</when>
+            <otherwise>"",</otherwise>
+        </choose>
+        <choose>
+            <when test="params.mobile != null">#{params.content},</when>
+            <otherwise>"",</otherwise>
+        </choose>
+        <choose>
+            <when test="params.channel != null">#{params.channel},</when>
+            <otherwise>"",</otherwise>
+        </choose>
+        <choose>
+            <when test="params.send_status != 0">#{params.send_status},</when>
+            <otherwise>0,</otherwise>
+        </choose>
+        #{params.type},
+        <choose>
+            <when test="params.send_status != null">#{params.appId},</when>
+            <otherwise>"",</otherwise>
+        </choose>
+        <choose>
+            <when test="params.send_status != null">#{params.ip},</when>
+            <otherwise>"",</otherwise>
+        </choose>
+        <choose>
+            <when test="params.send_status != null">#{params.attime}</when>
+            <otherwise>""</otherwise>
+        </choose>
+        )
+    </insert>
+
+    <insert id="addSmsRecordDetail" parameterType="map">
+        INSERT INTO `t_sms_record_detail` (record_id,content,mobile,msgid,channel,app_id,send_status) VALUES
+        <foreach collection="msgIds.keys" item="key" index="index" separator=",">
+            (
+            <choose>
+                <when test="smsMessage.id != 0">#{smsMessage.id},</when>
+                <otherwise>0,</otherwise>
+            </choose>
+            <choose>
+                <when test="smsMessage.content != null">#{smsMessage.content},</when>
+                <otherwise>"",</otherwise>
+            </choose>
+            <choose>
+                <when test="key != null">${key},</when>
+                <otherwise>"",</otherwise>
+            </choose>
+            <choose>
+                <when test="msgIds[key] != null">#{msgIds[${key}]},</when>
+                <otherwise>"",</otherwise>
+            </choose>
+            <choose>
+                <when test="smsMessage.channel != null">#{smsMessage.channel},</when>
+                <otherwise>"",</otherwise>
+            </choose>
+            <choose>
+                <when test="smsMessage.appId != null">#{smsMessage.appId},</when>
+                <otherwise>"",</otherwise>
+            </choose>
+            <choose>
+                <when test="smsMessage.send_status != 0">#{smsMessage.send_status}</when>
+                <otherwise>0</otherwise>
+            </choose>
+            )
+        </foreach>
+    </insert>
+
+    <select id="getTotalSmsRecordDetail" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM t_sms_record_detail AS r
+        WHERE 1=1
+        <if test="params.mobile != null and params.mobile.length != ''">
+            AND r.`mobile` = #{params.mobile}
+        </if>
+        <choose>
+            <when test="params.sendStartTime != null and params.sendStartTime != ''">
+                AND r.`sender_time` >= #{params.sendStartTime}
+            </when>
+        </choose>
+        <if test="params.sendEndTime != null and params.sendEndTime != ''">
+            AND #{params.sendEndTime} >= r.`sender_time`
+        </if>
+        <choose>
+            <when test="params.send_status != 2 and params.send_status != null">
+                AND r.`send_status` = #{params.send_status}
+            </when>
+        </choose>
+        <if test="params.channel != 0 and params.channel != null">
+            AND r.`channel` = #{params.channel}
+        </if>
+    </select>
+
+    <select id="getListSmsRecordDetail" parameterType="map" resultType="com.courage.platform.sms.dao.domain.RecordDetailDomain">
+        SELECT id,mobile,content,report_status,report_time,sender_time,channel,app_id FROM t_sms_record_detail AS r
+        WHERE 1=1
+        <if test="params.mobile != null and params.mobile.length != ''">
+            AND r.`mobile` = #{params.mobile}
+        </if>
+        <choose>
+            <when test="params.sendStartTime != null and params.sendStartTime != ''">
+                AND r.`sender_time` >= #{params.sendStartTime}
+            </when>
+        </choose>
+        <if test="params.sendEndTime != null and params.sendEndTime != ''">
+            AND #{params.sendEndTime} >= r.`sender_time`
+        </if>
+        <choose>
+            <when test="params.send_status != 2 and params.send_status != null">
+                AND r.`send_status` = #{params.send_status}
+            </when>
+        </choose>
+        <if test="params.channel != 0 and params.channel != null">
+            AND r.`channel` = #{params.channel}
+        </if>
+        ORDER BY sender_time DESC limit #{pageDomain.startNum} , #{pageDomain.pageSize}
+    </select>
+
+    <select id="getAppNames" resultType="map">
+        SELECT  app_id,app_name FROM t_sms_appinfo
+    </select>
+</mapper>

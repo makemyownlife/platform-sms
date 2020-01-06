@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.courage.platform.sms.dao.SmsRestrictDao" >
+
+<resultMap id="SmsRestrict" type="com.courage.platform.sms.dao.domain.SmsRestrict" >
+    <result column="id" property="id" />
+    <result column="restrict_key" property="restrictKey" />
+    <result column="restrict_type" property="restrictType" />
+    <result column="restrict_num" property="restrictNum"/>
+    <result column="status" property="status" />
+    <result column="create_time" property="createTime" />
+    <result column="update_time" property="updateTime" />
+</resultMap>
+
+<sql id="Base_Column_List">
+		t.id,
+		t.restrict_key,
+		t.restrict_type,
+		t.restrict_num,
+		t.status,
+		t.create_time,
+		t.update_time
+	</sql>
+
+    <select id="findCountByParams"  parameterType="java.util.Map"  resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM t_sms_restrict AS t
+        WHERE 1 = 1
+        <if test="appId != 0 and appId != null">
+            and t.appId = #{appId}
+        </if>
+        <if test="restrictType != 0 and restrictType != null">
+            and t.restrict_type = #{restrictType}
+        </if>
+    </select>
+
+<select id="findSmsRestrictById" parameterType="java.lang.Integer" resultMap="SmsRestrict">
+    SELECT <include refid="Base_Column_List" />
+    FROM t_sms_restrict AS t
+    WHERE t.id = #{id}
+    ORDER BY t.id ASC
+</select>
+
+<select id="findAll"  resultMap="SmsRestrict">
+    SELECT <include refid="Base_Column_List" />
+    FROM t_sms_restrict AS t where t.status = 1
+    ORDER BY t.id ASC
+</select>
+
+<select id="findSmsRestrictByParams"  parameterType="java.util.Map" resultMap="SmsRestrict">
+    SELECT <include refid="Base_Column_List" />
+    FROM t_sms_restrict AS t
+    WHERE 1 = 1
+    <if test="restrictKey != 0 and restrictKey != null">
+        and t.restrict_key = #{restrictKey}
+    </if>
+    <if test="restrictType != 0 and restrictType != null">
+        and t.restrict_type = #{restrictType}
+    </if>
+    ORDER BY t.id ASC
+    LIMIT #{startNum},#{limit}
+</select>
+
+<insert id="insertRestrict" parameterType="com.courage.platform.sms.dao.domain.SmsRestrict" useGeneratedKeys="true" keyProperty="id">
+    insert into t_sms_restrict(
+    <if test="restrictKey != null and restrictKey != ''">restrict_key,</if>
+    <if test="restrictType != null and restrictType != ''">restrict_type,</if>
+    <if test="restrictNum != null and restrictNum != ''">restrict_num,</if>
+    <if test=" status != -1">status,</if>
+    create_time,
+    update_time
+    )values(
+    <if test="restrictKey != null and restrictKey != ''">#{restrictKey},</if>
+    <if test="restrictType != null and restrictType != ''">#{restrictType},</if>
+    <if test="restrictNum != null and restrictNum != ''">#{restrictNum},</if>
+    <if test=" status != -1">#{status},</if>
+    sysdate(),
+    sysdate()
+    )
+</insert>
+
+<update id="updateRestrict" parameterType="com.courage.platform.sms.dao.domain.SmsRestrict">
+    update t_sms_restrict
+    <set>
+        <if test="restrictKey != null and restrictKey != ''">restrict_key = #{restrictKey},</if>
+        <if test="restrictType != null and restrictType != ''">restrict_type = #{restrictType},</if>
+        <if test="restrictNum != null and restrictNum != ''">restrict_num = #{restrictNum},</if>
+        <if test=" status != -1">status = #{status},</if>
+        update_time = sysdate()
+    </set>
+    where  id = #{id}
+</update>
+
+<update id="deleteRestrictByIds" >
+    delete from t_sms_restrict
+    where id in(
+    <foreach collection="ids" item="id" separator=",">
+        #{id}
+    </foreach>
+    )
+</update>
+</mapper>
