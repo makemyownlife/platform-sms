@@ -4,8 +4,8 @@
 
     <resultMap id="SmsAppinfo" type="com.courage.platform.sms.dao.domain.SmsAppinfo" >
         <result column="id" property="id" />
-        <result column="app_id" property="appId" />
         <result column="app_key" property="appKey" />
+        <result column="app_secret" property="appSecret" />
         <result column="app_name" property="appName"/>
         <result column="status" property="status" />
         <result column="remark" property="remark" />
@@ -15,8 +15,8 @@
 
     <sql id="Base_Column_List">
 		t.id,
-		t.app_id,
 		t.app_key,
+		t.app_secret,
 		t.app_name,
 		t.status,
 		t.remark,
