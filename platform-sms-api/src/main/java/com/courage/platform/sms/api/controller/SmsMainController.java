@@ -2,6 +2,7 @@ package com.courage.platform.sms.api.controller;
 
 import com.courage.platform.sms.api.domain.JsonResult;
 import com.courage.platform.sms.api.service.SmsApiService;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class SmsMainController {
 
     @Autowired
     private SmsApiService smsApiService;
+
+    @Autowired
+    private DefaultMQProducer defaultMQProducer;
 
     //短信主题
     private final static String PLATFORM_SMS_TOPIC = "platform_sms_single_topic";
