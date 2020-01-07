@@ -43,7 +43,6 @@ public class SmsMainController {
     @RequestMapping("/singlesend/v1")
     @ResponseBody
     public JsonResult sendSingle(HttpServletRequest request) {
-        Object d = smsApiService.get();
         return new JsonResult(null);
     }
 

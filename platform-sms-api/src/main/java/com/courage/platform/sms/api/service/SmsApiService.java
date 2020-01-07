@@ -14,9 +14,4 @@ public class SmsApiService {
     @Autowired
     private SmsAppinfoDao smsAppinfoDao;
 
-    public Object get(){
-      return   smsAppinfoDao.findAll();
-    }
-
-
 }
