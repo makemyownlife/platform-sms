@@ -1,8 +1,10 @@
 package com.courage.platform.sms.api.controller;
 
 import com.courage.platform.sms.api.domain.JsonResult;
+import com.courage.platform.sms.api.service.SmsApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +25,9 @@ public class SmsMainController {
 
     private final static Logger logger = LoggerFactory.getLogger(SmsMainController.class);
 
+    @Autowired
+    private SmsApiService smsApiService;
+
     //短信主题
     private final static String PLATFORM_SMS_TOPIC = "platform_sms_single_topic";
 
@@ -38,6 +43,7 @@ public class SmsMainController {
     @RequestMapping("/singlesend/v1")
     @ResponseBody
     public JsonResult sendSingle(HttpServletRequest request) {
+        Object d = smsApiService.get();
         return new JsonResult(null);
     }
 

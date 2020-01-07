@@ -1,6 +1,6 @@
 mdsdb:
   name: tech_platform
-  ip: 192.168.31.240
+  ip: 127.0.0.1
   username: root
   password: ilxw
 
