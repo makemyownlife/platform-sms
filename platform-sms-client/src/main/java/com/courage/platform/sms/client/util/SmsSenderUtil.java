@@ -23,10 +23,10 @@ public class SmsSenderUtil {
         return (new Random(SmsSenderUtil.getCurrentTime())).nextLong() % 900000 + 100000;
     }
 
-    public static String calculateSignature(String appkey, long random, long time,
+    public static String calculateSignature(String appSecret, long random, long time,
                                             String q) {
-        StringBuffer buffer = new StringBuffer("appkey=")
-                .append(appkey)
+        StringBuffer buffer = new StringBuffer("appSecret=")
+                .append(appSecret)
                 .append("&random=")
                 .append(random)
                 .append("&time=")
@@ -37,10 +37,10 @@ public class SmsSenderUtil {
         return sha256(buffer.toString());
     }
 
-    public static String calculateSignature(String appkey, long random, long time,
+    public static String calculateSignature(String appSecret, long random, long time,
                                             String[] phoneNumbers) {
         StringBuffer buffer = new StringBuffer("appSecret=")
-                .append(appkey)
+                .append(appSecret)
                 .append("&random=")
                 .append(random)
                 .append("&time=")
@@ -56,14 +56,14 @@ public class SmsSenderUtil {
         return sha256(buffer.toString());
     }
 
-    public static String calculateSignature(String appkey, long random, long time,
+    public static String calculateSignature(String appSecret, long random, long time,
                                             ArrayList<String> phoneNumbers) {
-        return calculateSignature(appkey, random, time, phoneNumbers.toArray(new String[0]));
+        return calculateSignature(appSecret, random, time, phoneNumbers.toArray(new String[0]));
     }
 
-    public static String calculateSignature(String appkey, long random, long time) {
-        StringBuffer buffer = new StringBuffer("appkey=")
-                .append(appkey)
+    public static String calculateSignature(String appSecret, long random, long time) {
+        StringBuffer buffer = new StringBuffer("appSecret=")
+                .append(appSecret)
                 .append("&random=")
                 .append(random)
                 .append("&time=")
