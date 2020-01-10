@@ -88,7 +88,7 @@ public class SmsWorker {
     private ChannelSendResult sendMsg(final SmsMessage smsMessage) {
         ChannelSendResult sendResult = null;//发送短信返回结果
         try {
-            sendResult = ChannelSendManager.doSendSmsMessage(smsMessage);
+         //   sendResult = ChannelSendManager.doSendSmsMessage(smsMessage);
         } catch (Exception e) {
             logger.error("短信发送异常【" + JSON.toJSONString(smsMessage) + "】", e);
         }
