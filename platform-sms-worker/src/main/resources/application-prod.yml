@@ -3,3 +3,7 @@ mdsdb:
   ip: 127.0.0.1
   username: root
   password: ilxw
+
+mq:
+  nameserver: 192.168.31.240:9876
+  consumerGroup: platformSmsWorkerGroup

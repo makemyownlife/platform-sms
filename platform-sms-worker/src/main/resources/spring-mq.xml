@@ -4,5 +4,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="mqConsumer" class="org.apache.rocketmq.client.consumer.DefaultMQPushConsumer">
+        <property name="namesrvAddr" value="${mq.nameserver}"/>
+        <property name="consumerGroup" value="${mq.consumerGroup}" />
+    </bean>
 
 </beans>
