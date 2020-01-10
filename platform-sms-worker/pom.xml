@@ -35,6 +35,18 @@
             <version>4.4.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.courage</groupId>
+            <artifactId>platform-sms-dao</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.courage</groupId>
+            <artifactId>platform-sms-core</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -80,6 +92,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>6</source>
+                    <target>6</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>

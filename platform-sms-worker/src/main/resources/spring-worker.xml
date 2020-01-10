@@ -4,13 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- 数据源 -->
-    <import resource="spring-datasource.xml"/>
-
-    <!-- 消息队列 -->
-    <import resource="spring-mq.xml"/>
-
-    <!-- 任务 -->
-    <import resource="spring-worker.xml"/>
+    <bean id="smsWorker" class="com.hshc.sms.worker.worker.SmsWorker" init-method="start" />
 
 </beans>
