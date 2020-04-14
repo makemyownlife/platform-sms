@@ -22,7 +22,7 @@ public class ProducerUnitTest {
 
     private String nameserver = "192.168.31.240:9876";
 
-    private String DEMO_TOPIC = "demo_topic";
+    private String DEMO_TOPIC = "platform_sms_topic";
 
     @Before
     public void init() throws MQClientException {

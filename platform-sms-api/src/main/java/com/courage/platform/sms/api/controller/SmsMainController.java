@@ -33,7 +33,7 @@ public class SmsMainController {
     private DefaultMQProducer defaultMQProducer;
 
     //短信主题
-    private final static String PLATFORM_SMS_TOPIC = "platform_sms_single_topic";
+    private final static String PLATFORM_SMS_TOPIC = "platform_sms_topic";
 
     private final static ThreadPoolExecutor retryThread = new ThreadPoolExecutor(2, 2, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1000), new ThreadFactory() {
         private AtomicInteger threadIndex = new AtomicInteger(0);

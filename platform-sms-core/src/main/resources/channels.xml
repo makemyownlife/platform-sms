@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<channels>
+
+    <!-- 普通短信通道 -->
+    <type value="1">
+        <channel id="11" name="绿城单发" className="com.hshc.sms.core.impl.GreenTownSingleChannelSend" />
+        <channel id="21" name="国度单发" className="com.hshc.sms.core.impl.GuoDuSingleChannelSend" />
+    </type>
+
+    <!-- 营销短信通道 -->
+    <type value="2">
+        <channel id="12" name="绿城营销" className="com.hshc.sms.core.impl.GreenTownMarketChannelSend" />
+        <channel id="22" name="国度营销" className="com.hshc.sms.core.impl.GuoDuMarketChannelSend" />
+    </type>
+
+</channels>
