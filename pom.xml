@@ -14,15 +14,13 @@
         <module>platform-sms-core</module>
         <module>platform-sms-dao</module>
         <module>platform-sms-worker</module>
-        <module>platform-sms-api</module>
-        <module>platform-sms-console</module>
+        <module>platform-sms-server</module>
+        <module>platform-sms-admin</module>
         <module>platform-sms-client-spring-boot-starter</module>
         <module>platform-sms-demo</module>
     </modules>
 
     <dependencyManagement>
-
-
 
     </dependencyManagement>
 
