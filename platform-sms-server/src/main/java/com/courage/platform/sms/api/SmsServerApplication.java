@@ -13,10 +13,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ServletComponentScan
 @EnableScheduling
 @ImportResource(locations = "spring-app.xml")
-public class SmsApiApplication {
+public class SmsServerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SmsApiApplication.class, args);
+        SpringApplication.run(SmsServerApplication.class, args);
     }
 
 }

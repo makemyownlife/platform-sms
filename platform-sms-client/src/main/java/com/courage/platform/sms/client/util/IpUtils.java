@@ -162,7 +162,6 @@ public final class IpUtils {
 	
 	/**
 	 * 判断点分式IP地址是否是内网IP
-	 * @Author : yongwang.chen
 	 * @Date   : 7:57 PM 24/05/2018
 	 * @since 3.2.9
 	 * @param ipAddress
