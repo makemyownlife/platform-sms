@@ -93,7 +93,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
-                <version>2.3.8.RELEASE</version>
+                <version>2.5.12</version>
             </dependency>
 
             <dependency>
@@ -105,7 +105,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
-                <version>2.3.8.RELEASE</version>
+                <version>2.5.12</version>
             </dependency>
 
             <dependency>
