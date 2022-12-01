@@ -1,4 +1,4 @@
-package com.courage.platform.sms.api.test;
+package com.courage.platform.sms.server.test;
 
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
