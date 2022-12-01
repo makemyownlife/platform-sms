@@ -1,6 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
-bin
+# bin
 pkg
 *.iml
 target
