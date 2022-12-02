@@ -10,7 +10,7 @@ spring.datasource:
   database: tech_platform
   username: root
   password: ilxw
-  driver-class-name: com.mysql.jdbc.Driver
+  driver-class-name: com.mysql.cj.jdbc.Driver
   url: jdbc:mysql://${spring.datasource.address}/${spring.datasource.database}?useUnicode=true&characterEncoding=UTF-8&useSSL=false
   hikari:
     maximum-pool-size: 30

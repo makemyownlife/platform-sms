@@ -36,14 +36,10 @@
 	</appender>
 
 	<root level="INFO">
+		<!--
 		<appender-ref ref="STDOUT"/>
-		<appender-ref ref="CANAL-ROOT" />
+		-->
+		<appender-ref ref="SMS-ADMIN-ROOT" />
 	</root>
-
-	<logger name="io.ebean.SQL" additivity="false">
-		<level value="INFO" />
-		<appender-ref ref="STDOUT"/>
-		<appender-ref ref="CANAL-ROOT" />
-	</logger>
 
 </configuration>

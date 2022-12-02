@@ -9,7 +9,6 @@ public class SmsAdminApplication {
 
     public static void main(String[] args) {
         SpringApplication application = new SpringApplication(SmsAdminApplication.class);
-        application.setBannerMode(Banner.Mode.OFF);
         application.run(args);
     }
 
