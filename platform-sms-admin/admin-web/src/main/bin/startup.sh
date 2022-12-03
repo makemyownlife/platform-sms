@@ -77,7 +77,7 @@ else
 fi
 
 JAVA_OPTS=" $JAVA_OPTS -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8"
-sms_OPTS="-DappName=sms-admin"
+APP_OPTS="-DappName=sms-admin"
 
 for i in $base/lib/*;
     do CLASSPATH=$i:"$CLASSPATH";
@@ -89,7 +89,7 @@ echo "cd to $bin_abs_path for workaround relative path"
 cd $bin_abs_path
 
 echo CLASSPATH :$CLASSPATH
-$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $sms_OPTS -classpath .:$CLASSPATH com.courage.platform.sms.admin.smsAdminApplication 1>>/dev/null 2>&1 &
+$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $APP_OPTS -classpath .:$CLASSPATH com.courage.platform.sms.admin.SmsAdminApplication 1>>/dev/null 2>&1 &
 echo $! > $base/bin/admin.pid
 
 echo "cd to $current_path for continue"
