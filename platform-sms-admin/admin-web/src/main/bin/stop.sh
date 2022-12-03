@@ -39,22 +39,22 @@ get_pid() {
 base=`dirname $0`/..
 pidfile=$base/bin/admin.pid
 if [ ! -f "$pidfile" ];then
-	echo "canal-admin is not running. exists"
+	echo "sms-admin is not running. exists"
 	exit
 fi
 
 pid=`cat $pidfile`
 if [ "$pid" == "" ] ; then
-	pid=`get_pid "appName=canal-admin"`
+	pid=`get_pid "appName=sms-admin"`
 fi
 
-echo -e "`hostname`: stopping canal $pid ... "
+echo -e "`hostname`: stopping sms $pid ... "
 kill $pid
 
 LOOPS=0
 while (true); 
 do 
-	gpid=`get_pid "appName=canal-admin" "$pid"`
+	gpid=`get_pid "appName=sms-admin" "$pid"`
     if [ "$gpid" == "" ] ; then
     	echo "Oook! cost:$LOOPS"
     	`rm $pidfile`

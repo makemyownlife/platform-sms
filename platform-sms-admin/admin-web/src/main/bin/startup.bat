@@ -12,11 +12,11 @@ set CLASSPATH=%conf_dir%\..\lib\*;%CLASSPATH%
 
 set JAVA_MEM_OPTS= -Xms128m -Xmx512m
 set JAVA_OPTS_EXT= -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -Dapplication.codeset=UTF-8 -Dfile.encoding=UTF-8
-set ADAPTER_OPTS= -DappName=canal-admin
+set ADAPTER_OPTS= -DappName=sms-admin
 
 set JAVA_OPTS= %JAVA_MEM_OPTS% %JAVA_OPTS_EXT% %ADAPTER_OPTS%
 
-set CMD_STR= java %JAVA_OPTS% -classpath "%CLASSPATH%" com.alibaba.otter.canal.admin.CanalAdminApplication
+set CMD_STR= java %JAVA_OPTS% -classpath "%CLASSPATH%" com.courage.platform.sms.admin.SmsAdminApplication
 echo start cmd : %CMD_STR%
 
-java %JAVA_OPTS% -classpath "%CLASSPATH%" com.alibaba.otter.canal.admin.CanalAdminApplication
+java %JAVA_OPTS% -classpath "%CLASSPATH%" com.courage.platform.sms.admin.SmsAdminApplication

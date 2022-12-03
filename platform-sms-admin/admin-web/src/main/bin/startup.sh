@@ -64,7 +64,7 @@ if [ $JavaVersion -ge 11 ] ; then
   #JAVA_OPTS="$JAVA_OPTS -Xlog:gc*:$base_log/gc.log:time "
   JAVA_OPTS="$JAVA_OPTS"
 else
-  #JAVA_OPTS="$JAVA_OPTS -Xloggc:$base/logs/canal/gc.log -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCApplicationStoppedTime"
+  #JAVA_OPTS="$JAVA_OPTS -Xloggc:$base/logs/sms/gc.log -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCApplicationStoppedTime"
   JAVA_OPTS="$JAVA_OPTS -XX:+UseFastAccessorMethods -XX:+PrintAdaptiveSizePolicy -XX:+PrintTenuringDistribution"
 fi
 
@@ -77,7 +77,7 @@ else
 fi
 
 JAVA_OPTS=" $JAVA_OPTS -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8"
-CANAL_OPTS="-DappName=canal-admin"
+sms_OPTS="-DappName=sms-admin"
 
 for i in $base/lib/*;
     do CLASSPATH=$i:"$CLASSPATH";
@@ -89,7 +89,7 @@ echo "cd to $bin_abs_path for workaround relative path"
 cd $bin_abs_path
 
 echo CLASSPATH :$CLASSPATH
-$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $CANAL_OPTS -classpath .:$CLASSPATH com.alibaba.otter.canal.admin.CanalAdminApplication 1>>/dev/null 2>&1 &
+$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $sms_OPTS -classpath .:$CLASSPATH com.alibaba.otter.sms.admin.smsAdminApplication 1>>/dev/null 2>&1 &
 echo $! > $base/bin/admin.pid
 
 echo "cd to $current_path for continue"
