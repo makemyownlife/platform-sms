@@ -1,4 +1,4 @@
-package com.alibaba.otter.canal.admin.common;
+package com.courage.platform.sms.admin.common;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;

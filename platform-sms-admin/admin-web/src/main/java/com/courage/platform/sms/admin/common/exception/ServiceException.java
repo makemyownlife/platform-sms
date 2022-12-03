@@ -1,4 +1,4 @@
-package com.alibaba.otter.canal.admin.common.exception;
+package com.courage.platform.sms.admin.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

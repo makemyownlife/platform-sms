@@ -1,4 +1,4 @@
-package com.alibaba.otter.canal.admin.config;
+package com.courage.platform.sms.admin.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

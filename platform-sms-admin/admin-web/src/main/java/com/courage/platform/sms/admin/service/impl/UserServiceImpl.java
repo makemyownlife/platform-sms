@@ -1,6 +1,6 @@
-package com.alibaba.otter.canal.admin.service.impl;
+package com.courage.platform.sms.admin.service.impl;
 
-import com.alibaba.otter.canal.admin.service.UserService;
+import com.courage.platform.sms.admin.service.UserService;
 import org.springframework.stereotype.Service;
 
 /**

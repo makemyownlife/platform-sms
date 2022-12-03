@@ -1,6 +1,5 @@
-package com.alibaba.otter.canal.admin;
+package com.courage.platform.sms.admin;
 
-import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
