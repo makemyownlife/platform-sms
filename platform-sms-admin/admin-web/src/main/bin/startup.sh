@@ -89,7 +89,7 @@ echo "cd to $bin_abs_path for workaround relative path"
 cd $bin_abs_path
 
 echo CLASSPATH :$CLASSPATH
-$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $sms_OPTS -classpath .:$CLASSPATH com.alibaba.otter.sms.admin.smsAdminApplication 1>>/dev/null 2>&1 &
+$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $sms_OPTS -classpath .:$CLASSPATH com.courage.platform.sms.admin.smsAdminApplication 1>>/dev/null 2>&1 &
 echo $! > $base/bin/admin.pid
 
 echo "cd to $current_path for continue"
