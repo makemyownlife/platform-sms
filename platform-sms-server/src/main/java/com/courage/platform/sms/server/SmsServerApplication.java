@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication(scanBasePackages = "com.courage.platform.sms")
 @ServletComponentScan
 @EnableScheduling
-@ImportResource(locations = "spring-app.xml")
 public class SmsServerApplication {
 
     public static void main(String[] args) {
