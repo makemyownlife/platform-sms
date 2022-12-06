@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'Canal Admin',
+  title: '短信平台管理端',
 
   /**
    * @type {boolean} true | false
