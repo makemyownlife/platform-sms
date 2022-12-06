@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '短信平台管理端',
+  title: '短信平台',
 
   /**
    * @type {boolean} true | false
