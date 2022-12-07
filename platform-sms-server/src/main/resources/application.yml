@@ -1,7 +1,7 @@
 #########################################本地开发环境#########################################
 spring:
   application:
-  name: "platformsmsapi"
+  name: "platform-sms-server"
   http:
     encoding:
       charset: "UTF-8"

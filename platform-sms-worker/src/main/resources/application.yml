@@ -1,7 +1,7 @@
 #########################################本地开发环境#########################################
 spring:
   application:
-  name: "platformsmsworker"
+  name: "platform-sms-worker"
   http:
     encoding:
       charset: "UTF-8"
