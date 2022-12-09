@@ -2,17 +2,17 @@
 spring:
   application:
   name: "platform-sms-server"
-  http:
-    encoding:
-      charset: "UTF-8"
-      enabled: true
-      force: true
   profiles:
     active: prod
+
 server:
   port: 8081
   servlet:
     context-path: /
+    encoding:
+      charset: "UTF-8"
+      enabled: true
+      force: true
 
 logging:
   config: "classpath:logback.xml"
