@@ -73,8 +73,8 @@ export const constantRoutes = [
     path: '/canalServer',
     component: Layout,
     redirect: '/canalServer/nodeServers',
-    name: 'Canal Server',
-    meta: { title: 'Canal Server', icon: 'example' },
+    name: '短信平台服务',
+    meta: { title: '短信平台服务', icon: 'example' },
     children: [
       {
         path: 'canalClusters',
