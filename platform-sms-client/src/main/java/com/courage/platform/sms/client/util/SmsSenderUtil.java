@@ -8,13 +8,6 @@ import java.util.Random;
 
 public class SmsSenderUtil {
 
-    public static boolean isNotEmpty(String s) {
-        if (s == null || s.isEmpty()) {
-            return false;
-        }
-        return true;
-    }
-
     public static long getCurrentTime() {
         return System.currentTimeMillis();
     }
@@ -33,7 +26,6 @@ public class SmsSenderUtil {
                 .append(time)
                 .append("&q=")
                 .append(q);
-
         return sha256(buffer.toString());
     }
 
