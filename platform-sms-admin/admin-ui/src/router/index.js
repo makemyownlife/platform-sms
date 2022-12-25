@@ -70,64 +70,23 @@ export const constantRoutes = [
   },
 
   {
-    path: '/canalServer',
+    path: '/smsServer',
     component: Layout,
-    redirect: '/canalServer/nodeServers',
+    redirect: '/smsServer/channels',
     name: '短信平台服务',
     meta: { title: '短信平台服务', icon: 'example' },
     children: [
       {
-        path: 'canalClusters',
-        name: 'Canal 集群管理',
-        component: () => import('@/views/canalServer/CanalCluster'),
-        meta: { title: '集群管理', icon: 'tree' }
-      },
+        path: 'channels',
+        name: '渠道管理',
+        component: () => import('@/views/smsServer/SmsChannels'),
+        meta: { title: '渠道管理', icon: 'tree' }
+      } ,
       {
-        path: 'nodeServers',
-        name: 'Server 状态',
-        component: () => import('@/views/canalServer/NodeServer'),
-        meta: { title: 'Server 管理', icon: 'form' }
-      },
-      {
-        path: 'nodeServer/config',
-        name: 'Server 配置',
-        component: () => import('@/views/canalServer/CanalConfig'),
-        meta: { title: 'Server 配置' },
-        hidden: true
-      },
-      {
-        path: 'canalInstances',
-        name: 'Instance 管理',
-        component: () => import('@/views/canalServer/CanalInstance'),
-        meta: { title: 'Instance 管理', icon: 'nested' }
-      },
-      {
-        path: 'canalInstance/add',
-        name: '新建Instance配置',
-        component: () => import('@/views/canalServer/CanalInstanceAdd'),
-        meta: { title: '新建Instance配置' },
-        hidden: true
-      },
-      {
-        path: 'canalInstance/modify',
-        name: '修改Instance配置',
-        component: () => import('@/views/canalServer/CanalInstanceUpdate'),
-        meta: { title: '修改Instance配置' },
-        hidden: true
-      },
-      {
-        path: 'nodeServer/log',
-        name: 'Server 日志',
-        component: () => import('@/views/canalServer/CanalLogDetail'),
-        meta: { title: 'Server 日志' },
-        hidden: true
-      },
-      {
-        path: 'canalInstance/log',
-        name: 'Instance 日志',
-        component: () => import('@/views/canalServer/CanalInstanceLogDetail'),
-        meta: { title: 'Instance 日志' },
-        hidden: true
+        path: 'smsList',
+        name: '短信管理',
+        component: () => import('@/views/smsServer/SmsList'),
+        meta: { title: '短信管理', icon: 'form' }
       }
     ]
   },

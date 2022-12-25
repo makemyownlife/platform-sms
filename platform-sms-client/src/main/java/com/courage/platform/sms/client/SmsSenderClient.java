@@ -10,13 +10,13 @@ import java.io.IOException;
  * 短信发送服务类
  * Created by zhangyong on 2020/1/5.
  */
-public class SmsSenderService {
+public class SmsSenderClient {
 
-    private final static Logger logger = LoggerFactory.getLogger(SmsSenderService.class);
+    private final static Logger logger = LoggerFactory.getLogger(SmsSenderClient.class);
 
     private SmsConfig smsConfig;
 
-    public SmsSenderService(SmsConfig smsConfig) {
+    public SmsSenderClient(SmsConfig smsConfig) {
         this.smsConfig = smsConfig;
     }
 

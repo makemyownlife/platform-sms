@@ -15,7 +15,7 @@ export default {
     ])
   },
   mounted() {
-    this.$router.push('/canalServer')
+    this.$router.push('/smsServer')
   }
 }
 </script>
