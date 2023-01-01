@@ -1,11 +1,11 @@
 package com.courage.platform.sms.client;
 
 /**
- *  短信平台 sdk 配置
+ * 短信平台 sdk 配置
  */
 public class SmsConfig {
 
-    private String smsApiUrl;
+    private String smsServerUrl;
 
     private String appKey;
 
@@ -27,12 +27,12 @@ public class SmsConfig {
         this.appSecret = appSecret;
     }
 
-    public String getSmsApiUrl() {
-        return smsApiUrl;
+    public String getSmsServerUrl() {
+        return smsServerUrl;
     }
 
-    public void setSmsApiUrl(String smsApiUrl) {
-        this.smsApiUrl = smsApiUrl;
+    public void setSmsServerUrl(String smsServerUrl) {
+        this.smsServerUrl = smsServerUrl;
     }
 
 }
