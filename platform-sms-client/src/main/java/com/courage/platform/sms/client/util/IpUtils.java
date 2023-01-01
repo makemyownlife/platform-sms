@@ -56,10 +56,6 @@ public final class IpUtils {
 	/**
 	 * 根据点分式IP地址返回十进制IP数值
 	 *
-	 * @Author : yongwang.chen
-	 * @Date   : 7:57 PM 24/05/2018
-	 * @param ip 点分式IP地址
-	 * @return	点分式IP地址对应的32位二进制数的十进制格式
 	 */
 	public static long ipToLongNum(String ip) {
 		if (checkIpStr(ip)) {
