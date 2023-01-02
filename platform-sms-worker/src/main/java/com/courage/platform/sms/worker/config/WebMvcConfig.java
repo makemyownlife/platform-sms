@@ -1,4 +1,4 @@
-package com.courage.platform.sms.worker.config.config;
+package com.courage.platform.sms.worker.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
