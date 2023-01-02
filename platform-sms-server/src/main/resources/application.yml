@@ -2,8 +2,11 @@
 spring:
   application:
   name: "platform-sms-server"
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   profiles:
-    active: prod
+    active: test
 
 server:
   port: 8081
