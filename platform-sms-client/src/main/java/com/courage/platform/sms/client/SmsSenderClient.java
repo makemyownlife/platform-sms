@@ -3,7 +3,6 @@ package com.courage.platform.sms.client;
 import com.alibaba.fastjson.JSON;
 import com.courage.platform.sms.client.util.SmsHttpClientUtils;
 import com.courage.platform.sms.client.util.SmsSenderUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,11 +28,12 @@ public class SmsSenderClient {
         Long random = SmsSenderUtil.getRandom();
         String appKey = smsConfig.getAppKey();
         Long time = SmsSenderUtil.getCurrentTime();
-        String sign = SmsSenderUtil.calculateSignature(smsConfig.getAppSecret(), random, SmsSenderUtil.getCurrentTime());
+        String sign = SmsSenderUtil.calculateSignature(smsConfig.getAppSecret(), random, time);
         // 构造参数
         Map<String, String> param = new HashMap<String, String>(4);
         param.put("time", String.valueOf(time));
         param.put("appKey", appKey);
+        param.put("random", String.valueOf(random));
         param.put("sign", sign);
         Map<String, String> queryParam = new HashMap<String, String>(4);
         queryParam.put("mobile", mobile);
