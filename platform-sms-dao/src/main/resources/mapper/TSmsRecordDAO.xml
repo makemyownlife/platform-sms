@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courage.platform.sms.dao.TSmsRecordDAO">
+  <resultMap id="BaseResultMap" type="com.courage.platform.sms.domain.TSmsRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="sms_id" jdbcType="VARCHAR" property="smsId" />
+    <result column="nationcode" jdbcType="VARCHAR" property="nationcode" />
+    <result column="app_id" jdbcType="VARCHAR" property="appId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="channel" jdbcType="VARCHAR" property="channel" />
+    <result column="attime" jdbcType="VARCHAR" property="attime" />
+    <result column="send_status" jdbcType="TINYINT" property="sendStatus" />
+    <result column="sender_ip" jdbcType="VARCHAR" property="senderIp" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.courage.platform.sms.domain.TSmsRecord">
+    <result column="mobile" jdbcType="LONGVARCHAR" property="mobile" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sms_id, nationcode, app_id, content, `type`, channel, attime, send_status, sender_ip, 
+    create_time, update_time
+  </sql>
+  <sql id="Blob_Column_List">
+    mobile
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_sms_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_sms_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.domain.TSmsRecord" useGeneratedKeys="true">
+    insert into t_sms_record (sms_id, nationcode, app_id, 
+      content, `type`, channel, 
+      attime, send_status, sender_ip, 
+      create_time, update_time, mobile
+      )
+    values (#{smsId,jdbcType=VARCHAR}, #{nationcode,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{channel,jdbcType=VARCHAR}, 
+      #{attime,jdbcType=VARCHAR}, #{sendStatus,jdbcType=TINYINT}, #{senderIp,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{mobile,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.domain.TSmsRecord" useGeneratedKeys="true">
+    insert into t_sms_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="smsId != null">
+        sms_id,
+      </if>
+      <if test="nationcode != null">
+        nationcode,
+      </if>
+      <if test="appId != null">
+        app_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="attime != null">
+        attime,
+      </if>
+      <if test="sendStatus != null">
+        send_status,
+      </if>
+      <if test="senderIp != null">
+        sender_ip,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="smsId != null">
+        #{smsId,jdbcType=VARCHAR},
+      </if>
+      <if test="nationcode != null">
+        #{nationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="attime != null">
+        #{attime,jdbcType=VARCHAR},
+      </if>
+      <if test="sendStatus != null">
+        #{sendStatus,jdbcType=TINYINT},
+      </if>
+      <if test="senderIp != null">
+        #{senderIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.domain.TSmsRecord">
+    update t_sms_record
+    <set>
+      <if test="smsId != null">
+        sms_id = #{smsId,jdbcType=VARCHAR},
+      </if>
+      <if test="nationcode != null">
+        nationcode = #{nationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="attime != null">
+        attime = #{attime,jdbcType=VARCHAR},
+      </if>
+      <if test="sendStatus != null">
+        send_status = #{sendStatus,jdbcType=TINYINT},
+      </if>
+      <if test="senderIp != null">
+        sender_ip = #{senderIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.courage.platform.sms.domain.TSmsRecord">
+    update t_sms_record
+    set sms_id = #{smsId,jdbcType=VARCHAR},
+      nationcode = #{nationcode,jdbcType=VARCHAR},
+      app_id = #{appId,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=TINYINT},
+      channel = #{channel,jdbcType=VARCHAR},
+      attime = #{attime,jdbcType=VARCHAR},
+      send_status = #{sendStatus,jdbcType=TINYINT},
+      sender_ip = #{senderIp,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      mobile = #{mobile,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.domain.TSmsRecord">
+    update t_sms_record
+    set sms_id = #{smsId,jdbcType=VARCHAR},
+      nationcode = #{nationcode,jdbcType=VARCHAR},
+      app_id = #{appId,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=TINYINT},
+      channel = #{channel,jdbcType=VARCHAR},
+      attime = #{attime,jdbcType=VARCHAR},
+      send_status = #{sendStatus,jdbcType=TINYINT},
+      sender_ip = #{senderIp,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
