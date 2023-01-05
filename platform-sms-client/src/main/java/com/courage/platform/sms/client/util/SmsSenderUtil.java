@@ -16,7 +16,7 @@ public class SmsSenderUtil {
         return (new Random(SmsSenderUtil.getCurrentTime())).nextLong() % 900000 + 100000;
     }
 
-    public static String calculateSignature(String appSecret, long random, long time,
+    public static String calculateSignature(String appSecret, String random, String time,
                                             String q) {
         StringBuffer buffer = new StringBuffer("appSecret=")
                 .append(appSecret)

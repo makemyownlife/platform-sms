@@ -1,6 +1,11 @@
 package com.courage.platform.sms.server.config;
 
+import com.alibaba.fastjson.JSON;
+import com.courage.platform.sms.client.SmsSenderResult;
+import com.courage.platform.sms.client.util.SmsSenderUtil;
 import com.courage.platform.sms.server.service.AppInfoService;
+import com.courage.platform.sms.server.utils.UtilAll;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +32,23 @@ public class ApiInterceptor extends HandlerInterceptorAdapter {
         String q = request.getParameter("q");
         String sign = request.getParameter("sign");
         String time = request.getParameter("time");
+        String random = request.getParameter("random");
         String appKey = request.getParameter("appKey");
-
-        
+        //验证签名开始
+        if (StringUtils.isEmpty(q) || StringUtils.isEmpty(sign) || StringUtils.isEmpty(time) || StringUtils.isEmpty(appKey)) {
+            SmsSenderResult smsSenderResult = new SmsSenderResult(SmsSenderResult.SIGN_CODE, "参数错误");
+            UtilAll.responseJSONToClient(response, JSON.toJSONString(smsSenderResult));
+            return false;
+        }
+        //查询应用信息
+        String appSecret = null;
+        String apiSign = SmsSenderUtil.calculateSignature(appSecret, random, time, q);
+        if(!StringUtils.equals(sign , apiSign)) {
+            SmsSenderResult smsSenderResult = new SmsSenderResult(SmsSenderResult.SIGN_CODE, "签名验证失败");
+            UtilAll.responseJSONToClient(response, JSON.toJSONString(smsSenderResult));
+            return false;
+        }
+        //验证签名结束
         return true;
     }
 

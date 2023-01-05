@@ -27,9 +27,9 @@ public class SmsSenderClient {
     }
 
     public SmsSenderResult sendSingle(String mobile, String content) throws IOException {
-        Long random = SmsSenderUtil.getRandom();
+        String random = String.valueOf(SmsSenderUtil.getRandom());
         String appKey = smsConfig.getAppKey();
-        Long time = SmsSenderUtil.getCurrentTime();
+        String time = String.valueOf(SmsSenderUtil.getCurrentTime());
         // 构造参数
         Map<String, String> param = new HashMap<String, String>(4);
         param.put("time", String.valueOf(time));
