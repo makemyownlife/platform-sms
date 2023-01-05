@@ -1,19 +1,22 @@
 package com.courage.platform.sms.client;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class SmsSenderResult {
 
     public static final int SUCCESS_CODE = 200;
 
     public static final int FAIL_CODE = 500;
 
-    private int code;
+    private String msg = StringUtils.EMPTY;
 
-    private String msg;
+    private int code;
 
     private String smsId;
 
-    public SmsSenderResult() {
-        this.code = FAIL_CODE;
+    public SmsSenderResult(String smsId) {
+        this.code = SUCCESS_CODE;
+        this.smsId = smsId;
     }
 
     public SmsSenderResult(int code, String msg) {
@@ -27,11 +30,6 @@ public class SmsSenderResult {
 
     public void setSmsId(String smsId) {
         this.smsId = smsId;
-    }
-
-    public SmsSenderResult(String msg) {
-        this.code = SUCCESS_CODE;
-        this.msg = msg;
     }
 
     public int getCode() {

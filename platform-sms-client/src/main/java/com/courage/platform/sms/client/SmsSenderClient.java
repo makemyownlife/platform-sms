@@ -18,6 +18,8 @@ public class SmsSenderClient {
 
     private final static Logger logger = LoggerFactory.getLogger(SmsSenderClient.class);
 
+    private final static String SINGLE_SEND_URL = "/api/sendSingle";
+
     private SmsConfig smsConfig;
 
     public SmsSenderClient(SmsConfig smsConfig) {
@@ -41,7 +43,11 @@ public class SmsSenderClient {
         param.put("q", JSON.toJSONString(queryParam));
         // 发送请求
         try {
-            String result = SmsHttpClientUtils.doPost(smsConfig.getSmsServerUrl(), param, 5000, 5000);
+            String result = SmsHttpClientUtils.doPost(
+                    smsConfig.getSmsServerUrl() + SINGLE_SEND_URL,
+                    param,
+                    5000,
+                    5000);
             SmsSenderResult senderResult = JSON.parseObject(result, SmsSenderResult.class);
             return senderResult;
         } catch (Exception e) {
