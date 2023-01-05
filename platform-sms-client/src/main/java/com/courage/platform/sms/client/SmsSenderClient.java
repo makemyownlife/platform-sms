@@ -30,17 +30,18 @@ public class SmsSenderClient {
         Long random = SmsSenderUtil.getRandom();
         String appKey = smsConfig.getAppKey();
         Long time = SmsSenderUtil.getCurrentTime();
-        String sign = SmsSenderUtil.calculateSignature(smsConfig.getAppSecret(), random, time);
         // 构造参数
         Map<String, String> param = new HashMap<String, String>(4);
         param.put("time", String.valueOf(time));
         param.put("appKey", appKey);
         param.put("random", String.valueOf(random));
-        param.put("sign", sign);
         Map<String, String> queryParam = new HashMap<String, String>(4);
         queryParam.put("mobile", mobile);
         queryParam.put("content", content);
+        String q = JSON.toJSONString(queryParam);
         param.put("q", JSON.toJSONString(queryParam));
+        String sign = SmsSenderUtil.calculateSignature(smsConfig.getAppSecret(), random, time , q);
+        param.put("sign", sign);
         // 发送请求
         try {
             String result = SmsHttpClientUtils.doPost(
