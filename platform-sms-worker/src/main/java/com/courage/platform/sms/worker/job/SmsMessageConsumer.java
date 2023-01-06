@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RocketMQMessageListener(
-        consumerGroup = "${rocketmq.consumer.group}",  // 消费组，格式：namespace全称%group名称
+        consumerGroup = "${rocketmq.consumer1.group}",  // 消费组，格式：namespace全称%group名称
         // 需要使用topic全称，所以进行topic名称的拼接，也可以自己设置  格式：namespace全称%topic名称
-        topic = "${rocketmq.consumer.topic}")
+        topic = "${rocketmq.consumer1.topic}")
 public class SmsMessageConsumer implements RocketMQListener<String> {
 
     private final static Logger logger = LoggerFactory.getLogger(SmsMessageConsumer.class);

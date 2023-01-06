@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/tech_platform?useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://127.0.0.1:3306/tech_platform?useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
     username: root
     password: ilxw
     type: com.alibaba.druid.pool.DruidDataSource
@@ -17,6 +17,6 @@ spring:
 
 rocketmq:
   name-server: 10.1.86.123:9876
-  consumer:
+  consumer1:
     group: platform-sms-worker-group
     topic: sms-common-topic
