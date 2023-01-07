@@ -11,8 +11,17 @@
     
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>platform-sms-core</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>platform-sms-adapter</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <!-- 核心工具 -->
+        <module>adapter-core</module>
+        <!-- 支付宝短信 -->
+        <module>adapter-alipay</module>
+        <!-- 日志实现 -->
+        <module>adapter-logger</module>
+    </modules>
 
     <dependencies>
 

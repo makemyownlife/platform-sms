@@ -11,7 +11,7 @@
 
     <modules>
         <module>platform-sms-client</module>
-        <module>platform-sms-core</module>
+        <module>platform-sms-adapter</module>
         <module>platform-sms-dao</module>
         <module>platform-sms-worker</module>
         <module>platform-sms-server</module>
