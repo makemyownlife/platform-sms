@@ -11,7 +11,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>adapter-tencent</artifactId>
+    <artifactId>adapter-logger</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
