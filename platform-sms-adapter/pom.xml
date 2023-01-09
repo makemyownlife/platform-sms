@@ -20,7 +20,7 @@
         <!-- 支付宝短信 -->
         <module>adapter-alipay</module>
         <!-- 腾讯短信 -->
-        <module>adapter-tencent</module>
+        <module>adapter-logger</module>
     </modules>
 
     <dependencies>
