@@ -19,8 +19,8 @@
         <module>adapter-core</module>
         <!-- 支付宝短信 -->
         <module>adapter-alipay</module>
-        <!-- 日志实现 -->
-        <module>adapter-logger</module>
+        <!-- 腾讯短信 -->
+        <module>adapter-tencent</module>
     </modules>
 
     <dependencies>
