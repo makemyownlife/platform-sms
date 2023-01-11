@@ -19,8 +19,8 @@
         <module>adapter-core</module>
         <!-- 支付宝短信 -->
         <module>adapter-alipay</module>
-        <!-- 腾讯短信 -->
-        <module>adapter-logger</module>
+        <!-- 亿美短信 -->
+        <module>adapter-emay</module>
     </modules>
 
     <dependencies>
