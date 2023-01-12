@@ -127,4 +127,11 @@
     where app_key = #{appKey}
   </select>
 
+  <!-- 查询所有的应用列表 -->
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sms_appinfo
+  </select>
+
 </mapper>
