@@ -18,7 +18,7 @@ server:
       force: true
 
 logging:
-  config: "classpath:logback.xml"
+  config: "classpath:logback-spring.xml"
 
 mybatis:
   mapper-locations: classpath:mapper/*DAO.xml
