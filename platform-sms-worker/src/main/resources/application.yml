@@ -6,7 +6,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   profiles:
-    active: test
+    active: dev
 
 server:
   port: 8082
