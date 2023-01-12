@@ -149,7 +149,7 @@
                 <activeByDefault>true</activeByDefault>
                 <property>
                     <name>env</name>
-                    <value>!release</value>
+                    <value>!prod</value>
                 </property>
             </activation>
 
@@ -171,11 +171,11 @@
         </profile>
 
         <profile>
-            <id>release</id>
+            <id>prod</id>
             <activation>
                 <property>
                     <name>env</name>
-                    <value>release</value>
+                    <value>prod</value>
                 </property>
             </activation>
 
@@ -185,7 +185,7 @@
                         <artifactId>maven-assembly-plugin</artifactId>
                         <configuration>
                             <descriptors>
-                                <descriptor>${basedir}/src/main/assembly/release.xml</descriptor>
+                                <descriptor>src/main/assembly/prod.xml</descriptor>
                             </descriptors>
                             <finalName>platform-sms-admin</finalName>
                             <outputDirectory>${project.basedir}/target</outputDirectory>
