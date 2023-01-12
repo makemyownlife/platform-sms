@@ -42,9 +42,8 @@ public class AppInfoService {
         }
     }
 
-    public TSmsAppinfo getAppinfoByAppKey(String appKey) {
-        return tSmsAppinfoDAO.getAppinfoByAppKey(appKey);
+    public TSmsAppinfo getAppinfoByAppKeyFromLocalCache(String appKey) {
+        return localAppCache.get(appKey);
     }
-
 
 }
