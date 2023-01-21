@@ -35,14 +35,17 @@ public class SenderController {
         String q = request.getParameter("q");
         String appKey = request.getParameter("appKey");
         String time = request.getParameter("time");
-        logger.info("q:" + q + " appKey:" + appKey + " time:" + time);
+        String random = request.getParameter("random");
+        //构造唯一请求id
+        String uniqueId = time + random;
+        logger.info("q:" + q + " appKey:" + appKey + " uniqueId:" + uniqueId);
         //发送消息
         String tag = "single";
         SendResult sendResult = rocketMQTemplate.syncSend(
                 smsTopic + ":" + tag,
-                MessageBuilder.withPayload(q).setHeader(MessageConst.PROPERTY_KEYS, time).build()
+                MessageBuilder.withPayload(q).setHeader(MessageConst.PROPERTY_KEYS, uniqueId).build()
         );
-        logger.info("sendResult:" + sendResult);
+        logger.info("uniqueId：" + uniqueId + " sendResult:" + sendResult);
         if (sendResult != null) {
             if (sendResult.getSendStatus() == SendStatus.SEND_OK) {
                 return new SmsSenderResult(sendResult.getMsgId());

@@ -23,6 +23,7 @@ public class AlipayAdapter implements OuterAdapter {
         com.aliyun.dysmsapi20170525.Client client = createClient("accessKeyId", "accessKeySecret");
         com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest()
                 .setPhoneNumbers("your_value")
+                .setTemplateCode("mycode")
                 .setSignName("your_value");
         try {
             // 复制代码运行请自行打印 API 的返回值
