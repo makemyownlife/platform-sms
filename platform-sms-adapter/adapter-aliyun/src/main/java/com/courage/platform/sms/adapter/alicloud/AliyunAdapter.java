@@ -1,11 +1,11 @@
-package com.courage.platform.sms.adapter.alipay;
+package com.courage.platform.sms.adapter.alicloud;
 
 import com.aliyun.tea.TeaException;
 import com.courage.platform.sms.adapter.core.OuterAdapter;
 import com.courage.platform.sms.adapter.core.support.SPI;
 
-@SPI("emay")
-public class AlipayAdapter implements OuterAdapter {
+@SPI("aliyun")
+public class AliyunAdapter implements OuterAdapter {
 
     public static com.aliyun.dysmsapi20170525.Client createClient(String accessKeyId, String accessKeySecret) throws Exception {
         com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
