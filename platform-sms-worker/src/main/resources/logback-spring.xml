@@ -16,7 +16,7 @@
             <DefaultValue>worker</DefaultValue>
         </discriminator>
         <sift>
-            <appender name="FILE-adapter" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <appender name="FILE-worker" class="ch.qos.logback.core.rolling.RollingFileAppender">
                 <File>../logs/worker.log</File>
                 <rollingPolicy
                         class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
