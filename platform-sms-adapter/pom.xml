@@ -17,8 +17,8 @@
     <modules>
         <!-- 核心工具 -->
         <module>adapter-core</module>
-        <!-- 支付宝短信 -->
-        <module>adapter-alipay</module>
+        <!-- 阿里云短信 -->
+        <module>adapter-aliyun</module>
         <!-- 亿美短信 -->
         <module>adapter-emay</module>
     </modules>
