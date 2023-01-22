@@ -43,7 +43,7 @@ public class ApiInterceptor extends HandlerInterceptorAdapter {
         //查询应用信息
         TSmsAppinfo tSmsAppinfo = appInfoService.getAppinfoByAppKeyFromLocalCache(appKey);
         if (tSmsAppinfo == null) {
-            SmsSenderResult smsSenderResult = new SmsSenderResult(SmsSenderResult.SIGN_CODE, "参数错误");
+            SmsSenderResult smsSenderResult = new SmsSenderResult(SmsSenderResult.SIGN_CODE, "应用不存在");
             UtilAll.responseJSONToClient(response, JSON.toJSONString(smsSenderResult));
             return false;
         }
