@@ -13,6 +13,6 @@ public interface OuterAdapter {
     /**
      * 适配器初始化接口
      */
-    void init(SmsChannelConfig configuration);
+    void init(SmsChannelConfig smsChannelConfig);
 
 }
