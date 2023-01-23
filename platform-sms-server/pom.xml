@@ -84,7 +84,8 @@
     </dependencyManagement>
 
     <build>
-        <finalName>platformsmsapi</finalName>
+        <!-- 短信网关服务 -->
+        <finalName>platform-sms-server</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>

@@ -31,9 +31,11 @@ public class ExtensionLoader<T> {
 
     private static final String                                      SERVICES_DIRECTORY         = "META-INF/services/";
 
-    private static final String                                      CANAL_DIRECTORY            = "META-INF/canal/";
+    private static final String                                      SMS_DIRECTORY            = "META-INF/sms/";
 
     private static final String                                      DEFAULT_CLASSLOADER_POLICY = "internal";
+
+    private static final String                                      WORKER_DIR_NAME = "platform-sms-worker";
 
     private static final Pattern                                     NAME_SEPARATOR             = Pattern
         .compile("\\s*[,]+\\s*");
@@ -264,7 +266,7 @@ public class ExtensionLoader<T> {
 
         File externalLibDir = new File(dir);
         if (!externalLibDir.exists()) {
-            externalLibDir = new File(File.separator + this.getJarDirectoryPath() + File.separator + "canal-adapter"
+            externalLibDir = new File(File.separator + this.getJarDirectoryPath() + File.separator + WORKER_DIR_NAME
                                       + File.separator + "plugin");
         }
         logger.info("extension classpath dir: " + externalLibDir.getAbsolutePath());
@@ -288,7 +290,7 @@ public class ExtensionLoader<T> {
                         localClassLoader = new URLClassLoader(new URL[] { url }, parent);
                     }
 
-                    loadFile(extensionClasses, CANAL_DIRECTORY, localClassLoader);
+                    loadFile(extensionClasses, SMS_DIRECTORY, localClassLoader);
                     loadFile(extensionClasses, SERVICES_DIRECTORY, localClassLoader);
                 }
             }
@@ -296,7 +298,7 @@ public class ExtensionLoader<T> {
         // 只加载外部spi, 不加载classpath
         // 2. load inner extension class with default classLoader
         // ClassLoader classLoader = findClassLoader();
-        // loadFile(extensionClasses, CANAL_DIRECTORY, classLoader);
+        // loadFile(extensionClasses, SMS_DIRECTORY, classLoader);
         // loadFile(extensionClasses, SERVICES_DIRECTORY, classLoader);
 
         return extensionClasses;

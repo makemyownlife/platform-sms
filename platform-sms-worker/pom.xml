@@ -82,7 +82,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>platformsmsworker</finalName>
+        <finalName>platform-sms-worker</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
