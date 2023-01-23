@@ -1,11 +1,18 @@
 package com.courage.platform.sms.adapter.alicloud;
 
+import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
 import com.aliyun.tea.TeaException;
 import com.courage.platform.sms.adapter.core.OuterAdapter;
 import com.courage.platform.sms.adapter.core.support.SPI;
+import com.courage.platform.sms.adapter.core.support.SmsChannelConfig;
 
 @SPI("aliyun")
 public class AliyunAdapter implements OuterAdapter {
+
+    @Override
+    public void init(SmsChannelConfig configuration) {
+
+    }
 
     public static com.aliyun.dysmsapi20170525.Client createClient(String accessKeyId, String accessKeySecret) throws Exception {
         com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
@@ -27,7 +34,7 @@ public class AliyunAdapter implements OuterAdapter {
                 .setSignName("your_value");
         try {
             // 复制代码运行请自行打印 API 的返回值
-            client.sendSmsWithOptions(sendSmsRequest, new com.aliyun.teautil.models.RuntimeOptions());
+            SendSmsResponse smsResponse = client.sendSmsWithOptions(sendSmsRequest, new com.aliyun.teautil.models.RuntimeOptions());
         } catch (TeaException error) {
             // 如有需要，请打印 error
             com.aliyun.teautil.Common.assertAsString(error.message);
@@ -37,4 +44,6 @@ public class AliyunAdapter implements OuterAdapter {
             com.aliyun.teautil.Common.assertAsString(error.message);
         }
     }
+
+
 }
