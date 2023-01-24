@@ -13,6 +13,7 @@ public class SmsAdapterLoader {
 
     public void init() {
         loader = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
+        OuterAdapter outerAdapter1 = loader.getExtension("aliyun");
     }
 
 }
