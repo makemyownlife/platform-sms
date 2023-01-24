@@ -27,7 +27,6 @@
             <outputDirectory>/conf</outputDirectory>
             <includes>
                 <include>**/*</include>
-
             </includes>
         </fileSet>
         <fileSet>
