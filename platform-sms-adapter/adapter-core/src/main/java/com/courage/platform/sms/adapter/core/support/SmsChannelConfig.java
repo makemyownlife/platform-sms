@@ -17,10 +17,10 @@ public class SmsChannelConfig {
     private String channelName;
 
     //通道appkey
-    private String channelAppkey;
+    private String channelAppKey;
 
     //通道appsecet
-    private String channelAppsecret;
+    private String channelAppSecret;
 
     //访问地址
     private String channelDomain;
@@ -61,22 +61,6 @@ public class SmsChannelConfig {
         this.channelName = channelName;
     }
 
-    public String getChannelAppkey() {
-        return channelAppkey;
-    }
-
-    public void setChannelAppkey(String channelAppkey) {
-        this.channelAppkey = channelAppkey;
-    }
-
-    public String getChannelAppsecret() {
-        return channelAppsecret;
-    }
-
-    public void setChannelAppsecret(String channelAppsecret) {
-        this.channelAppsecret = channelAppsecret;
-    }
-
     public String getChannelDomain() {
         return channelDomain;
     }
@@ -91,6 +75,22 @@ public class SmsChannelConfig {
 
     public void setExtProperties(String extProperties) {
         this.extProperties = extProperties;
+    }
+
+    public String getChannelAppKey() {
+        return channelAppKey;
+    }
+
+    public void setChannelAppKey(String channelAppKey) {
+        this.channelAppKey = channelAppKey;
+    }
+
+    public String getChannelAppSecret() {
+        return channelAppSecret;
+    }
+
+    public void setChannelAppSecret(String channelAppSecret) {
+        this.channelAppSecret = channelAppSecret;
     }
 
     public Integer getStatus() {
