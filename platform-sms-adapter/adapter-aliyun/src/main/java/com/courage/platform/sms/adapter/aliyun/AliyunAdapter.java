@@ -6,14 +6,19 @@ import com.aliyun.tea.TeaException;
 import com.courage.platform.sms.adapter.core.OuterAdapter;
 import com.courage.platform.sms.adapter.core.support.SPI;
 import com.courage.platform.sms.adapter.core.support.SmsChannelConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SPI("aliyun")
 public class AliyunAdapter implements OuterAdapter {
+
+    private final static Logger logger = LoggerFactory.getLogger(AliyunAdapter.class);
 
     private Client client;
 
     @Override
     public void init(SmsChannelConfig smsChannelConfig) throws Exception {
+        logger.info("初始化阿里云短信客户端 appKey:" + smsChannelConfig.getChannelAppKey());
         com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
                 // 必填，您的 AccessKey ID
                 .setAccessKeyId(smsChannelConfig.getChannelAppKey())
