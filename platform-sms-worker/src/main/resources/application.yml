@@ -9,7 +9,7 @@ spring:
     active: dev
 
 server:
-  port: 8082
+  port: 8084
   servlet:
     context-path: /
     encoding:
