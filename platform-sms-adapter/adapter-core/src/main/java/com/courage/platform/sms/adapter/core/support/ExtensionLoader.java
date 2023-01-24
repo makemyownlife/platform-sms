@@ -26,8 +26,7 @@ import java.util.regex.Pattern;
  */
 public class ExtensionLoader<T> {
 
-    private static final Logger                                      logger                     = LoggerFactory
-        .getLogger(ExtensionLoader.class);
+    private static final Logger                                      logger                     = LoggerFactory.getLogger(ExtensionLoader.class);
 
     private static final String                                      SERVICES_DIRECTORY         = "META-INF/services/";
 
