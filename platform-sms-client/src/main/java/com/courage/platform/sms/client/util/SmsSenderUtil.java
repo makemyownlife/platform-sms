@@ -12,8 +12,9 @@ public class SmsSenderUtil {
         return System.currentTimeMillis();
     }
 
-    public static long getRandom() {
-        return (new Random(SmsSenderUtil.getCurrentTime())).nextLong() % 900000 + 100000;
+    public static String getRandom() {
+        long random =  (new Random(SmsSenderUtil.getCurrentTime())).nextLong() % 900000 + 100000;
+        return String.valueOf(random);
     }
 
     public static String calculateSignature(String appSecret, String random, String time,

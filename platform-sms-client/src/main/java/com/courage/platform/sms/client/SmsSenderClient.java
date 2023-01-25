@@ -27,14 +27,14 @@ public class SmsSenderClient {
     }
 
     public SmsSenderResult sendSingle(String mobile, String content) throws IOException {
-        String random = String.valueOf(SmsSenderUtil.getRandom());
+        String random = SmsSenderUtil.getRandom();
         String appKey = smsConfig.getAppKey();
         String time = String.valueOf(SmsSenderUtil.getCurrentTime());
         // 构造参数
         Map<String, String> param = new HashMap<String, String>(4);
-        param.put("time", String.valueOf(time));
+        param.put("time", time);
         param.put("appKey", appKey);
-        param.put("random", String.valueOf(random));
+        param.put("random", random);
         Map<String, String> queryParam = new HashMap<String, String>(4);
         queryParam.put("mobile", mobile);
         queryParam.put("content", content);
