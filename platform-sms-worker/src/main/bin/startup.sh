@@ -13,8 +13,8 @@ base=${bin_abs_path}/..
 export LANG=en_US.UTF-8
 export BASE=$base
 
-if [ -f $base/bin/adapter.pid ] ; then
-	echo "found adapter.pid , Please run stop.sh first ,then startup.sh" 2>&2
+if [ -f $base/bin/worker.pid ] ; then
+	echo "found worker.pid , Please run stop.sh first ,then startup.sh" 2>&2
     exit 1
 fi
 
@@ -64,7 +64,7 @@ else
 fi
 
 JAVA_OPTS=" $JAVA_OPTS -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8"
-ADAPTER_OPTS="-DappName=sms-worker"
+worker_OPTS="-DappName=sms-worker"
 
 for i in $base/lib/*;
     do CLASSPATH=$i:"$CLASSPATH";
@@ -76,8 +76,8 @@ echo "cd to $bin_abs_path for workaround relative path"
 cd $bin_abs_path
 
 echo CLASSPATH :$CLASSPATH
-$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $ADAPTER_OPTS -classpath .:$CLASSPATH com.alibaba.otter.canal.adapter.launcher.CanalAdapterApplication 1>>/dev/null 2>&1 &
-echo $! > $base/bin/adapter.pid
+$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $worker_OPTS -classpath .:$CLASSPATH com.courage.platform.sms.worker.SmsWorkerApplication 1>>/dev/null 2>&1 &
+echo $! > $base/bin/worker.pid
 
 echo "cd to $current_path for continue"
 cd $current_path
