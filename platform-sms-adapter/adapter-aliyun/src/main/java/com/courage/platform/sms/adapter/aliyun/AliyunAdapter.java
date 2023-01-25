@@ -1,8 +1,6 @@
 package com.courage.platform.sms.adapter.aliyun;
 
 import com.aliyun.dysmsapi20170525.Client;
-import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
-import com.aliyun.tea.TeaException;
 import com.courage.platform.sms.adapter.core.OuterAdapter;
 import com.courage.platform.sms.adapter.core.support.SPI;
 import com.courage.platform.sms.adapter.core.support.SmsChannelConfig;
@@ -38,6 +36,11 @@ public class AliyunAdapter implements OuterAdapter {
         // 访问的域名
         config.endpoint = "dysmsapi.aliyuncs.com";
         return new com.aliyun.dysmsapi20170525.Client(config);
+    }
+
+    @Override
+    public void destroy() {
+
     }
 
 }

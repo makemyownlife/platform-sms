@@ -16,4 +16,9 @@ public class EmayAdapter implements OuterAdapter {
         logger.info("初始化亿美短信客户端 appKey:" + smsChannelConfig.getChannelAppKey());
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
 }
