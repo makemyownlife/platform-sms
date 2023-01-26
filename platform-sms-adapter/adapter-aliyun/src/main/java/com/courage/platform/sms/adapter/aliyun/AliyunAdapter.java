@@ -2,6 +2,7 @@ package com.courage.platform.sms.adapter.aliyun;
 
 import com.aliyun.dysmsapi20170525.Client;
 import com.courage.platform.sms.adapter.core.OuterAdapter;
+import com.courage.platform.sms.adapter.core.support.ExtensionLoader;
 import com.courage.platform.sms.adapter.core.support.SPI;
 import com.courage.platform.sms.adapter.core.support.SmsChannelConfig;
 import org.slf4j.Logger;

@@ -14,10 +14,16 @@ public class SmsAdapterLoader {
 
     public void init() throws Exception {
         loader = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
-        OuterAdapter aliyunAdapter = loader.getExtension("aliyun");
+        OuterAdapter aliyunAdapter = loader.getExtension("emay");
         SmsChannelConfig smsChannelConfig = new SmsChannelConfig();
         aliyunAdapter.init(smsChannelConfig);
         System.out.println(aliyunAdapter);
+    }
+
+    public static void main(String[] args) {
+        ExtensionLoader<OuterAdapter> loader = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
+        OuterAdapter outerAdapter = loader.getExtension("emay");
+        System.out.println(outerAdapter);
     }
 
 }
