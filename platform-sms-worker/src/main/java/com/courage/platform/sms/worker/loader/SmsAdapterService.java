@@ -22,14 +22,13 @@ public class SmsAdapterService {
         }
         try {
             logger.info("start the sms adapters.");
-            smsAdapterLoader = new SmsAdapterLoader();
+            this.smsAdapterLoader = new SmsAdapterLoader();
             smsAdapterLoader.init();
             running = true;
             logger.info("the sms adapters are running now ......");
         } catch (Exception e) {
             logger.error("something goes wrong when starting up the sms adapters:", e);
         }
-        this.smsAdapterLoader = new SmsAdapterLoader();
     }
 
 }
