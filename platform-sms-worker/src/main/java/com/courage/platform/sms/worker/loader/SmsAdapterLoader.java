@@ -22,7 +22,7 @@ public class SmsAdapterLoader {
 
     public static void main(String[] args) {
         ExtensionLoader<OuterAdapter> loader = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
-        OuterAdapter outerAdapter = loader.getExtension("emay");
+        OuterAdapter outerAdapter = loader.getDefaultExtension();
         System.out.println(outerAdapter);
     }
 

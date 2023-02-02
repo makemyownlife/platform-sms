@@ -1,4 +1,4 @@
-package com.courage.platform.sms.adapter.emay;
+package com.courage.platform.sms.adapter.logger;
 
 import com.courage.platform.sms.adapter.OuterAdapter;
 import com.courage.platform.sms.adapter.support.SPI;

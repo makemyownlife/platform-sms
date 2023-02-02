@@ -1,1 +1,1 @@
-emay=com.courage.platform.sms.adapter.emay.EmayAdapter
+emay=com.courage.platform.sms.adapter.logger.LoggerAdapter

@@ -21,6 +21,8 @@
         <module>adapter-aliyun</module>
         <!-- 亿美短信 -->
         <module>adapter-emay</module>
+        <!-- 默认日志 -->
+        <module>adapter-logger</module>
     </modules>
 
     <dependencies>
