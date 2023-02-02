@@ -1,4 +1,4 @@
-package com.courage.platform.sms.adapter.core.support;
+package com.courage.platform.sms.adapter.support;
 
 import java.io.IOException;
 import java.net.URL;

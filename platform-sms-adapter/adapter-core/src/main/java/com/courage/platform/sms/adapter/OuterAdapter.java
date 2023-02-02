@@ -1,8 +1,8 @@
-package com.courage.platform.sms.adapter.core;
+package com.courage.platform.sms.adapter;
 
 
-import com.courage.platform.sms.adapter.core.support.SPI;
-import com.courage.platform.sms.adapter.core.support.SmsChannelConfig;
+import com.courage.platform.sms.adapter.support.SPI;
+import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 
 /**
  * 外部适配器接口

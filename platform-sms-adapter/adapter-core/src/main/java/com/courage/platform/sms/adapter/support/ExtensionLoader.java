@@ -1,4 +1,4 @@
-package com.courage.platform.sms.adapter.core.support;
+package com.courage.platform.sms.adapter.support;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

@@ -1,8 +1,8 @@
 package com.courage.platform.sms.worker.loader;
 
-import com.courage.platform.sms.adapter.core.OuterAdapter;
-import com.courage.platform.sms.adapter.core.support.ExtensionLoader;
-import com.courage.platform.sms.adapter.core.support.SmsChannelConfig;
+import com.courage.platform.sms.adapter.OuterAdapter;
+import com.courage.platform.sms.adapter.support.ExtensionLoader;
+import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
