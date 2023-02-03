@@ -19,11 +19,13 @@
 
     <dependencies>
 
+
         <dependency>
             <groupId>com.courage</groupId>
             <artifactId>adapter-core</artifactId>
             <version>${project.parent.version}</version>
-            <scope>compile</scope>
+            <!-- 切记这里是 provided  -->
+            <scope>provided</scope>
         </dependency>
 
         <!-- 阿里云发送短信 start -->

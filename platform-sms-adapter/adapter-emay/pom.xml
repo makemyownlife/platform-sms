@@ -24,7 +24,7 @@
             <groupId>com.courage</groupId>
             <artifactId>adapter-core</artifactId>
             <version>${project.parent.version}</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
