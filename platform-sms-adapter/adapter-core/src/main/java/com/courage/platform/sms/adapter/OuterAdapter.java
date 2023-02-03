@@ -7,7 +7,7 @@ import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 /**
  * 外部适配器接口
  */
-@SPI("logger")
+@SPI("aliyun")
 public interface OuterAdapter {
 
     /**
