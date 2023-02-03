@@ -12,10 +12,10 @@ public class SmsAdapterLoader {
 
     private final static Logger logger = LoggerFactory.getLogger(SmsAdapterLoader.class);
 
-    private ExtensionLoader<OuterAdapter> loader;
+    private ExtensionLoader<OuterAdapter> extensionLoader;
 
     public void init() throws Exception {
-        this.loader = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
+        this.extensionLoader = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
     }
 
 }
