@@ -24,7 +24,7 @@ public class SmsAdapterService {
             logger.info("start the sms adapters.");
             this.smsAdapterLoader = new SmsAdapterLoader();
             this.smsAdapterLoader.init();
-            running = true;
+            this.running = true;
             logger.info("the sms adapters are running now ......");
         } catch (Exception e) {
             logger.error("something goes wrong when starting up the sms adapters:", e);
