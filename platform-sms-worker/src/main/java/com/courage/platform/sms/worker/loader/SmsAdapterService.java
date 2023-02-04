@@ -1,10 +1,12 @@
 package com.courage.platform.sms.worker.loader;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 @Component
 public class SmsAdapterService {
@@ -22,12 +24,30 @@ public class SmsAdapterService {
         }
         try {
             logger.info("start the sms adapters.");
-            this.smsAdapterLoader = new SmsAdapterLoader();
-            this.smsAdapterLoader.init();
-            this.running = true;
+            smsAdapterLoader = new SmsAdapterLoader();
+            smsAdapterLoader.init();
+            running = true;
             logger.info("the sms adapters are running now ......");
         } catch (Exception e) {
             logger.error("something goes wrong when starting up the sms adapters:", e);
+        }
+    }
+
+    @PreDestroy
+    public synchronized void destroy() {
+        if (!running) {
+            return;
+        }
+        try {
+            running = false;
+            logger.info("## stop the sms adapters");
+            if (this.smsAdapterLoader != null) {
+                smsAdapterLoader.destroy();
+            }
+        } catch (Throwable e) {
+            logger.warn("## something goes wrong when stopping sms adapters:", e);
+        } finally {
+            logger.info("## sms adapters are down.");
         }
     }
 

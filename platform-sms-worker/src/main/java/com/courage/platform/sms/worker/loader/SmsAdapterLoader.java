@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *  适配器加载器
+ * 适配器加载器
  */
 public class SmsAdapterLoader {
 
@@ -16,6 +16,10 @@ public class SmsAdapterLoader {
 
     public void init() throws Exception {
         this.extensionLoader = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
+    }
+
+    public void destroy() {
+
     }
 
 }
