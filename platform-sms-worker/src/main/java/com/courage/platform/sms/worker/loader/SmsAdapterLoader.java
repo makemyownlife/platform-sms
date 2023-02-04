@@ -15,7 +15,7 @@ public class SmsAdapterLoader {
     private ExtensionLoader<OuterAdapter> extensionLoader;
 
     public void init() throws Exception {
-        this.extensionLoader = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
+        extensionLoader = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
     }
 
     public void destroy() {
