@@ -21,3 +21,9 @@ rocketmq:
   consumer1:
     group: platform-sms-worker-group
     topic: sms-common-topic
+
+sms:
+  adapters:
+    outer:
+    - aliyun
+    - emay

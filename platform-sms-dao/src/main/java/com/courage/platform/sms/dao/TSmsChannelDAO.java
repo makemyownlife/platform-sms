@@ -3,9 +3,11 @@ package com.courage.platform.sms.dao;
 import com.courage.platform.sms.domain.TSmsChannel;
 import org.springframework.stereotype.Repository;
 
-/**
- * TSmsChannelDAO继承基类
- */
-@Repository
+import java.util.List;
+
+@Repository(value = "tSmsChannelDAO")
 public interface TSmsChannelDAO extends MyBatisBaseDao<TSmsChannel, Integer> {
+
+    List<TSmsChannel> queryChannels();
+
 }

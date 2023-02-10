@@ -183,4 +183,11 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <!-- 查询所有的渠道信息  -->
+  <select id="queryChannels" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sms_channel
+  </select>
+
 </mapper>

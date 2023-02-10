@@ -3,8 +3,11 @@ package com.courage.platform.sms.worker.loader;
 import com.courage.platform.sms.adapter.OuterAdapter;
 import com.courage.platform.sms.adapter.support.ExtensionLoader;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
+import com.courage.platform.sms.worker.config.SmsAdapterConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 适配器加载器
@@ -15,8 +18,18 @@ public class SmsAdapterLoader {
 
     private ExtensionLoader<OuterAdapter> extensionLoader;
 
+    private SmsAdapterConfig smsAdapterConfig;
+
+    public SmsAdapterLoader(SmsAdapterConfig smsAdapterConfig) {
+        this.smsAdapterConfig = smsAdapterConfig;
+    }
+
     public void init() throws Exception {
         extensionLoader = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
+        List<SmsChannelConfig> channelConfigs = smsAdapterConfig.getChannelConfigs();
+        for (SmsChannelConfig channelConfig : channelConfigs) {
+            loadAdapter(channelConfig.getChannelName(), channelConfig);
+        }
     }
 
     private void loadAdapter(String adapterName, SmsChannelConfig smsChannelConfig) {
