@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository(value = "tSmsChannelDAO")
+@Repository
 public interface TSmsChannelDAO extends MyBatisBaseDao<TSmsChannel, Integer> {
 
     List<TSmsChannel> queryChannels();

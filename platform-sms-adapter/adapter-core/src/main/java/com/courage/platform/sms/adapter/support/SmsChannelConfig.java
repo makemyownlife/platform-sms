@@ -13,9 +13,6 @@ public class SmsChannelConfig {
     //通道类型: aliyun/emay
     private String channelType;
 
-    //渠道名称： 阿里云/亿美 (冗余使用)
-    private String channelName;
-
     //通道appkey
     private String channelAppKey;
 
@@ -51,14 +48,6 @@ public class SmsChannelConfig {
 
     public void setChannelType(String channelType) {
         this.channelType = channelType;
-    }
-
-    public String getChannelName() {
-        return channelName;
-    }
-
-    public void setChannelName(String channelName) {
-        this.channelName = channelName;
     }
 
     public String getChannelDomain() {

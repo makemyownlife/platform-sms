@@ -5,14 +5,11 @@
 
   <resultMap id="BaseResultMap" type="com.courage.platform.sms.domain.TSmsChannel">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="channel_id" jdbcType="TINYINT" property="channelId" />
-    <result column="channel_name" jdbcType="VARCHAR" property="channelName" />
     <result column="channel_type" jdbcType="TINYINT" property="channelType" />
-    <result column="channel_impl" jdbcType="VARCHAR" property="channelImpl" />
-    <result column="channel_user" jdbcType="VARCHAR" property="channelUser" />
-    <result column="channel_password" jdbcType="VARCHAR" property="channelPassword" />
-    <result column="channel_url" jdbcType="VARCHAR" property="channelUrl" />
-    <result column="ext_property" jdbcType="VARCHAR" property="extProperty" />
+    <result column="channel_appkey" jdbcType="VARCHAR" property="channelAppkey" />
+    <result column="channel_appsecret" jdbcType="VARCHAR" property="channelAppsecret" />
+    <result column="channel_domain" jdbcType="VARCHAR" property="channelDomain" />
+    <result column="ext_properties" jdbcType="VARCHAR" property="extProperties" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -20,11 +17,19 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, channel_id, channel_name, channel_type, channel_impl, channel_user, channel_password, 
-    channel_url, ext_property, `status`, create_time, update_time, send_order
+      id,
+      channel_type,
+      channel_appkey,
+      channel_appsecret,
+      channel_domain,
+      ext_properties,
+     `status`,
+      create_time,
+      update_time,
+      send_order
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_sms_channel
     where id = #{id,jdbcType=INTEGER}
@@ -34,14 +39,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.domain.TSmsChannel" useGeneratedKeys="true">
-    insert into t_sms_channel (channel_id, channel_name, channel_type, 
-      channel_impl, channel_user, channel_password, 
-      channel_url, ext_property, `status`, 
+    insert into t_sms_channel (id, channel_type,
+                               channel_appkey, channel_appsecret,
+                               channel_domain, ext_properties, `status`,
       create_time, update_time, send_order
       )
-    values (#{channelId,jdbcType=TINYINT}, #{channelName,jdbcType=VARCHAR}, #{channelType,jdbcType=TINYINT}, 
-      #{channelImpl,jdbcType=VARCHAR}, #{channelUser,jdbcType=VARCHAR}, #{channelPassword,jdbcType=VARCHAR}, 
-      #{channelUrl,jdbcType=VARCHAR}, #{extProperty,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+    values (#{id,jdbcType=TINYINT}, #{channelType,jdbcType=TINYINT},
+       #{channelAppkey,jdbcType=VARCHAR}, #{channelAppsecret,jdbcType=VARCHAR},
+      #{channelDomain,jdbcType=VARCHAR}, #{extProperties,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{sendOrder,jdbcType=INTEGER}
       )
   </insert>
@@ -49,28 +54,22 @@
     insert into t_sms_channel
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="channelId != null">
-        channel_id,
-      </if>
-      <if test="channelName != null">
-        channel_name,
+        id,
       </if>
       <if test="channelType != null">
         channel_type,
       </if>
-      <if test="channelImpl != null">
-        channel_impl,
-      </if>
       <if test="channelUser != null">
-        channel_user,
+        channel_appkey,
       </if>
       <if test="channelPassword != null">
-        channel_password,
+        channel_appsecret,
       </if>
       <if test="channelUrl != null">
-        channel_url,
+        channel_domain,
       </if>
       <if test="extProperty != null">
-        ext_property,
+        ext_properties,
       </if>
       <if test="status != null">
         `status`,
@@ -87,28 +86,22 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="channelId != null">
-        #{channelId,jdbcType=TINYINT},
-      </if>
-      <if test="channelName != null">
-        #{channelName,jdbcType=VARCHAR},
+        #{id,jdbcType=TINYINT},
       </if>
       <if test="channelType != null">
         #{channelType,jdbcType=TINYINT},
       </if>
-      <if test="channelImpl != null">
-        #{channelImpl,jdbcType=VARCHAR},
-      </if>
       <if test="channelUser != null">
-        #{channelUser,jdbcType=VARCHAR},
+        #{channelAppkey,jdbcType=VARCHAR},
       </if>
       <if test="channelPassword != null">
-        #{channelPassword,jdbcType=VARCHAR},
+        #{channelAppsecret,jdbcType=VARCHAR},
       </if>
       <if test="channelUrl != null">
-        #{channelUrl,jdbcType=VARCHAR},
+        #{channelDomain,jdbcType=VARCHAR},
       </if>
       <if test="extProperty != null">
-        #{extProperty,jdbcType=VARCHAR},
+        #{extProperties,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
@@ -127,29 +120,20 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.domain.TSmsChannel">
     update t_sms_channel
     <set>
-      <if test="channelId != null">
-        channel_id = #{channelId,jdbcType=TINYINT},
-      </if>
-      <if test="channelName != null">
-        channel_name = #{channelName,jdbcType=VARCHAR},
-      </if>
       <if test="channelType != null">
         channel_type = #{channelType,jdbcType=TINYINT},
       </if>
-      <if test="channelImpl != null">
-        channel_impl = #{channelImpl,jdbcType=VARCHAR},
+      <if test="channelAppkey != null">
+        channel_appkey = #{channelAppkey,jdbcType=VARCHAR},
       </if>
-      <if test="channelUser != null">
-        channel_user = #{channelUser,jdbcType=VARCHAR},
+      <if test="channelAppsecret != null">
+        channel_appsecret = #{channelAppsecret,jdbcType=VARCHAR},
       </if>
-      <if test="channelPassword != null">
-        channel_password = #{channelPassword,jdbcType=VARCHAR},
+      <if test="channelDomain != null">
+        channel_domain = #{channelDomain,jdbcType=VARCHAR},
       </if>
-      <if test="channelUrl != null">
-        channel_url = #{channelUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="extProperty != null">
-        ext_property = #{extProperty,jdbcType=VARCHAR},
+      <if test="extProperties != null">
+        ext_properties = #{extProperties,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
@@ -168,16 +152,13 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.domain.TSmsChannel">
     update t_sms_channel
-    set channel_id = #{channelId,jdbcType=TINYINT},
-      channel_name = #{channelName,jdbcType=VARCHAR},
+    set
       channel_type = #{channelType,jdbcType=TINYINT},
-      channel_impl = #{channelImpl,jdbcType=VARCHAR},
-      channel_user = #{channelUser,jdbcType=VARCHAR},
-      channel_password = #{channelPassword,jdbcType=VARCHAR},
-      channel_url = #{channelUrl,jdbcType=VARCHAR},
-      ext_property = #{extProperty,jdbcType=VARCHAR},
+      channel_appkey = #{channelAppkey,jdbcType=VARCHAR},
+      channel_appsecret = #{channelAppsecret,jdbcType=VARCHAR},
+      channel_domain = #{channelDomain,jdbcType=VARCHAR},
+      ext_properties = #{extProperties,jdbcType=VARCHAR},
       `status` = #{status,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       send_order = #{sendOrder,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}

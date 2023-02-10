@@ -19,4 +19,7 @@ server:
 logging:
   config: "classpath:logback-spring.xml"
 
+mybatis:
+  mapper-locations: classpath:mapper/*DAO.xml
+  type-aliases-package: com.courage.platform.sms.domain
 

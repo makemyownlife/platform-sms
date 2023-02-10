@@ -24,12 +24,13 @@ public class SmsAdapterConfig {
         List<TSmsChannel> tSmsChannels = tSmsChannelDAO.queryChannels();
         for (TSmsChannel tSmsChannel : tSmsChannels) {
             SmsChannelConfig smsChannelConfig = new SmsChannelConfig();
-            smsChannelConfig.setChannelAppKey(tSmsChannel.getChannelUser());
-            smsChannelConfig.setChannelAppSecret(tSmsChannel.getChannelPassword());
             smsChannelConfig.setId(Long.valueOf(tSmsChannel.getId()));
-            smsChannelConfig.setChannelDomain(tSmsChannel.getChannelUrl());
-            smsChannelConfig.setChannelName(tSmsChannel.getChannelName());
-            smsChannelConfig.setExtProperties(StringUtils.trimToEmpty(tSmsChannel.getExtProperty()));
+            smsChannelConfig.setChannelType(tSmsChannel.getChannelType());
+            smsChannelConfig.setChannelAppKey(tSmsChannel.getChannelAppkey());
+            smsChannelConfig.setChannelAppSecret(tSmsChannel.getChannelAppsecret());
+            smsChannelConfig.setChannelDomain(tSmsChannel.getChannelDomain());
+            smsChannelConfig.setExtProperties(StringUtils.trimToEmpty(tSmsChannel.getExtProperties()));
+            channelConfigs.add(smsChannelConfig);
         }
         return channelConfigs;
     }
