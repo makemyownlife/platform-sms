@@ -147,6 +147,8 @@ import { getActiveInstances, stopInstance, startInstance } from '@/api/canalInst
 
 import { getCanalClusters } from '@/api/canalCluster'
 
+import { getSmsChannels } from '@/api/smsChannel'
+
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -176,7 +178,7 @@ export default {
       listLoading: true,
       listLoading2: true,
       serverIdTmp: null,
-      canalClusters: [],
+      smsChannels: [],
       count: 0,
       listQuery: {
         name: '',
@@ -187,8 +189,8 @@ export default {
       dialogFormVisible: false,
       dialogInstances: false,
       textMap: {
-        create: '新建渠道信息',
-        update: '修改渠道信息'
+        create: '新建渠道',
+        update: '修改渠道'
       },
       nodeModel: {
         id: undefined,
