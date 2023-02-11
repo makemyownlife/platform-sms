@@ -1,14 +1,15 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-model="listQuery.clusterId" placeholder="所属集群" class="filter-item">
-        <el-option key="" label="所属集群" value="" />
-        <el-option key="-1" label="单机" value="-1" />
-        <el-option v-for="item in canalClusters" :key="item.id" :label="item.name" :value="item.id" />
+      <el-select v-model="listQuery.channelType" placeholder="渠道类型" class="filter-item">
+        <el-option key="" label="所有" value="" />
+        <el-option key="-1" label="支付宝" value="aliyun" />
+        <el-option key="0" label="亿美" value="emay" />
+        <el-option key="1" label="绿城" value="greencity" />
       </el-select>
-      <el-input v-model="listQuery.ip" placeholder="Server IP" style="width: 200px;" class="filter-item" />
+      <el-input v-model="listQuery.channelAppkey" placeholder="appkey" style="width: 200px;" class="filter-item" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" plain @click="queryData()">查询</el-button>
-      <el-button class="filter-item" type="primary" @click="handleCreate()">新建Server</el-button>
+      <el-button class="filter-item" type="primary" @click="handleCreate()">新建通道</el-button>
       <el-button class="filter-item" type="info" @click="fetchData()">刷新列表</el-button>
     </div>
     <el-table
@@ -19,66 +20,49 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="所属集群" min-width="200" align="center">
+      <el-table-column label="渠道编号" min-width="200" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.canalCluster !== null">
-            {{ scope.row.canalCluster.name }}
-          </span>
-          <span v-else>
-            -
-          </span>
+          {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="Server 名称" min-width="200" align="center">
+      <el-table-column label="渠道类型" min-width="200" align="center">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.channelType }}
         </template>
       </el-table-column>
-      <el-table-column label="Server IP" min-width="200" align="center">
+      <el-table-column label="appkey" min-width="200" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.ip }}</span>
+          <span>{{ scope.row.channelAppkey }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="admin 端口" min-width="100" align="center">
+      <el-table-column label="appsecret" min-width="100" align="center">
         <template slot-scope="scope">
-          {{ scope.row.adminPort }}
+          {{ scope.row.channelAppsecret }}
         </template>
       </el-table-column>
-      <el-table-column label="tcp 端口" min-width="100" align="center">
+      <el-table-column label="请求主体" min-width="100" align="center">
         <template slot-scope="scope">
-          {{ scope.row.tcpPort }}
+          {{ scope.row.channelDomain }}
         </template>
       </el-table-column>
-      <el-table-column label="metric 端口" min-width="100" align="center">
+      <el-table-column label="备用参数" min-width="100" align="center">
         <template slot-scope="scope">
-          {{ scope.row.metricPort }}
+          {{ scope.row.extProperties }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="状态" min-width="150" align="center">
+      <el-table-column class-name="status-col" label="修改时间" min-width="150" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status | statusLabel }}</el-tag>
+          {{ scope.row.updateTime }}
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="操作" min-width="150">
+      <el-table-column class-name="status-col" label="操作" min-width="150" align="center">
         <template slot-scope="scope">
-          <el-dropdown trigger="click">
-            <el-button type="primary" size="mini">
-              操作<i class="el-icon-arrow-down el-icon--right" />
-            </el-button>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="handleConfig(scope.row)">配置</el-dropdown-item>
-              <el-dropdown-item @click.native="handleUpdate(scope.row)">修改</el-dropdown-item>
-              <el-dropdown-item @click.native="handleDelete(scope.row)">删除</el-dropdown-item>
-              <el-dropdown-item @click.native="handleStart(scope.row)">启动</el-dropdown-item>
-              <el-dropdown-item @click.native="handleStop(scope.row)">停止</el-dropdown-item>
-              <el-dropdown-item @click.native="handleInstances(scope.row)">详情</el-dropdown-item>
-              <el-dropdown-item @click.native="handleLog(scope.row)">日志</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
+
     <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="fetchData()" />
+
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="600px">
       <el-form ref="dataForm" :rules="rules" :model="nodeModel" label-position="left" label-width="120px" style="width: 400px; margin-left:30px;">
         <el-form-item label="所属集群" prop="clusterId">
@@ -149,13 +133,19 @@
         </el-table-column>
       </el-table>
     </el-dialog>
+
   </div>
+
 </template>
 
 <script>
+
 import { addNodeServer, getNodeServers, updateNodeServer, deleteNodeServer, startNodeServer, stopNodeServer } from '@/api/nodeServer'
+
 import { getActiveInstances, stopInstance, startInstance } from '@/api/canalInstance'
+
 import { getCanalClusters } from '@/api/canalCluster'
+
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -189,8 +179,7 @@ export default {
       count: 0,
       listQuery: {
         name: '',
-        ip: '',
-        clusterId: null,
+        channelAppkey: '',
         page: 1,
         size: 20
       },
