@@ -27,7 +27,8 @@ public class SmsController {
 
     @PostMapping(value = "/channels")
     public BaseModel<List<TSmsChannel>> login() {
-        return BaseModel.getInstance(smsChannelService.queryChannels());
+        List<TSmsChannel> tSmsChannelList = smsChannelService.queryChannels();
+        return BaseModel.getInstance(tSmsChannelList);
     }
 
 }

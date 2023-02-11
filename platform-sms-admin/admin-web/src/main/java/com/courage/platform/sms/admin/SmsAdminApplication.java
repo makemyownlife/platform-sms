@@ -7,7 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.courage.platform")
+@MapperScan("com.courage.platform.sms.dao")
 public class SmsAdminApplication {
 
     private final static Logger logger = LoggerFactory.getLogger(SmsAdminApplication.class);

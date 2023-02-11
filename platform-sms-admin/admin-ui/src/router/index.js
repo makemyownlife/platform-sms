@@ -68,7 +68,6 @@ export const constantRoutes = [
     }],
     hidden: true
   },
-
   {
     path: '/smsServer',
     component: Layout,
@@ -87,6 +86,12 @@ export const constantRoutes = [
         name: '短信管理',
         component: () => import('@/views/smsServer/SmsList'),
         meta: { title: '短信管理', icon: 'form' }
+      },
+      {
+        path: 'templateList',
+        name: '模版管理',
+        component: () => import('@/views/smsServer/SmsTemplates'),
+        meta: { title: '模版管理', icon: 'form' }
       }
     ]
   },
