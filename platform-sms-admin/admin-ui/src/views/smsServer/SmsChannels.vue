@@ -63,78 +63,6 @@
 
     <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="fetchData()" />
 
-    <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="600px">
-      <el-form ref="dataForm" :rules="rules" :model="nodeModel" label-position="left" label-width="120px" style="width: 400px; margin-left:30px;">
-        <el-form-item label="所属集群" prop="clusterId">
-          <el-select v-if="dialogStatus === 'create'" v-model="nodeModel.clusterId" placeholder="选择所属集群">
-            <el-option key="" label="单机" value="" />
-            <el-option v-for="item in canalClusters" :key="item.id" :label="item.name" :value="item.id" />
-          </el-select>
-          <el-select v-else v-model="nodeModel.clusterId" placeholder="选择所属集群" disabled="disabled">
-            <el-option key="" label="单机" value="" />
-            <el-option v-for="item in canalClusters" :key="item.id" :label="item.name" :value="item.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Server 名称" prop="name">
-          <el-input v-model="nodeModel.name" />
-        </el-form-item>
-        <el-form-item label="Server IP" prop="ip">
-          <el-input v-model="nodeModel.ip" />
-        </el-form-item>
-        <el-form-item label="admin 端口" prop="adminPort">
-          <el-input v-model="nodeModel.adminPort" placeholder="11110" type="number" />
-        </el-form-item>
-        <el-form-item label="tcp 端口" prop="tcpPort">
-          <el-input v-model="nodeModel.tcpPort" placeholder="11111" type="number" />
-        </el-form-item>
-        <el-form-item label="metric 端口" prop="metricPort">
-          <el-input v-model="nodeModel.metricPort" placeholder="11112" type="number" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="dataOperation()">确定</el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :visible.sync="dialogInstances" title="instance 列表" width="800px">
-      <div class="filter-container">
-        <el-button class="filter-item" type="info" @click="activeInstances()">刷新列表</el-button>
-      </div>
-      <el-table
-        v-loading="listLoading2"
-        :data="instanceList"
-        element-loading-text="Loading"
-        border
-        fit
-        highlight-current-row
-      >
-        <el-table-column label="Instance 名称" min-width="200" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.name }}
-          </template>
-        </el-table-column>
-        <el-table-column label="状态" min-width="200" align="center">
-          <template slot-scope="scope">
-            <el-tag :type="scope.row.runningStatus | statusFilter">{{ scope.row.runningStatus | statusLabel }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" min-width="200" align="center">
-          <template slot-scope="scope">
-            <el-dropdown trigger="click">
-              <el-button type="primary" size="mini">
-                操作<i class="el-icon-arrow-down el-icon--right" />
-              </el-button>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="handleStartInstance(scope.row)">启动</el-dropdown-item>
-                <el-dropdown-item @click.native="handleStopInstance(scope.row)">停止</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dialog>
-
   </div>
 
 </template>
@@ -142,10 +70,6 @@
 <script>
 
 import { addNodeServer, getNodeServers, updateNodeServer, deleteNodeServer, startNodeServer, stopNodeServer } from '@/api/nodeServer'
-
-import { getActiveInstances, stopInstance, startInstance } from '@/api/canalInstance'
-
-import { getCanalClusters } from '@/api/canalCluster'
 
 import { getSmsChannels } from '@/api/smsChannel'
 
@@ -211,22 +135,12 @@ export default {
   },
   // { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'change' }
   created() {
-    getSmsChannels().then((res) => {
-      this.smsChannels = res.data
-    })
-    if (this.$route.query.clusterId) {
-      try {
-        this.listQuery.clusterId = Number(this.$route.query.clusterId)
-      } catch (e) {
-        console.log(e)
-      }
-    }
     this.fetchData()
   },
   methods: {
     fetchData() {
       this.listLoading = true
-      getNodeServers(this.listQuery).then(res => {
+      getSmsChannels(this.listQuery).then(res => {
         this.list = res.data.items
         this.count = res.data.count
       }).finally(() => {
@@ -254,19 +168,6 @@ export default {
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
-      })
-    },
-    handleInstances(row) {
-      this.serverIdTmp = row.id
-      this.activeInstances()
-    },
-    activeInstances() {
-      this.listLoading2 = true
-      this.dialogInstances = true
-      getActiveInstances(this.serverIdTmp).then(res => {
-        this.instanceList = res.data
-      }).finally(() => {
-        this.listLoading2 = false
       })
     },
     dataOperation() {

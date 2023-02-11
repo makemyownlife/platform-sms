@@ -2,6 +2,7 @@ package com.courage.platform.sms.admin.controller;
 
 import com.courage.platform.sms.admin.model.AdminUser;
 import com.courage.platform.sms.admin.model.BaseModel;
+import com.courage.platform.sms.admin.model.Pager;
 import com.courage.platform.sms.admin.service.SmsChannelService;
 import com.courage.platform.sms.domain.TSmsChannel;
 import org.slf4j.Logger;
@@ -26,9 +27,12 @@ public class SmsController {
     private SmsChannelService smsChannelService;
 
     @PostMapping(value = "/channels")
-    public BaseModel<List<TSmsChannel>> login() {
+    public BaseModel<Pager> login() {
         List<TSmsChannel> tSmsChannelList = smsChannelService.queryChannels();
-        return BaseModel.getInstance(tSmsChannelList);
+        Pager pager = new Pager();
+        pager.setCount(Long.valueOf(tSmsChannelList.size()));
+        pager.setItems(tSmsChannelList);
+        return BaseModel.getInstance(pager);
     }
 
 }
