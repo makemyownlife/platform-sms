@@ -20,12 +20,12 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="渠道编号" min-width="40" align="center">
+      <el-table-column label="渠道编号" min-width="35" align="center">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="渠道类型" min-width="60" align="center">
+      <el-table-column label="渠道类型" min-width="45" align="center">
         <template slot-scope="scope">
           {{ scope.row.channelType }}
         </template>
@@ -55,7 +55,7 @@
           {{ scope.row.updateTime }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="操作" min-width="150" align="center">
+      <el-table-column class-name="status-col" label="操作" min-width="120" align="center">
         <template slot-scope="scope">
         </template>
       </el-table-column>
@@ -96,6 +96,7 @@
         <el-button type="primary" @click="dataOperation()">确定</el-button>
       </div>
     </el-dialog>
+
     <el-dialog :visible.sync="dialogInstances" title="instance 列表" width="800px">
       <div class="filter-container">
         <el-button class="filter-item" type="info" @click="activeInstances()">刷新列表</el-button>
