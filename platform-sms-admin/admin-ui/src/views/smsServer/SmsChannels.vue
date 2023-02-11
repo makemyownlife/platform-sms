@@ -20,17 +20,17 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="渠道编号" min-width="70" align="center">
+      <el-table-column label="渠道编号" min-width="40" align="center">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="渠道类型" min-width="80" align="center">
+      <el-table-column label="渠道类型" min-width="60" align="center">
         <template slot-scope="scope">
           {{ scope.row.channelType }}
         </template>
       </el-table-column>
-      <el-table-column label="appkey" min-width="200" align="center">
+      <el-table-column label="appkey" min-width="80" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.channelAppkey }}</span>
         </template>
@@ -40,7 +40,7 @@
           {{ scope.row.channelAppsecret }}
         </template>
       </el-table-column>
-      <el-table-column label="请求主体" min-width="100" align="center">
+      <el-table-column label="请求主体" min-width="150" align="center">
         <template slot-scope="scope">
           {{ scope.row.channelDomain }}
         </template>
@@ -50,7 +50,7 @@
           {{ scope.row.extProperties }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="修改时间" min-width="90" align="center">
+      <el-table-column class-name="status-col" label="修改时间" min-width="80" align="center">
         <template slot-scope="scope">
           {{ scope.row.updateTime }}
         </template>
