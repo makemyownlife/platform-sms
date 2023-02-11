@@ -6,12 +6,21 @@ spring:
     time-zone: GMT+8
 
   datasource:
-    address: 127.0.0.1:3306
-    database: tech_platform
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tech_platform?useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
     username: root
     password: ilxw
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${spring.datasource.address}/${spring.datasource.database}?useUnicode=true&characterEncoding=UTF-8&useSSL=false
-    hikari:
-      maximum-pool-size: 30
-      minimum-idle: 1
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      max-active: 50
+      max-wait: 10000
+      min-idle: 5
+      initial-size: 5
+      validation-query: SELECT 1
+      test-on-borrow: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 18800
+
+mybatis:
+  mapper-locations: classpath:mapper/*DAO.xml
+  type-aliases-package: com.courage.platform.sms.domain

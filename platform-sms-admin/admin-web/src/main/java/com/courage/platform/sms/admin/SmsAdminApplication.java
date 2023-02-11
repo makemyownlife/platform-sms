@@ -1,11 +1,13 @@
 package com.courage.platform.sms.admin;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@MapperScan("com.courage.platform")
 public class SmsAdminApplication {
 
     private final static Logger logger = LoggerFactory.getLogger(SmsAdminApplication.class);
