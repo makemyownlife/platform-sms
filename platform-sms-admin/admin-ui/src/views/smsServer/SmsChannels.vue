@@ -20,12 +20,12 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="渠道编号" min-width="200" align="center">
+      <el-table-column label="渠道编号" min-width="70" align="center">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="渠道类型" min-width="200" align="center">
+      <el-table-column label="渠道类型" min-width="80" align="center">
         <template slot-scope="scope">
           {{ scope.row.channelType }}
         </template>
@@ -50,7 +50,7 @@
           {{ scope.row.extProperties }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="修改时间" min-width="150" align="center">
+      <el-table-column class-name="status-col" label="修改时间" min-width="90" align="center">
         <template slot-scope="scope">
           {{ scope.row.updateTime }}
         </template>
