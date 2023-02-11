@@ -187,8 +187,8 @@ export default {
       dialogFormVisible: false,
       dialogInstances: false,
       textMap: {
-        create: '新建Server信息',
-        update: '修改Server信息'
+        create: '新建渠道信息',
+        update: '修改渠道信息'
       },
       nodeModel: {
         id: undefined,
