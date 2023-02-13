@@ -24,6 +24,4 @@ rocketmq:
 
 sms:
   adapters:
-    outer:
-    - aliyun
-    - emay
+    outer: aliyun,emay
