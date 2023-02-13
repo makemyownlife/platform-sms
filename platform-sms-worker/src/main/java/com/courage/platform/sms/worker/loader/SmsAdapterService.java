@@ -1,7 +1,5 @@
 package com.courage.platform.sms.worker.loader;
 
-import com.courage.platform.sms.dao.TSmsChannelDAO;
-import com.courage.platform.sms.domain.TSmsChannel;
 import com.courage.platform.sms.worker.config.SmsAdapterConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.List;
 
 @Component
 public class SmsAdapterService {
@@ -23,9 +20,6 @@ public class SmsAdapterService {
 
     @Autowired
     private SmsAdapterConfig smsAdapterConfig;
-
-    @Autowired
-    private TSmsChannelDAO tSmsChannelDAO;
 
     @PostConstruct
     public synchronized void init() {
