@@ -55,7 +55,6 @@ export const constantRoutes = [
     }],
     hidden: true
   },
-
   {
     path: '/sys',
     component: Layout,
@@ -91,8 +90,14 @@ export const constantRoutes = [
         path: 'templateList',
         name: '模版管理',
         component: () => import('@/views/smsServer/SmsTemplates'),
-        meta: { title: '模版管理', icon: 'form' }
-      }
+        meta: { title: '模版管理', icon: 'nested' }
+      },
+      {
+      path: 'ruleList',
+        name: '规则管理',
+      component: () => import('@/views/smsServer/RuleList'),
+      meta: { title: '规则管理', icon: 'password' }
+    }
     ]
   },
 
