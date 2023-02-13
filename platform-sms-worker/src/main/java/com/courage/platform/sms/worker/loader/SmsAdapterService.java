@@ -34,7 +34,6 @@ public class SmsAdapterService {
         }
         try {
             logger.info("start the sms adapters.");
-            List<TSmsChannel> channelList = tSmsChannelDAO.queryChannels();
             smsAdapterLoader = new SmsAdapterLoader(smsAdapterConfig);
             smsAdapterLoader.init();
             running = true;
