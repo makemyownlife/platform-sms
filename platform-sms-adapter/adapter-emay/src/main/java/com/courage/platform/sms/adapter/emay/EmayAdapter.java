@@ -14,10 +14,12 @@ public class EmayAdapter implements OuterAdapter {
     @Override
     public void init(SmsChannelConfig smsChannelConfig) {
         logger.info("初始化亿美短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppKey() + "]") ;
+
     }
 
     @Override
     public void destroy() {
+
     }
 
 }
