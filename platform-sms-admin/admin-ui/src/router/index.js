@@ -42,7 +42,6 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
-
   {
     path: '/',
     component: Layout,
@@ -75,11 +74,17 @@ export const constantRoutes = [
     meta: { title: '短信平台服务', icon: 'example' },
     children: [
       {
+        path: 'appList',
+        name: '应用管理',
+        component: () => import('@/views/smsServer/appList'),
+        meta: { title: '应用管理', icon: 'tree' }
+      },
+      {
         path: 'channels',
         name: '渠道管理',
         component: () => import('@/views/smsServer/SmsChannels'),
         meta: { title: '渠道管理', icon: 'tree' }
-      } ,
+      },
       {
         path: 'smsList',
         name: '短信管理',
