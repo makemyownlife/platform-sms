@@ -31,27 +31,29 @@ public class SenderController {
     @RequestMapping("/sendSingle")
     @ResponseBody
     public SmsSenderResult sendSingle(HttpServletRequest request) {
-        //接收请求参数
-        String q = request.getParameter("q");
-        String appKey = request.getParameter("appKey");
-        String time = request.getParameter("time");
-        String random = request.getParameter("random");
-        //构造唯一请求id
-        String uniqueId = time + random;
-        logger.info("q:" + q + " appKey:" + appKey + " uniqueId:" + uniqueId);
-        //发送消息
-        String tag = "single";
-        SendResult sendResult = rocketMQTemplate.syncSend(
-                smsTopic + ":" + tag,
-                MessageBuilder.withPayload(q).setHeader(MessageConst.PROPERTY_KEYS, uniqueId).build()
-        );
-        logger.info("uniqueId：" + uniqueId + " sendResult:" + sendResult);
-        if (sendResult != null) {
-            if (sendResult.getSendStatus() == SendStatus.SEND_OK) {
-                return new SmsSenderResult(sendResult.getMsgId());
+        try {
+            //接收请求参数
+            String q = request.getParameter("q");
+            String appKey = request.getParameter("appKey");
+            String time = request.getParameter("time");
+            String random = request.getParameter("random");
+            //构造唯一请求id
+            String uniqueId = time + random;
+            logger.info("q:" + q + " appKey:" + appKey + " uniqueId:" + uniqueId);
+            //发送消息
+            String tag = "single";
+            SendResult sendResult = rocketMQTemplate.syncSend(smsTopic + ":" + tag, MessageBuilder.withPayload(q).setHeader(MessageConst.PROPERTY_KEYS, uniqueId).build());
+            logger.info("uniqueId：" + uniqueId + " sendResult:" + sendResult);
+            if (sendResult != null) {
+                if (sendResult.getSendStatus() == SendStatus.SEND_OK) {
+                    return new SmsSenderResult(sendResult.getMsgId());
+                }
             }
+            return new SmsSenderResult(SmsSenderResult.FAIL_CODE, "发送失败");
+        } catch (Exception e) {
+            logger.error("sendSingle error: ", e);
+            return new SmsSenderResult(SmsSenderResult.FAIL_CODE, "发送失败");
         }
-        return new SmsSenderResult(SmsSenderResult.FAIL_CODE, "发送失败");
     }
 
 }
