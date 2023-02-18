@@ -76,7 +76,7 @@ export const constantRoutes = [
       {
         path: 'appList',
         name: '应用管理',
-        component: () => import('@/views/smsServer/appList'),
+        component: () => import('@/views/smsServer/AppList'),
         meta: { title: '应用管理', icon: 'tree' }
       },
       {
