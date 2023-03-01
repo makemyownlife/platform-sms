@@ -21,9 +21,6 @@ public class SmsMessageConsumer implements RocketMQListener<String> {
     public void onMessage(String message) {
         logger.info("message:" + message);
         //从每个应用选择正常的短信渠道发送 短信，并将消息存储记录在 rocksdb 里 ，然后异步线程存储在数据库里
-
-
-
     }
 
 }
