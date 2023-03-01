@@ -2,6 +2,8 @@ package com.courage.platform.sms.adapter.aliyun;
 
 import com.aliyun.dysmsapi20170525.Client;
 import com.courage.platform.sms.adapter.OuterAdapter;
+import com.courage.platform.sms.adapter.SmsSendRequest;
+import com.courage.platform.sms.adapter.SmsSendResponse;
 import com.courage.platform.sms.adapter.support.SPI;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import org.slf4j.Logger;
@@ -25,6 +27,11 @@ public class AliyunAdapter implements OuterAdapter {
         // 访问的域名
         config.endpoint = "dysmsapi.aliyuncs.com";
         this.client = new com.aliyun.dysmsapi20170525.Client(config);
+    }
+
+    @Override
+    public SmsSendResponse sendSms(SmsSendRequest smsSendRequest) {
+        return null;
     }
 
     public static com.aliyun.dysmsapi20170525.Client createClient(String accessKeyId, String accessKeySecret) throws Exception {
