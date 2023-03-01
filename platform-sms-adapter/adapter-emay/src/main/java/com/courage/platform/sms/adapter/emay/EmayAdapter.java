@@ -1,6 +1,8 @@
 package com.courage.platform.sms.adapter.emay;
 
 import com.courage.platform.sms.adapter.OuterAdapter;
+import com.courage.platform.sms.adapter.SmsSendRequest;
+import com.courage.platform.sms.adapter.SmsSendResponse;
 import com.courage.platform.sms.adapter.support.SPI;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import org.slf4j.Logger;
@@ -15,6 +17,11 @@ public class EmayAdapter implements OuterAdapter {
     public void init(SmsChannelConfig smsChannelConfig) {
         logger.info("初始化亿美短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppKey() + "]") ;
 
+    }
+
+    @Override
+    public SmsSendResponse sendSms(SmsSendRequest smsSendRequest) {
+        return null;
     }
 
     @Override

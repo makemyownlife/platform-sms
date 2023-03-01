@@ -16,6 +16,11 @@ public interface OuterAdapter {
     void init(SmsChannelConfig smsChannelConfig) throws Exception;
 
     /**
+     * 适配器初始化接口
+     */
+    SmsSendResponse sendSms(SmsSendRequest smsSendRequest);
+
+    /**
      * 外部适配器销毁接口
      */
     void destroy();
