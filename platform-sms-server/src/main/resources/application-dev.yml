@@ -16,7 +16,7 @@ spring:
       time-between-eviction-runs-millis: 18800
 
 rocketmq:
-  name-server: 10.1.86.123:9876
+  name-server: 127.0.0.1:9876
   topic: sms-common-topic
   producer:
       group: platform-sms-server-group
