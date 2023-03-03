@@ -2,8 +2,8 @@ package com.courage.platform.sms.adapter.aliyun;
 
 import com.aliyun.dysmsapi20170525.Client;
 import com.courage.platform.sms.adapter.OuterAdapter;
-import com.courage.platform.sms.adapter.SmsSendRequest;
-import com.courage.platform.sms.adapter.SmsSendResponse;
+import com.courage.platform.sms.adapter.send.SmsSendRequest;
+import com.courage.platform.sms.adapter.send.SmsSendResponse;
 import com.courage.platform.sms.adapter.support.SPI;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class AliyunAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsSendResponse sendSms(SmsSendRequest smsSendRequest) {
+    public SmsSendResponse sendSmsByTemplateId(SmsSendRequest smsSendRequest) {
         return null;
     }
 
