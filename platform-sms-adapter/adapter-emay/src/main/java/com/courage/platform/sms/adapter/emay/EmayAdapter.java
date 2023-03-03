@@ -1,8 +1,8 @@
 package com.courage.platform.sms.adapter.emay;
 
 import com.courage.platform.sms.adapter.OuterAdapter;
-import com.courage.platform.sms.adapter.send.SmsSenderAdapterRequest;
-import com.courage.platform.sms.adapter.send.SmsSendAdapterResponse;
+import com.courage.platform.sms.adapter.send.SmsAdapterRequest;
+import com.courage.platform.sms.adapter.send.SmsAdapterResponse;
 import com.courage.platform.sms.adapter.support.SPI;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import org.slf4j.Logger;
@@ -19,7 +19,7 @@ public class EmayAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsSendAdapterResponse sendSmsByTemplateId(SmsSenderAdapterRequest smsSendRequest) {
+    public SmsAdapterResponse sendSmsByTemplateId(SmsAdapterRequest smsSendRequest) {
         return null;
     }
 
