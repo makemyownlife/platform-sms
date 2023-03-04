@@ -7,4 +7,5 @@ package com.courage.platform.sms.adapter.send;
 public class SmsAdapterRequest {
 
 
+
 }

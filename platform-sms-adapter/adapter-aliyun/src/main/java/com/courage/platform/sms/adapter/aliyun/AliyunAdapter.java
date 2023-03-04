@@ -30,7 +30,7 @@ public class AliyunAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsAdapterResponse sendSmsByTemplateId(SmsAdapterRequest smsSendRequest) {
+    public SmsAdapterResponse sendSms(SmsAdapterRequest smsSendRequest) {
         return null;
     }
 

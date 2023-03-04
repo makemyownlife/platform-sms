@@ -13,23 +13,22 @@ public class EmayAdapter implements OuterAdapter {
 
     private final static Logger logger = LoggerFactory.getLogger(EmayAdapter.class);
 
+    private SmsChannelConfig smsChannelConfig;
+
     @Override
     public void init(SmsChannelConfig smsChannelConfig) {
-        logger.info("初始化亿美短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppKey() + "]") ;
+        logger.info("初始化亿美短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppKey() + "]");
+        this.smsChannelConfig = smsChannelConfig;
     }
 
     @Override
-    public SmsAdapterResponse sendSmsByTemplateId(SmsAdapterRequest smsSendRequest) {
+    public SmsAdapterResponse sendSms(SmsAdapterRequest smsSendRequest) {
         return null;
     }
 
     @Override
     public void destroy() {
 
-    }
-
-    public static void main(String[] args) {
-        System.out.println(1231);
     }
 
 }
