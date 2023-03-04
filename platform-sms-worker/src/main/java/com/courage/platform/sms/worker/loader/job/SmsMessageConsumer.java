@@ -1,15 +1,18 @@
 package com.courage.platform.sms.worker.loader.job;
 
+import com.courage.platform.sms.worker.loader.SmsAdapterService;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 /**
  * Created by zhangyong on 2023/1/5.
  */
 @Component
+@DependsOn(value = {"smsAdapterService"})
 @RocketMQMessageListener(
         consumerGroup = "${rocketmq.consumer1.group}",  // 消费组，格式：namespace全称%group名称
         // 需要使用topic全称，所以进行topic名称的拼接，也可以自己设置  格式：namespace全称%topic名称

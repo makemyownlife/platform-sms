@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-@Component
+@Component(value = "smsAdapterService")
 public class SmsAdapterService {
 
     private final static Logger logger = LoggerFactory.getLogger(SmsAdapterService.class);
