@@ -10,8 +10,6 @@ public class SmsAdapterResponse {
 
     public static final int SUCCESS_CODE = 200;
 
-    public static final int SIGN_CODE = 403;
-
     public static final int FAIL_CODE = 500;
 
     private String msg = StringUtils.EMPTY;
@@ -19,5 +17,9 @@ public class SmsAdapterResponse {
     private int code;
 
     private String smsId;
+
+    public SmsAdapterResponse(int code) {
+        this.code = code;
+    }
 
 }

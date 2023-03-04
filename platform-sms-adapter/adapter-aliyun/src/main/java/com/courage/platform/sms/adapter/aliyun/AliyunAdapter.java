@@ -18,7 +18,7 @@ public class AliyunAdapter implements OuterAdapter {
 
     @Override
     public void init(SmsChannelConfig smsChannelConfig) throws Exception {
-        logger.info("初始化阿里云短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppKey() + "]") ;
+        logger.info("初始化阿里云短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppKey() + "]");
         com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
                 // 必填，您的 AccessKey ID
                 .setAccessKeyId(smsChannelConfig.getChannelAppKey())
@@ -31,7 +31,15 @@ public class AliyunAdapter implements OuterAdapter {
 
     @Override
     public SmsAdapterResponse sendSms(SmsAdapterRequest smsSendRequest) {
-        return null;
+        try {
+            com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest().setSignName("签名名称").setTemplateCode("模板号码").setPhoneNumbers("测试手机号").setTemplateParam("{\"code\":\"6666\"}");
+            com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
+            com.aliyun.dysmsapi20170525.models.SendSmsResponse resp = client.sendSmsWithOptions(sendSmsRequest, runtime);
+            return new SmsAdapterResponse(SmsAdapterResponse.SUCCESS_CODE);
+        } catch (Exception e) {
+            logger.error("aliyun sendSms:", e);
+            return new SmsAdapterResponse(SmsAdapterResponse.FAIL_CODE);
+        }
     }
 
     public static com.aliyun.dysmsapi20170525.Client createClient(String accessKeyId, String accessKeySecret) throws Exception {
