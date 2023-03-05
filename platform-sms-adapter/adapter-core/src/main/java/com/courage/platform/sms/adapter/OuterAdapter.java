@@ -20,7 +20,7 @@ public interface OuterAdapter {
     /**
      * 适配器初始化接口
      */
-    SmsAdapterResponse sendSms(SmsAdapterRequest smsSendRequest);
+    SmsAdapterResponse sendSmsByTemplateId(SmsAdapterRequest smsSendRequest);
 
     /**
      * 外部适配器销毁接口

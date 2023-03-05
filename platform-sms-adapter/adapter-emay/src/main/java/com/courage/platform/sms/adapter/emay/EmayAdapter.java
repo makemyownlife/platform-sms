@@ -22,7 +22,7 @@ public class EmayAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsAdapterResponse sendSms(SmsAdapterRequest smsSendRequest) {
+    public SmsAdapterResponse sendSmsByTemplateId(SmsAdapterRequest smsSendRequest) {
         return null;
     }
 

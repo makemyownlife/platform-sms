@@ -30,7 +30,7 @@ public class AliyunAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsAdapterResponse sendSms(SmsAdapterRequest smsSendRequest) {
+    public SmsAdapterResponse sendSmsByTemplateId(SmsAdapterRequest smsSendRequest) {
         try {
             com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest().setSignName("签名名称").setTemplateCode("模板号码").setPhoneNumbers("测试手机号").setTemplateParam("{\"code\":\"6666\"}");
             com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();

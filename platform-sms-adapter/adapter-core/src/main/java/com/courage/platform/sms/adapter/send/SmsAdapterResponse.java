@@ -16,7 +16,7 @@ public class SmsAdapterResponse {
 
     private int code;
 
-    private String smsId;
+    private String bizId;
 
     public SmsAdapterResponse(int code) {
         this.code = code;
