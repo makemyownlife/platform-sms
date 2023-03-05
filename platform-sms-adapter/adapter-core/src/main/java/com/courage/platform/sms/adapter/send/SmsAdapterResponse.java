@@ -2,6 +2,8 @@ package com.courage.platform.sms.adapter.send;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.UUID;
+
 /**
  * 短信发送结果(适配器)
  * Created by zhangyong on 2023/3/1.
@@ -15,5 +17,18 @@ public class SmsAdapterResponse {
     private int code;
 
     private String requestId;
+
+    public SmsAdapterResponse(int code) {
+        this.code = code;
+        this.requestId = UUID.randomUUID().toString();
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getRequestId() {
+        return requestId;
+    }
 
 }
