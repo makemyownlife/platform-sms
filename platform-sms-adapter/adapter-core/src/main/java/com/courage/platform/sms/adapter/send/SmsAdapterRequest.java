@@ -13,13 +13,10 @@ public class SmsAdapterRequest {
     private String templateCode;
 
     // 模版参数
-    public String templateParam;
+    private String templateParam;
 
     // 签名
     public String signName;
-
-    // 请求编号
-    public String requestId;
 
     public String getPhoneNumbers() {
         return phoneNumbers;
@@ -51,14 +48,6 @@ public class SmsAdapterRequest {
 
     public void setSignName(String signName) {
         this.signName = signName;
-    }
-
-    public String getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
     }
 
 }

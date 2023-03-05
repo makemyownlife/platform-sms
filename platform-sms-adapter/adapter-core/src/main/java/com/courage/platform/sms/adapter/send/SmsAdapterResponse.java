@@ -12,14 +12,8 @@ public class SmsAdapterResponse {
 
     public static final int FAIL_CODE = 500;
 
-    private String msg = StringUtils.EMPTY;
-
     private int code;
 
-    private String bizId;
-
-    public SmsAdapterResponse(int code) {
-        this.code = code;
-    }
+    private String requestId;
 
 }
