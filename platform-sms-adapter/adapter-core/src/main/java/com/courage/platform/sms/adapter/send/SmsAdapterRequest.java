@@ -16,7 +16,10 @@ public class SmsAdapterRequest {
     private String templateParam;
 
     // 签名
-    public String signName;
+    private String signName;
+
+    // 定时发送时间
+    private String timerTime;
 
     public String getPhoneNumbers() {
         return phoneNumbers;
@@ -50,4 +53,11 @@ public class SmsAdapterRequest {
         this.signName = signName;
     }
 
+    public String getTimerTime() {
+        return timerTime;
+    }
+
+    public void setTimerTime(String timerTime) {
+        this.timerTime = timerTime;
+    }
 }
