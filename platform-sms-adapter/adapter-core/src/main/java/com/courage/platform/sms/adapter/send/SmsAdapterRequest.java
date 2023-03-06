@@ -12,7 +12,9 @@ public class SmsAdapterRequest {
     // 模版编码
     private String templateCode;
 
-    // 模版参数
+    /**
+     * 模版参数 : 短信模板变量对应的实际值。支持传入多个参数，示例：{"name":"张三","number":"1390000****"}。
+     */
     private String templateParam;
 
     // 签名
@@ -60,4 +62,5 @@ public class SmsAdapterRequest {
     public void setTimerTime(String timerTime) {
         this.timerTime = timerTime;
     }
+    
 }

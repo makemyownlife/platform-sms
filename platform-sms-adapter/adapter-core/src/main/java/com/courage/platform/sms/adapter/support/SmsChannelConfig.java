@@ -10,7 +10,9 @@ public class SmsChannelConfig {
     //通道账号编号
     private Long id;
 
-    //通道类型: aliyun/emay
+    /**
+     *  通道类型: aliyun/emay
+     */
     private String channelType;
 
     //通道appkey
@@ -24,6 +26,9 @@ public class SmsChannelConfig {
 
     //属性 json 格式
     private String extProperties;
+
+    //签名名称
+    private String signName;
 
     //状态 0：正常 1：失效
     private Integer status;
@@ -106,4 +111,11 @@ public class SmsChannelConfig {
         this.updateTime = updateTime;
     }
 
+    public String getSignName() {
+        return signName;
+    }
+
+    public void setSignName(String signName) {
+        this.signName = signName;
+    }
 }
