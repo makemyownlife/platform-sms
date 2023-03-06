@@ -1,5 +1,6 @@
 package com.courage.platform.sms.adapter.aliyun;
 
+import com.alibaba.fastjson.JSON;
 import com.aliyun.dysmsapi20170525.Client;
 import com.courage.platform.sms.adapter.OuterAdapter;
 import com.courage.platform.sms.adapter.send.SmsAdapterRequest;
@@ -14,10 +15,13 @@ public class AliyunAdapter implements OuterAdapter {
 
     private final static Logger logger = LoggerFactory.getLogger(AliyunAdapter.class);
 
+    private SmsChannelConfig smsChannelConfig;
+
     private Client client;
 
     @Override
     public void init(SmsChannelConfig smsChannelConfig) throws Exception {
+        this.smsChannelConfig = smsChannelConfig;
         logger.info("初始化阿里云短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppKey() + "]");
         com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
                 // 必填，您的 AccessKey ID
@@ -34,16 +38,19 @@ public class AliyunAdapter implements OuterAdapter {
         try {
             com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest =
                     new com.aliyun.dysmsapi20170525.models.SendSmsRequest().
-                            setSignName("签名名称").
-                            setTemplateCode("模板号码").
-                            setPhoneNumbers("测试手机号").
-                            setTemplateParam("{\"code\":\"6666\"}");
+                            setSignName(smsChannelConfig.getSignName()).
+                            setTemplateCode(smsSendRequest.getTemplateCode()).
+                            setPhoneNumbers(smsSendRequest.getPhoneNumbers()).
+                            setTemplateParam(smsSendRequest.getTemplateParam());
             com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
             com.aliyun.dysmsapi20170525.models.SendSmsResponse resp = client.sendSmsWithOptions(sendSmsRequest, runtime);
-            return new SmsAdapterResponse(SmsAdapterResponse.SUCCESS_CODE);
+            if ("ok".equals(resp.getStatusCode())) {
+                return new SmsAdapterResponse(SmsAdapterResponse.SUCCESS_CODE, JSON.toJSONString(resp.getBody()));
+            }
+            return new SmsAdapterResponse(SmsAdapterResponse.FAIL_CODE);
         } catch (Exception e) {
             logger.error("aliyun sendSms:", e);
-            return new SmsAdapterResponse(SmsAdapterResponse.FAIL_CODE);
+            return new SmsAdapterResponse(SmsAdapterResponse.FAIL_CODE, e.getMessage());
         }
     }
 
