@@ -16,19 +16,12 @@ public class SmsAdapterResponse {
 
     private int code;
 
-    private String requestId;
-
     public SmsAdapterResponse(int code) {
         this.code = code;
-        this.requestId = UUID.randomUUID().toString();
     }
 
     public int getCode() {
         return code;
-    }
-
-    public String getRequestId() {
-        return requestId;
     }
 
 }

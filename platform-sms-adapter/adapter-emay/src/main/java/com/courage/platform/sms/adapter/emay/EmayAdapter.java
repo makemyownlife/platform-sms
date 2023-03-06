@@ -1,6 +1,7 @@
 package com.courage.platform.sms.adapter.emay;
 
 import cn.emay.ResultModel;
+import cn.emay.eucp.inter.framework.dto.TemplateSmsIdAndMobile;
 import cn.emay.eucp.inter.http.v1.dto.request.TemplateSmsSendRequest;
 import cn.emay.eucp.inter.http.v1.dto.response.SmsResponse;
 import cn.emay.util.AES;
@@ -12,11 +13,11 @@ import com.courage.platform.sms.adapter.send.SmsAdapterRequest;
 import com.courage.platform.sms.adapter.send.SmsAdapterResponse;
 import com.courage.platform.sms.adapter.support.SPI;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @SPI("emay")
 public class EmayAdapter implements OuterAdapter {
@@ -42,7 +43,12 @@ public class EmayAdapter implements OuterAdapter {
     @Override
     public SmsAdapterResponse sendSmsByTemplateId(SmsAdapterRequest smsSendRequest) {
         TemplateSmsSendRequest pamars = new TemplateSmsSendRequest();
-        pamars.setSmses(null); // TODO 短信服务
+        String[] mobiles = StringUtils.split(smsSendRequest.getPhoneNumbers(), ",");
+        List<TemplateSmsIdAndMobile> smsIdAndMobilesList = new ArrayList(mobiles.length);
+        for (int i = 0; i < mobiles.length; i++) {
+            TemplateSmsIdAndMobile templateSmsIdAndMobile = new TemplateSmsIdAndMobile(mobiles[i], UUID.randomUUID().toString().replaceAll("-", ""));
+            smsIdAndMobilesList.add(templateSmsIdAndMobile);
+        }
         pamars.setTemplateId(smsSendRequest.getTemplateCode());
         pamars.setExtendedCode(extendCode);
         pamars.setRequestTime(System.currentTimeMillis());
@@ -62,9 +68,10 @@ public class EmayAdapter implements OuterAdapter {
                 for (SmsResponse d : response) {
                     logger.info("data:" + d.getMobile() + "," + d.getSmsId() + "," + d.getCustomSmsId());
                 }
+                return new SmsAdapterResponse(SmsAdapterResponse.SUCCESS_CODE);
             }
         }
-        return null;
+        return new SmsAdapterResponse(SmsAdapterResponse.FAIL_CODE);
     }
 
     public static ResultModel request(String appId, String secretKey, String algorithm, Object content, String url, final boolean isGzip, String encode) {
