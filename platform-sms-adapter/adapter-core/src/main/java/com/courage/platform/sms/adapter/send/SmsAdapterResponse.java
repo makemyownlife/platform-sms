@@ -16,12 +16,23 @@ public class SmsAdapterResponse {
 
     private int code;
 
+    private String result;
+
     public SmsAdapterResponse(int code) {
         this.code = code;
     }
 
+    public SmsAdapterResponse(int code, String result) {
+        this.code = code;
+        this.result = result;
+    }
+
     public int getCode() {
         return code;
+    }
+
+    public String getResult() {
+        return result;
     }
 
 }

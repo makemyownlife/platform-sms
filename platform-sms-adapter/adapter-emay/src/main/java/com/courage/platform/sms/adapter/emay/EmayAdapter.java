@@ -68,10 +68,10 @@ public class EmayAdapter implements OuterAdapter {
                 for (SmsResponse d : response) {
                     logger.info("data:" + d.getMobile() + "," + d.getSmsId() + "," + d.getCustomSmsId());
                 }
-                return new SmsAdapterResponse(SmsAdapterResponse.SUCCESS_CODE);
+                return new SmsAdapterResponse(SmsAdapterResponse.SUCCESS_CODE, result.getResult());
             }
         }
-        return new SmsAdapterResponse(SmsAdapterResponse.FAIL_CODE);
+        return new SmsAdapterResponse(SmsAdapterResponse.FAIL_CODE, result.getResult());
     }
 
     public static ResultModel request(String appId, String secretKey, String algorithm, Object content, String url, final boolean isGzip, String encode) {
