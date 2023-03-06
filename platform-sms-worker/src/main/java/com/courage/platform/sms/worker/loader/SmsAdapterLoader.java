@@ -25,7 +25,7 @@ public class SmsAdapterLoader {
     }
 
     public void init() throws Exception {
-        extensionLoader = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
+        this.extensionLoader = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
         List<SmsChannelConfig> channelConfigs = smsAdapterConfig.getChannelConfigs();
         for (SmsChannelConfig channelConfig : channelConfigs) {
             loadAdapter(channelConfig.getChannelType(), channelConfig);
