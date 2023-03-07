@@ -28,9 +28,9 @@ public class SenderController {
     @Value("${rocketmq.topic}")
     private String smsTopic;
 
-    @RequestMapping("/sendSingle")
+    @RequestMapping("/sendByTemplateId")
     @ResponseBody
-    public SmsSenderResult sendSingle(HttpServletRequest request) {
+    public SmsSenderResult sendByTemplateId(HttpServletRequest request) {
         try {
             //接收请求参数
             String q = request.getParameter("q");
@@ -41,7 +41,7 @@ public class SenderController {
             String uniqueId = time + random;
             logger.info("q:" + q + " appKey:" + appKey + " uniqueId:" + uniqueId);
             //发送消息
-            String tag = "single";
+            String tag = "template";
             SendResult sendResult = rocketMQTemplate.syncSend(smsTopic + ":" + tag, MessageBuilder.withPayload(q).setHeader(MessageConst.PROPERTY_KEYS, uniqueId).build());
             logger.info("uniqueId：" + uniqueId + " sendResult:" + sendResult);
             if (sendResult != null) {
