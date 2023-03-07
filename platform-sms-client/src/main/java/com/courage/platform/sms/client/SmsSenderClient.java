@@ -57,7 +57,7 @@ public class SmsSenderClient {
 //        }
 //    }
 
-    public SmsSenderResult sendByTemplateId(String mobile, Map<String, String> templateParam) throws IOException {
+    public SmsSenderResult sendSmsByTemplateId(String mobile, String templateId, Map<String, String> templateParam) throws IOException {
         String random = SmsSenderUtil.getRandom();
         String appKey = smsConfig.getAppKey();
         String time = String.valueOf(SmsSenderUtil.getCurrentTime());
@@ -68,6 +68,7 @@ public class SmsSenderClient {
         param.put("random", random);
         Map<String, Object> queryParam = new HashMap<String, Object>(4);
         queryParam.put("mobile", mobile);
+        queryParam.put("templateId", templateId);
         queryParam.put("templateParam", templateParam);
         String q = JSON.toJSONString(queryParam);
         param.put("q", JSON.toJSONString(queryParam));
