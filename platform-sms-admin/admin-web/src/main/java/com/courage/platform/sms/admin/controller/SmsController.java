@@ -27,7 +27,7 @@ public class SmsController {
     private SmsChannelService smsChannelService;
 
     @PostMapping(value = "/channels")
-    public BaseModel<Pager> login() {
+    public BaseModel<Pager> channels(String name) {
         List<TSmsChannel> tSmsChannelList = smsChannelService.queryChannels();
         Pager pager = new Pager();
         pager.setCount(Long.valueOf(tSmsChannelList.size()));

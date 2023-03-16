@@ -96,7 +96,6 @@ export default {
   data() {
     return {
       list: null,
-      instanceList: null,
       listLoading: true,
       listLoading2: true,
       serverIdTmp: null,
