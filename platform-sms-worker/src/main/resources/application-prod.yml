@@ -21,6 +21,9 @@ rocketmq:
   consumer1:
     group: platform-sms-worker-group
     topic: sms-common-topic
+  consumer2:
+    group: platform-sms-worker-group
+    topic: sms-market-topic
 
 sms:
   adapters:
