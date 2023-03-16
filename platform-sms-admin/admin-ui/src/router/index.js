@@ -96,13 +96,14 @@ export const constantRoutes = [
         name: '模版管理',
         component: () => import('@/views/smsServer/SmsTemplates'),
         meta: { title: '模版管理', icon: 'nested' }
-      },
-      {
-      path: 'ruleList',
-        name: '规则管理',
-      component: () => import('@/views/smsServer/RuleList'),
-      meta: { title: '规则管理', icon: 'password' }
-    }
+      }
+    //   ,
+    //   {
+    //   path: 'ruleList',
+    //     name: '规则管理',
+    //   component: () => import('@/views/smsServer/RuleList'),
+    //   meta: { title: '规则管理', icon: 'password' }
+    // }
     ]
   },
 
