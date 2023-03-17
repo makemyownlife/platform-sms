@@ -8,6 +8,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 /**
+ * 营销类短信消费者
  * Created by zhangyong on 2023/1/5.
  */
 @Component
