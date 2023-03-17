@@ -21,7 +21,8 @@ rocketmq:
   consumer1:
     group: platform-sms-worker-common-group
     topic: sms-common-topic
-    consumeThreadNumber: 12
+    # 普通短信线程数多点
+    consumeThreadNumber: 16
   consumer2:
     group: platform-sms-worker-market-group
     topic: sms-market-topic
