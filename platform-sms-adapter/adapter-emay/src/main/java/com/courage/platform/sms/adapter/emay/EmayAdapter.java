@@ -135,7 +135,6 @@ public class EmayAdapter implements OuterAdapter {
             }
         } catch (Exception e) {
             logger.info("解析失败:", e);
-            e.printStackTrace();
         }
         ResultModel re = new ResultModel(code, result);
         return re;
