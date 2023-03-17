@@ -19,8 +19,14 @@ spring:
 rocketmq:
   name-server: 127.0.0.1:9876
   consumer1:
-    group: platform-sms-worker-group
+    group: platform-sms-worker-common-group
     topic: sms-common-topic
+    consumeThreadNumber: 12
+  consumer2:
+    group: platform-sms-worker-market-group
+    topic: sms-market-topic
+    # 营销类短信线程数减少一点
+    consumeThreadNumber: 4
 
 sms:
   adapters:

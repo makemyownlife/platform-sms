@@ -1,4 +1,4 @@
-package com.courage.platform.sms.worker.loader.job;
+package com.courage.platform.sms.worker.job;
 
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -21,7 +21,7 @@ public class SmsMessageMarketConsumer implements RocketMQListener<String> {
     private final static Logger logger = LoggerFactory.getLogger(SmsMessageMarketConsumer.class);
 
     public void onMessage(String message) {
-        logger.info("message:" + message);
+        logger.info("营销短信:" + message);
         //从每个应用选择正常的短信渠道发送 短信，并将消息存储记录在 rocksdb 里 ，然后异步线程存储在数据库里
         // 1 将消息转换成DTO对象
         // 2 处理器处理逻辑：获取可以发送的渠道(随机算法)，构造发送请求对象，最后发送到渠道
