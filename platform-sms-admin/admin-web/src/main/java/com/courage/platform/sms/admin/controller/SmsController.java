@@ -32,7 +32,6 @@ public class SmsController {
         Map<String, String> param = new HashMap<>();
         param.put("channelType", channelType);
         param.put("channelAppkey", channelAppkey);
-        logger.info("query channels :" + param);
         List<TSmsChannel> tSmsChannelList = smsChannelService.queryChannels(param);
         Pager pager = new Pager();
         pager.setCount(Long.valueOf(tSmsChannelList.size()));

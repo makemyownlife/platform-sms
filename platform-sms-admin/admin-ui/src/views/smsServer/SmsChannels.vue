@@ -65,6 +65,23 @@
       </el-table-column>
     </el-table>
 
+    <!-- 模态窗口 start  -->
+    <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="600px">
+      <el-form ref="dataForm" :rules="rules" :model="channelModel" label-position="left" label-width="120px" style="width: 400px; margin-left:30px;">
+        <el-form-item label="" prop="name">
+          <el-input v-model="channelModel.name" />
+        </el-form-item>
+        <el-form-item label="ZK地址" prop="zkHosts">
+          <el-input v-model="canalCluster.zkHosts" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="dataOperation()">确定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 模态窗口 end   -->
+
   </div>
 
 </template>
@@ -112,14 +129,13 @@ export default {
         create: '新建渠道',
         update: '修改渠道'
       },
-      nodeModel: {
+      channelModel: {
         id: undefined,
-        clusterId: null,
-        name: null,
-        ip: null,
-        adminPort: 11110,
-        tcpPort: 11111,
-        metricPort: 11112
+        channelType: '',
+        channelAppkey: null,
+        channelAppsecret: null,
+        channelDomain: null,
+        extProperties: null
       },
       rules: {
         name: [{ required: true, message: 'Server 名称不能为空', trigger: 'change' }],
