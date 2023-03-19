@@ -27,7 +27,7 @@ rocketmq:
     group: platform-sms-worker-market-group
     topic: sms-market-topic
     # 营销类短信线程数减少一点
-    consumeThreadNumber: 4
+    consumeThreadNumber: 2
 
 sms:
   adapters:
