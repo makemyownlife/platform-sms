@@ -7,15 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SmsChannelServiceImpl implements SmsChannelService {
-    
+
     @Autowired
     private TSmsChannelDAO tSmsChannelDAO;
 
-    public List<TSmsChannel> queryChannels() {
-        return tSmsChannelDAO.queryChannels();
+    public List<TSmsChannel> queryChannels(Map<String, String> param) {
+        return tSmsChannelDAO.queryChannels(param);
     }
 
 }

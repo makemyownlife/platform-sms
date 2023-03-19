@@ -5,7 +5,6 @@
         <el-option key="" label="所有" value="" />
         <el-option key="-1" label="支付宝" value="aliyun" />
         <el-option key="0" label="亿美" value="emay" />
-        <el-option key="1" label="绿城" value="greencity" />
       </el-select>
       <el-input v-model="listQuery.channelAppkey" placeholder="appkey" style="width: 200px;" class="filter-item" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" plain @click="queryData()">查询</el-button>
@@ -102,10 +101,10 @@ export default {
       smsChannels: [],
       count: 0,
       listQuery: {
-        name: '',
+        channelType: '',
         channelAppkey: '',
         page: 1,
-        size: 20
+        size: 50
       },
       dialogFormVisible: false,
       dialogInstances: false,

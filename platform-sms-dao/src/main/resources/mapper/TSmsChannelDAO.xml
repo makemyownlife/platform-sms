@@ -165,10 +165,20 @@
   </update>
 
   <!-- 查询所有的渠道信息  -->
-  <select id="queryChannels" resultMap="BaseResultMap">
+  <select id="queryChannels" parameterType="java.util.HashMap" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from t_sms_channel
+    from t_sms_channel t
+    where 1 = 1
+    <if test="channelType != null and channelType != ''">
+     and channel_type = #{channelType,jdbcType=VARCHAR}
+    </if>
+    <if test="channelAppkey != null and channelAppkey != ''">
+     and channel_appkey = #{channelAppkey,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null">
+      and status = #{status}
+    </if>
   </select>
 
 </mapper>
