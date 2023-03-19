@@ -68,11 +68,13 @@
     <!-- 模态窗口 start  -->
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="600px">
       <el-form ref="dataForm" :rules="rules" :model="channelModel" label-position="left" label-width="120px" style="width: 400px; margin-left:30px;">
-        <el-form-item label="" prop="name">
-          <el-input v-model="channelModel.name" />
-        </el-form-item>
-        <el-form-item label="ZK地址" prop="zkHosts">
-          <el-input v-model="canalCluster.zkHosts" />
+        <el-select v-model="channelModel.channelType" placeholder="渠道类型" class="filter-item">
+          <el-option key="" label="所有" value="" />
+          <el-option key="-1" label="支付宝" value="aliyun" />
+          <el-option key="0" label="亿美" value="emay" />
+        </el-select>
+        <el-form-item label="" prop="appkey">
+          <el-input v-model="channelModel.channelAppkey" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -164,14 +166,13 @@ export default {
       this.fetchData()
     },
     resetModel() {
-      this.nodeModel = {
+      this.channelModel = {
         id: undefined,
-        clusterId: null,
-        name: null,
-        ip: null,
-        adminPort: null,
-        tcpPort: null,
-        metricPort: null
+        channelType: '',
+        channelAppkey: null,
+        channelAppsecret: null,
+        channelDomain: null,
+        extProperties: null
       }
     },
     handleCreate() {
@@ -183,180 +184,13 @@ export default {
       })
     },
     dataOperation() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          if (this.dialogStatus === 'create') {
-            addNodeServer(this.nodeModel).then(res => {
-              this.operationRes(res)
-            })
-          }
-          if (this.dialogStatus === 'update') {
-            updateNodeServer(this.nodeModel).then(res => {
-              this.operationRes(res)
-            })
-          }
-        }
-      })
-    },
-    operationRes(res) {
-      if (res.data === 'success') {
-        this.fetchData()
-        this.dialogFormVisible = false
-        this.$message({
-          message: this.textMap[this.dialogStatus] + '成功',
-          type: 'success'
-        })
-      } else {
-        this.$message({
-          message: this.textMap[this.dialogStatus] + '失败',
-          type: 'error'
-        })
-      }
-    },
-    handleConfig(row) {
-      if (row.canalCluster !== null) {
-        this.$message({ message: '集群模式Server不允许单独变更配置，请在集群配置变更', type: 'error' })
-        return
-      }
-      this.$router.push('/canalServer/nodeServer/config?serverId=' + row.id)
+
     },
     handleUpdate(row) {
-      this.resetModel()
-      this.nodeModel = Object.assign({}, row)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+
     },
     handleDelete(row) {
-      this.$confirm('删除Server信息会导致节点服务停止', '确定删除Server信息', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        deleteNodeServer(row.id).then((res) => {
-          if (res.data === 'success') {
-            this.fetchData()
-            this.$message({
-              message: '删除Server信息成功',
-              type: 'success'
-            })
-          } else {
-            this.$message({
-              message: '删除Server信息失败',
-              type: 'error'
-            })
-          }
-        })
-      })
-    },
-    handleStart(row) {
-      if (row.status !== '0') {
-        this.$message({ message: '当前Server不是停止状态，无法启动', type: 'error' })
-        return
-      }
-      this.$confirm('启动Server服务', '确定启动Server服务', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        startNodeServer(row.id).then((res) => {
-          if (res.data) {
-            this.fetchData()
-            this.$message({
-              message: '启动成功',
-              type: 'success'
-            })
-          } else {
-            this.$message({
-              message: '启动Server服务出现异常',
-              type: 'error'
-            })
-          }
-        })
-      })
-    },
-    handleStop(row) {
-      if (row.status !== '1') {
-        this.$message({ message: '当前Server不是启动状态，无法停止', type: 'error' })
-        return
-      }
-      this.$confirm('停止Server服务会导致所有Instance都停止服务', '确定停止Server服务', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        stopNodeServer(row.id).then((res) => {
-          if (res.data) {
-            this.fetchData()
-            this.$message({
-              message: '停止成功',
-              type: 'success'
-            })
-          } else {
-            this.$message({
-              message: '停止Server服务出现异常',
-              type: 'error'
-            })
-          }
-        })
-      })
-    },
-    handleLog(row) {
-      this.$router.push('nodeServer/log?id=' + row.id)
-    },
-    handleStartInstance(row) {
-      if (row.runningStatus !== '0') {
-        this.$message({ message: '当前Instance不是停止状态，无法启动', type: 'error' })
-        return
-      }
-      this.$confirm('启动Instance服务', '确定启动Instance服务', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        startInstance(row.id, this.serverIdTmp).then((res) => {
-          if (res.data) {
-            this.activeInstances()
-            this.$message({
-              message: '启动成功, 稍后请刷新列表查看状态',
-              type: 'success'
-            })
-          } else {
-            this.$message({
-              message: '启动Instance服务出现异常',
-              type: 'error'
-            })
-          }
-        })
-      })
-    },
-    handleStopInstance(row) {
-      if (row.runningStatus !== '1') {
-        this.$message({ message: '当前Instance不是运行状态，无法停止', type: 'error' })
-        return
-      }
-      this.$confirm('集群模式下停止实例其它主机将会抢占执行该实例', '停止 Instance 服务', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        stopInstance(row.id, this.serverIdTmp).then((res) => {
-          if (res.data) {
-            this.activeInstances()
-            this.$message({
-              message: '停止成功, 稍后请刷新列表查看状态',
-              type: 'success'
-            })
-          } else {
-            this.$message({
-              message: '停止Instance服务出现异常',
-              type: 'error'
-            })
-          }
-        })
-      })
+
     }
   }
 }
