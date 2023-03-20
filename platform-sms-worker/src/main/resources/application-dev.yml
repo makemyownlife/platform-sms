@@ -28,7 +28,3 @@ rocketmq:
     topic: sms-market-topic
     # 营销类短信线程数减少一点
     consumeThreadNumber: 2
-
-sms:
-  adapters:
-    outer: aliyun,emay

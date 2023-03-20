@@ -65,16 +65,26 @@
       </el-table-column>
     </el-table>
 
-    <!-- 模态窗口 start  -->
+    <!--   模态窗口 start  -->
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="600px">
       <el-form ref="dataForm" :rules="rules" :model="channelModel" label-position="left" label-width="120px" style="width: 400px; margin-left:30px;">
-        <el-select v-model="channelModel.channelType" placeholder="渠道类型" class="filter-item">
-          <el-option key="" label="所有" value="" />
-          <el-option key="-1" label="支付宝" value="aliyun" />
-          <el-option key="0" label="亿美" value="emay" />
-        </el-select>
-        <el-form-item label="" prop="appkey">
+        <el-form-item label="渠道类型:" prop="channelType">
+          <el-select v-model="channelModel.channelType" >
+            <el-option key="-1" label="支付宝" value="aliyun" />
+            <el-option key="0" label="亿美" value="emay" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="渠道appkey:" prop="appkey">
           <el-input v-model="channelModel.channelAppkey" />
+        </el-form-item>
+        <el-form-item label="渠道appsecret:" prop="channelAppsecret">
+          <el-input v-model="channelModel.channelAppkey" />
+        </el-form-item>
+        <el-form-item label="请求主体:" prop="channelDomain">
+          <el-input v-model="channelModel.channelDomain" />
+        </el-form-item>
+        <el-form-item label="附件属性:" prop="extProperties">
+          <el-input v-model="channelModel.extProperties" type="textarea"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -82,7 +92,7 @@
         <el-button type="primary" @click="dataOperation()">确定</el-button>
       </div>
     </el-dialog>
-    <!-- 模态窗口 end   -->
+    <!--    模态窗口 end   -->
 
   </div>
 
