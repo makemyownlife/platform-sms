@@ -49,7 +49,7 @@
           {{ scope.row.updateTime }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="操作" min-width="100" align="center">
+      <el-table-column class-name="status-col" label="操作" min-width="90" align="center">
         <template slot-scope="scope">
           <el-dropdown trigger="click">
             <el-button type="primary" size="mini">
@@ -66,7 +66,7 @@
     </el-table>
 
     <!--   模态窗口 start  -->
-    <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="600px">
+    <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="700px">
       <el-form ref="dataForm" :rules="rules" :model="channelModel" label-position="left" label-width="120px" style="width: 400px; margin-left:30px;">
         <el-form-item label="渠道类型:" prop="channelType">
           <el-select v-model="channelModel.channelType"  style="width: 280px">
@@ -75,13 +75,13 @@
             <el-option key="0" label="亿美" value="emay" />
           </el-select>
         </el-form-item>
-        <el-form-item label="渠道appkey:" prop="appkey">
+        <el-form-item label="appkey:" prop="channelAppkey">
           <el-input v-model="channelModel.channelAppkey" />
         </el-form-item>
-        <el-form-item label="渠道appsecret:" prop="channelAppsecret">
+        <el-form-item label="appsecret:" prop="channelAppsecret">
           <el-input v-model="channelModel.channelAppkey" />
         </el-form-item>
-        <el-form-item label="请求主体:" prop="channelDomain">
+        <el-form-item label="请求地址:" prop="channelDomain">
           <el-input v-model="channelModel.channelDomain" />
         </el-form-item>
         <el-form-item label="附件属性:" prop="extProperties" >
@@ -155,9 +155,10 @@ export default {
         extProperties: null
       },
       rules: {
-        name: [{ required: true, message: 'Server 名称不能为空', trigger: 'change' }],
-        ip: [{ required: true, message: 'Server IP不能为空', trigger: 'change' }],
-        adminPort: [{ required: true, message: 'Server admin端口不能为空', trigger: 'change' }]
+        channelType: [{ required: true, message: '渠道类型不能为空', trigger: 'change' }],
+        channelAppkey: [{ required: true, message: '渠道key不能为空', trigger: 'change' }],
+        channelDomain: [{ required: true, message: '渠道访问地址不能为空', trigger: 'change' }],
+        channelAppsecret: [{ required: true, message: '渠道secret不能为空', trigger: 'change' }]
       },
       dialogStatus: 'create'
     }
