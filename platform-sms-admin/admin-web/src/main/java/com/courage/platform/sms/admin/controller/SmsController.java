@@ -45,6 +45,7 @@ public class SmsController {
         TSmsChannel tSmsChannel = new TSmsChannel();
         tSmsChannel.setChannelAppkey(channelAppkey);
         tSmsChannel.setChannelType(channelType);
+        tSmsChannel.setChannelDomain(channelDomain);
         tSmsChannel.setChannelAppsecret(channelAppsecret);
         tSmsChannel.setCreateTime(new Date());
         tSmsChannel.setUpdateTime(new Date());
