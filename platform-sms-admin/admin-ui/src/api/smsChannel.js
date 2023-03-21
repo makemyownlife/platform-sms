@@ -7,3 +7,11 @@ export function getSmsChannels(params) {
     params: params
   })
 }
+
+export function addSmsChannel(data) {
+  return request({
+    url: '/sms/addSmsChannel',
+    method: 'post',
+    data
+  })
+}

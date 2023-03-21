@@ -2,11 +2,11 @@
   <div class="app-container">
     <div class="filter-container">
       <el-select v-model="listQuery.channelType" placeholder="渠道类型" class="filter-item">
-        <el-option key="" label="所有" value="" />
-        <el-option key="-1" label="支付宝" value="aliyun" />
-        <el-option key="0" label="亿美" value="emay" />
+        <el-option key="" label="所有" value=""/>
+        <el-option key="-1" label="支付宝" value="aliyun"/>
+        <el-option key="0" label="亿美" value="emay"/>
       </el-select>
-      <el-input v-model="listQuery.channelAppkey" placeholder="appkey" style="width: 200px;" class="filter-item" />
+      <el-input v-model="listQuery.channelAppkey" placeholder="appkey" style="width: 200px;" class="filter-item"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" plain @click="queryData()">查询</el-button>
       <el-button class="filter-item" type="primary" @click="handleCreate()">新建通道</el-button>
       <el-button class="filter-item" type="info" @click="fetchData()">刷新列表</el-button>
@@ -53,7 +53,7 @@
         <template slot-scope="scope">
           <el-dropdown trigger="click">
             <el-button type="primary" size="mini">
-              操作<i class="el-icon-arrow-down el-icon--right" />
+              操作<i class="el-icon-arrow-down el-icon--right"/>
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="handleView(scope.row)">查看</el-dropdown-item>
@@ -66,25 +66,26 @@
     </el-table>
 
     <!--   模态窗口 start  -->
-    <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="700px">
-      <el-form ref="dataForm" :rules="rules" :model="channelModel" label-position="left" label-width="120px" style="width: 400px; margin-left:30px;">
-        <el-form-item label="渠道类型:" prop="channelType">
-          <el-select v-model="channelModel.channelType"  style="width: 280px">
-            <el-option key="" label="请选择" value="" />
-            <el-option key="-1" label="支付宝" value="aliyun" />
-            <el-option key="0" label="亿美" value="emay" />
+    <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
+      <el-form ref="dataForm" :rules="rules" :model="channelModel" label-position="left" label-width="120px"
+               style="width: 400px; margin-left:30px;">
+        <el-form-item label="渠道类型" prop="channelType">
+          <el-select v-model="channelModel.channelType" style="width: 280px">
+            <el-option key="" label="请选择" value=""/>
+            <el-option key="-1" label="支付宝" value="aliyun"/>
+            <el-option key="0" label="亿美" value="emay"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="appkey:" prop="channelAppkey">
-          <el-input v-model="channelModel.channelAppkey" />
+        <el-form-item label="appkey" prop="channelAppkey">
+          <el-input v-model="channelModel.channelAppkey"/>
         </el-form-item>
-        <el-form-item label="appsecret:" prop="channelAppsecret">
-          <el-input v-model="channelModel.channelAppkey" />
+        <el-form-item label="appsecret" prop="channelAppsecret">
+          <el-input v-model="channelModel.channelAppkey"/>
         </el-form-item>
-        <el-form-item label="请求地址:" prop="channelDomain">
-          <el-input v-model="channelModel.channelDomain" />
+        <el-form-item label="请求地址" prop="channelDomain">
+          <el-input v-model="channelModel.channelDomain"/>
         </el-form-item>
-        <el-form-item label="附件属性:" prop="extProperties" >
+        <el-form-item label="附件属性" prop="extProperties">
           <el-input v-model="channelModel.extProperties" type="textarea"/>
         </el-form-item>
       </el-form>
@@ -101,7 +102,7 @@
 
 <script>
 
-import { getSmsChannels } from '@/api/smsChannel'
+import {getSmsChannels} from '@/api/smsChannel'
 
 export default {
   filters: {
@@ -143,8 +144,8 @@ export default {
         update: '修改渠道'
       },
       channelTypes: [
-        { text: '阿里云', value: 'aliyun' },
-        { text: '亿美', value: 'emay' }
+        {text: '阿里云', value: 'aliyun'},
+        {text: '亿美', value: 'emay'}
       ],
       channelModel: {
         id: undefined,
@@ -155,10 +156,10 @@ export default {
         extProperties: null
       },
       rules: {
-        channelType: [{ required: true, message: '渠道类型不能为空', trigger: 'change' }],
-        channelAppkey: [{ required: true, message: '渠道key不能为空', trigger: 'change' }],
-        channelDomain: [{ required: true, message: '渠道访问地址不能为空', trigger: 'change' }],
-        channelAppsecret: [{ required: true, message: '渠道secret不能为空', trigger: 'change' }]
+        channelType: [{required: true, message: '渠道类型不能为空', trigger: 'change'}],
+        channelAppkey: [{required: true, message: '渠道key不能为空', trigger: 'change'}],
+        channelDomain: [{required: true, message: '渠道访问地址不能为空', trigger: 'change'}],
+        channelAppsecret: [{required: true, message: '渠道secret不能为空', trigger: 'change'}]
       },
       dialogStatus: 'create'
     }
@@ -200,7 +201,16 @@ export default {
       })
     },
     dataOperation() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          if (this.dialogStatus === 'create') {
 
+          }
+          if (this.dialogStatus === 'update') {
+
+          }
+        }
+      })
     },
     handleUpdate(row) {
 

@@ -19,4 +19,9 @@ public class SmsChannelServiceImpl implements SmsChannelService {
         return tSmsChannelDAO.queryChannels(param);
     }
 
+    @Override
+    public void addSmsChannel(TSmsChannel tSmsChannel) {
+        tSmsChannelDAO.insert(tSmsChannel);
+    }
+
 }

@@ -9,4 +9,6 @@ public interface SmsChannelService {
 
     List<TSmsChannel> queryChannels(Map<String, String> param);
 
+    void addSmsChannel(TSmsChannel tSmsChannel);
+
 }
