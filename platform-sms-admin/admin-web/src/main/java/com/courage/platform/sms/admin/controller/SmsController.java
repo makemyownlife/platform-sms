@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,21 +38,8 @@ public class SmsController {
     }
 
     @PostMapping(value = "/addSmsChannel")
-    public BaseModel addSmsChannel(String channelAppkey,
-                                   String channelType,
-                                   String channelAppsecret,
-                                   String channelDomain,
-                                   String extProperties) {
-        TSmsChannel tSmsChannel = new TSmsChannel();
-        tSmsChannel.setChannelAppkey(channelAppkey);
-        tSmsChannel.setChannelType(channelType);
-        tSmsChannel.setChannelDomain(channelDomain);
-        tSmsChannel.setChannelAppsecret(channelAppsecret);
-        tSmsChannel.setCreateTime(new Date());
-        tSmsChannel.setUpdateTime(new Date());
-        tSmsChannel.setExtProperties(StringUtils.trimToEmpty(extProperties));
-        smsChannelService.addSmsChannel(tSmsChannel);
-        return BaseModel.getInstance("success");
+    public BaseModel addSmsChannel(@RequestBody  TSmsChannel tSmsChannel) {
+        return smsChannelService.addSmsChannel(tSmsChannel);
     }
 
 }

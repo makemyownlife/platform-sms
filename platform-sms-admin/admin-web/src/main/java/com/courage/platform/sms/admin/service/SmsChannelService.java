@@ -1,5 +1,6 @@
 package com.courage.platform.sms.admin.service;
 
+import com.courage.platform.sms.admin.model.BaseModel;
 import com.courage.platform.sms.domain.TSmsChannel;
 
 import java.util.List;
@@ -9,6 +10,6 @@ public interface SmsChannelService {
 
     List<TSmsChannel> queryChannels(Map<String, String> param);
 
-    void addSmsChannel(TSmsChannel tSmsChannel);
+    BaseModel addSmsChannel(TSmsChannel tSmsChannel);
 
 }

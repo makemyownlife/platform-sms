@@ -181,4 +181,15 @@
     </if>
   </select>
 
+
+  <select id="queryChannelByAppkeyAndChannelType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sms_channel t
+     where
+     channel_appkey = #{channelAppkey,jdbcType=VARCHAR}
+      and
+     channel_type = #{channelType,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

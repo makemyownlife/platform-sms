@@ -80,7 +80,7 @@
           <el-input v-model="channelModel.channelAppkey"/>
         </el-form-item>
         <el-form-item label="appsecret" prop="channelAppsecret">
-          <el-input v-model="channelModel.channelAppkey"/>
+          <el-input v-model="channelModel.channelAppsecret"/>
         </el-form-item>
         <el-form-item label="请求地址" prop="channelDomain">
           <el-input v-model="channelModel.channelDomain"/>
@@ -102,7 +102,7 @@
 
 <script>
 
-import {getSmsChannels} from '@/api/smsChannel'
+import {getSmsChannels , addSmsChannel} from '@/api/smsChannel'
 
 export default {
   filters: {
@@ -204,7 +204,9 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.dialogStatus === 'create') {
-
+            addSmsChannel(this.channelModel).then(res => {
+              this.operationRes(res)
+            })
           }
           if (this.dialogStatus === 'update') {
 
@@ -217,7 +219,22 @@ export default {
     },
     handleDelete(row) {
 
-    }
+    },
+    operationRes(res) {
+      if (res.data === 'success') {
+        this.fetchData()
+        this.dialogFormVisible = false
+        this.$message({
+          message: this.textMap[this.dialogStatus] + '成功',
+          type: 'success'
+        })
+      } else {
+        this.$message({
+          message: this.textMap[this.dialogStatus] + '失败',
+          type: 'error'
+        })
+      }
+    },
   }
 }
 </script>
