@@ -15,3 +15,18 @@ export function addSmsChannel(data) {
     data
   })
 }
+
+export function deleteSmsChannel(data) {
+  return request({
+    url: '/sms/deleteSmsChannel?id=' + data,
+    method: 'post'
+  })
+}
+
+export function updateSmsChannel(data) {
+  return request({
+    url: '/sms/updateSmsChannel',
+    method: 'post',
+    data
+  })
+}

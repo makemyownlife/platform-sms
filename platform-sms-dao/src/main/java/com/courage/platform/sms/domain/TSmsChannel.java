@@ -38,6 +38,11 @@ public class TSmsChannel implements Serializable {
     private String extProperties;
 
     /**
+     * 签名名称
+     */
+    private String signName;
+
+    /**
      * 状态0：启用 1：禁用
      */
     private Byte status;
@@ -127,4 +132,13 @@ public class TSmsChannel implements Serializable {
     public void setSendOrder(Integer sendOrder) {
         this.sendOrder = sendOrder;
     }
+
+    public String getSignName() {
+        return signName;
+    }
+
+    public void setSignName(String signName) {
+        this.signName = signName;
+    }
+
 }

@@ -47,4 +47,15 @@ public class SmsChannelServiceImpl implements SmsChannelService {
         }
     }
 
+    @Override
+    public BaseModel deleteSmsChannel(String id) {
+        try {
+            tSmsChannelDAO.deleteByPrimaryKey(Integer.valueOf(id));
+            return BaseModel.getInstance("success");
+        } catch (Exception e) {
+            logger.error("deleteSmsChannel error:", e);
+            return BaseModel.getInstance("fail");
+        }
+    }
+
 }

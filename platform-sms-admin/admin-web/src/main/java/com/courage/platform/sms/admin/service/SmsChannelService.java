@@ -12,4 +12,6 @@ public interface SmsChannelService {
 
     BaseModel addSmsChannel(TSmsChannel tSmsChannel);
 
+    BaseModel deleteSmsChannel(String id);
+
 }

@@ -44,6 +44,11 @@
           {{ scope.row.channelDomain }}
         </template>
       </el-table-column>
+      <el-table-column label="签名名称" min-width="150" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.signName }}
+        </template>
+      </el-table-column>
       <el-table-column class-name="status-col" label="修改时间" min-width="80" align="center">
         <template slot-scope="scope">
           {{ scope.row.updateTime }}
@@ -85,6 +90,9 @@
         <el-form-item label="请求地址" prop="channelDomain">
           <el-input v-model="channelModel.channelDomain"/>
         </el-form-item>
+        <el-form-item label="签名名称" prop="signName">
+          <el-input v-model="channelModel.signName"/>
+        </el-form-item>
         <el-form-item label="附件属性" prop="extProperties">
           <el-input v-model="channelModel.extProperties" type="textarea"/>
         </el-form-item>
@@ -102,7 +110,7 @@
 
 <script>
 
-import {getSmsChannels , addSmsChannel} from '@/api/smsChannel'
+import {getSmsChannels , addSmsChannel ,deleteSmsChannel} from '@/api/smsChannel'
 
 export default {
   filters: {
@@ -153,12 +161,14 @@ export default {
         channelAppkey: null,
         channelAppsecret: null,
         channelDomain: null,
+        signName: null,
         extProperties: null
       },
       rules: {
         channelType: [{required: true, message: '渠道类型不能为空', trigger: 'change'}],
         channelAppkey: [{required: true, message: '渠道key不能为空', trigger: 'change'}],
         channelDomain: [{required: true, message: '渠道访问地址不能为空', trigger: 'change'}],
+        signName: [{required: true, message: '渠道签名不能为空', trigger: 'change'}],
         channelAppsecret: [{required: true, message: '渠道secret不能为空', trigger: 'change'}]
       },
       dialogStatus: 'create'
@@ -218,7 +228,26 @@ export default {
 
     },
     handleDelete(row) {
-
+      this.$confirm('删除渠道信息密钥无法使用', '确定删除渠道信息', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteSmsChannel(row.id).then((res) => {
+          if (res.data === 'success') {
+            this.fetchData()
+            this.$message({
+              message: '删除渠道信息成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '删除渠道信息失败',
+              type: 'error'
+            })
+          }
+        })
+      })
     },
     operationRes(res) {
       if (res.data === 'success') {

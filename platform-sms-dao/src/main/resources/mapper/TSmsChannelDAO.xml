@@ -11,6 +11,7 @@
     <result column="channel_domain" jdbcType="VARCHAR" property="channelDomain" />
     <result column="ext_properties" jdbcType="VARCHAR" property="extProperties" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="sign_name" jdbcType="VARCHAR" property="signName" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="send_order" jdbcType="INTEGER" property="sendOrder" />
@@ -23,6 +24,7 @@
       channel_appsecret,
       channel_domain,
       ext_properties,
+      sign_name,
      `status`,
       create_time,
       update_time,
@@ -41,12 +43,12 @@
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.domain.TSmsChannel" useGeneratedKeys="true">
     insert into t_sms_channel (id, channel_type,
                                channel_appkey, channel_appsecret,
-                               channel_domain, ext_properties, `status`,
+                               channel_domain, ext_properties, sign_name,  `status`,
       create_time, update_time, send_order
       )
     values (#{id,jdbcType=TINYINT}, #{channelType,jdbcType=TINYINT},
        #{channelAppkey,jdbcType=VARCHAR}, #{channelAppsecret,jdbcType=VARCHAR},
-      #{channelDomain,jdbcType=VARCHAR}, #{extProperties,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
+      #{channelDomain,jdbcType=VARCHAR}, #{extProperties,jdbcType=VARCHAR},  #{signName,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{sendOrder,jdbcType=INTEGER}
       )
   </insert>
@@ -70,6 +72,9 @@
       </if>
       <if test="extProperty != null">
         ext_properties,
+      </if>
+      <if test="signName != null">
+        sign_name,
       </if>
       <if test="status != null">
         `status`,
@@ -103,6 +108,9 @@
       <if test="extProperty != null">
         #{extProperties,jdbcType=VARCHAR},
       </if>
+      <if test="signName != null">
+        #{signName,jdbcType=VARCHAR},
+      </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
       </if>
@@ -135,6 +143,9 @@
       <if test="extProperties != null">
         ext_properties = #{extProperties,jdbcType=VARCHAR},
       </if>
+      <if test="signName != null">
+        sign_name = #{signName,jdbcType=VARCHAR},
+      </if>
       <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
       </if>
@@ -158,6 +169,7 @@
       channel_appsecret = #{channelAppsecret,jdbcType=VARCHAR},
       channel_domain = #{channelDomain,jdbcType=VARCHAR},
       ext_properties = #{extProperties,jdbcType=VARCHAR},
+      sign_name = #{signName,jdbcType=VARCHAR},
       `status` = #{status,jdbcType=TINYINT},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       send_order = #{sendOrder,jdbcType=INTEGER}

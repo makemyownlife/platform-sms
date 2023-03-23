@@ -38,8 +38,13 @@ public class SmsController {
     }
 
     @PostMapping(value = "/addSmsChannel")
-    public BaseModel addSmsChannel(@RequestBody  TSmsChannel tSmsChannel) {
+    public BaseModel addSmsChannel(@RequestBody TSmsChannel tSmsChannel) {
         return smsChannelService.addSmsChannel(tSmsChannel);
+    }
+
+    @PostMapping(value = "/deleteSmsChannel")
+    public BaseModel deleteSmsChannel(String id) {
+        return smsChannelService.deleteSmsChannel(id);
     }
 
 }
