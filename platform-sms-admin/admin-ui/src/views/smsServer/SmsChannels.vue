@@ -29,7 +29,7 @@
           {{ scope.row.channelType }}
         </template>
       </el-table-column>
-      <el-table-column label="appkey" min-width="80" align="center">
+      <el-table-column label="appkey" min-width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.channelAppkey }}</span>
         </template>
@@ -39,12 +39,12 @@
           {{ scope.row.channelAppsecret }}
         </template>
       </el-table-column>
-      <el-table-column label="请求主体" min-width="150" align="center">
+      <el-table-column label="请求主体" min-width="120" align="center">
         <template slot-scope="scope">
           {{ scope.row.channelDomain }}
         </template>
       </el-table-column>
-      <el-table-column label="签名名称" min-width="150" align="center">
+      <el-table-column label="签名名称" min-width="55" align="center">
         <template slot-scope="scope">
           {{ scope.row.signName }}
         </template>
@@ -54,7 +54,7 @@
           {{ scope.row.updateTime }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="操作" min-width="90" align="center">
+      <el-table-column class-name="status-col" label="操作" min-width="70" align="center">
         <template slot-scope="scope">
           <el-dropdown trigger="click">
             <el-button type="primary" size="mini">
