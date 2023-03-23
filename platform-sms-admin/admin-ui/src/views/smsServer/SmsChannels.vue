@@ -44,17 +44,17 @@
           {{ scope.row.channelDomain }}
         </template>
       </el-table-column>
-      <el-table-column label="签名名称" min-width="55" align="center">
+      <el-table-column label="签名名称" min-width="50" align="center">
         <template slot-scope="scope">
           {{ scope.row.signName }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="修改时间" min-width="80" align="center">
+      <el-table-column class-name="status-col" label="修改时间" min-width="62" align="center">
         <template slot-scope="scope">
           {{ scope.row.updateTime }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="操作" min-width="70" align="center">
+      <el-table-column class-name="status-col" label="操作" min-width="65" align="center">
         <template slot-scope="scope">
           <el-dropdown trigger="click">
             <el-button type="primary" size="mini">
