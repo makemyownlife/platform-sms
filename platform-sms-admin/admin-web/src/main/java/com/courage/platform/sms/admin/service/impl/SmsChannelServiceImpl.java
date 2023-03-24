@@ -48,6 +48,20 @@ public class SmsChannelServiceImpl implements SmsChannelService {
     }
 
     @Override
+    public BaseModel updateSmsChannel(TSmsChannel tSmsChannel) {
+        try {
+            tSmsChannel.setUpdateTime(new Date());
+            tSmsChannel.setExtProperties(StringUtils.trimToEmpty(tSmsChannel.getExtProperties()));
+            tSmsChannel.setStatus((byte) 0);
+            tSmsChannelDAO.updateByPrimaryKey(tSmsChannel);
+            return BaseModel.getInstance("success");
+        } catch (Exception e) {
+            logger.error("addSmsChannel error:", e);
+            return BaseModel.getInstance("fail");
+        }
+    }
+
+    @Override
     public BaseModel deleteSmsChannel(String id) {
         try {
             tSmsChannelDAO.deleteByPrimaryKey(Integer.valueOf(id));

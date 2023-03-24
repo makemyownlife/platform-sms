@@ -61,7 +61,6 @@
               操作<i class="el-icon-arrow-down el-icon--right"/>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="handleView(scope.row)">查看</el-dropdown-item>
               <el-dropdown-item @click.native="handleUpdate(scope.row)">修改</el-dropdown-item>
               <el-dropdown-item @click.native="handleDelete(scope.row)">删除</el-dropdown-item>
             </el-dropdown-menu>
@@ -110,7 +109,7 @@
 
 <script>
 
-import {getSmsChannels , addSmsChannel ,deleteSmsChannel} from '@/api/smsChannel'
+import {getSmsChannels, addSmsChannel, deleteSmsChannel, updateSmsChannel} from '@/api/smsChannel'
 
 export default {
   filters: {
@@ -219,13 +218,21 @@ export default {
             })
           }
           if (this.dialogStatus === 'update') {
-
+            updateSmsChannel(this.channelModel).then(res => {
+              this.operationRes(res)
+            })
           }
         }
       })
     },
     handleUpdate(row) {
-
+      this.resetModel()
+      this.channelModel = Object.assign({}, row)
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     handleDelete(row) {
       this.$confirm('删除渠道信息密钥无法使用', '确定删除渠道信息', {
