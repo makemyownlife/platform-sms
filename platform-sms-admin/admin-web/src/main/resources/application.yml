@@ -24,3 +24,9 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*DAO.xml
   type-aliases-package: com.courage.platform.sms.domain
+
+## 短信管理端用户/密码
+sms:
+  adminUser: admin
+  adminPasswd: admin1984
+
