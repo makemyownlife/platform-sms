@@ -136,7 +136,7 @@
 
   <!-- 按条件分页查询 start -->
   <select id="selectAppInfoListPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
-    <!-- 分页参数：page 和 pageSize -->
+    <!-- 分页参数：page 和 size -->
     <bind name="start" value="(page - 1) * size"/>
     <bind name="end" value="size"/>
     select
