@@ -64,20 +64,17 @@
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
       <el-form ref="dataForm" :rules="rules" :model="appInfoModel" label-position="left" label-width="120px"
                style="width: 400px; margin-left:30px;">
-        <el-form-item label="appkey" prop="channelAppkey">
+        <el-form-item label="应用名称" prop="appName">
+          <el-input v-model="appInfoModel.appName"/>
+        </el-form-item>
+        <el-form-item label="应用 key" prop="appkey">
           <el-input v-model="appInfoModel.appkey"/>
         </el-form-item>
-        <el-form-item label="appsecret" prop="channelAppsecret">
+        <el-form-item label="应用密钥" prop="appsecret">
           <el-input v-model="appInfoModel.appsecret"/>
         </el-form-item>
-        <el-form-item label="请求地址" prop="channelDomain">
-          <el-input v-model="appInfoModel.channelDomain"/>
-        </el-form-item>
-        <el-form-item label="签名名称" prop="signName">
-          <el-input v-model="appInfoModel.signName"/>
-        </el-form-item>
-        <el-form-item label="附件属性" prop="extProperties">
-          <el-input v-model="appInfoModel.extProperties" type="textarea"/>
+        <el-form-item label="备注" prop="extProperties">
+          <el-input v-model="appInfoModel.remark" type="textarea"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -136,14 +133,15 @@ export default {
       appInfoModel: {
         id: undefined,
         appkey: null,
+        appName: null,
         appsecret: null,
+        remark: null,
         updateTime: null
       },
       rules: {
+        appName: [{required: true, message: '应用名称不能为空', trigger: 'change'}],
         appkey: [{required: true, message: '应用key不能为空', trigger: 'change'}],
-        channelDomain: [{required: true, message: '渠道访问地址不能为空', trigger: 'change'}],
-        signName: [{required: true, message: '渠道签名不能为空', trigger: 'change'}],
-        channelAppsecret: [{required: true, message: '渠道secret不能为空', trigger: 'change'}]
+        appsecret: [{required: true, message: '应用密钥不能为空', trigger: 'change'}]
       },
       dialogStatus: 'create'
     }
@@ -169,11 +167,11 @@ export default {
     resetModel() {
       this.appInfoModel = {
         id: undefined,
-        channelType: '',
-        channelAppkey: null,
-        channelAppsecret: null,
-        channelDomain: null,
-        extProperties: null
+        appkey: null,
+        appName: null,
+        appsecret: null,
+        remark: null,
+        updateTime: null
       }
     },
     handleCreate() {
@@ -188,12 +186,12 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.dialogStatus === 'create') {
-            addSmsChannel(this.appInfoModel).then(res => {
+            addAppInfo(this.appInfoModel).then(res => {
               this.operationRes(res)
             })
           }
           if (this.dialogStatus === 'update') {
-            updateSmsChannel(this.appInfoModel).then(res => {
+            updateAppInfo(this.appInfoModel).then(res => {
               this.operationRes(res)
             })
           }
@@ -210,7 +208,7 @@ export default {
       })
     },
     handleDelete(row) {
-      this.$confirm('删除渠道信息密钥无法使用', '确定删除渠道信息', {
+      this.$confirm('删除应用后无法使用', '确定删除应用信息', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -219,12 +217,12 @@ export default {
           if (res.data === 'success') {
             this.fetchData()
             this.$message({
-              message: '删除渠道信息成功',
+              message: '删除应用信息成功',
               type: 'success'
             })
           } else {
             this.$message({
-              message: '删除渠道信息失败',
+              message: '删除应用信息失败',
               type: 'error'
             })
           }
