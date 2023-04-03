@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-input v-model="listQuery.channelAppkey" placeholder="应用appkey" style="width: 200px;" class="filter-item"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" plain @click="queryData()">查询</el-button>
-      <el-button class="filter-item" type="primary" @click="handleCreate()">新建通道</el-button>
+      <el-button class="filter-item" type="primary" @click="handleCreate()">新建应用</el-button>
       <el-button class="filter-item" type="info" @click="fetchData()">刷新列表</el-button>
     </div>
     <el-table
@@ -35,6 +35,10 @@
         </template>
       </el-table-column>
       <el-table-column label="状态" min-width="50" align="center">
+        <template slot-scope="scope">
+          <p v-if="scope.row.status === 0">正常</p>
+          <p v-if="scope.row.status === 1">失效</p>
+        </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="修改时间" min-width="62" align="center">
         <template slot-scope="scope">
@@ -58,22 +62,22 @@
 
     <!--   模态窗口 start  -->
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
-      <el-form ref="dataForm" :rules="rules" :model="channelModel" label-position="left" label-width="120px"
+      <el-form ref="dataForm" :rules="rules" :model="appInfoModel" label-position="left" label-width="120px"
                style="width: 400px; margin-left:30px;">
         <el-form-item label="appkey" prop="channelAppkey">
-          <el-input v-model="channelModel.channelAppkey"/>
+          <el-input v-model="appInfoModel.appkey"/>
         </el-form-item>
         <el-form-item label="appsecret" prop="channelAppsecret">
-          <el-input v-model="channelModel.channelAppsecret"/>
+          <el-input v-model="appInfoModel.appsecret"/>
         </el-form-item>
         <el-form-item label="请求地址" prop="channelDomain">
-          <el-input v-model="channelModel.channelDomain"/>
+          <el-input v-model="appInfoModel.channelDomain"/>
         </el-form-item>
         <el-form-item label="签名名称" prop="signName">
-          <el-input v-model="channelModel.signName"/>
+          <el-input v-model="appInfoModel.signName"/>
         </el-form-item>
         <el-form-item label="附件属性" prop="extProperties">
-          <el-input v-model="channelModel.extProperties" type="textarea"/>
+          <el-input v-model="appInfoModel.extProperties" type="textarea"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -126,25 +130,17 @@ export default {
       dialogFormVisible: false,
       dialogInstances: false,
       textMap: {
-        create: '新建渠道',
-        update: '修改渠道'
+        create: '新建应用',
+        update: '修改应用'
       },
-      channelTypes: [
-        {text: '阿里云', value: 'aliyun'},
-        {text: '亿美', value: 'emay'}
-      ],
-      channelModel: {
+      appInfoModel: {
         id: undefined,
-        channelType: '',
-        channelAppkey: null,
-        channelAppsecret: null,
-        channelDomain: null,
-        signName: null,
-        extProperties: null
+        appkey: null,
+        appsecret: null,
+        updateTime: null
       },
       rules: {
-        channelType: [{required: true, message: '渠道类型不能为空', trigger: 'change'}],
-        channelAppkey: [{required: true, message: '渠道key不能为空', trigger: 'change'}],
+        appkey: [{required: true, message: '应用key不能为空', trigger: 'change'}],
         channelDomain: [{required: true, message: '渠道访问地址不能为空', trigger: 'change'}],
         signName: [{required: true, message: '渠道签名不能为空', trigger: 'change'}],
         channelAppsecret: [{required: true, message: '渠道secret不能为空', trigger: 'change'}]
@@ -171,7 +167,7 @@ export default {
       this.fetchData()
     },
     resetModel() {
-      this.channelModel = {
+      this.appInfoModel = {
         id: undefined,
         channelType: '',
         channelAppkey: null,
@@ -192,12 +188,12 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.dialogStatus === 'create') {
-            addSmsChannel(this.channelModel).then(res => {
+            addSmsChannel(this.appInfoModel).then(res => {
               this.operationRes(res)
             })
           }
           if (this.dialogStatus === 'update') {
-            updateSmsChannel(this.channelModel).then(res => {
+            updateSmsChannel(this.appInfoModel).then(res => {
               this.operationRes(res)
             })
           }
@@ -206,7 +202,7 @@ export default {
     },
     handleUpdate(row) {
       this.resetModel()
-      this.channelModel = Object.assign({}, row)
+      this.appInfoModel = Object.assign({}, row)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
