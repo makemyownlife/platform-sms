@@ -8,6 +8,14 @@ export function getSmsChannels(params) {
   })
 }
 
+export function getAppList(params) {
+  return request({
+    url: '/sms/appList',
+    method: 'post',
+    params: params
+  })
+}
+
 export function addSmsChannel(data) {
   return request({
     url: '/sms/addSmsChannel',

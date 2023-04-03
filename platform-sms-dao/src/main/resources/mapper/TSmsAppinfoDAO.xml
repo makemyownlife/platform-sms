@@ -134,4 +134,31 @@
     from t_sms_appinfo
   </select>
 
+  <!-- 按条件分页查询 start -->
+  <select id="selectAppInfoListPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    <!-- 分页参数：page 和 pageSize -->
+    <bind name="start" value="(page - 1) * size"/>
+    <bind name="end" value="size"/>
+    select
+    <include refid="Base_Column_List" />
+    from t_sms_appinfo t
+    where  1 = 1
+    <if test="appkey != null and appkey != ''">
+      and app_key = #{appKey,jdbcType=VARCHAR}
+    </if>
+    order by t.update_time desc
+    LIMIT #{start}, #{end}
+  </select>
+
+  <select id="selectAppInfoCount" parameterType="java.util.HashMap" resultType="int">
+    select
+    count(1)
+    from t_sms_appinfo t
+    where  1 = 1
+    <if test="appKey != null">
+      and app_key = #{appKey,jdbcType=VARCHAR}
+    </if>
+   </select>
+  <!-- 按条件分页查询 end  -->
+
 </mapper>
