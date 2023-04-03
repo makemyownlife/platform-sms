@@ -6,7 +6,7 @@
         <el-option key="-1" label="支付宝" value="aliyun"/>
         <el-option key="0" label="亿美" value="emay"/>
       </el-select>
-      <el-input v-model="listQuery.channelAppkey" placeholder="appkey" style="width: 200px;" class="filter-item"/>
+      <el-input v-model="listQuery.channelAppkey" placeholder="短信渠道appkey" style="width: 200px;" class="filter-item"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" plain @click="queryData()">查询</el-button>
       <el-button class="filter-item" type="primary" @click="handleCreate()">新建通道</el-button>
       <el-button class="filter-item" type="info" @click="fetchData()">刷新列表</el-button>
@@ -135,7 +135,6 @@ export default {
       list: null,
       listLoading: true,
       listLoading2: true,
-      serverIdTmp: null,
       smsChannels: [],
       count: 0,
       listQuery: {
