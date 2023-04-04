@@ -36,8 +36,8 @@
       </el-table-column>
       <el-table-column label="状态" min-width="50" align="center">
         <template slot-scope="scope">
-          <p v-if="scope.row.status === 0">正常</p>
-          <p v-if="scope.row.status === 1">失效</p>
+          <font v-if="scope.row.status === 0" color="green">正常</font>
+          <font v-if="scope.row.status === 1" color="gray">失效</font>
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="修改时间" min-width="62" align="center">
@@ -83,7 +83,6 @@
       </div>
     </el-dialog>
     <!--    模态窗口 end   -->
-
   </div>
 
 </template>
@@ -150,9 +149,9 @@ export default {
       },
       appInfoModel: {
         id: undefined,
-        appkey: null,
+        appKey: null,
         appName: null,
-        appsecret: null,
+        appSecret: null,
         remark: null,
         updateTime: null
       },
