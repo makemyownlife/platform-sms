@@ -43,17 +43,17 @@ public class AppInfoController {
 
     @PostMapping(value = "/addAppInfo")
     public BaseModel addAppInfo(@RequestBody TSmsAppinfo appinfo) {
-        return BaseModel.getInstance(null);
+        return appInfoService.addAppInfo(appinfo);
     }
 
     @PostMapping(value = "/updateAppInfo")
     public BaseModel updateAppInfo(@RequestBody TSmsAppinfo appinfo) {
-        return BaseModel.getInstance(null);
+        return appInfoService.updateAppInfo(appinfo);
     }
 
     @PostMapping(value = "/deleteAppInfo")
     public BaseModel deleteAppInfo(String id) {
-        return BaseModel.getInstance(null);
+        return appInfoService.deleteAppInfo(id);
     }
 
 

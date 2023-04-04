@@ -4,9 +4,9 @@ public class BaseModel<T> {
 
     private Integer code = 20000;
 
-    private String  message;
+    private String message;
 
-    private T       data;
+    private T data;
 
     public Integer getCode() {
         return code;
@@ -35,6 +35,13 @@ public class BaseModel<T> {
     public static <T> BaseModel<T> getInstance(T data) {
         BaseModel<T> baseModel = new BaseModel<>();
         baseModel.data = data;
+        return baseModel;
+    }
+
+    public static <T> BaseModel<T> getInstance(T data, String message) {
+        BaseModel<T> baseModel = new BaseModel<>();
+        baseModel.data = data;
+        baseModel.message = message;
         return baseModel;
     }
 

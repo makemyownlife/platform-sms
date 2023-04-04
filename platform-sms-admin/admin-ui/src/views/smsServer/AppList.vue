@@ -68,10 +68,10 @@
           <el-input v-model="appInfoModel.appName"/>
         </el-form-item>
         <el-form-item label="应用 key" prop="appkey">
-          <el-input v-model="appInfoModel.appkey"/>
+          <el-input v-model="appInfoModel.appKey"/>
         </el-form-item>
         <el-form-item label="应用密钥" prop="appsecret">
-          <el-input v-model="appInfoModel.appsecret"/>
+          <el-input v-model="appInfoModel.appSecret"/>
         </el-form-item>
         <el-form-item label="备注" prop="extProperties">
           <el-input v-model="appInfoModel.remark" type="textarea"/>
@@ -158,8 +158,8 @@ export default {
       },
       rules: {
         appName: [{required: true, message: '应用名称不能为空', trigger: 'change'}],
-        appkey: [{required: true, message: '应用key不能为空', trigger: 'change'}],
-        appsecret: [{required: true, message: '应用密钥不能为空', trigger: 'change'}]
+        appKey: [{required: true, message: '应用key不能为空', trigger: 'change'}],
+        appSecret: [{required: true, message: '应用密钥不能为空', trigger: 'change'}]
       },
       dialogStatus: 'create'
     }
@@ -185,9 +185,9 @@ export default {
     resetModel() {
       this.appInfoModel = {
         id: undefined,
-        appkey: null,
+        appKey: null,
         appName: null,
-        appsecret: null,
+        appSecret: null,
         remark: null,
         updateTime: null
       }
@@ -196,8 +196,8 @@ export default {
       this.resetModel()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      this.appInfoModel.appkey = generateAppKey();
-      this.appInfoModel.appsecret = generateMD5Hash(generateAppKey() + '1235')
+      this.appInfoModel.appKey = generateAppKey();
+      this.appInfoModel.appSecret = generateMD5Hash(generateAppKey() + '1235')
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -233,7 +233,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteSmsChannel(row.id).then((res) => {
+        deleteAppInfo(row.id).then((res) => {
           if (res.data === 'success') {
             this.fetchData()
             this.$message({
@@ -270,7 +270,7 @@ export default {
 function generateAppKey() {
   const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let appKey = '';
-  for (let i = 0; i < 32; i++) {
+  for (let i = 0; i < 16; i++) {
     appKey += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return appKey;

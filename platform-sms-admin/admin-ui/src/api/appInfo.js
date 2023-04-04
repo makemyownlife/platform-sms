@@ -1,13 +1,5 @@
 import request from '@/utils/request'
 
-export function getSmsChannels(params) {
-  return request({
-    url: '/sms/channels',
-    method: 'post',
-    params: params
-  })
-}
-
 export function getAppList(params) {
   return request({
     url: '/sms/appList',
@@ -16,24 +8,24 @@ export function getAppList(params) {
   })
 }
 
-export function addSmsChannel(data) {
+export function addAppInfo(data) {
   return request({
-    url: '/sms/addSmsChannel',
+    url: '/sms/addAppInfo',
     method: 'post',
     data
   })
 }
 
-export function deleteSmsChannel(data) {
+export function deleteAppInfo(data) {
   return request({
-    url: '/sms/deleteSmsChannel?id=' + data,
+    url: '/sms/deleteAppInfo?id=' + data,
     method: 'post'
   })
 }
 
-export function updateSmsChannel(data) {
+export function updateAppInfo(data) {
   return request({
-    url: '/sms/updateSmsChannel',
+    url: '/sms/updateAppInfo',
     method: 'post',
     data
   })
