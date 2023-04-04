@@ -92,6 +92,24 @@
 
 import {getAppList, addAppInfo, updateAppInfo, deleteAppInfo} from '@/api/appInfo.js'
 
+const crypto = require('crypto');
+
+// Define function to generate MD5 hash
+function generateMD5Hash(data) {
+  // Create hash object
+  const hash = crypto.createHash('md5');
+
+  // Update hash object with data
+  hash.update(data);
+
+  // Generate hash digest
+  const digest = hash.digest('hex');
+
+  // Return hash digest
+  return digest;
+}
+
+
 export default {
   filters: {
     statusFilter(status) {
@@ -178,6 +196,8 @@ export default {
       this.resetModel()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      this.appInfoModel.appkey = generateAppKey();
+      this.appInfoModel.appsecret = generateMD5Hash(generateAppKey() + '1235')
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -246,4 +266,14 @@ export default {
     },
   }
 }
+
+function generateAppKey() {
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let appKey = '';
+  for (let i = 0; i < 32; i++) {
+    appKey += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return appKey;
+}
+
 </script>
