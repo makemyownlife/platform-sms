@@ -54,7 +54,7 @@ public class AppInfoController {
     @PostMapping(value = "/deleteAppInfo")
     public BaseModel deleteAppInfo(String id) {
         return appInfoService.deleteAppInfo(id);
-    }
+}
 
 
 }
