@@ -42,7 +42,10 @@ public class SenderController {
             logger.info("q:" + q + " appKey:" + appKey + " uniqueId:" + uniqueId);
             //发送消息
             String tag = "template";
-            SendResult sendResult = rocketMQTemplate.syncSend(smsTopic + ":" + tag, MessageBuilder.withPayload(q).setHeader(MessageConst.PROPERTY_KEYS, uniqueId).build());
+            SendResult sendResult = rocketMQTemplate.syncSend(
+                    smsTopic + ":" + tag,
+                    //链式调用
+                    MessageBuilder.withPayload(q).setHeader(MessageConst.PROPERTY_KEYS, uniqueId).build());
             logger.info("uniqueId：" + uniqueId + " sendResult:" + sendResult);
             if (sendResult != null) {
                 if (sendResult.getSendStatus() == SendStatus.SEND_OK) {

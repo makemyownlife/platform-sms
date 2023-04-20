@@ -50,7 +50,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: '主页',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '主页', icon: 'dashboard' }
+      meta: {title: '主页', icon: 'dashboard'}
     }],
     hidden: true
   },
@@ -62,7 +62,7 @@ export const constantRoutes = [
       path: 'user',
       name: '用户信息',
       component: () => import('@/views/sys/UserInfo'),
-      meta: { title: '用户信息' }
+      meta: {title: '用户信息'}
     }],
     hidden: true
   },
@@ -71,49 +71,49 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/smsServer/channels',
     name: '短信平台服务',
-    meta: { title: '短信平台服务', icon: 'example' },
+    meta: {title: '短信平台服务', icon: 'example'},
     children: [
       {
         path: 'appList',
         name: '应用管理',
         component: () => import('@/views/smsServer/AppList'),
-        meta: { title: '应用管理', icon: 'tree' }
+        meta: {title: '应用管理', icon: 'tree'}
       },
       {
         path: 'channels',
         name: '渠道管理',
         component: () => import('@/views/smsServer/SmsChannels'),
-        meta: { title: '渠道管理', icon: 'tree' }
+        meta: {title: '渠道管理', icon: 'tree'}
+      },
+      {
+        path: 'templateList',
+        name: '模版管理',
+        component: () => import('@/views/smsServer/SmsTemplates'),
+        meta: {title: '模版管理', icon: 'nested'}
       }
-      // {
-      //   path: 'templateList',
-      //   name: '模版管理',
-      //   component: () => import('@/views/smsServer/SmsTemplates'),
-      //   meta: { title: '模版管理', icon: 'nested' }
-      // },
       // {
       //   path: 'smsList',
       //   name: '短信管理',
       //   component: () => import('@/views/smsServer/SmsList'),
       //   meta: { title: '短信管理', icon: 'form' }
       // }
-    //   ,
-    //   {
-    //   path: 'ruleList',
-    //     name: '规则管理',
-    //   component: () => import('@/views/smsServer/RuleList'),
-    //   meta: { title: '规则管理', icon: 'password' }
-    // }
+      //   ,
+      //   {
+      //   path: 'ruleList',
+      //     name: '规则管理',
+      //   component: () => import('@/views/smsServer/RuleList'),
+      //   meta: { title: '规则管理', icon: 'password' }
+      // }
     ]
   },
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  {path: '*', redirect: '/404', hidden: true}
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({y: 0}),
   routes: constantRoutes
 })
 

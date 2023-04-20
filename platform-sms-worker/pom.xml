@@ -60,10 +60,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-spring-boot-starter</artifactId>
-            <version>2.2.3</version>
-        </dependency>
+        <groupId>org.apache.rocketmq</groupId>
+        <artifactId>rocketmq-spring-boot-starter</artifactId>
+        <version>2.2.3</version>
+    </dependency>
 
         <!-- 适配器核心包 start -->
         <dependency>
