@@ -11,7 +11,7 @@
  Target Server Version : 50718
  File Encoding         : 65001
 
- Date: 02/05/2023 12:20:15
+ Date: 02/05/2023 15:27:19
 */
 
 SET NAMES utf8mb4;
@@ -36,16 +36,6 @@ CREATE TABLE `t_platform_appinfo` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of t_platform_appinfo
--- ----------------------------
-BEGIN;
-INSERT INTO `t_platform_appinfo` (`id`, `app_name`, `app_key`, `app_secret`, `status`, `remark`, `create_time`, `update_time`) VALUES (1, 'scheduleconsole', '140002', '1000', 0, NULL, '2019-11-06 17:08:03', '2019-11-06 17:08:03');
-INSERT INTO `t_platform_appinfo` (`id`, `app_name`, `app_key`, `app_secret`, `status`, `remark`, `create_time`, `update_time`) VALUES (2, 'com.courage.test22', '140001', '1001', 0, NULL, '2019-11-06 17:08:31', '2019-11-06 17:08:31');
-INSERT INTO `t_platform_appinfo` (`id`, `app_name`, `app_key`, `app_secret`, `status`, `remark`, `create_time`, `update_time`) VALUES (3, 'usercenter', '140003', '1002', 0, '用户中心', '2019-11-12 11:41:30', '2019-12-02 15:36:33');
-INSERT INTO `t_platform_appinfo` (`id`, `app_name`, `app_key`, `app_secret`, `status`, `remark`, `create_time`, `update_time`) VALUES (4, 'mytest', '140004', '76f620b1c958a5ea5eddc53aea931e88', 0, 'haha哈哈哈 ', '2019-12-02 15:42:15', '2019-12-02 15:42:15');
-COMMIT;
-
--- ----------------------------
 -- Table structure for t_platform_namesrv
 -- ----------------------------
 DROP TABLE IF EXISTS `t_platform_namesrv`;
@@ -60,12 +50,6 @@ CREATE TABLE `t_platform_namesrv` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_namesrv_ip_key` (`namesrv_ip`) USING BTREE COMMENT 'ip 唯一索引'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_platform_namesrv
--- ----------------------------
-BEGIN;
-COMMIT;
 
 -- ----------------------------
 -- Table structure for t_schedule_job_info
@@ -96,18 +80,6 @@ CREATE TABLE `t_schedule_job_info` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
--- Records of t_schedule_job_info
--- ----------------------------
-BEGIN;
-INSERT INTO `t_schedule_job_info` (`id`, `app_id`, `app_name`, `job_name`, `job_type`, `job_description`, `job_cron`, `job_param`, `job_handler`, `route_mode`, `author`, `alarm_email`, `status`, `trigger_next_time`, `trigger_last_time`, `create_time`, `update_time`) VALUES (4, 1000, 'scheduleconsole', '远方的人', 0, '', '0,2,12 * * * * ?', '林 hello', 'demo', 0, '张勇', 'zhangyong7120180@163.com', 1, NULL, NULL, '2019-11-06 18:54:57', '2019-11-07 09:55:40');
-INSERT INTO `t_schedule_job_info` (`id`, `app_id`, `app_name`, `job_name`, `job_type`, `job_description`, `job_cron`, `job_param`, `job_handler`, `route_mode`, `author`, `alarm_email`, `status`, `trigger_next_time`, `trigger_last_time`, `create_time`, `update_time`) VALUES (6, 1001, 'com.courage.test22', '高慧的样子123', 0, '', '0/5 * * * * ?', '', 'demo2.test23.mytime', 0, '张勇113林', 'zhangyong7120180@163.com', 1, NULL, NULL, '2019-11-06 21:44:47', '2019-11-07 09:55:35');
-INSERT INTO `t_schedule_job_info` (`id`, `app_id`, `app_name`, `job_name`, `job_type`, `job_description`, `job_cron`, `job_param`, `job_handler`, `route_mode`, `author`, `alarm_email`, `status`, `trigger_next_time`, `trigger_last_time`, `create_time`, `update_time`) VALUES (7, 1000, 'scheduleconsole', '林妹妹啊', 0, '', '0/5 * * * * ?', '{}', 'demo.test3333', 0, '张勇', 'zhangyong7120180@163.com', 1, NULL, NULL, '2019-11-06 23:03:41', '2019-11-11 12:45:26');
-INSERT INTO `t_schedule_job_info` (`id`, `app_id`, `app_name`, `job_name`, `job_type`, `job_description`, `job_cron`, `job_param`, `job_handler`, `route_mode`, `author`, `alarm_email`, `status`, `trigger_next_time`, `trigger_last_time`, `create_time`, `update_time`) VALUES (8, 1000, 'scheduleconsole', '订单列表查询', 0, '', '0/10 */2 * * * ?', '', 'orderList.query', 0, '张志峰', 'zhangyong7120180@163.com', 1, NULL, NULL, '2019-11-06 23:12:40', '2019-11-12 14:20:30');
-INSERT INTO `t_schedule_job_info` (`id`, `app_id`, `app_name`, `job_name`, `job_type`, `job_description`, `job_cron`, `job_param`, `job_handler`, `route_mode`, `author`, `alarm_email`, `status`, `trigger_next_time`, `trigger_last_time`, `create_time`, `update_time`) VALUES (9, 1000, 'scheduleconsole', '史湘云', 0, '', '0,12 * * * * ?', '22222我的东西', 'mytest', 0, '张勇113林', 'zhangyong7120180@163.com', 1, NULL, NULL, '2019-11-06 23:56:31', '2019-11-13 15:29:11');
-INSERT INTO `t_schedule_job_info` (`id`, `app_id`, `app_name`, `job_name`, `job_type`, `job_description`, `job_cron`, `job_param`, `job_handler`, `route_mode`, `author`, `alarm_email`, `status`, `trigger_next_time`, `trigger_last_time`, `create_time`, `update_time`) VALUES (10, 2, 'com.courage.test22', '修改后', 0, '', '0,2,12 * * * * ?', '{}哈哈', 'demo2.test', 0, 'zhangyong', 'zhangyong7120180@163.com', 1, NULL, NULL, '2019-12-02 15:43:24', '2019-12-02 15:43:33');
-COMMIT;
-
--- ----------------------------
 -- Table structure for t_schedule_job_lock
 -- ----------------------------
 DROP TABLE IF EXISTS `t_schedule_job_lock`;
@@ -115,13 +87,6 @@ CREATE TABLE `t_schedule_job_lock` (
   `lock_name` varchar(50) NOT NULL COMMENT '锁名称',
   PRIMARY KEY (`lock_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_schedule_job_lock
--- ----------------------------
-BEGIN;
-INSERT INTO `t_schedule_job_lock` (`lock_name`) VALUES ('schedule_lock');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for t_schedule_job_log
@@ -146,12 +111,6 @@ CREATE TABLE `t_schedule_job_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
--- Records of t_schedule_job_log
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
 -- Table structure for t_sms_appinfo
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sms_appinfo`;
@@ -166,13 +125,6 @@ CREATE TABLE `t_sms_appinfo` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_sms_appinfo
--- ----------------------------
-BEGIN;
-INSERT INTO `t_sms_appinfo` (`id`, `app_key`, `app_name`, `app_secret`, `status`, `remark`, `create_time`, `update_time`) VALUES (1, 'qQjEiFzn80v8VM4h', 'mydemo', '9c465ece754bd26a9be77f3d0e2606bd', 0, '例子', '2023-05-02 12:09:55', '2023-05-02 12:09:55');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for t_sms_channel
@@ -194,12 +146,6 @@ CREATE TABLE `t_sms_channel` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of t_sms_channel
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
 -- Table structure for t_sms_record
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sms_record`;
@@ -219,12 +165,6 @@ CREATE TABLE `t_sms_record` (
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_sms_record
--- ----------------------------
-BEGIN;
-COMMIT;
 
 -- ----------------------------
 -- Table structure for t_sms_record_detail
@@ -249,12 +189,6 @@ CREATE TABLE `t_sms_record_detail` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of t_sms_record_detail
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
 -- Table structure for t_sms_template
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sms_template`;
@@ -262,17 +196,11 @@ CREATE TABLE `t_sms_template` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '模板id，主键自动增加',
   `template_name` varchar(40) NOT NULL COMMENT '模板名称',
   `content` varchar(500) NOT NULL COMMENT '模板内容',
-  `channel` varchar(20) NOT NULL COMMENT '渠道id‘，’分隔',
-  `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态 0：无效 1：有效',
+  `channel_id` varchar(20) NOT NULL COMMENT '渠道id‘ ：绑定签名使用',
+  `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态 0：有效 1：无效',
   `create_time` datetime NOT NULL,
   `update_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_sms_template
--- ----------------------------
-BEGIN;
-COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
