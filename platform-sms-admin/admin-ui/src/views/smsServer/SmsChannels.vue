@@ -8,7 +8,7 @@
       </el-select>
       <el-input v-model="listQuery.channelAppkey" placeholder="短信渠道appkey" style="width: 200px;" class="filter-item"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" plain @click="queryData()">查询</el-button>
-      <el-button class="filter-item" type="primary" @click="handleCreate()">新建签名</el-button>
+      <el-button class="filter-item" type="primary" @click="handleCreate()">新建渠道</el-button>
       <el-button class="filter-item" type="info" @click="fetchData()">刷新列表</el-button>
     </div>
     <el-table
@@ -42,11 +42,6 @@
       <el-table-column label="请求主体" min-width="120" align="center">
         <template slot-scope="scope">
           {{ scope.row.channelDomain }}
-        </template>
-      </el-table-column>
-      <el-table-column label="签名名称" min-width="50" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.signName }}
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="修改时间" min-width="62" align="center">
@@ -146,8 +141,8 @@ export default {
       dialogFormVisible: false,
       dialogInstances: false,
       textMap: {
-        create: '新建签名',
-        update: '修改签名'
+        create: '新建渠道',
+        update: '修改渠道'
       },
       channelTypes: [
         {text: '阿里云', value: 'aliyun'},

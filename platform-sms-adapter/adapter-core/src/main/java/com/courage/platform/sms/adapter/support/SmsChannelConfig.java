@@ -27,9 +27,6 @@ public class SmsChannelConfig {
     //属性 json 格式
     private String extProperties;
 
-    //签名名称
-    private String signName;
-
     //状态 0：正常 1：失效
     private Integer status;
 
@@ -110,12 +107,5 @@ public class SmsChannelConfig {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
-
-    public String getSignName() {
-        return signName;
-    }
-
-    public void setSignName(String signName) {
-        this.signName = signName;
-    }
+    
 }

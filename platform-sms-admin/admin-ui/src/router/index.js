@@ -81,9 +81,9 @@ export const constantRoutes = [
       },
       {
         path: 'channels',
-        name: '签名管理',
+        name: '渠道管理',
         component: () => import('@/views/smsServer/SmsChannels'),
-        meta: {title: '签名管理', icon: 'tree'}
+        meta: {title: '渠道管理', icon: 'tree'}
       },
       {
         path: 'templateList',

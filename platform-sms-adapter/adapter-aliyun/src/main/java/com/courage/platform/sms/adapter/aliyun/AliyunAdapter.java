@@ -38,7 +38,7 @@ public class AliyunAdapter implements OuterAdapter {
         try {
             com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest =
                     new com.aliyun.dysmsapi20170525.models.SendSmsRequest().
-                            setSignName(smsChannelConfig.getSignName()).
+                            setSignName(smsSendRequest.getSignName()).
                             setTemplateCode(smsSendRequest.getTemplateCode()).
                             setPhoneNumbers(smsSendRequest.getPhoneNumbers()).
                             setTemplateParam(smsSendRequest.getTemplateParam());

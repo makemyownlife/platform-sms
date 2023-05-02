@@ -29,7 +29,7 @@
           <span>{{ scope.row.appKey }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="适配渠道" min-width="100" align="center">
+      <el-table-column label="绑定签名" min-width="100" align="center">
 
       </el-table-column>
       <el-table-column label="状态" min-width="50" align="center">

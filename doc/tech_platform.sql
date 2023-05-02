@@ -11,7 +11,7 @@
  Target Server Version : 50718
  File Encoding         : 65001
 
- Date: 02/05/2023 15:27:19
+ Date: 02/05/2023 21:44:06
 */
 
 SET NAMES utf8mb4;
@@ -136,7 +136,6 @@ CREATE TABLE `t_sms_channel` (
   `channel_appkey` varchar(80) NOT NULL COMMENT '渠道用户名',
   `channel_appsecret` varchar(80) NOT NULL COMMENT '渠道密码',
   `channel_domain` varchar(80) NOT NULL COMMENT '渠道请求地址',
-  `sign_name` varchar(20) DEFAULT NULL COMMENT '签名',
   `ext_properties` varchar(200) NOT NULL COMMENT '备用参数',
   `status` tinyint(4) NOT NULL COMMENT '状态0：启用 1：禁用',
   `create_time` datetime NOT NULL,
