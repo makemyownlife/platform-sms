@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class TSmsTemplate implements Serializable {
+
     /**
      * 模板id，主键自动增加
      */
@@ -20,9 +21,9 @@ public class TSmsTemplate implements Serializable {
     private String content;
 
     /**
-     * 渠道id‘，’分隔
+     * 签名
      */
-    private String channel;
+    private String signName;
 
     /**
      * 状态 0：无效 1：有效
@@ -59,14 +60,6 @@ public class TSmsTemplate implements Serializable {
         this.content = content;
     }
 
-    public String getChannel() {
-        return channel;
-    }
-
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
-
     public Byte getStatus() {
         return status;
     }
@@ -91,6 +84,14 @@ public class TSmsTemplate implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public String getSignName() {
+        return signName;
+    }
+
+    public void setSignName(String signName) {
+        this.signName = signName;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -106,7 +107,7 @@ public class TSmsTemplate implements Serializable {
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getTemplateName() == null ? other.getTemplateName() == null : this.getTemplateName().equals(other.getTemplateName()))
             && (this.getContent() == null ? other.getContent() == null : this.getContent().equals(other.getContent()))
-            && (this.getChannel() == null ? other.getChannel() == null : this.getChannel().equals(other.getChannel()))
+            && (this.getSignName() == null ? other.getSignName() == null : this.getSignName().equals(other.getSignName()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
@@ -119,7 +120,7 @@ public class TSmsTemplate implements Serializable {
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getTemplateName() == null) ? 0 : getTemplateName().hashCode());
         result = prime * result + ((getContent() == null) ? 0 : getContent().hashCode());
-        result = prime * result + ((getChannel() == null) ? 0 : getChannel().hashCode());
+        result = prime * result + ((getSignName() == null) ? 0 : getSignName().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
@@ -135,7 +136,7 @@ public class TSmsTemplate implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", templateName=").append(templateName);
         sb.append(", content=").append(content);
-        sb.append(", channel=").append(channel);
+        sb.append(", signName=").append(signName);
         sb.append(", status=").append(status);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
@@ -143,4 +144,6 @@ public class TSmsTemplate implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+
 }

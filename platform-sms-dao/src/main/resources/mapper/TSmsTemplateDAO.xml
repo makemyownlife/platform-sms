@@ -5,7 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="template_name" jdbcType="VARCHAR" property="templateName" />
     <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="channel" jdbcType="VARCHAR" property="channel" />
+    <result column="sign_name" jdbcType="VARCHAR" property="s" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
