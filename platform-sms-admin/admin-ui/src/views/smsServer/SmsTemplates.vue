@@ -87,25 +87,7 @@
 
 <script>
 
-import {getAppList, addAppInfo, updateAppInfo, deleteAppInfo} from '@/api/appInfo.js'
-
-const crypto = require('crypto');
-
-// Define function to generate MD5 hash
-function generateMD5Hash(data) {
-  // Create hash object
-  const hash = crypto.createHash('md5');
-
-  // Update hash object with data
-  hash.update(data);
-
-  // Generate hash digest
-  const digest = hash.digest('hex');
-
-  // Return hash digest
-  return digest;
-}
-
+import {getSmsTemplates,addSmsTemplate,deleteTemplate,updateSmsTemplate} from '@/api/template.js'
 
 export default {
   filters: {
@@ -168,7 +150,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getAppList(this.listQuery).then(res => {
+      getSmsTemplates(this.listQuery).then(res => {
         this.list = res.data.items
         this.count = res.data.count
       }).finally(() => {
@@ -202,16 +184,7 @@ export default {
     dataOperation() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          if (this.dialogStatus === 'create') {
-            addAppInfo(this.appInfoModel).then(res => {
-              this.operationRes(res)
-            })
-          }
-          if (this.dialogStatus === 'update') {
-            updateAppInfo(this.appInfoModel).then(res => {
-              this.operationRes(res)
-            })
-          }
+
         }
       })
     },
@@ -225,52 +198,15 @@ export default {
       })
     },
     handleDelete(row) {
-      this.$confirm('删除应用后无法使用', '确定删除应用信息', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        deleteAppInfo(row.id).then((res) => {
-          if (res.data === 'success') {
-            this.fetchData()
-            this.$message({
-              message: '删除应用信息成功',
-              type: 'success'
-            })
-          } else {
-            this.$message({
-              message: '删除应用信息失败',
-              type: 'error'
-            })
-          }
-        })
-      })
+
     },
     operationRes(res) {
-      if (res.data === 'success') {
-        this.fetchData()
-        this.dialogFormVisible = false
-        this.$message({
-          message: this.textMap[this.dialogStatus] + '成功',
-          type: 'success'
-        })
-      } else {
-        this.$message({
-          message: this.textMap[this.dialogStatus] + '失败',
-          type: 'error'
-        })
-      }
+
     },
   }
 }
 
-function generateAppKey() {
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let appKey = '';
-  for (let i = 0; i < 16; i++) {
-    appKey += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return appKey;
-}
+
+
 
 </script>

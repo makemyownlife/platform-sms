@@ -18,7 +18,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/sms")
-public class SmsController {
+public class SmsChannelController {
 
     private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 

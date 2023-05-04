@@ -10,27 +10,32 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+
   <sql id="Base_Column_List">
     id, template_name, content, channel, `status`, create_time, update_time
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_sms_template
     where id = #{id,jdbcType=BIGINT}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_sms_template
     where id = #{id,jdbcType=BIGINT}
   </delete>
+
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.domain.TSmsTemplate" useGeneratedKeys="true">
-    insert into t_sms_template (template_name, content, channel, 
+    insert into t_sms_template (template_name, content, channel,
       `status`, create_time, update_time
       )
-    values (#{templateName,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{channel,jdbcType=VARCHAR}, 
+    values (#{templateName,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{channel,jdbcType=VARCHAR},
       #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
+
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.domain.TSmsTemplate" useGeneratedKeys="true">
     insert into t_sms_template
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -40,8 +45,8 @@
       <if test="content != null">
         content,
       </if>
-      <if test="channel != null">
-        channel,
+      <if test="signName != null">
+        sign_name,
       </if>
       <if test="status != null">
         `status`,
@@ -60,8 +65,8 @@
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
       </if>
-      <if test="channel != null">
-        #{channel,jdbcType=VARCHAR},
+      <if test="signName != null">
+        #{signName,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
@@ -74,6 +79,7 @@
       </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.domain.TSmsTemplate">
     update t_sms_template
     <set>
@@ -83,8 +89,8 @@
       <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
       </if>
-      <if test="channel != null">
-        channel = #{channel,jdbcType=VARCHAR},
+      <if test="signName != null">
+        sign_name = #{signName,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
@@ -98,14 +104,39 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.domain.TSmsTemplate">
     update t_sms_template
     set template_name = #{templateName,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
-      channel = #{channel,jdbcType=VARCHAR},
+      sign_name = #{signName,jdbcType=VARCHAR},
       `status` = #{status,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <!-- 根据条件查询短信模板列表 -->
+  <select id="queryTemplates" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <bind name="start" value="(page - 1) * size"/>
+    <bind name="end" value="size"/>
+    select id, template_name as templateName, content, sign_name as signName, `status`, create_time as createTime, update_time as updateTime
+    from t_sms_template t
+    <where>
+      <if test="templateName != null and templateName != ''">
+        and template_name like CONCAT('%', #{templateName}, '%')
+      </if>
+      <if test="signName != null and signName != ''">
+        and sign_name like CONCAT('%', #{signName}, '%')
+      </if>
+      <if test="status != null">
+        and `status` = #{status}
+      </if>
+    </where>
+    order by t.update_time desc
+    LIMIT #{start}, #{end}
+  </select>
+
+
+
 </mapper>
