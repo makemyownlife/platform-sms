@@ -18,6 +18,11 @@ public class TSmsChannel implements Serializable {
     private String channelType;
 
     /**
+     * 渠道名称
+     */
+    private String channelName;
+
+    /**
      * 渠道用户名
      */
     private String channelAppkey;
@@ -133,12 +138,12 @@ public class TSmsChannel implements Serializable {
         this.sendOrder = sendOrder;
     }
 
-    public String getSignName() {
-        return signName;
+    public String getChannelName() {
+        return channelName;
     }
 
-    public void setSignName(String signName) {
-        this.signName = signName;
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 
 }

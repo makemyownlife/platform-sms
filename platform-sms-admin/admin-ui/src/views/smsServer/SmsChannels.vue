@@ -29,6 +29,11 @@
           {{ scope.row.channelType }}
         </template>
       </el-table-column>
+      <el-table-column label="渠道名称" min-width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.channelName }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="appkey" min-width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.channelAppkey }}</span>
@@ -74,6 +79,9 @@
             <el-option key="-1" label="支付宝" value="aliyun"/>
             <el-option key="0" label="亿美" value="emay"/>
           </el-select>
+        </el-form-item>
+        <el-form-item label="渠道名称" prop="channelName">
+          <el-input v-model="channelModel.channelName"/>
         </el-form-item>
         <el-form-item label="appkey" prop="channelAppkey">
           <el-input v-model="channelModel.channelAppkey"/>
@@ -151,6 +159,7 @@ export default {
       channelModel: {
         id: undefined,
         channelType: '',
+        channelName: '',
         channelAppkey: null,
         channelAppsecret: null,
         channelDomain: null,
@@ -160,6 +169,7 @@ export default {
       rules: {
         channelType: [{required: true, message: '渠道类型不能为空', trigger: 'change'}],
         channelAppkey: [{required: true, message: '渠道key不能为空', trigger: 'change'}],
+        channelName: [{required: true, message: '渠道名称不能为空', trigger: 'change'}],
         channelDomain: [{required: true, message: '渠道访问地址不能为空', trigger: 'change'}],
         signName: [{required: true, message: '渠道签名不能为空', trigger: 'change'}],
         channelAppsecret: [{required: true, message: '渠道secret不能为空', trigger: 'change'}]

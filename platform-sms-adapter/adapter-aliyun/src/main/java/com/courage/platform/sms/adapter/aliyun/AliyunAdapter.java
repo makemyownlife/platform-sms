@@ -56,7 +56,6 @@ public class AliyunAdapter implements OuterAdapter {
 
     @Override
     public void destroy() {
-
     }
 
 }

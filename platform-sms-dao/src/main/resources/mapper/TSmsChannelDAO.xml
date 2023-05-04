@@ -7,6 +7,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="channel_type" jdbcType="TINYINT" property="channelType" />
     <result column="channel_appkey" jdbcType="VARCHAR" property="channelAppkey" />
+    <result column="channel_name" jdbcType="VARCHAR" property="channelAppkey" />
     <result column="channel_appsecret" jdbcType="VARCHAR" property="channelAppsecret" />
     <result column="channel_domain" jdbcType="VARCHAR" property="channelDomain" />
     <result column="ext_properties" jdbcType="VARCHAR" property="extProperties" />
@@ -20,6 +21,7 @@
       id,
       channel_type,
       channel_appkey,
+      channel_name,
       channel_appsecret,
       channel_domain,
       ext_properties,
@@ -39,12 +41,13 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.domain.TSmsChannel" useGeneratedKeys="true">
-    insert into t_sms_channel (id, channel_type,
+    insert into t_sms_channel (id, channel_type,channel_name,
                                channel_appkey, channel_appsecret,
                                channel_domain, ext_properties,  `status`,
       create_time, update_time, send_order
       )
     values (#{id,jdbcType=TINYINT}, #{channelType,jdbcType=TINYINT},
+       #{channelName,jdbcType=VARCHAR},
        #{channelAppkey,jdbcType=VARCHAR}, #{channelAppsecret,jdbcType=VARCHAR},
       #{channelDomain,jdbcType=VARCHAR}, #{extProperties,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{sendOrder,jdbcType=INTEGER}
@@ -59,7 +62,10 @@
       <if test="channelType != null">
         channel_type,
       </if>
-      <if test="channelUser != null">
+      <if test="channelName != null">
+        channel_name,
+      </if>
+      <if test="channelAppkey != null">
         channel_appkey,
       </if>
       <if test="channelPassword != null">
@@ -90,6 +96,9 @@
       </if>
       <if test="channelType != null">
         #{channelType,jdbcType=TINYINT},
+      </if>
+      <if test="channelName != null">
+        #{channelName,jdbcType=VARCHAR},
       </if>
       <if test="channelUser != null">
         #{channelAppkey,jdbcType=VARCHAR},
@@ -123,6 +132,9 @@
       <if test="channelType != null">
         channel_type = #{channelType,jdbcType=TINYINT},
       </if>
+      <if test="channelName != null">
+        channel_name = #{channelName,jdbcType=TINYINT},
+      </if>
       <if test="channelAppkey != null">
         channel_appkey = #{channelAppkey,jdbcType=VARCHAR},
       </if>
@@ -155,6 +167,7 @@
     set
       channel_type = #{channelType,jdbcType=TINYINT},
       channel_appkey = #{channelAppkey,jdbcType=VARCHAR},
+      channel_name = #{channelName,jdbcType=VARCHAR},
       channel_appsecret = #{channelAppsecret,jdbcType=VARCHAR},
       channel_domain = #{channelDomain,jdbcType=VARCHAR},
       ext_properties = #{extProperties,jdbcType=VARCHAR},
@@ -181,7 +194,6 @@
     </if>
   </select>
 
-
   <select id="queryChannelByAppkeyAndChannelType" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -191,5 +203,6 @@
       and
      channel_type = #{channelType,jdbcType=VARCHAR}
   </select>
+
 
 </mapper>
