@@ -14,4 +14,6 @@ public interface TSmsTemplateDAO extends MyBatisBaseDao<TSmsTemplate, Long> {
 
     List<TSmsTemplate> queryTemplates(Map<String, Object> param);
 
+    Long queryCountTemplates(Map<String, Object> param);
+
 }

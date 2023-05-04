@@ -33,8 +33,9 @@ public class SmsTemplateController {
         param.put("page", Integer.valueOf(page));
         param.put("size", Integer.valueOf(size));
         List<TSmsTemplate> tSmsTemplateList = smsTemplateService.queryTemplates(param);
+        Long count = smsTemplateService.queryCountTemplates(param);
         Pager pager = new Pager();
-        pager.setCount(Long.valueOf(tSmsTemplateList.size()));
+        pager.setCount(count);
         pager.setItems(tSmsTemplateList);
         return BaseModel.getInstance(pager);
     }

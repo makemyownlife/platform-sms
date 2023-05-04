@@ -27,6 +27,11 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     }
 
     @Override
+    public Long queryCountTemplates(Map<String, Object> param) {
+        return tSmsTemplateDAO.queryCountTemplates(param);
+    }
+
+    @Override
     public BaseModel addSmsTemplate(TSmsTemplate tSmsTemplate) {
         try {
             tSmsTemplate.setCreateTime(new Date());

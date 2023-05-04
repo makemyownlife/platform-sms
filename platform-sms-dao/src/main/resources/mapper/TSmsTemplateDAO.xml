@@ -137,6 +137,19 @@
     LIMIT #{start}, #{end}
   </select>
 
-
+  <select id="queryCountTemplates" resultType="long" parameterType="map">
+    select count(*) from t_sms_template
+    <where>
+      <if test="templateName != null and templateName != ''">
+        and template_name like concat('%', #{templateName}, '%')
+      </if>
+      <if test="signName != null and signName != ''">
+        and sign_name like concat('%', #{signName}, '%')
+      </if>
+      <if test="status != null">
+        AND status = #{status}
+      </if>
+    </where>
+  </select>
 
 </mapper>
