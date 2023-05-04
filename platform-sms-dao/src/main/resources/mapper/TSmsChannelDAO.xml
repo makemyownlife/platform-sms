@@ -7,7 +7,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="channel_type" jdbcType="TINYINT" property="channelType" />
     <result column="channel_appkey" jdbcType="VARCHAR" property="channelAppkey" />
-    <result column="channel_name" jdbcType="VARCHAR" property="channelAppkey" />
+    <result column="channel_name" jdbcType="VARCHAR" property="channelName" />
     <result column="channel_appsecret" jdbcType="VARCHAR" property="channelAppsecret" />
     <result column="channel_domain" jdbcType="VARCHAR" property="channelDomain" />
     <result column="ext_properties" jdbcType="VARCHAR" property="extProperties" />

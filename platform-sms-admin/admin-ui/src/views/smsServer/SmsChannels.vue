@@ -24,7 +24,7 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="渠道类型" min-width="45" align="center">
+      <el-table-column label="渠道类型" min-width="40" align="center">
         <template slot-scope="scope">
           {{ scope.row.channelType }}
         </template>
@@ -34,12 +34,12 @@
           <span>{{ scope.row.channelName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="appkey" min-width="100" align="center">
+      <el-table-column label="appkey" min-width="90" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.channelAppkey }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="appsecret" min-width="100" align="center">
+      <el-table-column label="appsecret" min-width="90" align="center">
         <template slot-scope="scope">
           {{ scope.row.channelAppsecret }}
         </template>
@@ -49,7 +49,7 @@
           {{ scope.row.channelDomain }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="修改时间" min-width="62" align="center">
+      <el-table-column class-name="status-col" label="修改时间" min-width="75" align="center">
         <template slot-scope="scope">
           {{ scope.row.updateTime }}
         </template>
@@ -91,9 +91,6 @@
         </el-form-item>
         <el-form-item label="请求地址" prop="channelDomain">
           <el-input v-model="channelModel.channelDomain"/>
-        </el-form-item>
-        <el-form-item label="签名名称" prop="signName">
-          <el-input v-model="channelModel.signName"/>
         </el-form-item>
         <el-form-item label="附件属性" prop="extProperties">
           <el-input v-model="channelModel.extProperties" type="textarea"/>

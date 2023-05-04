@@ -11,7 +11,7 @@
  Target Server Version : 50718
  File Encoding         : 65001
 
- Date: 02/05/2023 21:44:06
+ Date: 04/05/2023 14:48:00
 */
 
 SET NAMES utf8mb4;
@@ -132,6 +132,7 @@ CREATE TABLE `t_sms_appinfo` (
 DROP TABLE IF EXISTS `t_sms_channel`;
 CREATE TABLE `t_sms_channel` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键自增',
+  `channel_name` varchar(30) NOT NULL COMMENT '渠道名称',
   `channel_type` varchar(20) NOT NULL COMMENT 'aliyun：阿里云 / emay:   亿美 ',
   `channel_appkey` varchar(80) NOT NULL COMMENT '渠道用户名',
   `channel_appsecret` varchar(80) NOT NULL COMMENT '渠道密码',
@@ -142,7 +143,7 @@ CREATE TABLE `t_sms_channel` (
   `update_time` datetime NOT NULL,
   `send_order` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_sms_record
@@ -201,5 +202,20 @@ CREATE TABLE `t_sms_template` (
   `update_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for t_sms_template_binding
+-- ----------------------------
+DROP TABLE IF EXISTS `t_sms_template_binding`;
+CREATE TABLE `t_sms_template_binding` (
+  `id` bigint(20) NOT NULL,
+  `template_id` bigint(20) NOT NULL COMMENT '模版编号',
+  `template_code` varchar(35) COLLATE utf8_bin NOT NULL COMMENT '三方模版编码',
+  `template_content` varchar(500) COLLATE utf8_bin NOT NULL COMMENT '三方模版内容',
+  `channel_id` bigint(20) NOT NULL COMMENT '渠道编号',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 SET FOREIGN_KEY_CHECKS = 1;
