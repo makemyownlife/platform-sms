@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.courage.platform.sms.dao.TSmsTemplateDAO">
+
   <resultMap id="BaseResultMap" type="com.courage.platform.sms.domain.TSmsTemplate">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="template_name" jdbcType="VARCHAR" property="templateName" />
     <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="sign_name" jdbcType="VARCHAR" property="s" />
+    <result column="sign_name" jdbcType="VARCHAR" property="signName" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -117,7 +118,7 @@
   </update>
 
   <!-- 根据条件查询短信模板列表 -->
-  <select id="queryTemplates" parameterType="java.util.Map" resultMap="BaseResultMap">
+  <select id="queryTemplates" parameterType="java.util.Map" resultType="com.courage.platform.sms.domain.TSmsTemplate">
     <bind name="start" value="(page - 1) * size"/>
     <bind name="end" value="size"/>
     select id, template_name as templateName, content, sign_name as signName, `status`, create_time as createTime, update_time as updateTime

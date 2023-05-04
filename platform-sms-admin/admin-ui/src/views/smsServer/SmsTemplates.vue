@@ -21,16 +21,18 @@
       </el-table-column>
       <el-table-column label="模版名称" min-width="45" align="center">
         <template slot-scope="scope">
-          {{ scope.row.appName }}
+          {{ scope.row.templateName }}
         </template>
       </el-table-column>
       <el-table-column label="模版内容" min-width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.appKey }}</span>
+          <span>{{ scope.row.content }}</span>
         </template>
       </el-table-column>
       <el-table-column label="绑定签名" min-width="100" align="center">
-
+        <template slot-scope="scope">
+          <span>{{ scope.row.signName }}</span>
+        </template>
       </el-table-column>
       <el-table-column label="状态" min-width="50" align="center">
         <template slot-scope="scope">
