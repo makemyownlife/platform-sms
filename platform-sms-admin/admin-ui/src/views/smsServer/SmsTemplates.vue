@@ -34,9 +34,8 @@
           <span>{{ scope.row.signName }}</span>
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="修改时间" min-width="50" align="center">
+      <el-table-column class-name="status-col" label="绑定渠道" min-width="50" align="center">
         <template slot-scope="scope">
-          {{ scope.row.updateTime }}
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="操作" min-width="50" align="center">
@@ -232,8 +231,6 @@ export default {
     },
   }
 }
-
-
 
 
 </script>
