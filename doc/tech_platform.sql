@@ -11,7 +11,7 @@
  Target Server Version : 50718
  File Encoding         : 65001
 
- Date: 04/05/2023 14:48:00
+ Date: 05/05/2023 19:14:30
 */
 
 SET NAMES utf8mb4;
@@ -196,12 +196,12 @@ CREATE TABLE `t_sms_template` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '模板id，主键自动增加',
   `template_name` varchar(40) NOT NULL COMMENT '模板名称',
   `content` varchar(500) NOT NULL COMMENT '模板内容',
-  `channel_id` varchar(20) NOT NULL COMMENT '渠道id‘ ：绑定签名使用',
+  `sign_name` varchar(20) NOT NULL COMMENT '签名',
   `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态 0：有效 1：无效',
   `create_time` datetime NOT NULL,
   `update_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_sms_template_binding
@@ -213,6 +213,7 @@ CREATE TABLE `t_sms_template_binding` (
   `template_code` varchar(35) COLLATE utf8_bin NOT NULL COMMENT '三方模版编码',
   `template_content` varchar(500) COLLATE utf8_bin NOT NULL COMMENT '三方模版内容',
   `channel_id` bigint(20) NOT NULL COMMENT '渠道编号',
+  `status` tinyint(4) NOT NULL COMMENT '-1 : 审核中 0：审核成功  1：审核失败',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
