@@ -14,7 +14,7 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="模版编号" min-width="45" align="center">
+      <el-table-column label="编号" min-width="35" align="center">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
@@ -24,28 +24,22 @@
           {{ scope.row.templateName }}
         </template>
       </el-table-column>
-      <el-table-column label="模版内容" min-width="100" align="center">
+      <el-table-column label="模版内容" min-width="125" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.content }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="绑定签名" min-width="100" align="center">
+      <el-table-column label="签名" min-width="45" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.signName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="状态" min-width="50" align="center">
-        <template slot-scope="scope">
-          <font v-if="scope.row.status === 0" color="green">正常</font>
-          <font v-if="scope.row.status === 1" color="gray">失效</font>
-        </template>
-      </el-table-column>
-      <el-table-column class-name="status-col" label="修改时间" min-width="62" align="center">
+      <el-table-column class-name="status-col" label="修改时间" min-width="50" align="center">
         <template slot-scope="scope">
           {{ scope.row.updateTime }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="操作" min-width="65" align="center">
+      <el-table-column class-name="status-col" label="操作" min-width="50" align="center">
         <template slot-scope="scope">
           <el-dropdown trigger="click">
             <el-button type="primary" size="mini">
@@ -62,19 +56,16 @@
 
     <!--   模态窗口 start  -->
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
-      <el-form ref="dataForm" :rules="rules" :model="appInfoModel" label-position="left" label-width="120px"
+      <el-form ref="dataForm" :rules="rules" :model="templateModel" label-position="left" label-width="120px"
                style="width: 400px; margin-left:30px;">
-        <el-form-item label="应用名称" prop="appName">
-          <el-input v-model="appInfoModel.appName"/>
+        <el-form-item label="模版名称" prop="templateName">
+          <el-input v-model="templateModel.templateName"/>
         </el-form-item>
-        <el-form-item label="应用 key" prop="appkey">
-          <el-input v-model="appInfoModel.appKey"/>
+        <el-form-item label="签名名称" prop="signName">
+          <el-input v-model="templateModel.signName"/>
         </el-form-item>
-        <el-form-item label="应用密钥" prop="appsecret">
-          <el-input v-model="appInfoModel.appSecret"/>
-        </el-form-item>
-        <el-form-item label="备注" prop="extProperties">
-          <el-input v-model="appInfoModel.remark" type="textarea"/>
+        <el-form-item label="模版内容" prop="content">
+          <el-input v-model="templateModel.content" type="textarea" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -126,21 +117,19 @@ export default {
       dialogFormVisible: false,
       dialogInstances: false,
       textMap: {
-        create: '新建应用',
-        update: '修改应用'
+        create: '新建模版',
+        update: '修改模版'
       },
-      appInfoModel: {
+      templateModel: {
         id: undefined,
-        appKey: null,
-        appName: null,
-        appSecret: null,
-        remark: null,
-        updateTime: null
+        templateName: null,
+        signName: null,
+        content: null
       },
       rules: {
-        appName: [{required: true, message: '应用名称不能为空', trigger: 'change'}],
-        appKey: [{required: true, message: '应用key不能为空', trigger: 'change'}],
-        appSecret: [{required: true, message: '应用密钥不能为空', trigger: 'change'}]
+        templateName: [{required: true, message: '模版名称不能为空', trigger: 'change'}],
+        signName: [{required: true, message: '签名名称不能为空', trigger: 'change'}],
+        content: [{required: true, message: '内容不能为空', trigger: 'change'}]
       },
       dialogStatus: 'create'
     }
@@ -164,21 +153,17 @@ export default {
       this.fetchData()
     },
     resetModel() {
-      this.appInfoModel = {
+      this.templateModel = {
         id: undefined,
-        appKey: null,
-        appName: null,
-        appSecret: null,
-        remark: null,
-        updateTime: null
+        templateName: null,
+        signName: null,
+        content: null
       }
     },
     handleCreate() {
       this.resetModel()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      this.appInfoModel.appKey = generateAppKey();
-      this.appInfoModel.appSecret = generateMD5Hash(generateAppKey() + '1235')
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -186,13 +171,22 @@ export default {
     dataOperation() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-
+          if (this.dialogStatus === 'create') {
+            addSmsTemplate(this.templateModel).then(res => {
+              this.operationRes(res)
+            })
+          }
+          if (this.dialogStatus === 'update') {
+            updateSmsTemplate(this.templateModel).then(res => {
+              this.operationRes(res)
+          })
+          }
         }
       })
     },
     handleUpdate(row) {
       this.resetModel()
-      this.appInfoModel = Object.assign({}, row)
+      this.templateModel = Object.assign({}, row)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -200,10 +194,41 @@ export default {
       })
     },
     handleDelete(row) {
-
+        this.$confirm('删除模版信息后模版无法使用', '确定删除模版信息', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteTemplate(row.id).then((res) => {
+            if (res.data === 'success') {
+            this.fetchData()
+            this.$message({
+              message: '删除模版信息成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '删除模版信息失败',
+              type: 'error'
+            })
+          }
+        })
+      })
     },
     operationRes(res) {
-
+      if (res.data === 'success') {
+        this.fetchData()
+        this.dialogFormVisible = false
+        this.$message({
+          message: this.textMap[this.dialogStatus] + '成功',
+          type: 'success'
+        })
+      } else {
+        this.$message({
+          message: this.textMap[this.dialogStatus] + '失败',
+          type: 'error'
+        })
+      }
     },
   }
 }

@@ -37,7 +37,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
             tSmsTemplate.setCreateTime(new Date());
             tSmsTemplate.setUpdateTime(new Date());
             tSmsTemplate.setStatus((byte) 0);
-            tSmsTemplateDAO.insert(tSmsTemplate);
+            tSmsTemplateDAO.insertSelective(tSmsTemplate);
             return BaseModel.getInstance("success");
         } catch (Exception e) {
             logger.error("addSmsTemplate error:", e);
