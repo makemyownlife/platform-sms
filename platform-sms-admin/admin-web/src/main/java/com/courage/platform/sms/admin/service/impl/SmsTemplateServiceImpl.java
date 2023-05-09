@@ -2,8 +2,10 @@ package com.courage.platform.sms.admin.service.impl;
 
 import com.courage.platform.sms.admin.model.BaseModel;
 import com.courage.platform.sms.admin.service.SmsTemplateService;
+import com.courage.platform.sms.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.domain.TSmsTemplate;
+import com.courage.platform.sms.domain.TSmsTemplateBinding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
 
     @Autowired
     private TSmsTemplateDAO tSmsTemplateDAO;
+
+    @Autowired
+    private TSmsTemplateBindingDAO tSmsTemplateBindingDAO;
 
     @Override
     public List<TSmsTemplate> queryTemplates(Map<String, Object> params) {
@@ -61,6 +66,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     public BaseModel deleteSmsTemplate(Long id) {
         try {
             tSmsTemplateDAO.deleteByPrimaryKey(id);
+            tSmsTemplateBindingDAO.deleteTemplateBindingByTemplateId(id);
             return BaseModel.getInstance("success");
         } catch (Exception e) {
             logger.error("deleteSmsTemplate error:", e);

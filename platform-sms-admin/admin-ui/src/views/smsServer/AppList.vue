@@ -60,6 +60,9 @@
       </el-table-column>
     </el-table>
 
+    <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.size"
+                @pagination="fetchData()"/>
+
     <!--   模态窗口 start  -->
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
       <el-form ref="dataForm" :rules="rules" :model="appInfoModel" label-position="left" label-width="120px"
@@ -90,6 +93,7 @@
 <script>
 
 import {getAppList, addAppInfo, updateAppInfo, deleteAppInfo} from '@/api/appInfo.js'
+import Pagination from '@/components/Pagination'
 
 const crypto = require('crypto');
 
@@ -110,6 +114,7 @@ function generateMD5Hash(data) {
 
 
 export default {
+  components: { Pagination },
   filters: {
     statusFilter(status) {
       const statusMap = {

@@ -8,4 +8,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TSmsTemplateBindingDAO extends MyBatisBaseDao<TSmsTemplateBinding, Long> {
+
+    Integer deleteTemplateBindingByTemplateId(Long templateId);
+
 }

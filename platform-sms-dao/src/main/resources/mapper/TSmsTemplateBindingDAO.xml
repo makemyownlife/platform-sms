@@ -135,4 +135,9 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
+  <!-- 按照模版编号删除绑定信息 -->
+  <delete id="deleteTemplateBindingByTemplateId" parameterType="java.lang.Long">
+     delete from t_sms_template_binding  where template_id = #{templateId}
+  </delete>
+
 </mapper>

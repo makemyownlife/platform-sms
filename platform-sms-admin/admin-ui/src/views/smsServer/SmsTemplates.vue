@@ -45,14 +45,16 @@
               操作<i class="el-icon-arrow-down el-icon--right"/>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="handleUpdate(scope.row)">修改</el-dropdown-item>
-              <el-dropdown-item @click.native="handleDelete(scope.row)">删除</el-dropdown-item>
+              <el-dropdown-item @click.native="handleUpdate(scope.row)">绑定渠道</el-dropdown-item>
+              <el-dropdown-item @click.native="handleUpdate(scope.row)">修改模版</el-dropdown-item>
+              <el-dropdown-item @click.native="handleDelete(scope.row)">删除模版</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="fetchData()" />
+    <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.size"
+                @pagination="fetchData()"/>
 
     <!--   模态窗口 start  -->
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
@@ -65,7 +67,12 @@
           <el-input v-model="templateModel.signName"/>
         </el-form-item>
         <el-form-item label="模版内容" prop="content">
-          <el-input v-model="templateModel.content" type="textarea" />
+          <el-input v-model="templateModel.content" type="textarea"/>
+          <div style="background-color: #f7f7f7; padding: 8px 16px; color: #555 ;line-height: 22px">
+            <span class="flex"><span style="font-weight: 700;">变量格式：</span> ${code}
+              <br/>例如：您的验证码为 ${code} ，该验证码5分钟内有效，请勿泄露于他人。
+            </span>
+          </div>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -80,9 +87,11 @@
 
 <script>
 
-import {getSmsTemplates,addSmsTemplate,deleteTemplate,updateSmsTemplate} from '@/api/template.js'
+import {getSmsTemplates, addSmsTemplate, deleteTemplate, updateSmsTemplate} from '@/api/template.js'
+import Pagination from '@/components/Pagination'
 
 export default {
+  components: { Pagination },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -106,7 +115,6 @@ export default {
       list: null,
       listLoading: true,
       listLoading2: true,
-      serverIdTmp: null,
       smsChannels: [],
       count: 0,
       listQuery: {
@@ -134,7 +142,6 @@ export default {
       dialogStatus: 'create'
     }
   },
-  // { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'change' }
   created() {
     this.fetchData()
   },
@@ -179,7 +186,7 @@ export default {
           if (this.dialogStatus === 'update') {
             updateSmsTemplate(this.templateModel).then(res => {
               this.operationRes(res)
-          })
+            })
           }
         }
       })
@@ -194,13 +201,13 @@ export default {
       })
     },
     handleDelete(row) {
-        this.$confirm('删除模版信息后模版无法使用', '确定删除模版信息', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          deleteTemplate(row.id).then((res) => {
-            if (res.data === 'success') {
+      this.$confirm('删除模版信息后模版无法使用', '确定删除模版信息', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteTemplate(row.id).then((res) => {
+          if (res.data === 'success') {
             this.fetchData()
             this.$message({
               message: '删除模版信息成功',
