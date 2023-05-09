@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courage.platform.sms.dao.TSmsTemplateBindingDAO">
+
+  <resultMap id="BaseResultMap" type="com.courage.platform.sms.domain.TSmsTemplateBinding">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="template_id" jdbcType="BIGINT" property="templateId" />
+    <result column="template_code" jdbcType="VARCHAR" property="templateCode" />
+    <result column="template_content" jdbcType="VARCHAR" property="templateContent" />
+    <result column="channel_id" jdbcType="BIGINT" property="channelId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, template_id, template_code, template_content, channel_id, `status`, create_time, 
+    update_time
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_template_binding
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_sms_template_binding
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.courage.platform.sms.domain.TSmsTemplateBinding">
+    insert into t_sms_template_binding (id, template_id, template_code, 
+      template_content, channel_id, `status`, 
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{templateId,jdbcType=BIGINT}, #{templateCode,jdbcType=VARCHAR}, 
+      #{templateContent,jdbcType=VARCHAR}, #{channelId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.courage.platform.sms.domain.TSmsTemplateBinding">
+    insert into t_sms_template_binding
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="templateId != null">
+        template_id,
+      </if>
+      <if test="templateCode != null">
+        template_code,
+      </if>
+      <if test="templateContent != null">
+        template_content,
+      </if>
+      <if test="channelId != null">
+        channel_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="templateId != null">
+        #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="templateCode != null">
+        #{templateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="templateContent != null">
+        #{templateContent,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null">
+        #{channelId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.domain.TSmsTemplateBinding">
+    update t_sms_template_binding
+    <set>
+      <if test="templateId != null">
+        template_id = #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="templateCode != null">
+        template_code = #{templateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="templateContent != null">
+        template_content = #{templateContent,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null">
+        channel_id = #{channelId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.domain.TSmsTemplateBinding">
+    update t_sms_template_binding
+    set template_id = #{templateId,jdbcType=BIGINT},
+      template_code = #{templateCode,jdbcType=VARCHAR},
+      template_content = #{templateContent,jdbcType=VARCHAR},
+      channel_id = #{channelId,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>
