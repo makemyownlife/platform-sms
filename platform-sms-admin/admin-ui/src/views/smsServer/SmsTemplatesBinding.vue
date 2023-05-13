@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.templateName" placeholder="模版名称" style="width: 200px;" class="filter-item"/>
+      <el-input v-model="listQuery.templateCode" placeholder="" style="width: 200px;" class="filter-item"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" plain @click="queryData()">查询</el-button>
-      <el-button class="filter-item" type="primary" @click="handleCreate()">新建模版</el-button>
+      <el-button class="filter-item" type="primary" @click="handleCreate()">绑定模版</el-button>
       <el-button class="filter-item" type="info" @click="fetchData()">刷新列表</el-button>
     </div>
     <el-table
@@ -13,20 +13,20 @@
       border
       fit
       highlight-current-row
-    >
-      <el-table-column label="编号" min-width="35" align="center">
+    >编号
+      <el-table-column label="模版编码" min-width="35" align="center">
         <template slot-scope="scope">
-          {{ scope.row.id }}
+          {{ scope.row.templateCode }}
         </template>
       </el-table-column>
-      <el-table-column label="模版名称" min-width="45" align="center">
+      <el-table-column label="渠道名称" min-width="45" align="center">
         <template slot-scope="scope">
           {{ scope.row.templateName }}
         </template>
       </el-table-column>
       <el-table-column label="模版内容" min-width="125" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.content }}</span>
+          <span>{{ scope.row.templateContent }}</span>
         </template>
       </el-table-column>
       <el-table-column label="签名" min-width="45" align="center">
@@ -55,8 +55,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.size"
-                @pagination="fetchData()"/>
 
     <!--   模态窗口 start  -->
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
@@ -84,6 +82,38 @@
     </el-dialog>
     <!--    模态窗口 end   -->
 
+    <!--   模态绑定渠道窗口 start  -->
+    <el-dialog :visible.sync="dialog2FormVisible" :title="textMap[dialogStatus]" width="580px">
+      <el-form ref="dataForm2"
+               :rules="rules2"
+               :model="templateBindingModel"
+               label-position="left"
+               label-width="120px"
+               style="width: 400px; margin-left:30px;">
+        <el-form-item label="模版编码" prop="templateCode">
+          <el-input v-model="templateBindingModel.templateCode"/>
+        </el-form-item>
+        <el-form-item label="渠道" prop="channelId">
+          <el-autocomplete
+            v-model="selectedItem"
+            :fetch-suggestions="querySearch"
+            placeholder="请选择渠道"
+            :class="['autocomplete']"
+            style="width: 100%"
+          >
+            <template slot-scope="{ item }">
+              <div class="autocomplete-item">{{ item.value }}</div>
+            </template>
+          </el-autocomplete>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialog2FormVisible = false">取消</el-button>
+        <el-button type="primary" @click="dataOperation2()">确定</el-button>
+      </div>
+    </el-dialog>
+    <!--    模态绑定渠道窗口 end   -->
+
   </div>
 
 </template>
@@ -102,10 +132,9 @@ export default {
       list: null,
       listLoading: true,
       listLoading2: true,
-      smsChannels: [],
       count: 0,
       listQuery: {
-        templateName: '',
+        templateCode: '',
         page: 1,
         size: 50
       },
@@ -119,20 +148,19 @@ export default {
         { value: "选项5" },
       ],
       textMap: {
-        create: '新建模版',
-        update: '修改模版',
-        binding: '手工绑定渠道'
+        create: '绑定渠道',
+        update: '解绑渠道'
       },
-      templateModel: {
+      templateBindingModel: {
         id: undefined,
-        templateName: null,
-        signName: null,
-        content: null
+        templateId: null,
+        templateCode: null,
+        templateContent: null,
+        channelId: null
       },
       rules: {
-        templateName: [{required: true, message: '模版名称不能为空', trigger: 'change'}],
-        signName: [{required: true, message: '签名名称不能为空', trigger: 'change'}],
-        content: [{required: true, message: '内容不能为空', trigger: 'change'}]
+        channelId: [{required: true, message: '短信渠道不能为空', trigger: 'change'}],
+        templateCode: [{required: true, message: '三方模版编码不能为空', trigger: 'change'}]
       },
       dialogStatus: 'create'
     }
@@ -244,7 +272,22 @@ export default {
           type: 'error'
         })
       }
-    }
+    },
+    handleBinding(row) {
+      this.resetModel()
+      this.templateBindingModel = Object.assign({}, row)
+      this.dialogStatus = 'binding'
+      this.dialog2FormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm2'].clearValidate()
+      })
+    },
+    dataOperation2() {
+      this.$refs['dataForm2'].validate((valid) => {
+        if (valid) {
+        }
+      })
+    },
   }
 }
 

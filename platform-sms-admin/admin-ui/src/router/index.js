@@ -90,7 +90,14 @@ export const constantRoutes = [
         name: '模版管理',
         component: () => import('@/views/smsServer/SmsTemplates'),
         meta: {title: '模版管理', icon: 'nested'}
-      }
+      },
+      {
+        path: '/smsServer/templateBinding',
+        name: '绑定渠道',
+        component: () => import('@/views/smsServer/SmsTemplatesBinding'),
+        meta: {title: '绑定渠道',hideInMenu: true },
+        hidden : true
+      },
       // {
       //   path: 'smsList',
       //   name: '短信管理',
@@ -106,6 +113,7 @@ export const constantRoutes = [
       // }
     ]
   },
+
 
   // 404 page must be placed at the end !!!
   {path: '*', redirect: '/404', hidden: true}
