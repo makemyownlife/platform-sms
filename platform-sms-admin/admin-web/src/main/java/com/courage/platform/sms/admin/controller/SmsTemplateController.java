@@ -55,5 +55,10 @@ public class SmsTemplateController {
         return smsTemplateService.deleteSmsTemplate(Long.valueOf(id));
     }
 
+    @PostMapping(value = "/getSmsTemplatesBinding")
+    public BaseModel getSmsTemplatesBinding(String id) {
+        return smsTemplateService.getSmsTemplatesBinding(Long.valueOf(id));
+    }
+
 }
 

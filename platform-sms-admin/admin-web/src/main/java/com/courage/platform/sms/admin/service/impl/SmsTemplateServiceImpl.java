@@ -73,5 +73,11 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
             return BaseModel.getInstance("fail");
         }
     }
+
+    @Override
+    public BaseModel getSmsTemplatesBinding(Long id) {
+        return null;
+    }
+
 }
 

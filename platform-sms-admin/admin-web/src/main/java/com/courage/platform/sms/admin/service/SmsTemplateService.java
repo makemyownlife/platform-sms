@@ -19,4 +19,6 @@ public interface SmsTemplateService {
 
     BaseModel deleteSmsTemplate(Long id);
 
+    BaseModel getSmsTemplatesBinding(Long id);
+
 }
