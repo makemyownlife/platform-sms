@@ -21,7 +21,7 @@
       </el-table-column>
       <el-table-column label="渠道名称" min-width="45" align="center">
         <template slot-scope="scope">
-          {{ scope.row.templateName }}
+
         </template>
       </el-table-column>
       <el-table-column label="模版内容" min-width="125" align="center">
@@ -56,36 +56,10 @@
       </el-table-column>
     </el-table>
 
-    <!--   模态窗口 start  -->
-    <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
-      <el-form ref="dataForm" :rules="rules" :model="templateModel" label-position="left" label-width="120px"
-               style="width: 400px; margin-left:30px;">
-        <el-form-item label="模版名称" prop="templateName">
-          <el-input v-model="templateModel.templateName"/>
-        </el-form-item>
-        <el-form-item label="签名名称" prop="signName">
-          <el-input v-model="templateModel.signName"/>
-        </el-form-item>
-        <el-form-item label="模版内容" prop="content" >
-          <el-input v-model="templateModel.content" type="textarea"/>
-          <div style="background-color: #f7f7f7; padding: 8px 16px; color: #555 ;line-height: 22px">
-            <span class="flex"><span style="font-weight: 700;">变量格式：</span> ${code}
-              <br/>例如：您的验证码为 ${code} ，该验证码5分钟内有效，请勿泄露于他人。
-            </span>
-          </div>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="dataOperation()">确定</el-button>
-      </div>
-    </el-dialog>
-    <!--    模态窗口 end   -->
-
     <!--   模态绑定渠道窗口 start  -->
-    <el-dialog :visible.sync="dialog2FormVisible" :title="textMap[dialogStatus]" width="580px">
+    <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
       <el-form ref="dataForm2"
-               :rules="rules2"
+               :rules="rules"
                :model="templateBindingModel"
                label-position="left"
                label-width="120px"
@@ -196,11 +170,11 @@ export default {
       this.fetchData()
     },
     resetModel() {
-      this.templateModel = {
+      this.templateBindingModel = {
         id: undefined,
-        templateName: null,
-        signName: null,
-        content: null
+        templateCode: null,
+        templateContent: null,
+        channelId: null
       }
     },
     handleCreate() {
@@ -215,21 +189,17 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.dialogStatus === 'create') {
-            addSmsTemplate(this.templateModel).then(res => {
-              this.operationRes(res)
-            })
+
           }
           if (this.dialogStatus === 'update') {
-            updateSmsTemplate(this.templateModel).then(res => {
-              this.operationRes(res)
-            })
+
           }
         }
       })
     },
     handleUpdate(row) {
       this.resetModel()
-      this.templateModel = Object.assign({}, row)
+      this.templateBindingModel = Object.assign({}, row)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -246,12 +216,12 @@ export default {
           if (res.data === 'success') {
             this.fetchData()
             this.$message({
-              message: '删除模版信息成功',
+              message: '删除绑定信息成功',
               type: 'success'
             })
           } else {
             this.$message({
-              message: '删除模版信息失败',
+              message: '删除绑定信息失败',
               type: 'error'
             })
           }
@@ -277,7 +247,7 @@ export default {
       this.resetModel()
       this.templateBindingModel = Object.assign({}, row)
       this.dialogStatus = 'binding'
-      this.dialog2FormVisible = true
+      this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm2'].clearValidate()
       })

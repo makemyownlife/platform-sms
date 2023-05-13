@@ -30,3 +30,10 @@ export function updateSmsTemplate(data) {
     data
   })
 }
+
+export function getSmsTemplatesBinding(data) {
+  return request({
+    url: '/sms/getSmsTemplatesBinding?id=' + data,
+    method: 'post'
+  })
+}
