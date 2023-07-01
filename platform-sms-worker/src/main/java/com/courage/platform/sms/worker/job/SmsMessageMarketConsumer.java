@@ -20,7 +20,8 @@ import org.springframework.stereotype.Component;
         // 需要使用topic全称，所以进行topic名称的拼接，也可以自己设置  格式：namespace全称%topic名称
         topic = "${rocketmq.consumer2.topic}",
         // 营销类短信线程数减少一点
-        consumeThreadNumber = 4
+        consumeThreadNumber = 4,
+        consumeMode = ConsumeMode.ORDERLY
 )
 public class SmsMessageMarketConsumer implements RocketMQListener<MessageExt> {
 
