@@ -15,7 +15,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.courage.platform.sms.domain.TSmsRecord">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.courage.platform.sms.admin.domain.TSmsRecord">
     <result column="mobile" jdbcType="LONGVARCHAR" property="mobile" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -37,7 +37,7 @@
     delete from t_sms_record
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.domain.TSmsRecord" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsRecord" useGeneratedKeys="true">
     insert into t_sms_record (sms_id, nationcode, app_id, 
       content, `type`, channel, 
       attime, send_status, sender_ip, 
@@ -49,7 +49,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{mobile,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.domain.TSmsRecord" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsRecord" useGeneratedKeys="true">
     insert into t_sms_record
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="smsId != null">
@@ -128,7 +128,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.domain.TSmsRecord">
+  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.domain.TSmsRecord">
     update t_sms_record
     <set>
       <if test="smsId != null">
@@ -170,7 +170,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.courage.platform.sms.domain.TSmsRecord">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.courage.platform.sms.admin.domain.TSmsRecord">
     update t_sms_record
     set sms_id = #{smsId,jdbcType=VARCHAR},
       nationcode = #{nationcode,jdbcType=VARCHAR},
@@ -186,7 +186,7 @@
       mobile = #{mobile,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.domain.TSmsRecord">
+  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.domain.TSmsRecord">
     update t_sms_record
     set sms_id = #{smsId,jdbcType=VARCHAR},
       nationcode = #{nationcode,jdbcType=VARCHAR},

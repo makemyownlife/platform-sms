@@ -28,7 +28,7 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
 
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.domain.TSmsTemplate" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplate" useGeneratedKeys="true">
     insert into t_sms_template (template_name, content, channel,
       `status`, create_time, update_time
       )
@@ -37,7 +37,7 @@
       )
   </insert>
 
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.domain.TSmsTemplate" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplate" useGeneratedKeys="true">
     insert into t_sms_template
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="templateName != null">
@@ -81,7 +81,7 @@
     </trim>
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.domain.TSmsTemplate">
+  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplate">
     update t_sms_template
     <set>
       <if test="templateName != null">
@@ -106,7 +106,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.domain.TSmsTemplate">
+  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplate">
     update t_sms_template
     set template_name = #{templateName,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
@@ -118,7 +118,7 @@
   </update>
 
   <!-- 根据条件查询短信模板列表 -->
-  <select id="queryTemplates" parameterType="java.util.Map" resultType="com.courage.platform.sms.domain.TSmsTemplate">
+  <select id="queryTemplates" parameterType="java.util.Map" resultType="com.courage.platform.sms.admin.domain.TSmsTemplate">
     <bind name="start" value="(page - 1) * size"/>
     <bind name="end" value="size"/>
     select id, template_name as templateName, content, sign_name as signName, `status`, create_time as createTime, update_time as updateTime

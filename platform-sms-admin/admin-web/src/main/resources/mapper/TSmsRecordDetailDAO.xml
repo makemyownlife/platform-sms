@@ -31,7 +31,7 @@
     delete from t_sms_record_detail
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.domain.TSmsRecordDetail" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsRecordDetail" useGeneratedKeys="true">
     insert into t_sms_record_detail (record_id, content, report_status, 
       report_time, mobile, msgid, 
       channel, app_key, sender_time, 
@@ -43,7 +43,7 @@
       #{receiveTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{sendStatus,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.domain.TSmsRecordDetail" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsRecordDetail" useGeneratedKeys="true">
     insert into t_sms_record_detail
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="recordId != null">
@@ -128,7 +128,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.domain.TSmsRecordDetail">
+  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.domain.TSmsRecordDetail">
     update t_sms_record_detail
     <set>
       <if test="recordId != null">
@@ -173,7 +173,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.domain.TSmsRecordDetail">
+  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.domain.TSmsRecordDetail">
     update t_sms_record_detail
     set record_id = #{recordId,jdbcType=BIGINT},
       content = #{content,jdbcType=VARCHAR},

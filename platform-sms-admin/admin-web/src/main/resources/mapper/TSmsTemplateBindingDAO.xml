@@ -30,16 +30,16 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
 
-  <insert id="insert" parameterType="com.courage.platform.sms.domain.TSmsTemplateBinding">
-    insert into t_sms_template_binding (id, template_id, template_code, 
-      template_content, channel_id, `status`, 
+  <insert id="insert" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplateBinding">
+    insert into t_sms_template_binding (id, template_id, template_code,
+      template_content, channel_id, `status`,
       create_time, update_time)
-    values (#{id,jdbcType=BIGINT}, #{templateId,jdbcType=BIGINT}, #{templateCode,jdbcType=VARCHAR}, 
-      #{templateContent,jdbcType=VARCHAR}, #{channelId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
+    values (#{id,jdbcType=BIGINT}, #{templateId,jdbcType=BIGINT}, #{templateCode,jdbcType=VARCHAR},
+      #{templateContent,jdbcType=VARCHAR}, #{channelId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
 
-  <insert id="insertSelective" parameterType="com.courage.platform.sms.domain.TSmsTemplateBinding">
+  <insert id="insertSelective" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplateBinding">
     insert into t_sms_template_binding
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -95,7 +95,7 @@
     </trim>
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.domain.TSmsTemplateBinding">
+  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplateBinding">
     update t_sms_template_binding
     <set>
       <if test="templateId != null">
@@ -123,7 +123,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.domain.TSmsTemplateBinding">
+  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplateBinding">
     update t_sms_template_binding
     set template_id = #{templateId,jdbcType=BIGINT},
       template_code = #{templateCode,jdbcType=VARCHAR},
