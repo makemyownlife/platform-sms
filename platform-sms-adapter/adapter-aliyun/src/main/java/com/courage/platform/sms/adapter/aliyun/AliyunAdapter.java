@@ -22,7 +22,7 @@ public class AliyunAdapter implements OuterAdapter {
     @Override
     public void init(SmsChannelConfig smsChannelConfig) throws Exception {
         this.smsChannelConfig = smsChannelConfig;
-        logger.info("初始化阿里云短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppKey() + "]");
+        logger.info("阿里云短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppKey() + "]");
         com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
                 // 必填，您的 AccessKey ID
                 .setAccessKeyId(smsChannelConfig.getChannelAppKey())
@@ -56,6 +56,7 @@ public class AliyunAdapter implements OuterAdapter {
 
     @Override
     public void destroy() {
+        logger.info("销毁阿里云短信客户端渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppKey() + "]");
     }
 
 }
