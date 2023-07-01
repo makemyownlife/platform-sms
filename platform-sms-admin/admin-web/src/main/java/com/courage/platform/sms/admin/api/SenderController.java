@@ -16,9 +16,6 @@ public class SenderController {
 
     private final static Logger logger = LoggerFactory.getLogger(SenderController.class);
 
-    @Value("${rocketmq.topic}")
-    private String smsTopic;
-
     @RequestMapping("/sendByTemplateId")
     @ResponseBody
     public SmsSenderResult sendByTemplateId(HttpServletRequest request) {
