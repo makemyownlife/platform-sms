@@ -2,8 +2,8 @@ package com.courage.platform.sms.admin.service.impl;
 
 import com.courage.platform.sms.admin.model.BaseModel;
 import com.courage.platform.sms.admin.service.SmsChannelService;
-import com.courage.platform.sms.dao.TSmsChannelDAO;
-import com.courage.platform.sms.domain.TSmsChannel;
+import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
+import com.courage.platform.sms.admin.domain.TSmsChannel;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

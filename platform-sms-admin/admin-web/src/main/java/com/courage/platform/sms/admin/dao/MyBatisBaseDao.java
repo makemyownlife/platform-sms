@@ -1,4 +1,4 @@
-package com.courage.platform.sms.dao;
+package com.courage.platform.sms.admin.dao;
 
 import java.io.Serializable;
 

@@ -4,7 +4,7 @@ import com.courage.platform.sms.admin.model.AdminUser;
 import com.courage.platform.sms.admin.model.BaseModel;
 import com.courage.platform.sms.admin.model.Pager;
 import com.courage.platform.sms.admin.service.SmsChannelService;
-import com.courage.platform.sms.domain.TSmsChannel;
+import com.courage.platform.sms.admin.domain.TSmsChannel;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
