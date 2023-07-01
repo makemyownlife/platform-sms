@@ -56,6 +56,12 @@
             <version>${parent.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.courage</groupId>
+            <artifactId>platform-sms-client</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
