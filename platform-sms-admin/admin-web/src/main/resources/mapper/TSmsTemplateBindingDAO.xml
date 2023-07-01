@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.courage.platform.sms.dao.TSmsTemplateBindingDAO">
 
-  <resultMap id="BaseResultMap" type="com.courage.platform.sms.domain.TSmsTemplateBinding">
+  <resultMap id="BaseResultMap" type="com.courage.platform.sms.admin.domain.TSmsTemplateBinding">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="template_id" jdbcType="BIGINT" property="templateId" />
     <result column="template_code" jdbcType="VARCHAR" property="templateCode" />
