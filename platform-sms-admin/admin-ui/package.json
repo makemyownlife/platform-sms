@@ -2,7 +2,7 @@
   "name": "admin-ui",
   "version": "1.1.4",
   "description": "A admin ui with Element UI & axios & iconfont & permission control & lint",
-  "author": "Machengyuan <rewerma@163.com>",
+  "author": "zhangyong",
   "license": "MIT",
   "serve": "SET NODE_OPTIONS=–openssl-legacy-provider && vue-cli-service serve",
   "scripts": {
