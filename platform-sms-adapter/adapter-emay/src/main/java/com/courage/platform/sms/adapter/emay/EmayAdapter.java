@@ -9,8 +9,8 @@ import cn.emay.util.GZIPUtils;
 import cn.emay.util.JsonHelper;
 import cn.emay.util.http.*;
 import com.courage.platform.sms.adapter.OuterAdapter;
-import com.courage.platform.sms.adapter.send.SmsAdapterRequest;
-import com.courage.platform.sms.adapter.send.SmsAdapterResponse;
+import com.courage.platform.sms.adapter.command.SendSmsRequest;
+import com.courage.platform.sms.adapter.command.SmsAdapterResponse;
 import com.courage.platform.sms.adapter.support.SPI;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import org.apache.commons.lang3.StringUtils;
@@ -41,7 +41,7 @@ public class EmayAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsAdapterResponse sendSmsByTemplateId(SmsAdapterRequest smsSendRequest) {
+    public SmsAdapterResponse sendSmsByTemplateId(SendSmsRequest smsSendRequest) {
         TemplateSmsSendRequest pamars = new TemplateSmsSendRequest();
         String[] mobiles = StringUtils.split(smsSendRequest.getPhoneNumbers(), ",");
         List<TemplateSmsIdAndMobile> smsIdAndMobilesList = new ArrayList(mobiles.length);

@@ -1,8 +1,4 @@
-package com.courage.platform.sms.adapter.send;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.UUID;
+package com.courage.platform.sms.adapter.command;
 
 /**
  * 短信发送结果(适配器)

@@ -3,8 +3,8 @@ package com.courage.platform.sms.adapter.aliyun;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.dysmsapi20170525.Client;
 import com.courage.platform.sms.adapter.OuterAdapter;
-import com.courage.platform.sms.adapter.send.SmsAdapterRequest;
-import com.courage.platform.sms.adapter.send.SmsAdapterResponse;
+import com.courage.platform.sms.adapter.command.SendSmsRequest;
+import com.courage.platform.sms.adapter.command.SmsAdapterResponse;
 import com.courage.platform.sms.adapter.support.SPI;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class AliyunAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsAdapterResponse sendSmsByTemplateId(SmsAdapterRequest smsSendRequest) {
+    public SmsAdapterResponse sendSmsByTemplateId(SendSmsRequest smsSendRequest) {
         try {
             com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest =
                     new com.aliyun.dysmsapi20170525.models.SendSmsRequest().
