@@ -1,11 +1,9 @@
 package com.courage.platform.sms.admin.service.impl;
 
-import com.courage.platform.sms.admin.model.BaseModel;
-import com.courage.platform.sms.admin.service.AppInfoService;
 import com.courage.platform.sms.admin.dao.TSmsAppinfoDAO;
 import com.courage.platform.sms.admin.domain.TSmsAppinfo;
-import com.courage.platform.sms.admin.domain.TSmsChannel;
-import org.apache.commons.lang3.StringUtils;
+import com.courage.platform.sms.admin.model.BaseModel;
+import com.courage.platform.sms.admin.service.AppInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
