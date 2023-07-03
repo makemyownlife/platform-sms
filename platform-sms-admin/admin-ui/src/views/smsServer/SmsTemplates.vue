@@ -69,11 +69,11 @@
           <el-input v-model="templateModel.signName"/>
         </el-form-item>
         <el-form-item label="模版内容" prop="content" >
-          <el-input v-model="templateModel.content" type="textarea"/>
-          <div style="background-color: #f7f7f7; padding: 8px 16px; color: #555 ;line-height: 22px">
-            <span class="flex"><span style="font-weight: 700;">变量格式：</span> ${code}例如：您的验证码为 ${code} ，该验证码5分钟内有效，请勿泄露于他人。
-            </span>
-          </div>
+          <el-input v-model="templateModel.content"
+                    type="textarea"
+                    placeholder="例如：您的验证码为 ${code} ，该验证码5分钟内有效，请勿泄露于他人。"
+                    :rows = "4"
+          />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
