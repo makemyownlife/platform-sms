@@ -58,7 +58,7 @@
     <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.size"
                 @pagination="fetchData()"/>
 
-    <!--   模态窗口 start  -->
+    <!--   模版窗口 start  -->
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
       <el-form ref="dataForm" :rules="rules" :model="templateModel" label-position="left" label-width="120px"
                style="width: 400px; margin-left:30px;">
@@ -81,7 +81,7 @@
         <el-button type="primary" @click="dataOperation()">确定</el-button>
       </div>
     </el-dialog>
-    <!--    模态窗口 end   -->
+    <!--    模版窗口 end   -->
 
   </div>
 
