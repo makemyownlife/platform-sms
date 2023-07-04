@@ -4,7 +4,7 @@ package com.courage.platform.sms.adapter.command;
  * 短信发送请求(适配器)
  * Created by zhangyong on 2023/3/1.
  */
-public class SendSmsRequest {
+public class SendSmsCommand {
 
     // 手机号 (逗号分隔)
     private String phoneNumbers;

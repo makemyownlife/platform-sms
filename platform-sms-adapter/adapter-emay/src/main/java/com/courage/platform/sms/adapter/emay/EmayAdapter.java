@@ -3,13 +3,12 @@ package com.courage.platform.sms.adapter.emay;
 import cn.emay.ResultModel;
 import cn.emay.eucp.inter.framework.dto.TemplateSmsIdAndMobile;
 import cn.emay.eucp.inter.http.v1.dto.request.TemplateSmsSendRequest;
-import cn.emay.eucp.inter.http.v1.dto.response.SmsResponse;
 import cn.emay.util.AES;
 import cn.emay.util.GZIPUtils;
 import cn.emay.util.JsonHelper;
 import cn.emay.util.http.*;
 import com.courage.platform.sms.adapter.OuterAdapter;
-import com.courage.platform.sms.adapter.command.SendSmsRequest;
+import com.courage.platform.sms.adapter.command.SendSmsCommand;
 import com.courage.platform.sms.adapter.command.SmsAdapterResponse;
 import com.courage.platform.sms.adapter.support.SPI;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
@@ -41,7 +40,7 @@ public class EmayAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsAdapterResponse sendSmsByTemplateId(SendSmsRequest smsSendRequest) {
+    public SmsAdapterResponse sendSmsByTemplateId(SendSmsCommand smsSendRequest) {
         TemplateSmsSendRequest pamars = new TemplateSmsSendRequest();
         String[] mobiles = StringUtils.split(smsSendRequest.getPhoneNumbers(), ",");
         List<TemplateSmsIdAndMobile> smsIdAndMobilesList = new ArrayList(mobiles.length);
@@ -63,9 +62,9 @@ public class EmayAdapter implements OuterAdapter {
                 isGizp,
                 encode);
         if ("SUCCESS".equals(result.getCode())) {
-            SmsResponse[] response = JsonHelper.fromJson(SmsResponse[].class, result.getResult());
+            cn.emay.eucp.inter.http.v1.dto.response.SmsResponse[] response = JsonHelper.fromJson(cn.emay.eucp.inter.http.v1.dto.response.SmsResponse[].class, result.getResult());
             if (response != null) {
-                for (SmsResponse d : response) {
+                for (cn.emay.eucp.inter.http.v1.dto.response.SmsResponse d : response) {
                     logger.info("data:" + d.getMobile() + "," + d.getSmsId() + "," + d.getCustomSmsId());
                 }
                 return new SmsAdapterResponse(SmsAdapterResponse.SUCCESS_CODE, result.getResult());
