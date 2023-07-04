@@ -77,13 +77,29 @@ public class EmayAdapter implements OuterAdapter {
 
     @Override
     public SmsResponseCommand addSmsTemplate(AddSmsTemplateCommand addSmsTemplateCommand) {
+        // 将标准模版转换成 亿美模版 信息
+        String templateContent = addSmsTemplateCommand.getTemplateContent();
+        Map<String, String> templateMap = new HashMap<String, String>();
+        templateMap.put("templateContent", "ssssssssss${参数1}dddddddddddddd${参数2}dddddddddd");
+        templateMap.put("requestTime", String.valueOf(System.currentTimeMillis()));
+        templateMap.put("requestValidPeriod", "30");
+        ResultModel result = HttpUtil.request(
+                              smsChannelConfig.getChannelAppKey(),
+                              smsChannelConfig.getChannelAppSecret(),
+                              algorithm,
+                              templateMap,
+                          smsChannelConfig.getChannelDomain() + "/inter/createTemplateSMS",
+                               isGizp,
+                               encode);
+        if ("SUCCESS".equals(result.getCode())) {
+
+        }
         return null;
     }
 
-
-
     @Override
     public void destroy() {
+        logger.warn("销毁亿美短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppKey() + "]");
     }
 
 }
