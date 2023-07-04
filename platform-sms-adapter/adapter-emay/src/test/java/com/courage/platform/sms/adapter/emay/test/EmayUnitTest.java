@@ -52,6 +52,32 @@ public class EmayUnitTest {
         }
     }
 
+    @Test
+    public void addTemplate() {
+        String appId = "EUCP-EMY-SMS1-0BIGB";// 请联系销售，或者在页面中 获取
+        // 密钥
+        String secretKey = "69C5DCC5531E15BF";// 请联系销售，或者在页面中 获取
+        // 接口地址
+        String host = "http://www.btom.cn:8080"; // 请联系销售获取
+        // 加密算法
+        String algorithm = "AES/ECB/PKCS5Padding";
+        // 编码
+        String encode = "UTF-8";
+        // 是否压缩
+        boolean isGizp = true;
+        // 模板创建
+        Map<String, String> templateMap = new HashMap<String, String>();
+        templateMap.put("templateContent", "ssssssssss${参数1}dddddddddddddd${参数2}dddddddddd");
+        templateMap.put("requestTime", String.valueOf(System.currentTimeMillis()));
+        templateMap.put("requestValidPeriod", "30");
+        ResultModel result = request(appId, secretKey, algorithm, templateMap, host + "/inter/createTemplateSMS", isGizp, encode);
+        System.out.println("result code :" + result.getCode());
+        if ("SUCCESS".equals(result.getCode())) {
+            System.out.println(result.getResult());
+        }
+        System.out.println("=============end createTemplateSMS==================");
+    }
+
     public static ResultModel request(String appId, String secretKey, String algorithm, Object content, String url, final boolean isGzip, String encode) {
         Map<String, String> headers = new HashMap<String, String>();
         HttpRequest<byte[]> request = null;
