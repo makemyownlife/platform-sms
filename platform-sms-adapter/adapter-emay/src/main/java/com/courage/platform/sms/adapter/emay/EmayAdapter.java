@@ -9,7 +9,7 @@ import cn.emay.util.JsonHelper;
 import cn.emay.util.http.*;
 import com.courage.platform.sms.adapter.OuterAdapter;
 import com.courage.platform.sms.adapter.command.SendSmsCommand;
-import com.courage.platform.sms.adapter.command.SmsAdapterResponse;
+import com.courage.platform.sms.adapter.command.SmsResponseCommand;
 import com.courage.platform.sms.adapter.support.SPI;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import org.apache.commons.lang3.StringUtils;
@@ -40,7 +40,7 @@ public class EmayAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsAdapterResponse sendSmsByTemplateId(SendSmsCommand smsSendRequest) {
+    public SmsResponseCommand sendSmsByTemplateId(SendSmsCommand smsSendRequest) {
         TemplateSmsSendRequest pamars = new TemplateSmsSendRequest();
         String[] mobiles = StringUtils.split(smsSendRequest.getPhoneNumbers(), ",");
         List<TemplateSmsIdAndMobile> smsIdAndMobilesList = new ArrayList(mobiles.length);
@@ -67,10 +67,10 @@ public class EmayAdapter implements OuterAdapter {
                 for (cn.emay.eucp.inter.http.v1.dto.response.SmsResponse d : response) {
                     logger.info("data:" + d.getMobile() + "," + d.getSmsId() + "," + d.getCustomSmsId());
                 }
-                return new SmsAdapterResponse(SmsAdapterResponse.SUCCESS_CODE, result.getResult());
+                return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, result.getResult());
             }
         }
-        return new SmsAdapterResponse(SmsAdapterResponse.FAIL_CODE, result.getResult());
+        return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, result.getResult());
     }
 
     public static ResultModel request(String appId, String secretKey, String algorithm, Object content, String url, final boolean isGzip, String encode) {

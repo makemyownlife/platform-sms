@@ -3,7 +3,7 @@ package com.courage.platform.sms.adapter;
 
 import com.courage.platform.sms.adapter.command.AddSmsTemplateCommand;
 import com.courage.platform.sms.adapter.command.SendSmsCommand;
-import com.courage.platform.sms.adapter.command.SmsAdapterResponse;
+import com.courage.platform.sms.adapter.command.SmsResponseCommand;
 import com.courage.platform.sms.adapter.support.SPI;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 
@@ -21,12 +21,12 @@ public interface OuterAdapter {
     /**
      * 按照模版编号发送短信
      */
-    SmsAdapterResponse sendSmsByTemplateId(SendSmsCommand smsSendRequest);
+    SmsResponseCommand sendSmsByTemplateId(SendSmsCommand smsSendRequest);
 
     /**
      * 按照模版编号发送短信
      */
-    SmsAdapterResponse addSmsTemplate(AddSmsTemplateCommand addSmsTemplateCommand);
+    SmsResponseCommand addSmsTemplate(AddSmsTemplateCommand addSmsTemplateCommand);
 
     /**
      * 外部适配器销毁接口

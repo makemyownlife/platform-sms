@@ -4,7 +4,7 @@ package com.courage.platform.sms.adapter.command;
  * 短信发送结果(适配器)
  * Created by zhangyong on 2023/3/1.
  */
-public class SmsAdapterResponse {
+public class SmsResponseCommand {
 
     public static final int SUCCESS_CODE = 200;
 
@@ -14,11 +14,11 @@ public class SmsAdapterResponse {
 
     private String result;
 
-    public SmsAdapterResponse(int code) {
+    public SmsResponseCommand(int code) {
         this.code = code;
     }
 
-    public SmsAdapterResponse(int code, String result) {
+    public SmsResponseCommand(int code, String result) {
         this.code = code;
         this.result = result;
     }

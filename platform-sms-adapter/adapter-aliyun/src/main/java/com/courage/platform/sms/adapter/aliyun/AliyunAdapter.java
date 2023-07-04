@@ -6,7 +6,7 @@ import com.aliyun.dysmsapi20170525.models.AddSmsTemplateResponse;
 import com.courage.platform.sms.adapter.OuterAdapter;
 import com.courage.platform.sms.adapter.command.AddSmsTemplateCommand;
 import com.courage.platform.sms.adapter.command.SendSmsCommand;
-import com.courage.platform.sms.adapter.command.SmsAdapterResponse;
+import com.courage.platform.sms.adapter.command.SmsResponseCommand;
 import com.courage.platform.sms.adapter.support.SPI;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public class AliyunAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsAdapterResponse sendSmsByTemplateId(SendSmsCommand sendSmsCommand) {
+    public SmsResponseCommand sendSmsByTemplateId(SendSmsCommand sendSmsCommand) {
         try {
             com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest().
                     setSignName(sendSmsCommand.getSignName()).
@@ -46,17 +46,17 @@ public class AliyunAdapter implements OuterAdapter {
             com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
             com.aliyun.dysmsapi20170525.models.SendSmsResponse resp = client.sendSmsWithOptions(sendSmsRequest, runtime);
             if ("ok".equals(resp.getStatusCode())) {
-                return new SmsAdapterResponse(SmsAdapterResponse.SUCCESS_CODE, JSON.toJSONString(resp.getBody()));
+                return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, JSON.toJSONString(resp.getBody()));
             }
-            return new SmsAdapterResponse(SmsAdapterResponse.FAIL_CODE);
+            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
         } catch (Exception e) {
             logger.error("aliyun sendSms:", e);
-            return new SmsAdapterResponse(SmsAdapterResponse.FAIL_CODE, e.getMessage());
+            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, e.getMessage());
         }
     }
 
     @Override
-    public SmsAdapterResponse addSmsTemplate(AddSmsTemplateCommand addSmsTemplateCommand) {
+    public SmsResponseCommand addSmsTemplate(AddSmsTemplateCommand addSmsTemplateCommand) {
         try {
             com.aliyun.dysmsapi20170525.models.AddSmsTemplateRequest addSmsTemplateRequest = new com.aliyun.dysmsapi20170525.models.AddSmsTemplateRequest();
             addSmsTemplateRequest.setRemark(addSmsTemplateCommand.getRemark());
@@ -65,12 +65,12 @@ public class AliyunAdapter implements OuterAdapter {
             addSmsTemplateRequest.setTemplateName(addSmsTemplateCommand.getTemplateName());
             AddSmsTemplateResponse resp = client.addSmsTemplate(addSmsTemplateRequest);
             if ("ok".equals(resp.getStatusCode())) {
-                return new SmsAdapterResponse(SmsAdapterResponse.SUCCESS_CODE, JSON.toJSONString(resp.getBody()));
+                return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, JSON.toJSONString(resp.getBody()));
             }
-            return new SmsAdapterResponse(SmsAdapterResponse.FAIL_CODE);
+            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
         } catch (Exception e) {
             logger.error("aliyun addSmsTemplate error :", e);
-            return new SmsAdapterResponse(SmsAdapterResponse.FAIL_CODE, e.getMessage());
+            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, e.getMessage());
         }
     }
 
