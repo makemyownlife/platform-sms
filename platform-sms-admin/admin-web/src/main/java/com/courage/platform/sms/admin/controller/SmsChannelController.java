@@ -4,6 +4,7 @@ import com.courage.platform.sms.admin.controller.model.BaseModel;
 import com.courage.platform.sms.admin.controller.model.Pager;
 import com.courage.platform.sms.admin.service.SmsChannelService;
 import com.courage.platform.sms.admin.domain.TSmsChannel;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class SmsChannelController {
     @PostMapping(value = "/channels")
     public BaseModel<Pager> channels(String channelAppkey, String channelType) {
         Map<String, String> param = new HashMap<>();
-        param.put("channelType", channelType);
-        param.put("channelAppkey", channelAppkey);
+        param.put("channelType", StringUtils.trimToEmpty(channelType));
+        param.put("channelAppkey", StringUtils.trimToEmpty(channelAppkey));
         List<TSmsChannel> tSmsChannelList = smsChannelService.queryChannels(param);
         Pager pager = new Pager();
         pager.setCount(Long.valueOf(tSmsChannelList.size()));

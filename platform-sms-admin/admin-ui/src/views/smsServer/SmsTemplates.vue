@@ -45,9 +45,6 @@
               操作<i class="el-icon-arrow-down el-icon--right"/>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <router-link to="/smsServer/templateBinding">
-                <el-dropdown-item>绑定渠道</el-dropdown-item>
-              </router-link>
               <el-dropdown-item @click.native="handleUpdate(scope.row)">修改模版</el-dropdown-item>
               <el-dropdown-item @click.native="handleDelete(scope.row)">删除模版</el-dropdown-item>
             </el-dropdown-menu>
@@ -75,6 +72,15 @@
                     :rows = "4"
           />
         </el-form-item>
+        <el-form-item label="选择渠道" prop="channelIds">
+          <el-select v-model="selectValue"
+                     filterable multiple
+                     placeholder="渠道类型"
+                     clearable
+                     style="width: 280px">
+            <el-option v-for="item in smsChannels" :key="item.id" :label="item.channelName" :value="item.id"/>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -90,6 +96,7 @@
 <script>
 
 import {getSmsTemplates, addSmsTemplate, deleteTemplate, updateSmsTemplate} from '@/api/template.js'
+import {getSmsChannels} from '@/api/smsChannel.js'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -101,7 +108,10 @@ export default {
       list: null,
       listLoading: true,
       listLoading2: true,
+      // 渠道属性 start
+      selectValue: '',
       smsChannels: [],
+      // 渠道属性 end
       count: 0,
       listQuery: {
         templateName: '',
@@ -110,28 +120,22 @@ export default {
       },
       dialogFormVisible: false,
       selectedItem: "",
-      options: [
-        { value: "选项1" },
-        { value: "选项2" },
-        { value: "选项3" },
-        { value: "选项4" },
-        { value: "选项5" },
-      ],
       textMap: {
         create: '新建模版',
-        update: '修改模版',
-        binding: '手工绑定渠道'
+        update: '修改模版'
       },
       templateModel: {
         id: undefined,
         templateName: null,
         signName: null,
-        content: null
+        content: null,
+        channelIds: null
       },
       rules: {
         templateName: [{required: true, message: '模版名称不能为空', trigger: 'change'}],
         signName: [{required: true, message: '签名名称不能为空', trigger: 'change'}],
-        content: [{required: true, message: '内容不能为空', trigger: 'change'}]
+        content: [{required: true, message: '内容不能为空', trigger: 'change'}],
+        channelIds: [{required: true, message: '模版渠道不能为空', trigger: 'change'}]
       },
       dialogStatus: 'create'
     }
@@ -171,7 +175,8 @@ export default {
         id: undefined,
         templateName: null,
         signName: null,
-        content: null
+        content: null,
+        channelIds: null
       }
     },
     handleCreate() {
@@ -181,6 +186,8 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+      //加载渠道
+      this.loadSelectChannel()
     },
     dataOperation() {
       this.$refs['dataForm'].validate((valid) => {
@@ -243,6 +250,12 @@ export default {
           type: 'error'
         })
       }
+    },
+    loadSelectChannel() {
+        getSmsChannels(null).then(res => {
+          this.smsChannels = res.data.items;
+         }).finally(() => {
+         });
     }
   }
 }

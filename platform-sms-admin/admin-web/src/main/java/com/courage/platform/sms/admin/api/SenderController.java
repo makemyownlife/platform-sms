@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/gateway/")
 public class SenderController {
 
     private final static Logger logger = LoggerFactory.getLogger(SenderController.class);
