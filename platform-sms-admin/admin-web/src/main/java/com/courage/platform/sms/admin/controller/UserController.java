@@ -1,7 +1,7 @@
 package com.courage.platform.sms.admin.controller;
 
-import com.courage.platform.sms.admin.model.AdminUser;
-import com.courage.platform.sms.admin.model.BaseModel;
+import com.courage.platform.sms.admin.controller.model.AdminUser;
+import com.courage.platform.sms.admin.controller.model.BaseModel;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import org.slf4j.Logger;

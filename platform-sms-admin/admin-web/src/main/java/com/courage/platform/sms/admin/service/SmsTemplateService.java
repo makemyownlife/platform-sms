@@ -2,7 +2,7 @@ package com.courage.platform.sms.admin.service;
 
 
 import com.courage.platform.sms.admin.domain.TSmsTemplate;
-import com.courage.platform.sms.admin.model.BaseModel;
+import com.courage.platform.sms.admin.controller.model.BaseModel;
 
 import java.util.List;
 import java.util.Map;

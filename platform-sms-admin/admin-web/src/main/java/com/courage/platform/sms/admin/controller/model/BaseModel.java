@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.model;
+package com.courage.platform.sms.admin.controller.model;
 
 public class BaseModel<T> {
 

@@ -1,8 +1,8 @@
 package com.courage.platform.sms.admin.controller;
 
 import com.courage.platform.sms.admin.domain.TSmsAppinfo;
-import com.courage.platform.sms.admin.model.BaseModel;
-import com.courage.platform.sms.admin.model.Pager;
+import com.courage.platform.sms.admin.controller.model.BaseModel;
+import com.courage.platform.sms.admin.controller.model.Pager;
 import com.courage.platform.sms.admin.service.AppInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

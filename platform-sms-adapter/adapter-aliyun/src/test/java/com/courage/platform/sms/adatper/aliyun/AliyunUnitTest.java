@@ -26,7 +26,7 @@ public class AliyunUnitTest {
 
     @Before
     public void init() throws Exception {
-        client = createClient("LTAI0cHwLeSpuRUC", "LooIw6BfolybljOMt4QgrR6KTCmFWY");
+        client = createClient("", "");
     }
 
     @Test
@@ -46,6 +46,10 @@ public class AliyunUnitTest {
     @Test
     public void addSmsTemplate() throws Exception {
         com.aliyun.dysmsapi20170525.models.AddSmsTemplateRequest addSmsTemplateRequest = new com.aliyun.dysmsapi20170525.models.AddSmsTemplateRequest();
+        addSmsTemplateRequest.setTemplateName("测试模版");
+        addSmsTemplateRequest.setTemplateType(0);
+        addSmsTemplateRequest.setTemplateContent("验证码:${code}");
+        addSmsTemplateRequest.setRemark("你好");
         com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
         try {
             // 复制代码运行请自行打印 API 的返回值
