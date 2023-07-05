@@ -13,9 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 相关MVC拦截器配置
- *
- * @author rewerma 2019-07-13 下午05:12:16
- * @version 1.0.0
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
