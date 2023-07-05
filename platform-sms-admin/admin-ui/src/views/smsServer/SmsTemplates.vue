@@ -76,9 +76,11 @@
           <el-select v-model="selectValue"
                      filterable multiple
                      placeholder="渠道类型"
+                     @change="currChannelChange"
                      clearable
                      style="width: 280px">
-            <el-option v-for="item in smsChannels" :key="item.id" :label="item.channelName" :value="item.id"/>
+            <el-option v-for="item in smsChannels" :key="item.id" :label="item.channelName"
+                       :value="item.id"/>
           </el-select>
         </el-form-item>
       </el-form>
@@ -256,6 +258,10 @@ export default {
           this.smsChannels = res.data.items;
          }).finally(() => {
          });
+    },
+    // 渠道改变事件
+    currChannelChange(val){
+      this.templateModel.channelIds = val;
     }
   }
 }
