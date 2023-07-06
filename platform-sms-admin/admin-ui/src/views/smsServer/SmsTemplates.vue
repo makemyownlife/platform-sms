@@ -14,7 +14,7 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="编号" min-width="45" align="center">
+      <el-table-column label="编号" min-width="38" align="center">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
@@ -29,17 +29,23 @@
           <span>{{ scope.row.signName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="模版内容" min-width="125" align="center">
+      <el-table-column label="模版内容" min-width="105" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.content }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column class-name="status-col" label="绑定渠道" min-width="50" align="center">
+      <el-table-column class-name="status-col" label="绑定渠道" min-width="50"  align="center">
         <template slot-scope="scope">
+          <el-tag>标签一</el-tag>
+          <el-tag type="success">标签二</el-tag><br/>
+          <el-tag type="info">标签三</el-tag><br/>
+          <el-tag type="warning">标签四</el-tag><br/>
+          <el-tag type="danger">标签五</el-tag>
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="操作" min-width="50" align="center">
+
+      <el-table-column class-name="status-col" label="操作" min-width="28" align="center">
         <template slot-scope="scope">
           <el-dropdown trigger="click">
             <el-button type="primary" size="mini">
@@ -52,6 +58,7 @@
           </el-dropdown>
         </template>
       </el-table-column>
+
     </el-table>
     <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.size"
                 @pagination="fetchData()"/>

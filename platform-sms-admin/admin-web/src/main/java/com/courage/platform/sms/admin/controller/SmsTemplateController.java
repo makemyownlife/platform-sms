@@ -59,6 +59,6 @@ public class SmsTemplateController {
     public BaseModel getSmsTemplatesBinding(String id) {
         return smsTemplateService.getSmsTemplatesBinding(Long.valueOf(id));
     }
-
+    
 }
 

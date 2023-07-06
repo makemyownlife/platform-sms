@@ -1,5 +1,7 @@
 package com.courage.platform.sms.admin.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -12,6 +14,7 @@ public class TSmsTemplate implements Serializable {
     /**
      * 模板id，主键自动增加
      */
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
 
     /**
