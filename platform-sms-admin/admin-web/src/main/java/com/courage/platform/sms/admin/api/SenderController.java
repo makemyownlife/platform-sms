@@ -3,7 +3,6 @@ package com.courage.platform.sms.admin.api;
 import com.courage.platform.sms.client.SmsSenderResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,7 +28,7 @@ public class SenderController {
             String uniqueId = time + random;
             logger.info("q:" + q + " appKey:" + appKey + " uniqueId:" + uniqueId);
             //发送消息
-            String tag = "template";
+
             return new SmsSenderResult(SmsSenderResult.FAIL_CODE, "发送失败");
         } catch (Exception e) {
             logger.error("sendSingle error: ", e);
