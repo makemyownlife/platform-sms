@@ -14,14 +14,19 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="编号" min-width="35" align="center">
+      <el-table-column label="编号" min-width="45" align="center">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="模版名称" min-width="45" align="center">
+      <el-table-column label="模版名称" min-width="50" align="center">
         <template slot-scope="scope">
           {{ scope.row.templateName }}
+        </template>
+      </el-table-column>
+      <el-table-column label="签名" min-width="32" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.signName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="模版内容" min-width="125" align="center">
@@ -29,11 +34,7 @@
           <span>{{ scope.row.content }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="签名" min-width="45" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.signName }}</span>
-        </template>
-      </el-table-column>
+
       <el-table-column class-name="status-col" label="绑定渠道" min-width="50" align="center">
         <template slot-scope="scope">
         </template>

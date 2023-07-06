@@ -28,7 +28,7 @@ public class TSmsTemplateBinding implements Serializable {
     private Long channelId;
 
     /**
-     * -1 : 审核中 0：审核成功  1：审核失败
+     *  0 : 待提交 1：待审核  2：审核成功 3：审核失败
      */
     private Byte status;
 

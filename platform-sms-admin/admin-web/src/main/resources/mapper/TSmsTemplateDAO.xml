@@ -29,15 +29,15 @@
   </delete>
 
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplate" useGeneratedKeys="true">
-    insert into t_sms_template (template_name, content, channel,
+    insert into t_sms_template (id , template_name, content, sign_name,
       `status`, create_time, update_time
       )
-    values (#{templateName,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{channel,jdbcType=VARCHAR},
+    values (#{id} , #{templateName,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{signName,jdbcType=VARCHAR},
       #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
 
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplate" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplate" useGeneratedKeys="true" >
     insert into t_sms_template
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="templateName != null">

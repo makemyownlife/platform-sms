@@ -1,10 +1,13 @@
 package com.courage.platform.sms.admin.service.impl;
 
+import com.courage.platform.sms.admin.config.IdGenerator;
 import com.courage.platform.sms.admin.controller.model.BaseModel;
-import com.courage.platform.sms.admin.service.SmsTemplateService;
 import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.domain.TSmsTemplate;
+import com.courage.platform.sms.admin.domain.TSmsTemplateBinding;
+import com.courage.platform.sms.admin.service.SmsTemplateService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,9 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     @Autowired
     private TSmsTemplateBindingDAO tSmsTemplateBindingDAO;
 
+    @Autowired
+    private IdGenerator idGenerator;
+
     @Override
     public List<TSmsTemplate> queryTemplates(Map<String, Object> params) {
         return tSmsTemplateDAO.queryTemplates(params);
@@ -37,11 +43,27 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
 
     @Override
     public BaseModel addSmsTemplate(TSmsTemplate tSmsTemplate) {
+        Long templateId = idGenerator.createUniqueId(tSmsTemplate.getSignName());
         try {
+            tSmsTemplate.setId(templateId);
             tSmsTemplate.setCreateTime(new Date());
             tSmsTemplate.setUpdateTime(new Date());
             tSmsTemplate.setStatus((byte) 0);
-            tSmsTemplateDAO.insertSelective(tSmsTemplate);
+            tSmsTemplateDAO.insert(tSmsTemplate);
+            Long[] channelIds = tSmsTemplate.getChannelIds();
+            for (Long channelId : channelIds) {
+                Long bindingId = idGenerator.createUniqueId(tSmsTemplate.getSignName());
+                TSmsTemplateBinding binding = new TSmsTemplateBinding();
+                binding.setId(bindingId);
+                binding.setTemplateId(tSmsTemplate.getId());
+                binding.setChannelId(channelId);
+                binding.setStatus((byte) 0);         //0 : 待提交 1：待审核  2：审核成功 3：审核失败
+                binding.setTemplateContent(StringUtils.EMPTY);
+                binding.setTemplateCode(StringUtils.EMPTY);
+                binding.setCreateTime(new Date());
+                binding.setUpdateTime(new Date());
+                tSmsTemplateBindingDAO.insertSelective(binding);
+            }
             return BaseModel.getInstance("success");
         } catch (Exception e) {
             logger.error("addSmsTemplate error:", e);

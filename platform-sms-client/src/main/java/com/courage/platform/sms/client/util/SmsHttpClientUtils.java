@@ -142,8 +142,6 @@ public final class SmsHttpClientUtils {
      * @param connectTimeout 客户端连接时间
      * @param readTimeout    服务端响应时间
      * @return 响应字符串
-     * @Author : yongwang.chen
-     * @Date : 4:18 PM 06/06/2018
      */
     public static String doPost(String url, Map<String, String> params, String charset, int connectTimeout, int readTimeout) throws Exception {
         String ctype = "application/x-www-form-urlencoded;charset=" + charset;
@@ -168,8 +166,6 @@ public final class SmsHttpClientUtils {
      * @param connectTimeout 客户端连接时间
      * @param readTimeout    服务端响应时间
      * @return 响应字符串
-     * @Author : yongwang.chen
-     * @Date : 4:18 PM 06/06/2018
      */
     public static String doPost(String url, String ctype, byte[] content, int connectTimeout, int readTimeout) throws Exception {
         HttpURLConnection conn = null;
@@ -207,8 +203,6 @@ public final class SmsHttpClientUtils {
      * @param url    请求地址
      * @param params 请求参数
      * @return 响应字符串
-     * @Author : yongwang.chen
-     * @Date : 4:18 PM 06/06/2018
      */
     public static String doGet(String url, Map<String, String> params) throws Exception {
         return doGet(url, params, DEFAULT_CHARSET);
@@ -222,8 +216,6 @@ public final class SmsHttpClientUtils {
      * @param charset 字符集，如UTF-8, GBK, GB2312
      * @return 响应字符串
      * @throws Exception
-     * @Author : yongwang.chen
-     * @Date : 4:18 PM 06/06/2018
      */
     public static String doGet(String url, Map<String, String> params, String charset) throws Exception {
         HttpURLConnection conn = null;
@@ -255,8 +247,6 @@ public final class SmsHttpClientUtils {
      * @param method 请求方法
      * @param ctype  请求类型
      * @return
-     * @Author : yongwang.chen
-     * @Date : 4:18 PM 06/06/2018
      */
     public static HttpURLConnection getConnection(URL url, String method, String ctype) {
         try {
@@ -307,8 +297,6 @@ public final class SmsHttpClientUtils {
      * @param charset 字符集，如UTF-8, GBK, GB2312
      * @return 查询字符串
      * @throws Exception
-     * @Author : yongwang.chen
-     * @Date : 4:18 PM 06/06/2018
      */
     public static String buildQuery(Map<String, String> params, String charset) throws Exception {
         if (params == null || params.isEmpty()) {
@@ -487,8 +475,6 @@ public final class SmsHttpClientUtils {
      *
      * @param query query URL地址
      * @return 参数映射
-     * @Author : yongwang.chen
-     * @Date : 4:18 PM 06/06/2018
      */
     public static Map<String, String> splitUrlQuery(String query) {
         Map<String, String> result = new HashMap<String, String>();
