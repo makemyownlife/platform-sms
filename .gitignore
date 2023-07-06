@@ -4,3 +4,4 @@
 pkg
 *.iml
 target
+.vscode/*

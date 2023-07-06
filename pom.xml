@@ -12,7 +12,6 @@
     <modules>
         <module>platform-sms-client</module>
         <module>platform-sms-adapter</module>
-        <module>platform-sms-dao</module>
         <module>platform-sms-admin</module>
         <module>platform-sms-demo</module>
         <!--
