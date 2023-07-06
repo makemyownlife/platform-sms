@@ -23,27 +23,9 @@ public class WebConfig implements WebMvcConfigurer {
 
             @Override
             public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-                httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-                httpServletResponse.setHeader("Access-Control-Allow-Methods", "*");
-                httpServletResponse.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Token");
-                httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
-                httpServletResponse.setHeader("Access-Control-Max-Age", String.valueOf(3600 * 24));
-
-                if (HttpMethod.OPTIONS.toString().equals(httpServletRequest.getMethod())) {
-                    httpServletResponse.setStatus(HttpStatus.NO_CONTENT.value());
-                    return false;
-                }
-
-                return true;
-            }
-        }).addPathPatterns("/api/**");
-
-        registry.addInterceptor(new HandlerInterceptor() {
-
-            @Override
-            public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
                 return true;
             }
         }).addPathPatterns("/api/**").excludePathPatterns("/api/**/config/server_polling").excludePathPatterns("/api/**/config/instances_polling").excludePathPatterns("/api/**/config/instance_polling/**").excludePathPatterns("/api/**/user/login").excludePathPatterns("/api/**/user/logout").excludePathPatterns("/api/**/user/info");
+   
     }
 }
