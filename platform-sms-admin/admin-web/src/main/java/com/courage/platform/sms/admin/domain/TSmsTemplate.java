@@ -1,9 +1,13 @@
 package com.courage.platform.sms.admin.domain;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class TSmsTemplate implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 模板id，主键自动增加
@@ -26,15 +30,24 @@ public class TSmsTemplate implements Serializable {
     private String signName;
 
     /**
+     * 适配渠道编号
+     */
+    private Long[] channelIds;
+
+    /**
      * 状态 0：无效 1：有效
      */
     private Byte status;
 
+    /**
+     * 创建时间
+     */
     private Date createTime;
 
+    /**
+     * 修改时间
+     */
     private Date updateTime;
-
-    private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
@@ -92,39 +105,12 @@ public class TSmsTemplate implements Serializable {
         this.signName = signName;
     }
 
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        TSmsTemplate other = (TSmsTemplate) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getTemplateName() == null ? other.getTemplateName() == null : this.getTemplateName().equals(other.getTemplateName()))
-            && (this.getContent() == null ? other.getContent() == null : this.getContent().equals(other.getContent()))
-            && (this.getSignName() == null ? other.getSignName() == null : this.getSignName().equals(other.getSignName()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
+    public Long[] getChannelIds() {
+        return channelIds;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getTemplateName() == null) ? 0 : getTemplateName().hashCode());
-        result = prime * result + ((getContent() == null) ? 0 : getContent().hashCode());
-        result = prime * result + ((getSignName() == null) ? 0 : getSignName().hashCode());
-        result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
-        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
-        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
-        return result;
+    public void setChannelIds(Long[] channelIds) {
+        this.channelIds = channelIds;
     }
 
     @Override
@@ -136,6 +122,7 @@ public class TSmsTemplate implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", templateName=").append(templateName);
         sb.append(", content=").append(content);
+        sb.append(", channelIds=").append(StringUtils.join(channelIds, ','));
         sb.append(", signName=").append(signName);
         sb.append(", status=").append(status);
         sb.append(", createTime=").append(createTime);
