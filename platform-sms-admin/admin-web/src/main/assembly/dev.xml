@@ -3,7 +3,8 @@
 	<id>dist</id>
 	<formats>
 		<format>dir</format>
-	</formats>
+        <format>tar.gz</format>
+    </formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
         <fileSet>
