@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * 适配器加载器
  */
@@ -17,14 +19,18 @@ public class SmsAdapterLoader {
 
     private static ExtensionLoader<OuterAdapter> EXTENSION_LOADER = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
 
-    private void loadAdapter(String adapterName, SmsChannelConfig smsChannelConfig) {
+    private static ConcurrentHashMap<Long, OuterAdapter> ADAPTER_MAP = new ConcurrentHashMap<>(16);
+
+    private void loadAdapter(SmsChannelConfig smsChannelConfig) {
+        String adapterName = smsChannelConfig.getChannelType();
         try {
             OuterAdapter adapter = EXTENSION_LOADER.getExtension(adapterName);
             ClassLoader cl = Thread.currentThread().getContextClassLoader();
-            // 替换ClassLoader
+            // 替换 ClassLoader
             Thread.currentThread().setContextClassLoader(adapter.getClass().getClassLoader());
             adapter.init(smsChannelConfig);
             Thread.currentThread().setContextClassLoader(cl);
+            ADAPTER_MAP.put(smsChannelConfig.getId(), adapter);
             logger.info("Load sms adapter: {} succeed", adapterName);
         } catch (Exception e) {
             logger.error("Load canal adapter: {} failed", adapterName, e);
