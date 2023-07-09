@@ -5,6 +5,4 @@ package com.courage.platform.sms.admin.loader;
  */
 public class SmsAdapterLoader {
 
-
-
 }

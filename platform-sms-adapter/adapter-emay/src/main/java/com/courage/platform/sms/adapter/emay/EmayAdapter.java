@@ -80,7 +80,7 @@ public class EmayAdapter implements OuterAdapter {
         // 将标准模版转换成 亿美模版 信息
         String templateContent = addSmsTemplateCommand.getTemplateContent();
         Map<String, String> templateMap = new HashMap<String, String>();
-        templateMap.put("templateContent", "ssssssssss${参数1}dddddddddddddd${参数2}dddddddddd");
+        templateMap.put("templateContent", templateContent);
         templateMap.put("requestTime", String.valueOf(System.currentTimeMillis()));
         templateMap.put("requestValidPeriod", "30");
         ResultModel result = HttpUtil.request(

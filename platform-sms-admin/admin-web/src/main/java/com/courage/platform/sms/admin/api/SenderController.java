@@ -19,7 +19,7 @@ public class SenderController {
     @ResponseBody
     public SmsSenderResult sendByTemplateId(HttpServletRequest request) {
         try {
-            //接收请求参数
+            // 接收请求参数
             String q = request.getParameter("q");
             String appKey = request.getParameter("appKey");
             String time = request.getParameter("time");
@@ -27,7 +27,6 @@ public class SenderController {
             //构造唯一请求id
             String uniqueId = time + random;
             logger.info("q:" + q + " appKey:" + appKey + " uniqueId:" + uniqueId);
-            //发送消息
 
             return new SmsSenderResult(SmsSenderResult.FAIL_CODE, "发送失败");
         } catch (Exception e) {

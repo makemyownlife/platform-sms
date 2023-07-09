@@ -21,6 +21,7 @@ public class SmsAdapterService {
 
     @PreDestroy
     public synchronized void destroy() {
+
     }
 
 }
