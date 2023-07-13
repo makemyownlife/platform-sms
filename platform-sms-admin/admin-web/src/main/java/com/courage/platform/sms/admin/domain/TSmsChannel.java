@@ -43,14 +43,9 @@ public class TSmsChannel implements Serializable {
     private String extProperties;
 
     /**
-     * 签名名称
+     *  0：启用 1：禁用
      */
-    private String signName;
-
-    /**
-     * 状态0：启用 1：禁用
-     */
-    private Byte status;
+    private Integer status;
 
     private Date createTime;
 
@@ -106,14 +101,6 @@ public class TSmsChannel implements Serializable {
         this.extProperties = extProperties;
     }
 
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -144,6 +131,14 @@ public class TSmsChannel implements Serializable {
 
     public void setChannelName(String channelName) {
         this.channelName = channelName;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
 }

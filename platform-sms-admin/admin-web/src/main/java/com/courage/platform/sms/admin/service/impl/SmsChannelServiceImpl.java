@@ -1,9 +1,9 @@
 package com.courage.platform.sms.admin.service.impl;
 
 import com.courage.platform.sms.admin.controller.model.BaseModel;
-import com.courage.platform.sms.admin.service.SmsChannelService;
 import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
 import com.courage.platform.sms.admin.domain.TSmsChannel;
+import com.courage.platform.sms.admin.service.SmsChannelService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class SmsChannelServiceImpl implements SmsChannelService {
             tSmsChannel.setCreateTime(new Date());
             tSmsChannel.setUpdateTime(new Date());
             tSmsChannel.setExtProperties(StringUtils.trimToEmpty(tSmsChannel.getExtProperties()));
-            tSmsChannel.setStatus((byte) 0);
+            tSmsChannel.setStatus(0);
             tSmsChannel.setSendOrder(0);
             if (item == null) {
                 tSmsChannelDAO.insert(tSmsChannel);
@@ -52,7 +52,7 @@ public class SmsChannelServiceImpl implements SmsChannelService {
         try {
             tSmsChannel.setUpdateTime(new Date());
             tSmsChannel.setExtProperties(StringUtils.trimToEmpty(tSmsChannel.getExtProperties()));
-            tSmsChannel.setStatus((byte) 0);
+            tSmsChannel.setStatus(0);
             tSmsChannelDAO.updateByPrimaryKey(tSmsChannel);
             return BaseModel.getInstance("success");
         } catch (Exception e) {

@@ -1,7 +1,5 @@
 package com.courage.platform.sms.adapter.support;
 
-import java.util.Date;
-
 /**
  * 短信通道配置
  */
@@ -11,30 +9,21 @@ public class SmsChannelConfig {
     private Long id;
 
     /**
-     *  通道类型: aliyun/emay
+     * 通道类型: aliyun/emay
      */
     private String channelType;
 
     //通道appkey
-    private String channelAppKey;
+    private String channelAppkey;
 
     //通道appsecet
-    private String channelAppSecret;
+    private String channelAppsecret;
 
     //访问地址
     private String channelDomain;
 
     //属性 json 格式
     private String extProperties;
-
-    //状态 0：正常 1：失效
-    private Integer status;
-
-    //创建时间
-    private Date creatTime;
-
-    //修改时间
-    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -68,44 +57,19 @@ public class SmsChannelConfig {
         this.extProperties = extProperties;
     }
 
-    public String getChannelAppKey() {
-        return channelAppKey;
+    public String getChannelAppkey() {
+        return channelAppkey;
     }
 
-    public void setChannelAppKey(String channelAppKey) {
-        this.channelAppKey = channelAppKey;
+    public void setChannelAppkey(String channelAppkey) {
+        this.channelAppkey = channelAppkey;
     }
 
-    public String getChannelAppSecret() {
-        return channelAppSecret;
+    public String getChannelAppsecret() {
+        return channelAppsecret;
     }
 
-    public void setChannelAppSecret(String channelAppSecret) {
-        this.channelAppSecret = channelAppSecret;
+    public void setChannelAppsecret(String channelAppsecret) {
+        this.channelAppsecret = channelAppsecret;
     }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Date getCreatTime() {
-        return creatTime;
-    }
-
-    public void setCreatTime(Date creatTime) {
-        this.creatTime = creatTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-    
 }

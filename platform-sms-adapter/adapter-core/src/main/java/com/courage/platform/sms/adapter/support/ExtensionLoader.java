@@ -34,7 +34,7 @@ public class ExtensionLoader<T> {
 
     private static final String                                      DEFAULT_CLASSLOADER_POLICY = "internal";
 
-    private static final String                                      WORKER_DIR_NAME = "sms-worker";
+    private static final String                                      WORKER_DIR_NAME = "platform-sms-admin";
 
     private static final Pattern                                     NAME_SEPARATOR             = Pattern
         .compile("\\s*[,]+\\s*");

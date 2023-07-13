@@ -37,7 +37,7 @@ public class EmayAdapter implements OuterAdapter {
 
     @Override
     public void init(SmsChannelConfig smsChannelConfig) {
-        logger.info("初始化亿美短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppKey() + "]");
+        logger.info("初始化亿美短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "]");
         this.smsChannelConfig = smsChannelConfig;
     }
 
@@ -56,8 +56,8 @@ public class EmayAdapter implements OuterAdapter {
         pamars.setTimerTime(smsSendRequest.getTimerTime());
         logger.info(JsonHelper.toJsonString(pamars));
         ResultModel result = HttpUtil.request(
-                smsChannelConfig.getChannelAppKey(),
-                smsChannelConfig.getChannelAppSecret(),
+                smsChannelConfig.getChannelAppkey(),
+                smsChannelConfig.getChannelAppsecret(),
                 algorithm,
                 pamars,
                 smsChannelConfig.getChannelDomain() + "/inter/sendTemplateNormalSMS",
@@ -84,8 +84,8 @@ public class EmayAdapter implements OuterAdapter {
         templateMap.put("requestTime", String.valueOf(System.currentTimeMillis()));
         templateMap.put("requestValidPeriod", "30");
         ResultModel result = HttpUtil.request(
-                              smsChannelConfig.getChannelAppKey(),
-                              smsChannelConfig.getChannelAppSecret(),
+                              smsChannelConfig.getChannelAppkey(),
+                              smsChannelConfig.getChannelAppsecret(),
                               algorithm,
                               templateMap,
                           smsChannelConfig.getChannelDomain() + "/inter/createTemplateSMS",
@@ -99,7 +99,7 @@ public class EmayAdapter implements OuterAdapter {
 
     @Override
     public void destroy() {
-        logger.warn("销毁亿美短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppKey() + "]");
+        logger.warn("销毁亿美短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "]");
     }
 
 }

@@ -21,7 +21,7 @@ public class SmsAdapterLoader {
 
     private static ConcurrentHashMap<Long, OuterAdapter> ADAPTER_MAP = new ConcurrentHashMap<>(16);
 
-    private void loadAdapter(SmsChannelConfig smsChannelConfig) {
+    public void loadAdapter(SmsChannelConfig smsChannelConfig) {
         String adapterName = smsChannelConfig.getChannelType();
         try {
             OuterAdapter adapter = EXTENSION_LOADER.getExtension(adapterName);
@@ -34,7 +34,7 @@ public class SmsAdapterLoader {
             ADAPTER_MAP.put(smsChannelConfig.getId(), adapter);
             logger.info("Load sms adapter: {} succeed", adapterName);
         } catch (Exception e) {
-            logger.error("Load canal adapter: {} failed", adapterName, e);
+            logger.error("Load sms adapter: {} failed", adapterName, e);
         }
     }
 
