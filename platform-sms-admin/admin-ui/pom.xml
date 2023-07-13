@@ -30,23 +30,23 @@
       </activation>
       <build>
         <plugins>
-          <plugin>
-            <groupId>com.github.eirslett</groupId>
-            <artifactId>frontend-maven-plugin</artifactId>
-            <version>${frontend-maven-plugin.version}</version>
-            <executions>
-              <!-- Build and minify static files -->
-              <execution>
-                <id>npm run build</id>
-                <goals>
-                  <goal>npm</goal>
-                </goals>
-                <configuration>
-                  <arguments>run build</arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
+          <!--<plugin>-->
+            <!--<groupId>com.github.eirslett</groupId>-->
+            <!--<artifactId>frontend-maven-plugin</artifactId>-->
+            <!--<version>${frontend-maven-plugin.version}</version>-->
+            <!--<executions>-->
+              <!--&lt;!&ndash; Build and minify static files &ndash;&gt;-->
+              <!--<execution>-->
+                <!--<id>npm run build</id>-->
+                <!--<goals>-->
+                  <!--<goal>npm</goal>-->
+                <!--</goals>-->
+                <!--<configuration>-->
+                  <!--<arguments>run build</arguments>-->
+                <!--</configuration>-->
+              <!--</execution>-->
+            <!--</executions>-->
+          <!--</plugin>-->
         </plugins>
       </build>
     </profile>

@@ -6,7 +6,7 @@ package com.courage.platform.sms.adapter.support;
 public class SmsChannelConfig {
 
     //通道账号编号
-    private Long id;
+    private Integer id;
 
     /**
      * 通道类型: aliyun/emay
@@ -25,11 +25,11 @@ public class SmsChannelConfig {
     //属性 json 格式
     private String extProperties;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

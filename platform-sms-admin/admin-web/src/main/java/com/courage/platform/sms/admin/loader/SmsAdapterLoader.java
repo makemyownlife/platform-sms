@@ -19,7 +19,7 @@ public class SmsAdapterLoader {
 
     private static ExtensionLoader<OuterAdapter> EXTENSION_LOADER = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
 
-    private static ConcurrentHashMap<Long, OuterAdapter> ADAPTER_MAP = new ConcurrentHashMap<>(16);
+    private static ConcurrentHashMap<Integer, OuterAdapter> ADAPTER_MAP = new ConcurrentHashMap<>(16);
 
     public void loadAdapter(SmsChannelConfig smsChannelConfig) {
         String adapterName = smsChannelConfig.getChannelType();
