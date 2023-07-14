@@ -1,8 +1,10 @@
 package com.courage.platform.sms.admin.api;
 
+import com.courage.platform.sms.admin.loader.SmsAdapterService;
 import com.courage.platform.sms.client.SmsSenderResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 public class SenderController {
 
     private final static Logger logger = LoggerFactory.getLogger(SenderController.class);
+
+    @Autowired
+    private SmsAdapterService smsAdapterService;
 
     @RequestMapping("/sendByTemplateId")
     @ResponseBody

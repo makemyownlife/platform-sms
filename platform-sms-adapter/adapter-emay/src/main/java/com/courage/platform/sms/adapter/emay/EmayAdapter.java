@@ -92,7 +92,7 @@ public class EmayAdapter implements OuterAdapter {
                                isGizp,
                                encode);
         if ("SUCCESS".equals(result.getCode())) {
-
+            
         }
         return null;
     }

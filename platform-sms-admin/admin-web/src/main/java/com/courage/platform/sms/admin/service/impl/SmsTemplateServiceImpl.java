@@ -1,17 +1,21 @@
 package com.courage.platform.sms.admin.service.impl;
 
+import com.courage.platform.sms.adapter.command.AddSmsTemplateCommand;
+import com.courage.platform.sms.adapter.command.SmsRequestCode;
 import com.courage.platform.sms.admin.config.IdGenerator;
 import com.courage.platform.sms.admin.controller.model.BaseModel;
 import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.domain.TSmsTemplateBinding;
+import com.courage.platform.sms.admin.loader.SmsAdapterService;
 import com.courage.platform.sms.admin.service.SmsTemplateService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -31,6 +35,9 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     @Autowired
     private IdGenerator idGenerator;
 
+    @Autowired
+    private SmsAdapterService smsAdapterService;
+
     @Override
     public List<TSmsTemplate> queryTemplates(Map<String, Object> params) {
         return tSmsTemplateDAO.queryTemplates(params);
@@ -41,6 +48,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
         return tSmsTemplateDAO.queryCountTemplates(param);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public BaseModel addSmsTemplate(TSmsTemplate tSmsTemplate) {
         Long templateId = idGenerator.createUniqueId(tSmsTemplate.getSignName());
@@ -57,7 +65,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
                 binding.setId(bindingId);
                 binding.setTemplateId(tSmsTemplate.getId());
                 binding.setChannelId(channelId);
-                binding.setStatus((byte) 0);         //0 : 待提交 1：待审核  2：审核成功 3：审核失败
+                binding.setStatus((byte) 0);                    //0 : 待提交 1：待审核  2：审核成功 3：审核失败
                 binding.setTemplateContent(StringUtils.EMPTY);
                 binding.setTemplateCode(StringUtils.EMPTY);
                 binding.setCreateTime(new Date());

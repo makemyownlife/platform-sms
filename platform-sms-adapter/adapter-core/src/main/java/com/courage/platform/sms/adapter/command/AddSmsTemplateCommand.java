@@ -4,7 +4,7 @@ package com.courage.platform.sms.adapter.command;
  * 添加短信模版请求
  * Created by zhangyong on 2023/7/4.
  */
-public class AddSmsTemplateCommand {
+public class AddSmsTemplateCommand extends SmsRequestCommand{
 
     public String templateContent;
 
