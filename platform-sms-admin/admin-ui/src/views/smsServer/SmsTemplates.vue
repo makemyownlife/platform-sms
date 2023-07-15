@@ -37,7 +37,7 @@
 
       <el-table-column class-name="status-col" label="绑定渠道" min-width="50"  align="center">
         <template slot-scope="scope">
-          <el-tag>标签一</el-tag>
+          <el-tag>标签一</el-tag><br/>
           <el-tag type="success">标签二</el-tag><br/>
           <el-tag type="info">标签三</el-tag><br/>
           <el-tag type="warning">标签四</el-tag><br/>
@@ -70,6 +70,16 @@
         <el-form-item label="模版名称" prop="templateName">
           <el-input v-model="templateModel.templateName"/>
         </el-form-item>
+        <el-form-item label="模版类型" prop="templateType">
+          <el-select v-model="templateModel.templateType" placeholder="模版类型">
+            <el-option key="0" label="验证码" value="0"/>
+            <el-option key="1" label="短信通知" value="1"/>
+            <!--
+            <el-option key="2" label="推广短信" value="2"/>
+            <el-option key="3" label="国际/港澳台消息" value="3"/>
+            -->
+          </el-select>
+        </el-form-item>
         <el-form-item label="签名名称" prop="signName">
           <el-input v-model="templateModel.signName"/>
         </el-form-item>
@@ -97,7 +107,7 @@
         <el-button type="primary" @click="dataOperation()">确定</el-button>
       </div>
     </el-dialog>
-    <!--    模版窗口 end   -->
+    <!--  模版窗口 end   -->
 
   </div>
 
@@ -136,6 +146,7 @@ export default {
       },
       templateModel: {
         id: undefined,
+        templateType: null,
         templateName: null,
         signName: null,
         content: null,
@@ -143,6 +154,7 @@ export default {
       },
       rules: {
         templateName: [{required: true, message: '模版名称不能为空', trigger: 'change'}],
+        templateType: [{required: true, message: '模版类型不能为空', trigger: 'change'}],
         signName: [{required: true, message: '签名名称不能为空', trigger: 'change'}],
         content: [{required: true, message: '内容不能为空', trigger: 'change'}],
         channelIds: [{required: true, message: '模版渠道不能为空', trigger: 'change'}]

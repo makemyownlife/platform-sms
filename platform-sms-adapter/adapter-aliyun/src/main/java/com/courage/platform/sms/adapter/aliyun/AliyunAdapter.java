@@ -47,7 +47,6 @@ public class AliyunAdapter implements OuterAdapter {
             com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
             com.aliyun.dysmsapi20170525.models.SendSmsResponse resp = client.sendSmsWithOptions(sendSmsRequest, runtime);
             if ("ok".equals(resp.getStatusCode())) {
-                logger.info("");
                 return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, JSON.toJSONString(resp.getBody()));
             }
             return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, resp.getBody().getMessage());

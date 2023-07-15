@@ -30,10 +30,10 @@
   </delete>
 
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplate" useGeneratedKeys="true">
-    insert into t_sms_template (id , template_name, content, sign_name,
+    insert into t_sms_template (id , template_name, template_type, content, sign_name,
       `status`, create_time, update_time
       )
-    values (#{id} , #{templateName,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{signName,jdbcType=VARCHAR},
+    values (#{id} , #{templateName,jdbcType=VARCHAR}, #{templateType} #{content,jdbcType=VARCHAR}, #{signName,jdbcType=VARCHAR},
       #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -43,6 +43,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="templateName != null">
         template_name,
+      </if>
+      <if test="templateType != null">
+        template_type,
       </if>
       <if test="content != null">
         content,
@@ -63,6 +66,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="templateName != null">
         #{templateName,jdbcType=VARCHAR},
+      </if>
+      <if test="templateType != null">
+        #{templateType},
       </if>
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
