@@ -14,17 +14,17 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="编号" min-width="38" align="center">
+      <el-table-column label="编号" min-width="31" align="center">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="模版名称" min-width="50" align="center">
+      <el-table-column label="模版名称" min-width="36" align="center">
         <template slot-scope="scope">
           {{ scope.row.templateName }}
         </template>
       </el-table-column>
-      <el-table-column label="签名" min-width="32" align="center">
+      <el-table-column label="签名" min-width="23" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.signName }}</span>
         </template>
@@ -35,7 +35,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column class-name="status-col" label="绑定渠道" min-width="50"  align="center">
+      <el-table-column class-name="status-col" label="渠道" min-width="50"  align="center">
         <template slot-scope="scope">
           <el-tag>标签一</el-tag><br/>
           <el-tag type="success">标签二</el-tag><br/>
@@ -52,6 +52,7 @@
               操作<i class="el-icon-arrow-down el-icon--right"/>
             </el-button>
             <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="handleBinding(scope.row)">绑定渠道</el-dropdown-item>
               <el-dropdown-item @click.native="handleUpdate(scope.row)">修改模版</el-dropdown-item>
               <el-dropdown-item @click.native="handleDelete(scope.row)">删除模版</el-dropdown-item>
             </el-dropdown-menu>
@@ -71,8 +72,8 @@
           <el-input v-model="templateModel.templateName"/>
         </el-form-item>
         <el-form-item label="模版类型" prop="templateType">
-          <el-select v-model="templateModel.templateType" placeholder="模版类型">
-            <el-option key="0" label="验证码" value="0"/>
+          <el-select v-model="templateModel.templateType" placeholder="模版类型" style="width: 280px">
+            <el-option key="0" label="验证码" value="0" />
             <el-option key="1" label="短信通知" value="1"/>
             <!--
             <el-option key="2" label="推广短信" value="2"/>
@@ -90,6 +91,34 @@
                     :rows = "4"
           />
         </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="templateModel.remark" type="textarea"/>
+        </el-form-item>
+        <!--
+        <el-form-item label="选择渠道" prop="channelIds">
+          <el-select v-model="selectValue"
+                     filterable multiple
+                     placeholder="渠道类型"
+                     @change="currChannelChange"
+                     clearable
+                     style="width: 280px">
+            <el-option v-for="item in smsChannels" :key="item.id" :label="item.channelName"
+                       :value="item.id"/>
+          </el-select>
+        </el-form-item>
+        -->
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dataOperation()">确定</el-button>
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+      </div>
+    </el-dialog>
+    <!--  模版窗口 end   -->
+
+    <!-- 自动绑定渠道模版窗口 start  -->
+    <el-dialog :visible.sync="dialogFormVisible" :title="自动绑定渠道" width="580px">
+      <el-form ref="dataForm" :rules="rules" :model="templateModel" label-position="left" label-width="120px"
+               style="width: 400px; margin-left:30px;">
         <el-form-item label="选择渠道" prop="channelIds">
           <el-select v-model="selectValue"
                      filterable multiple
@@ -103,11 +132,11 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button type="primary" @click="dataOperation()">确定</el-button>
+        <el-button @click="dialogFormVisible = false">取消</el-button>
       </div>
     </el-dialog>
-    <!--  模版窗口 end   -->
+    <!--  自动绑定渠道模版窗口 end   -->
 
   </div>
 
@@ -139,6 +168,7 @@ export default {
         size: 50
       },
       dialogFormVisible: false,
+
       selectedItem: "",
       textMap: {
         create: '新建模版',
@@ -150,14 +180,15 @@ export default {
         templateName: null,
         signName: null,
         content: null,
-        channelIds: null
+        channelIds: null,
+        remark: null
       },
       rules: {
         templateName: [{required: true, message: '模版名称不能为空', trigger: 'change'}],
         templateType: [{required: true, message: '模版类型不能为空', trigger: 'change'}],
         signName: [{required: true, message: '签名名称不能为空', trigger: 'change'}],
         content: [{required: true, message: '内容不能为空', trigger: 'change'}],
-        channelIds: [{required: true, message: '模版渠道不能为空', trigger: 'change'}]
+        remark: [{required: true, message: '备注不能为空', trigger: 'change'}]
       },
       dialogStatus: 'create'
     }

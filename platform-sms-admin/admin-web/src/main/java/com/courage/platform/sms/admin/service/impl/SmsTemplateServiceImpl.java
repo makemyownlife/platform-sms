@@ -48,7 +48,6 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
         return tSmsTemplateDAO.queryCountTemplates(param);
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public BaseModel addSmsTemplate(TSmsTemplate tSmsTemplate) {
         Long templateId = idGenerator.createUniqueId(tSmsTemplate.getSignName());
@@ -58,27 +57,27 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
             tSmsTemplate.setUpdateTime(new Date());
             tSmsTemplate.setStatus((byte) 0);
             tSmsTemplateDAO.insert(tSmsTemplate);
-            Long[] channelIds = tSmsTemplate.getChannelIds();
-            for (Long channelId : channelIds) {
-                Long bindingId = idGenerator.createUniqueId(tSmsTemplate.getSignName());
-                TSmsTemplateBinding binding = new TSmsTemplateBinding();
-                binding.setId(bindingId);
-                binding.setTemplateId(tSmsTemplate.getId());
-                binding.setChannelId(channelId);
-                // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
-                binding.setStatus((byte) 0);
-                binding.setTemplateContent(StringUtils.EMPTY);
-                binding.setTemplateCode(StringUtils.EMPTY);
-                binding.setCreateTime(new Date());
-                binding.setUpdateTime(new Date());
-                tSmsTemplateBindingDAO.insertSelective(binding);
-            }
+//            Long[] channelIds = tSmsTemplate.getChannelIds();
+//            for (Long channelId : channelIds) {
+//                Long bindingId = idGenerator.createUniqueId(tSmsTemplate.getSignName());
+//                TSmsTemplateBinding binding = new TSmsTemplateBinding();
+//                binding.setId(bindingId);
+//                binding.setTemplateId(tSmsTemplate.getId());
+//                binding.setChannelId(channelId);
+//                // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
+//                binding.setStatus((byte) 0);
+//                binding.setTemplateContent(StringUtils.EMPTY);
+//                binding.setTemplateCode(StringUtils.EMPTY);
+//                binding.setCreateTime(new Date());
+//                binding.setUpdateTime(new Date());
+//                tSmsTemplateBindingDAO.insertSelective(binding);
+//            }
             return BaseModel.getInstance("success");
         } catch (Exception e) {
             logger.error("addSmsTemplate error:", e);
             return BaseModel.getInstance("fail");
         } finally {
-            smsAdapterService.processRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(templateId));
+           // smsAdapterService.processRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(templateId));
         }
     }
 

@@ -47,9 +47,15 @@ public class TSmsTemplate implements Serializable {
     private Integer templateType;
 
     /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * 状态 0：无效 1：有效
      */
     private Byte status;
+
 
     /**
      * 创建时间
@@ -133,6 +139,14 @@ public class TSmsTemplate implements Serializable {
         this.templateType = templateType;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -145,9 +159,9 @@ public class TSmsTemplate implements Serializable {
         sb.append(", channelIds=").append(StringUtils.join(channelIds, ','));
         sb.append(", signName=").append(signName);
         sb.append(", status=").append(status);
+        sb.append(", remark=").append(remark);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
     }

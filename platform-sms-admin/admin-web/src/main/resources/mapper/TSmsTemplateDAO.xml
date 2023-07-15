@@ -8,13 +8,14 @@
     <result column="template_type" jdbcType="TINYINT" property="templateType" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="sign_name" jdbcType="VARCHAR" property="signName" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, template_name, template_type, content, `status`, create_time, update_time
+    id, template_name, template_type, content, `status`, remark , create_time, update_time
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -31,10 +32,10 @@
 
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplate" useGeneratedKeys="true">
     insert into t_sms_template (id , template_name, template_type, content, sign_name,
-      `status`, create_time, update_time
+      `status`, remark ,create_time, update_time
       )
-    values (#{id} , #{templateName,jdbcType=VARCHAR}, #{templateType} #{content,jdbcType=VARCHAR}, #{signName,jdbcType=VARCHAR},
-      #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+    values (#{id} , #{templateName,jdbcType=VARCHAR}, #{templateType},  #{content,jdbcType=VARCHAR}, #{signName,jdbcType=VARCHAR},
+      #{status,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
 
@@ -52,6 +53,9 @@
       </if>
       <if test="signName != null">
         sign_name,
+      </if>
+      <if test="remark != null">
+        remark,
       </if>
       <if test="status != null">
         `status`,
@@ -75,6 +79,9 @@
       </if>
       <if test="signName != null">
         #{signName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=TINYINT},
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
@@ -103,6 +110,9 @@
       <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
       </if>
+      <if test="remark != null">
+        `status` = #{remark,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -119,6 +129,7 @@
       content = #{content,jdbcType=VARCHAR},
       sign_name = #{signName,jdbcType=VARCHAR},
       `status` = #{status,jdbcType=TINYINT},
+      `remark` = #{remark,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
@@ -128,7 +139,7 @@
   <select id="queryTemplates" parameterType="java.util.Map" resultType="com.courage.platform.sms.admin.domain.TSmsTemplate">
     <bind name="start" value="(page - 1) * size"/>
     <bind name="end" value="size"/>
-    select id, template_name as templateName, content, sign_name as signName, `status`, create_time as createTime, update_time as updateTime
+    select id, template_name as templateName, content, sign_name as signName, `status`, remark,  create_time as createTime, update_time as updateTime
     from t_sms_template t
     <where>
       <if test="templateName != null and templateName != ''">
