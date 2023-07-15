@@ -1,7 +1,7 @@
 package com.courage.platform.sms.admin.loader;
 
-import com.courage.platform.sms.adapter.command.SmsRequestCommand;
-import com.courage.platform.sms.adapter.command.SmsResponseCommand;
+import com.courage.platform.sms.admin.loader.processors.ProcessorRequest;
+import com.courage.platform.sms.admin.loader.processors.ProcessorResponse;
 
 /**
  * 适配器处理器接口
@@ -9,6 +9,6 @@ import com.courage.platform.sms.adapter.command.SmsResponseCommand;
  */
 public interface SmsAdatperProcessor {
 
-    SmsResponseCommand processRequest(SmsRequestCommand requestCommand);
+    ProcessorResponse processRequest(ProcessorRequest processorRequest);
 
 }

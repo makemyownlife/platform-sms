@@ -5,6 +5,7 @@
   <resultMap id="BaseResultMap" type="com.courage.platform.sms.admin.domain.TSmsTemplate">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="template_name" jdbcType="VARCHAR" property="templateName" />
+    <result column="template_type" jdbcType="TINYINT" property="templateType" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="sign_name" jdbcType="VARCHAR" property="signName" />
     <result column="status" jdbcType="TINYINT" property="status" />
@@ -13,7 +14,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, template_name, content, channel, `status`, create_time, update_time
+    id, template_name, template_type, content, `status`, create_time, update_time
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">

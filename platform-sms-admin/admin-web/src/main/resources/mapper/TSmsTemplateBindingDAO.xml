@@ -140,4 +140,11 @@
      delete from t_sms_template_binding  where template_id = #{templateId}
   </delete>
 
+  <select id="selectBindingsByTemplateId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sms_template_binding
+    where template_id = #{templateId,jdbcType=BIGINT}
+  </select>
+
 </mapper>

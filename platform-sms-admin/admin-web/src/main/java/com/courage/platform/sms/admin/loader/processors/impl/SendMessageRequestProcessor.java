@@ -1,8 +1,8 @@
-package com.courage.platform.sms.admin.loader.processors;
+package com.courage.platform.sms.admin.loader.processors.impl;
 
-import com.courage.platform.sms.adapter.command.SmsRequestCommand;
-import com.courage.platform.sms.adapter.command.SmsResponseCommand;
 import com.courage.platform.sms.admin.loader.SmsAdatperProcessor;
+import com.courage.platform.sms.admin.loader.processors.ProcessorRequest;
+import com.courage.platform.sms.admin.loader.processors.ProcessorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ public class SendMessageRequestProcessor implements SmsAdatperProcessor {
     private static Logger logger = LoggerFactory.getLogger(SendMessageRequestProcessor.class);
 
     @Override
-    public SmsResponseCommand processRequest(SmsRequestCommand requestCommand) {
+    public ProcessorResponse processRequest(ProcessorRequest processorRequest) {
         return null;
     }
 

@@ -1,13 +1,13 @@
 package com.courage.platform.sms.admin.loader;
 
-import com.courage.platform.sms.adapter.command.SmsRequestCode;
-import com.courage.platform.sms.adapter.command.SmsRequestCommand;
-import com.courage.platform.sms.adapter.command.SmsResponseCommand;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
 import com.courage.platform.sms.admin.domain.TSmsChannel;
-import com.courage.platform.sms.admin.loader.processors.AddTemplateRequestProcessor;
-import com.courage.platform.sms.admin.loader.processors.SendMessageRequestProcessor;
+import com.courage.platform.sms.admin.loader.processors.ProcessorRequest;
+import com.courage.platform.sms.admin.loader.processors.ProcessorRequestCode;
+import com.courage.platform.sms.admin.loader.processors.ProcessorResponse;
+import com.courage.platform.sms.admin.loader.processors.impl.ApplyTemplateRequestProcessor;
+import com.courage.platform.sms.admin.loader.processors.impl.SendMessageRequestProcessor;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class SmsAdapterService {
     private SendMessageRequestProcessor sendMessageRequestProcessor;
 
     @Autowired
-    private AddTemplateRequestProcessor addTemplateRequestProcessor;
+    private ApplyTemplateRequestProcessor applyTemplateRequestProcessor;
 
     // 处理器命令映射
     private static final ConcurrentHashMap<Integer, SmsAdatperProcessor> processorMapping = new ConcurrentHashMap<Integer, SmsAdatperProcessor>();
@@ -57,16 +57,16 @@ public class SmsAdapterService {
             smsAdapterLoader.loadAdapter(channelConfig);
         }
         //===================================2.注册命令处理器 =====================================
-        processorMapping.put(SmsRequestCode.SEND_MESSAGE, sendMessageRequestProcessor);
-        processorMapping.put(SmsRequestCode.ADD_TEMPLATE_MESSAGE, addTemplateRequestProcessor);
+        processorMapping.put(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequestProcessor);
+        processorMapping.put(ProcessorRequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);
         logger.info("结束初始化短信适配器服务, 耗时：" + (System.currentTimeMillis() - start));
     }
 
     // 处理短信网关请求
-    public SmsResponseCommand processSmsGatewayRequest(int requestCode, SmsRequestCommand requestCommand) {
+    public ProcessorResponse processRequest(int requestCode, ProcessorRequest processorRequest) {
         SmsAdatperProcessor smsAdatperProcessor = processorMapping.get(requestCode);
-        SmsResponseCommand responseCommand = smsAdatperProcessor.processRequest(requestCommand);
-        return responseCommand;
+        ProcessorResponse response = smsAdatperProcessor.processRequest(processorRequest);
+        return response;
     }
 
     @PreDestroy

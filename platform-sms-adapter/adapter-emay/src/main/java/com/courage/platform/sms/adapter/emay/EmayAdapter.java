@@ -91,8 +91,8 @@ public class EmayAdapter implements OuterAdapter {
                           smsChannelConfig.getChannelDomain() + "/inter/createTemplateSMS",
                                isGizp,
                                encode);
+        logger.info("result:" + result.getResult());
         if ("SUCCESS".equals(result.getCode())) {
-            
         }
         return null;
     }

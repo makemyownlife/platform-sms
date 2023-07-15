@@ -1,7 +1,5 @@
 package com.courage.platform.sms.admin.service.impl;
 
-import com.courage.platform.sms.adapter.command.AddSmsTemplateCommand;
-import com.courage.platform.sms.adapter.command.SmsRequestCode;
 import com.courage.platform.sms.admin.config.IdGenerator;
 import com.courage.platform.sms.admin.controller.model.BaseModel;
 import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
@@ -9,6 +7,8 @@ import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.domain.TSmsTemplateBinding;
 import com.courage.platform.sms.admin.loader.SmsAdapterService;
+import com.courage.platform.sms.admin.loader.processors.ProcessorRequest;
+import com.courage.platform.sms.admin.loader.processors.ProcessorRequestCode;
 import com.courage.platform.sms.admin.service.SmsTemplateService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -65,7 +65,8 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
                 binding.setId(bindingId);
                 binding.setTemplateId(tSmsTemplate.getId());
                 binding.setChannelId(channelId);
-                binding.setStatus((byte) 0);                    //0 : 待提交 1：待审核  2：审核成功 3：审核失败
+                // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
+                binding.setStatus((byte) 0);
                 binding.setTemplateContent(StringUtils.EMPTY);
                 binding.setTemplateCode(StringUtils.EMPTY);
                 binding.setCreateTime(new Date());
@@ -76,6 +77,8 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
         } catch (Exception e) {
             logger.error("addSmsTemplate error:", e);
             return BaseModel.getInstance("fail");
+        } finally {
+            smsAdapterService.processRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(templateId));
         }
     }
 

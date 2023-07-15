@@ -14,7 +14,7 @@ public class TSmsTemplate implements Serializable {
     /**
      * 模板id，主键自动增加
      */
-    @JsonSerialize(using= ToStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**
@@ -36,6 +36,11 @@ public class TSmsTemplate implements Serializable {
      * 适配渠道编号
      */
     private Long[] channelIds;
+
+    /**
+     * 模板类型
+     */
+    private Integer templateType;
 
     /**
      * 状态 0：无效 1：有效
@@ -116,6 +121,14 @@ public class TSmsTemplate implements Serializable {
         this.channelIds = channelIds;
     }
 
+    public Integer getTemplateType() {
+        return templateType;
+    }
+
+    public void setTemplateType(Integer templateType) {
+        this.templateType = templateType;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -134,6 +147,5 @@ public class TSmsTemplate implements Serializable {
         sb.append("]");
         return sb.toString();
     }
-
 
 }

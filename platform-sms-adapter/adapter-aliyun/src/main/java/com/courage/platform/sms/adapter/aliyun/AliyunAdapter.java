@@ -3,6 +3,7 @@ package com.courage.platform.sms.adapter.aliyun;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.dysmsapi20170525.Client;
 import com.aliyun.dysmsapi20170525.models.AddSmsTemplateResponse;
+import com.aliyun.dysmsapi20170525.models.AddSmsTemplateResponseBody;
 import com.courage.platform.sms.adapter.OuterAdapter;
 import com.courage.platform.sms.adapter.command.AddSmsTemplateCommand;
 import com.courage.platform.sms.adapter.command.SendSmsCommand;
@@ -46,9 +47,10 @@ public class AliyunAdapter implements OuterAdapter {
             com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
             com.aliyun.dysmsapi20170525.models.SendSmsResponse resp = client.sendSmsWithOptions(sendSmsRequest, runtime);
             if ("ok".equals(resp.getStatusCode())) {
+                logger.info("");
                 return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, JSON.toJSONString(resp.getBody()));
             }
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
+            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, resp.getBody().getMessage());
         } catch (Exception e) {
             logger.error("aliyun sendSms:", e);
             return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, e.getMessage());
@@ -65,7 +67,8 @@ public class AliyunAdapter implements OuterAdapter {
             addSmsTemplateRequest.setTemplateName(addSmsTemplateCommand.getTemplateName());
             AddSmsTemplateResponse resp = client.addSmsTemplate(addSmsTemplateRequest);
             if ("ok".equals(resp.getStatusCode())) {
-                return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, JSON.toJSONString(resp.getBody()));
+                AddSmsTemplateResponseBody body = resp.getBody();
+                return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, body.getTemplateCode());
             }
             return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
         } catch (Exception e) {

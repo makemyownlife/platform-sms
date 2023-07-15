@@ -26,37 +26,6 @@ public class SmsSenderClient {
         this.smsConfig = smsConfig;
     }
 
-//    public SmsSenderResult sendSingle(String mobile, String content) throws IOException {
-//        String random = SmsSenderUtil.getRandom();
-//        String appKey = smsConfig.getAppKey();
-//        String time = String.valueOf(SmsSenderUtil.getCurrentTime());
-//        // 构造参数
-//        Map<String, String> param = new HashMap<String, String>(4);
-//        param.put("time", time);
-//        param.put("appKey", appKey);
-//        param.put("random", random);
-//        Map<String, String> queryParam = new HashMap<String, String>(4);
-//        queryParam.put("mobile", mobile);
-//        queryParam.put("content", content);
-//        String q = JSON.toJSONString(queryParam);
-//        param.put("q", JSON.toJSONString(queryParam));
-//        String sign = SmsSenderUtil.calculateSignature(smsConfig.getAppSecret(), random, time, q);
-//        param.put("sign", sign);
-//        // 发送请求
-//        try {
-//            String result = SmsHttpClientUtils.doPost(
-//                    smsConfig.getSmsServerUrl() + SINGLE_SEND_URL,
-//                    param,
-//                    5000,
-//                    5000);
-//            SmsSenderResult senderResult = JSON.parseObject(result, SmsSenderResult.class);
-//            return senderResult;
-//        } catch (Exception e) {
-//            logger.error("smsClient sendSingle error:", e);
-//            return new SmsSenderResult(SmsSenderResult.FAIL_CODE, "系统异常");
-//        }
-//    }
-
     public SmsSenderResult sendSmsByTemplateId(String mobile, String templateId, Map<String, String> templateParam) throws IOException {
         String random = SmsSenderUtil.getRandom();
         String appKey = smsConfig.getAppKey();

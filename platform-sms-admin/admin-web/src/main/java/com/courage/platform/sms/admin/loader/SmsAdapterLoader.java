@@ -38,4 +38,8 @@ public class SmsAdapterLoader {
         }
     }
 
+    public OuterAdapter getAdapterByChannelId(Integer id) {
+        return ADAPTER_MAP.get(id);
+    }
+
 }
