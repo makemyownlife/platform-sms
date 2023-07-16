@@ -75,10 +75,6 @@
           <el-select v-model="templateModel.templateType" placeholder="模版类型" style="width: 280px">
             <el-option key="0" label="验证码" value="0" />
             <el-option key="1" label="短信通知" value="1"/>
-            <!--
-            <el-option key="2" label="推广短信" value="2"/>
-            <el-option key="3" label="国际/港澳台消息" value="3"/>
-            -->
           </el-select>
         </el-form-item>
         <el-form-item label="签名名称" prop="signName">
@@ -116,25 +112,17 @@
     <!--  模版窗口 end   -->
 
     <!-- 自动绑定渠道模版窗口 start  -->
-    <el-dialog :visible.sync="dialogFormVisible" :title="自动绑定渠道" width="580px">
-      <el-form ref="dataForm" :rules="rules" :model="templateModel" label-position="left" label-width="120px"
-               style="width: 400px; margin-left:30px;">
-        <el-form-item label="选择渠道" prop="channelIds">
-          <el-select v-model="selectValue"
-                     filterable multiple
-                     placeholder="渠道类型"
-                     @change="currChannelChange"
-                     clearable
-                     style="width: 280px">
-            <el-option v-for="item in smsChannels" :key="item.id" :label="item.channelName"
-                       :value="item.id"/>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dataOperation()">确定</el-button>
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-      </div>
+    <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
+      <template>
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="用户管理" name="first">
+            用户管理 <img src="https://javayong.cn/pics/rocketmq/transactionnormalmessage.png?a=1" />
+          </el-tab-pane>
+          <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+          <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+          <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+        </el-tabs>
+      </template>
     </el-dialog>
     <!--  自动绑定渠道模版窗口 end   -->
 
@@ -154,6 +142,7 @@ export default {
   },
   data() {
     return {
+      activeName: 'second',
       list: null,
       listLoading: true,
       listLoading2: true,
@@ -313,6 +302,9 @@ export default {
     // 渠道改变事件
     currChannelChange(val){
       this.templateModel.channelIds = val;
+    },
+    handleClick(tab, event) {
+      console.log(tab, event);
     }
   }
 }

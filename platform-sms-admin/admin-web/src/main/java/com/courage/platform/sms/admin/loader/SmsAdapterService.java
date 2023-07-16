@@ -40,7 +40,7 @@ public class SmsAdapterService {
     private ApplyTemplateRequestProcessor applyTemplateRequestProcessor;
 
     // 处理器命令映射
-    private static final ConcurrentHashMap<Integer, SmsAdatperProcessor> processorMapping = new ConcurrentHashMap<Integer, SmsAdatperProcessor>();
+    private static final ConcurrentHashMap<Integer, SmsAdatperProcessor> PROCESSOR_MAPPING = new ConcurrentHashMap<Integer, SmsAdatperProcessor>();
 
     @PostConstruct
     public synchronized void init() {
@@ -49,22 +49,22 @@ public class SmsAdapterService {
         }
         long start = System.currentTimeMillis();
         logger.info("开始初始化短信适配器服务");
-        //===================================1.加载所有的渠道 =====================================
+        //=================================== 1.加载所有的渠道  =====================================
         List<TSmsChannel> channelList = smsChannelDAO.queryChannels(MapUtils.EMPTY_MAP);
         for (TSmsChannel tSmsChannel : channelList) {
             SmsChannelConfig channelConfig = new SmsChannelConfig();
             BeanUtils.copyProperties(tSmsChannel, channelConfig);
             smsAdapterLoader.loadAdapter(channelConfig);
         }
-        //===================================2.注册命令处理器 =====================================
-        processorMapping.put(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequestProcessor);
-        processorMapping.put(ProcessorRequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);
+        //=================================== 2.注册命令处理器  =====================================
+        PROCESSOR_MAPPING.put(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequestProcessor);
+        PROCESSOR_MAPPING.put(ProcessorRequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);
         logger.info("结束初始化短信适配器服务, 耗时：" + (System.currentTimeMillis() - start));
     }
 
     // 处理短信网关请求
     public ProcessorResponse processRequest(int requestCode, ProcessorRequest processorRequest) {
-        SmsAdatperProcessor smsAdatperProcessor = processorMapping.get(requestCode);
+        SmsAdatperProcessor smsAdatperProcessor = PROCESSOR_MAPPING.get(requestCode);
         ProcessorResponse response = smsAdatperProcessor.processRequest(processorRequest);
         return response;
     }
