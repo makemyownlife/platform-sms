@@ -2,8 +2,8 @@ package com.courage.platform.sms.admin.controller;
 
 import com.courage.platform.sms.admin.controller.model.BaseModel;
 import com.courage.platform.sms.admin.controller.model.Pager;
-import com.courage.platform.sms.admin.service.SmsTemplateService;
 import com.courage.platform.sms.admin.domain.TSmsTemplate;
+import com.courage.platform.sms.admin.service.SmsTemplateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +55,10 @@ public class SmsTemplateController {
         return smsTemplateService.deleteSmsTemplate(Long.valueOf(id));
     }
 
-    @PostMapping(value = "/getSmsTemplatesBinding")
-    public BaseModel getSmsTemplatesBinding(String id) {
-        return smsTemplateService.getSmsTemplatesBinding(Long.valueOf(id));
+    @PostMapping(value = "/autoBindChannel")
+    public BaseModel autoBindChannel(String channelIds, Long templateId) {
+        return smsTemplateService.autoBindChannel(channelIds, templateId);
     }
-    
+
 }
 

@@ -14,7 +14,7 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="编号" min-width="31" align="center">
+      <el-table-column label="编号" min-width="33" align="center">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
@@ -22,6 +22,16 @@
       <el-table-column label="模版名称" min-width="36" align="center">
         <template slot-scope="scope">
           {{ scope.row.templateName }}
+        </template>
+      </el-table-column>
+      <el-table-column label="模版类型" min-width="36" align="center">
+        <template slot-scope="scope">
+          <span  v-if="scope.row.templateType === '0'">
+            验证码
+          </span>
+          <span v-if="scope.row.templateType === '1'">
+           短信通知
+          </span>
         </template>
       </el-table-column>
       <el-table-column label="签名" min-width="23" align="center">
@@ -36,35 +46,28 @@
       </el-table-column>
 
       <el-table-column class-name="status-col" label="渠道" min-width="50"  align="center">
-        <template slot-scope="scope">
-          <el-tag>标签一</el-tag><br/>
-          <el-tag type="success">标签二</el-tag><br/>
-          <el-tag type="info">标签三</el-tag><br/>
-          <el-tag type="warning">标签四</el-tag><br/>
-          <el-tag type="danger">标签五</el-tag>
-        </template>
+
       </el-table-column>
 
-      <el-table-column class-name="status-col" label="操作" min-width="28" align="center">
+      <el-table-column class-name="status-col" label="操作" min-width="22" align="center">
         <template slot-scope="scope">
           <el-dropdown trigger="click">
             <el-button type="primary" size="mini">
               操作<i class="el-icon-arrow-down el-icon--right"/>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="handleBinding(scope.row)">绑定渠道</el-dropdown-item>
               <el-dropdown-item @click.native="handleUpdate(scope.row)">修改模版</el-dropdown-item>
-              <el-dropdown-item @click.native="handleDelete(scope.row)">删除模版</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </template>
-      </el-table-column>
+              <el-dropdown-item @click.native="autoBinding(scope.row)">自动绑定</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </template>
+    </el-table-column>
 
-    </el-table>
-    <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.size"
-                @pagination="fetchData()"/>
+  </el-table>
+  <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.size"
+              @pagination="fetchData()"/>
 
-    <!--   模版窗口 start  -->
+  <!--   模版窗口 start  -->
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
       <el-form ref="dataForm" :rules="rules" :model="templateModel" label-position="left" label-width="120px"
                style="width: 400px; margin-left:30px;">
@@ -84,25 +87,12 @@
           <el-input v-model="templateModel.content"
                     type="textarea"
                     placeholder="例如：您的验证码为 ${code} ，该验证码5分钟内有效，请勿泄露于他人。"
-                    :rows = "4"
+                    :rows = "3"
           />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="templateModel.remark" type="textarea"/>
         </el-form-item>
-        <!--
-        <el-form-item label="选择渠道" prop="channelIds">
-          <el-select v-model="selectValue"
-                     filterable multiple
-                     placeholder="渠道类型"
-                     @change="currChannelChange"
-                     clearable
-                     style="width: 280px">
-            <el-option v-for="item in smsChannels" :key="item.id" :label="item.channelName"
-                       :value="item.id"/>
-          </el-select>
-        </el-form-item>
-        -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dataOperation()">确定</el-button>
@@ -111,20 +101,30 @@
     </el-dialog>
     <!--  模版窗口 end   -->
 
-    <!-- 自动绑定渠道模版窗口 start  -->
-    <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
-      <template>
-        <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="用户管理" name="first">
-            用户管理 <img src="https://javayong.cn/pics/rocketmq/transactionnormalmessage.png?a=1" />
-          </el-tab-pane>
-          <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
-          <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-          <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
-        </el-tabs>
-      </template>
+    <!-- 绑定渠道模版窗口 start  -->
+    <el-dialog :visible.sync="bindingInfo.dialogFormVisible" title="绑定渠道" width="580px">
+      <el-form label-position="left" label-width="120px"
+               style="width: 400px; margin-left:30px;">
+        <el-form-item label="选择渠道" prop="channelIds">
+          <el-select v-model="selectValue"
+                     @change="currChannelChange"
+                     filterable
+                     placeholder="渠道类型"
+                     clearable
+                     style="width: 280px">
+            <el-option v-for="item in smsChannels"
+                       :key="item.id"
+                       :label="item.channelName"
+                       :value="item.id"/>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitAutoBinding()">确定</el-button>
+        <el-button @click="bindingInfo.dialogFormVisible = false; clearSelectedValue();">取消</el-button>
+      </div>
     </el-dialog>
-    <!--  自动绑定渠道模版窗口 end   -->
+    <!--  绑定渠道模版窗口 end   -->
 
   </div>
 
@@ -132,7 +132,7 @@
 
 <script>
 
-import {getSmsTemplates, addSmsTemplate, deleteTemplate, updateSmsTemplate} from '@/api/template.js'
+import {getSmsTemplates, addSmsTemplate, deleteTemplate, updateSmsTemplate , autoBindChannel} from '@/api/template.js'
 import {getSmsChannels} from '@/api/smsChannel.js'
 import Pagination from '@/components/Pagination'
 
@@ -142,10 +142,11 @@ export default {
   },
   data() {
     return {
-      activeName: 'second',
       list: null,
       listLoading: true,
       listLoading2: true,
+      // 当前选择的模版
+
       // 渠道属性 start
       selectValue: '',
       smsChannels: [],
@@ -157,7 +158,6 @@ export default {
         size: 50
       },
       dialogFormVisible: false,
-
       selectedItem: "",
       textMap: {
         create: '新建模版',
@@ -179,7 +179,13 @@ export default {
         content: [{required: true, message: '内容不能为空', trigger: 'change'}],
         remark: [{required: true, message: '备注不能为空', trigger: 'change'}]
       },
-      dialogStatus: 'create'
+      dialogStatus: 'create',
+      // 绑定信息
+      bindingInfo : {
+        dialogFormVisible: false ,
+        templateId : null ,
+        channelIds : null
+      }
     }
   },
   created() {
@@ -217,8 +223,7 @@ export default {
         id: undefined,
         templateName: null,
         signName: null,
-        content: null,
-        channelIds: null
+        content: null
       }
     },
     handleCreate() {
@@ -228,8 +233,6 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
-      //加载渠道
-      this.loadSelectChannel()
     },
     dataOperation() {
       this.$refs['dataForm'].validate((valid) => {
@@ -301,12 +304,34 @@ export default {
     },
     // 渠道改变事件
     currChannelChange(val){
-      this.templateModel.channelIds = val;
+      this.bindingInfo.channelIds = val;
     },
-    handleClick(tab, event) {
-      console.log(tab, event);
+    // 点击绑定渠道按钮
+    autoBinding(row) {
+      this.bindingInfo.dialogFormVisible = true;
+      this.bindingInfo.templateId = row.id;
+      this.bindingInfo.channelIds = null;
+      this.loadSelectChannel();
+    },
+    clearSelectedValue() {
+      this.selectValue = null;
+    },
+    // 绑定渠道请求
+    submitAutoBinding(){
+      var data = {
+        templateId: this.bindingInfo.templateId,
+        channelIds: this.bindingInfo.channelIds
+      }
+      autoBindChannel(data).then(res => {
+        this.$message({
+        message: '绑定渠道成功',
+        type: 'success'
+      })
+      this.bindingInfo.dialogFormVisible = false;
+    })
     }
   }
+
 }
 
 </script>

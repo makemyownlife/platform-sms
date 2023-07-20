@@ -1,6 +1,7 @@
 package com.courage.platform.sms.admin.dao;
 
 import com.courage.platform.sms.admin.domain.TSmsTemplateBinding;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,5 +15,7 @@ public interface TSmsTemplateBindingDAO extends MyBatisBaseDao<TSmsTemplateBindi
     Integer deleteTemplateBindingByTemplateId(Long templateId);
 
     List<TSmsTemplateBinding> selectBindingsByTemplateId(Long templateId);
+
+    TSmsTemplateBinding selectBindingByTemplateIdAndChannelId(@Param("templateId") Long templateId , @Param("channelId") Long channelId);
 
 }

@@ -46,7 +46,7 @@ public class AliyunAdapter implements OuterAdapter {
                     setTemplateParam(sendSmsCommand.getTemplateParam());
             com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
             com.aliyun.dysmsapi20170525.models.SendSmsResponse resp = client.sendSmsWithOptions(sendSmsRequest, runtime);
-            if ("ok".equals(resp.getStatusCode())) {
+            if (200 == resp.getStatusCode()) {
                 return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, JSON.toJSONString(resp.getBody()));
             }
             return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, resp.getBody().getMessage());
@@ -65,7 +65,8 @@ public class AliyunAdapter implements OuterAdapter {
             addSmsTemplateRequest.setTemplateType(addSmsTemplateCommand.getTemplateType());
             addSmsTemplateRequest.setTemplateName(addSmsTemplateCommand.getTemplateName());
             AddSmsTemplateResponse resp = client.addSmsTemplate(addSmsTemplateRequest);
-            if ("ok".equals(resp.getStatusCode())) {
+            logger.info("resp=" + JSON.toJSONString(resp));
+            if (200 == resp.getStatusCode()) {
                 AddSmsTemplateResponseBody body = resp.getBody();
                 return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, body.getTemplateCode());
             }

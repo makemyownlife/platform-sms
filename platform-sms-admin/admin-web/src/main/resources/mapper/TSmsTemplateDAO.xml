@@ -139,7 +139,7 @@
   <select id="queryTemplates" parameterType="java.util.Map" resultType="com.courage.platform.sms.admin.domain.TSmsTemplate">
     <bind name="start" value="(page - 1) * size"/>
     <bind name="end" value="size"/>
-    select id, template_name as templateName, content, sign_name as signName, `status`, remark,  create_time as createTime, update_time as updateTime
+    select id, template_name as templateName, template_type as templateType , content, sign_name as signName, `status`, remark,  create_time as createTime, update_time as updateTime
     from t_sms_template t
     <where>
       <if test="templateName != null and templateName != ''">

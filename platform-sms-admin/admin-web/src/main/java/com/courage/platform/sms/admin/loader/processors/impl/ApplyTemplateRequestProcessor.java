@@ -1,5 +1,6 @@
 package com.courage.platform.sms.admin.loader.processors.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.courage.platform.sms.adapter.OuterAdapter;
 import com.courage.platform.sms.adapter.command.AddSmsTemplateCommand;
 import com.courage.platform.sms.adapter.command.SmsResponseCommand;
@@ -15,8 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * admin后台向渠道申请模版
@@ -38,29 +37,35 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor {
 
     @Override
     public ProcessorResponse processRequest(ProcessorRequest processorRequest) {
-        Long templateId = (Long) processorRequest.getData();
-        TSmsTemplate tSmsTemplate = tSmsTemplateDAO.selectByPrimaryKey(templateId);
-        if (tSmsTemplate != null) {
-            List<TSmsTemplateBinding> bindings = tSmsTemplateBindingDAO.selectBindingsByTemplateId(templateId);
-            for (TSmsTemplateBinding binding : bindings) {
+        Long bindingId = (Long) processorRequest.getData();
+        TSmsTemplateBinding binding = tSmsTemplateBindingDAO.selectByPrimaryKey(bindingId);
+        if (binding != null) {
+            if (binding.getStatus() == 0) { //待提交
+                TSmsTemplate tSmsTemplate = tSmsTemplateDAO.selectByPrimaryKey(binding.getTemplateId());
                 OuterAdapter outerAdapter = smsAdapterLoader.getAdapterByChannelId(binding.getChannelId().intValue());
                 if (outerAdapter != null) {
                     AddSmsTemplateCommand addSmsTemplateCommand = new AddSmsTemplateCommand();
                     addSmsTemplateCommand.setTemplateName(tSmsTemplate.getTemplateName());
                     addSmsTemplateCommand.setTemplateContent(tSmsTemplate.getContent());
-                    addSmsTemplateCommand.setRemark("你好");
+                    addSmsTemplateCommand.setRemark(tSmsTemplate.getRemark());
                     addSmsTemplateCommand.setTemplateType(tSmsTemplate.getTemplateType());
+                    logger.info("开始向渠道：" + binding.getChannelId() + " 申请添加模版 请求内容：" + JSON.toJSONString(addSmsTemplateCommand));
                     SmsResponseCommand smsResponseCommand = outerAdapter.addSmsTemplate(addSmsTemplateCommand);
+                    logger.info("结束向渠道：" + binding.getChannelId() + " 申请添加模版 响应结果：" + JSON.toJSONString(smsResponseCommand));
                     if (smsResponseCommand.getCode() == SmsResponseCommand.SUCCESS_CODE) {
                         String templateCode = (String) smsResponseCommand.getData();
                         binding.setTemplateCode(templateCode);
-                        binding.setStatus((byte) 1);            // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
+                        binding.setTemplateContent(tSmsTemplate.getContent());
+                        binding.setStatus((byte) 1);              // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
                         tSmsTemplateBindingDAO.updateByPrimaryKeySelective(binding);
+                        return ProcessorResponse.successResult(templateCode);
                     }
                 }
             }
+            if (binding.getStatus() == 1) { //待审核，查询审核结果
+            }
         }
-        return null;
+        return ProcessorResponse.failResult("绑定失败");
     }
 
 }

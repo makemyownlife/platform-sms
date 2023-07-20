@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -57,27 +56,12 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
             tSmsTemplate.setUpdateTime(new Date());
             tSmsTemplate.setStatus((byte) 0);
             tSmsTemplateDAO.insert(tSmsTemplate);
-//            Long[] channelIds = tSmsTemplate.getChannelIds();
-//            for (Long channelId : channelIds) {
-//                Long bindingId = idGenerator.createUniqueId(tSmsTemplate.getSignName());
-//                TSmsTemplateBinding binding = new TSmsTemplateBinding();
-//                binding.setId(bindingId);
-//                binding.setTemplateId(tSmsTemplate.getId());
-//                binding.setChannelId(channelId);
-//                // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
-//                binding.setStatus((byte) 0);
-//                binding.setTemplateContent(StringUtils.EMPTY);
-//                binding.setTemplateCode(StringUtils.EMPTY);
-//                binding.setCreateTime(new Date());
-//                binding.setUpdateTime(new Date());
-//                tSmsTemplateBindingDAO.insertSelective(binding);
-//            }
             return BaseModel.getInstance("success");
         } catch (Exception e) {
             logger.error("addSmsTemplate error:", e);
             return BaseModel.getInstance("fail");
         } finally {
-           // smsAdapterService.processRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(templateId));
+            // smsAdapterService.processRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(templateId));
         }
     }
 
@@ -106,8 +90,34 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     }
 
     @Override
-    public BaseModel getSmsTemplatesBinding(Long id) {
-        return null;
+    public BaseModel autoBindChannel(String channelIds, Long templateId) {
+        try {
+            String[] channelIdsArr = StringUtils.split(channelIds, ',');
+            for (String channelId : channelIdsArr) {
+                //先查询是否已经提交过
+                TSmsTemplateBinding binding = tSmsTemplateBindingDAO.selectBindingByTemplateIdAndChannelId(templateId, Long.valueOf(channelId));
+                if (binding == null) {
+                    Long bindingId = idGenerator.createUniqueId(String.valueOf(templateId));
+                    binding = new TSmsTemplateBinding();
+                    binding.setId(bindingId);
+                    binding.setTemplateId(templateId);
+                    binding.setChannelId(Long.valueOf(channelId));
+                    // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
+                    binding.setStatus((byte) 0);
+                    binding.setTemplateContent(StringUtils.EMPTY);
+                    binding.setTemplateCode(StringUtils.EMPTY);
+                    binding.setCreateTime(new Date());
+                    binding.setUpdateTime(new Date());
+                    tSmsTemplateBindingDAO.insertSelective(binding);
+                    // 向渠道申请模版
+                }
+                smsAdapterService.processRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(binding.getId()));
+            }
+            return BaseModel.getInstance("success");
+        } catch (Exception e) {
+            logger.error("autoBindChannel error:", e);
+            return BaseModel.getInstance("fail");
+        }
     }
 
 }

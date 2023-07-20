@@ -147,4 +147,14 @@
     where template_id = #{templateId,jdbcType=BIGINT}
   </select>
 
+  <select id="selectBindingByTemplateIdAndChannelId" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+     select
+    <include refid="Base_Column_List" />
+     from t_sms_template_binding
+     where
+     template_id = #{templateId,jdbcType=BIGINT}
+     and
+     channel_id = #{channelId,jdbcType=BIGINT}
+  </select>
+
 </mapper>

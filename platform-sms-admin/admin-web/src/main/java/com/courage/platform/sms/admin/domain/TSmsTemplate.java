@@ -44,6 +44,7 @@ public class TSmsTemplate implements Serializable {
      * 2：推广短信。
      * 3：国际/港澳台消息
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Integer templateType;
 
     /**
@@ -54,8 +55,8 @@ public class TSmsTemplate implements Serializable {
     /**
      * 状态 0：无效 1：有效
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Byte status;
-
 
     /**
      * 创建时间
