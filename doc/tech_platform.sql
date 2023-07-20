@@ -44,14 +44,6 @@ CREATE TABLE `t_sms_channel` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of t_sms_channel
--- ----------------------------
-BEGIN;
-INSERT INTO `t_sms_channel` (`id`, `channel_name`, `channel_type`, `channel_appkey`, `channel_appsecret`, `channel_domain`, `ext_properties`, `status`, `create_time`, `update_time`, `send_order`) VALUES (3, '阿里云测试', 'aliyun', 'fH073oeVCyG8Z3PA', 'TEs9PbI8XVGXySOhVdzUHCrQGsTWCc', 'https://dysmsapi.aliyuncs.com', '', 0, '2023-05-03 22:47:14', '2023-07-14 21:03:37', 0);
-INSERT INTO `t_sms_channel` (`id`, `channel_name`, `channel_type`, `channel_appkey`, `channel_appsecret`, `channel_domain`, `ext_properties`, `status`, `create_time`, `update_time`, `send_order`) VALUES (4, '勇哥的艺美', 'emay', 'EUCP-EMY-SMS1-0BIGB', '69C5DCC5531E15BF', 'http://www.btom.cn:8080', '', 0, '2023-05-04 14:13:35', '2023-07-14 21:04:19', 0);
-COMMIT;
-
--- ----------------------------
 -- Table structure for t_sms_record
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sms_record`;
