@@ -17,6 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * admin后台向渠道申请模版
  * Created by zhangyong on 2023/7/14.
@@ -50,12 +53,14 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor {
                     addSmsTemplateCommand.setRemark(tSmsTemplate.getRemark());
                     addSmsTemplateCommand.setTemplateType(tSmsTemplate.getTemplateType());
                     logger.info("开始向渠道：" + binding.getChannelId() + " 申请添加模版 请求内容：" + JSON.toJSONString(addSmsTemplateCommand));
-                    SmsResponseCommand smsResponseCommand = outerAdapter.addSmsTemplate(addSmsTemplateCommand);
+                    SmsResponseCommand<Map<String, String>> smsResponseCommand = outerAdapter.addSmsTemplate(addSmsTemplateCommand);
                     logger.info("结束向渠道：" + binding.getChannelId() + " 申请添加模版 响应结果：" + JSON.toJSONString(smsResponseCommand));
                     if (smsResponseCommand.getCode() == SmsResponseCommand.SUCCESS_CODE) {
-                        String templateCode = (String) smsResponseCommand.getData();
+                        Map<String, String> bodyMap = smsResponseCommand.getData();
+                        String templateCode = bodyMap.get("templateCode");
+                        String templateContent = bodyMap.get("templateContent");
                         binding.setTemplateCode(templateCode);
-                        binding.setTemplateContent(tSmsTemplate.getContent());
+                        binding.setTemplateContent(templateContent);
                         binding.setStatus((byte) 1);              // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
                         tSmsTemplateBindingDAO.updateByPrimaryKeySelective(binding);
                         return ProcessorResponse.successResult(templateCode);
@@ -63,6 +68,7 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor {
                 }
             }
             if (binding.getStatus() == 1) { //待审核，查询审核结果
+
             }
         }
         return ProcessorResponse.failResult("绑定失败");

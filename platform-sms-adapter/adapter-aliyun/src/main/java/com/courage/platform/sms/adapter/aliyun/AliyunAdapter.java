@@ -13,6 +13,9 @@ import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @SPI("aliyun")
 public class AliyunAdapter implements OuterAdapter {
 
@@ -68,7 +71,10 @@ public class AliyunAdapter implements OuterAdapter {
             logger.info("resp=" + JSON.toJSONString(resp));
             if (200 == resp.getStatusCode()) {
                 AddSmsTemplateResponseBody body = resp.getBody();
-                return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, body.getTemplateCode());
+                Map<String, String> bodyMap = new HashMap<>();
+                bodyMap.put("templateCode", body.getTemplateCode());
+                bodyMap.put("templateContent", addSmsTemplateCommand.getTemplateContent());
+                return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, bodyMap);
             }
             return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
         } catch (Exception e) {

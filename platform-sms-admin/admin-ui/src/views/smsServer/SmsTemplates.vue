@@ -309,6 +309,7 @@ export default {
     // 点击绑定渠道按钮
     autoBinding(row) {
       this.bindingInfo.dialogFormVisible = true;
+      this.clearSelectedValue();
       this.bindingInfo.templateId = row.id;
       this.bindingInfo.channelIds = null;
       this.loadSelectChannel();
