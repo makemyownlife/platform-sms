@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class TSmsTemplate implements Serializable {
 
@@ -67,6 +68,9 @@ public class TSmsTemplate implements Serializable {
      * 修改时间
      */
     private Date updateTime;
+
+    //绑定的列表
+    private List<TSmsTemplateBinding> bindingList;
 
     public Long getId() {
         return id;
@@ -146,6 +150,14 @@ public class TSmsTemplate implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<TSmsTemplateBinding> getBindingList() {
+        return bindingList;
+    }
+
+    public void setBindingList(List<TSmsTemplateBinding> bindingList) {
+        this.bindingList = bindingList;
     }
 
     @Override

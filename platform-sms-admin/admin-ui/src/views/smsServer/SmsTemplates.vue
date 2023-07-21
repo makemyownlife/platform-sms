@@ -34,11 +34,13 @@
           </span>
         </template>
       </el-table-column>
+
       <el-table-column label="签名" min-width="23" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.signName }}</span>
         </template>
       </el-table-column>
+
       <el-table-column label="模版内容" min-width="105" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.content }}</span>
@@ -46,7 +48,11 @@
       </el-table-column>
 
       <el-table-column class-name="status-col" label="渠道" min-width="50"  align="center">
-
+        <template slot-scope="scope">
+          <el-tag v-for="binding in scope.row.bindingList" :key="binding.id" effect="dark" type="">
+             {{ binding.channelName }}
+          </el-tag>
+        </template>
       </el-table-column>
 
       <el-table-column class-name="status-col" label="操作" min-width="22" align="center">

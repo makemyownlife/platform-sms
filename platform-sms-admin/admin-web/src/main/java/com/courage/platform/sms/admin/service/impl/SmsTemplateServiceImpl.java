@@ -39,7 +39,12 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
 
     @Override
     public List<TSmsTemplate> queryTemplates(Map<String, Object> params) {
-        return tSmsTemplateDAO.queryTemplates(params);
+        List<TSmsTemplate> tSmsTemplates = tSmsTemplateDAO.queryTemplates(params);
+        for (TSmsTemplate tSmsTemplate : tSmsTemplates) {
+            List<TSmsTemplateBinding> bindingList = tSmsTemplateBindingDAO.selectBindingsByTemplateId(tSmsTemplate.getId());
+            tSmsTemplate.setBindingList(bindingList);
+        }
+        return tSmsTemplates;
     }
 
     @Override

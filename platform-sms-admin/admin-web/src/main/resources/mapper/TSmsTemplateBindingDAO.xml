@@ -8,6 +8,7 @@
     <result column="template_code" jdbcType="VARCHAR" property="templateCode" />
     <result column="template_content" jdbcType="VARCHAR" property="templateContent" />
     <result column="channel_id" jdbcType="BIGINT" property="channelId" />
+    <result column="channelName" jdbcType="VARCHAR" property="channelName" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -142,15 +143,19 @@
 
   <select id="selectBindingsByTemplateId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />
-    from t_sms_template_binding
+    a.id, a.template_id, a.template_code, a.template_content, a.channel_id, a.`status`, a.create_time,
+    a.update_time, b.channel_name as channelName
+
+    from t_sms_template_binding a , t_sms_channel b
     where template_id = #{templateId,jdbcType=BIGINT}
+    and
+    a.channel_id = b.id
   </select>
 
   <select id="selectBindingByTemplateIdAndChannelId" parameterType="java.util.HashMap" resultMap="BaseResultMap">
      select
     <include refid="Base_Column_List" />
-     from t_sms_template_binding
+    from t_sms_template_binding
      where
      template_id = #{templateId,jdbcType=BIGINT}
      and
