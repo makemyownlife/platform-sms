@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.api;
+package com.courage.platform.sms.admin.gateway;
 
 import com.courage.platform.sms.admin.loader.SmsAdapterService;
 import com.courage.platform.sms.client.SmsSenderResult;

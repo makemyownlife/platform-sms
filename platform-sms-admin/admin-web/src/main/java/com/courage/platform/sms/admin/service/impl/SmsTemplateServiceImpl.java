@@ -65,8 +65,6 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
         } catch (Exception e) {
             logger.error("addSmsTemplate error:", e);
             return BaseModel.getInstance("fail");
-        } finally {
-            // smsAdapterService.processRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(templateId));
         }
     }
 

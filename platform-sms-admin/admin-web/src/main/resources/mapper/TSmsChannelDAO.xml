@@ -15,6 +15,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="send_order" jdbcType="INTEGER" property="sendOrder" />
+    <result column="md5_value" jdbcType="VARCHAR" property="md5Value" />
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -28,7 +29,8 @@
      `status`,
       create_time,
       update_time,
-      send_order
+      send_order,
+      md5_value
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
@@ -44,13 +46,13 @@
     insert into t_sms_channel (id, channel_type,channel_name,
                                channel_appkey, channel_appsecret,
                                channel_domain, ext_properties,  `status`,
-      create_time, update_time, send_order
+      create_time, update_time, send_order,md5_value
       )
     values (#{id,jdbcType=TINYINT}, #{channelType,jdbcType=TINYINT},
        #{channelName,jdbcType=VARCHAR},
        #{channelAppkey,jdbcType=VARCHAR}, #{channelAppsecret,jdbcType=VARCHAR},
       #{channelDomain,jdbcType=VARCHAR}, #{extProperties,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{sendOrder,jdbcType=INTEGER}
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{sendOrder,jdbcType=INTEGER},#{md5Value,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsChannel" useGeneratedKeys="true">
@@ -89,6 +91,9 @@
       <if test="sendOrder != null">
         send_order,
       </if>
+      <if test="md5Value != null">
+        md5_value,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="channelId != null">
@@ -123,6 +128,9 @@
       </if>
       <if test="sendOrder != null">
         #{sendOrder,jdbcType=INTEGER},
+      </if>
+      <if test="md5Value != null">
+        #{md5Value,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -159,9 +167,13 @@
       <if test="sendOrder != null">
         send_order = #{sendOrder,jdbcType=INTEGER},
       </if>
+      <if test="md5Value != null">
+        #{md5Value,jdbcType=VARCHAR}
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.domain.TSmsChannel">
     update t_sms_channel
     set
@@ -173,7 +185,8 @@
       ext_properties = #{extProperties,jdbcType=VARCHAR},
       `status` = #{status,jdbcType=TINYINT},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      send_order = #{sendOrder,jdbcType=INTEGER}
+      send_order = #{sendOrder,jdbcType=INTEGER},
+      md5_value = #{md5Value,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 

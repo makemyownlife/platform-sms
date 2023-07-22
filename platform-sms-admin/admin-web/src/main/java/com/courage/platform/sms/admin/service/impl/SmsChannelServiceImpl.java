@@ -1,5 +1,6 @@
 package com.courage.platform.sms.admin.service.impl;
 
+import cn.emay.util.Md5;
 import com.courage.platform.sms.admin.controller.model.BaseModel;
 import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
 import com.courage.platform.sms.admin.domain.TSmsChannel;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -35,6 +37,10 @@ public class SmsChannelServiceImpl implements SmsChannelService {
             tSmsChannel.setExtProperties(StringUtils.trimToEmpty(tSmsChannel.getExtProperties()));
             tSmsChannel.setStatus(0);
             tSmsChannel.setSendOrder(0);
+            String md5Value =  DigestUtils.md5DigestAsHex(
+                    (tSmsChannel.getId() + tSmsChannel.getChannelAppkey() + tSmsChannel.getChannelAppsecret() + tSmsChannel.getChannelDomain() + tSmsChannel.getChannelName() + tSmsChannel.getChannelType() + tSmsChannel.getExtProperties()
+                    ).getBytes("UTF-8"));
+            tSmsChannel.setMd5Value(md5Value);
             if (item == null) {
                 tSmsChannelDAO.insert(tSmsChannel);
             } else {
@@ -53,6 +59,10 @@ public class SmsChannelServiceImpl implements SmsChannelService {
             tSmsChannel.setUpdateTime(new Date());
             tSmsChannel.setExtProperties(StringUtils.trimToEmpty(tSmsChannel.getExtProperties()));
             tSmsChannel.setStatus(0);
+            String md5Value =  DigestUtils.md5DigestAsHex(
+                    (tSmsChannel.getId() + tSmsChannel.getChannelAppkey() + tSmsChannel.getChannelAppsecret() + tSmsChannel.getChannelDomain() + tSmsChannel.getChannelName() + tSmsChannel.getChannelType() + tSmsChannel.getExtProperties()
+                    ).getBytes("UTF-8"));
+            tSmsChannel.setMd5Value(md5Value);
             tSmsChannelDAO.updateByPrimaryKey(tSmsChannel);
             return BaseModel.getInstance("success");
         } catch (Exception e) {

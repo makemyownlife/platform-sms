@@ -53,6 +53,8 @@ public class TSmsChannel implements Serializable {
 
     private Integer sendOrder;
 
+    private String md5Value;
+
     public Integer getId() {
         return id;
     }
@@ -139,6 +141,14 @@ public class TSmsChannel implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getMd5Value() {
+        return md5Value;
+    }
+
+    public void setMd5Value(String md5Value) {
+        this.md5Value = md5Value;
     }
 
 }
