@@ -30,6 +30,11 @@ public class SmsAdapterLoader {
             Thread.currentThread().setContextClassLoader(adapter.getClass().getClassLoader());
             adapter.init(smsChannelConfig);
             Thread.currentThread().setContextClassLoader(cl);
+            // 卸载之前的适配器
+            OuterAdapter preAdapter = ADAPTER_MAP.get(smsChannelConfig.getId());
+            if (preAdapter != null) {
+                preAdapter.destroy();
+            }
             // 加入到容器里
             ADAPTER_MAP.put(smsChannelConfig.getId(), adapter);
             logger.info("Load sms adapter: {} succeed", adapterName);
