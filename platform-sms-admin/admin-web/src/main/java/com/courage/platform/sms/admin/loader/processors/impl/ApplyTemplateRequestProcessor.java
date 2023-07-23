@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -25,7 +24,7 @@ import java.util.Map;
  * Created by zhangyong on 2023/7/14.
  */
 @Component
-public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor {
+public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<String, String> {
 
     private static Logger logger = LoggerFactory.getLogger(ApplyTemplateRequestProcessor.class);
 

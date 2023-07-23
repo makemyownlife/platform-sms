@@ -11,7 +11,6 @@ import com.courage.platform.sms.admin.loader.processors.ProcessorResponse;
 import com.courage.platform.sms.admin.loader.processors.impl.ApplyTemplateRequestProcessor;
 import com.courage.platform.sms.admin.loader.processors.impl.SendMessageRequestProcessor;
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -21,7 +20,10 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Component(value = "smsAdapterService")
 public class SmsAdapterService {
@@ -67,7 +69,11 @@ public class SmsAdapterService {
                     List<TSmsChannel> channelList = smsChannelDAO.queryChannels(MapUtils.EMPTY_MAP);
                     for (TSmsChannel tSmsChannel : channelList) {
                         TSmsChannel prewChannel = CHANNEL_MAPPING.get(tSmsChannel.getId());
-                        if (prewChannel == null || !prewChannel.getMd5Value().equals(tSmsChannel.getMd5Value())) {
+                        boolean needLoadPlugin = false;
+                        if ((prewChannel != null && !prewChannel.getMd5Value().equals(tSmsChannel.getMd5Value())) || (prewChannel == null)) {
+                            needLoadPlugin = true;
+                        }
+                        if (needLoadPlugin) {
                             logger.info("开始加载渠道：" + JSON.toJSONString(tSmsChannel));
                             SmsChannelConfig channelConfig = new SmsChannelConfig();
                             BeanUtils.copyProperties(tSmsChannel, channelConfig);
