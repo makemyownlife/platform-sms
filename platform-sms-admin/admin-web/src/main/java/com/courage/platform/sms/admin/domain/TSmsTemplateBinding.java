@@ -35,7 +35,7 @@ public class TSmsTemplateBinding implements Serializable {
     /**
      * 0 : 待提交 1：待审核  2：审核成功 3：审核失败
      */
-    private Byte status;
+    private Integer status;
 
     /**
      * 创建时间
@@ -89,14 +89,6 @@ public class TSmsTemplateBinding implements Serializable {
         this.channelId = channelId;
     }
 
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -119,6 +111,14 @@ public class TSmsTemplateBinding implements Serializable {
 
     public void setChannelName(String channelName) {
         this.channelName = channelName;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
 }

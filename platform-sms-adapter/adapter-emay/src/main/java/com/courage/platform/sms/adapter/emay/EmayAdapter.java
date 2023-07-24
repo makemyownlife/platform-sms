@@ -83,6 +83,8 @@ public class EmayAdapter implements OuterAdapter {
             Map<String, String> bodyMap = new HashMap<>();
             bodyMap.put("templateCode", templateIdJSON.getString("templateId"));
             bodyMap.put("templateContent", templateContent);
+            // 0 待提交:  1：待审核  2：审核成功 3：审核失败 亿美提交申请默认成功
+            bodyMap.put("status", "2");
             return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, bodyMap);
         }
         return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);

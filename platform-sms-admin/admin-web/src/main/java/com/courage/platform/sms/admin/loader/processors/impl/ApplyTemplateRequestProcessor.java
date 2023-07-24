@@ -58,9 +58,10 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<String
                         Map<String, String> bodyMap = smsResponseCommand.getData();
                         String templateCode = bodyMap.get("templateCode");
                         String templateContent = bodyMap.get("templateContent");
+                        Integer status = bodyMap.get("status") == null ? (byte) 1 : Integer.valueOf(bodyMap.get("status"));
                         binding.setTemplateCode(templateCode);
                         binding.setTemplateContent(templateContent);
-                        binding.setStatus((byte) 1);              // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
+                        binding.setStatus(status);    // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
                         tSmsTemplateBindingDAO.updateByPrimaryKeySelective(binding);
                         return ProcessorResponse.successResult(templateCode);
                     }

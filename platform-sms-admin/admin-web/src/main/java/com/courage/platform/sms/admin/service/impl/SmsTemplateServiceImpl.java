@@ -106,14 +106,14 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
                     binding.setTemplateId(templateId);
                     binding.setChannelId(Long.valueOf(channelId));
                     // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
-                    binding.setStatus((byte) 0);
+                    binding.setStatus(0);
                     binding.setTemplateContent(StringUtils.EMPTY);
                     binding.setTemplateCode(StringUtils.EMPTY);
                     binding.setCreateTime(new Date());
                     binding.setUpdateTime(new Date());
                     tSmsTemplateBindingDAO.insertSelective(binding);
-                    // 向渠道申请模版
                 }
+                // 向渠道申请模版
                 smsAdapterService.processRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(binding.getId()));
             }
             return BaseModel.getInstance("success");
