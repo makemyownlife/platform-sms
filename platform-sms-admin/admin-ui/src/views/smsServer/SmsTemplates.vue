@@ -1,11 +1,13 @@
 <template>
   <div class="app-container">
+
     <div class="filter-container">
       <el-input v-model="listQuery.templateName" placeholder="模版名称" style="width: 200px;" class="filter-item"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" plain @click="queryData()">查询</el-button>
       <el-button class="filter-item" type="primary" @click="handleCreate()">新建模版</el-button>
       <el-button class="filter-item" type="info" @click="fetchData()">刷新列表</el-button>
     </div>
+
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -47,11 +49,19 @@
         </template>
       </el-table-column>
 
-      <el-table-column class-name="status-col" label="渠道" min-width="50"  align="center">
+      <el-table-column class-name="status-col" label="渠道" align="center">
         <template slot-scope="scope">
+          <el-table :data="scope.row.bindingList">
+            <el-table-column property="channelName" label="渠道名"></el-table-column>
+            <el-table-column  property="templateCode" label="模版编号"></el-table-column>
+            <el-table-column property="status" label="状态" :formatter="bindingStatus">
+            </el-table-column>
+          </el-table>
+          <!--
           <el-tag v-for="binding in scope.row.bindingList" :key="binding.id" effect="dark" type="">
              {{ binding.channelName }}
           </el-tag>
+          -->
         </template>
       </el-table-column>
 
@@ -186,6 +196,7 @@ export default {
         remark: [{required: true, message: '备注不能为空', trigger: 'change'}]
       },
       dialogStatus: 'create',
+
       // 绑定信息
       bindingInfo : {
         dialogFormVisible: false ,
@@ -344,7 +355,17 @@ export default {
       })
       this.bindingInfo.dialogFormVisible = false;
     })
-    }
+    },
+    bindingStatus(row, column) {
+      // Map the status integer to the corresponding string
+      const statusMap = {
+        0: '待提交',
+        1: '待审核',
+        2: '审核成功',
+        3: '审核失败'
+      };
+      return statusMap[row.status];
+    },
   }
 
 }
