@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.channelAppkey" placeholder="应用appkey" style="width: 200px;" class="filter-item"/>
+      <el-input v-model="listQuery.appkey" placeholder="应用appkey" style="width: 200px;" class="filter-item"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" plain @click="queryData()">查询</el-button>
       <el-button class="filter-item" type="primary" @click="handleCreate()">新建应用</el-button>
       <el-button class="filter-item" type="info" @click="fetchData()">刷新列表</el-button>
@@ -34,12 +34,14 @@
           {{ scope.row.appSecret }}
         </template>
       </el-table-column>
+      <!--
       <el-table-column label="状态" min-width="50" align="center">
         <template slot-scope="scope">
           <font v-if="scope.row.status === 0" color="green">正常</font>
           <font v-if="scope.row.status === 1" color="gray">失效</font>
         </template>
       </el-table-column>
+      -->
       <el-table-column class-name="status-col" label="修改时间" min-width="62" align="center">
         <template slot-scope="scope">
           {{ scope.row.updateTime }}
@@ -71,7 +73,7 @@
           <el-input v-model="appInfoModel.appName"/>
         </el-form-item>
         <el-form-item label="应用 key" prop="appkey">
-          <el-input v-model="appInfoModel.appKey"/>
+          <el-input v-model="appInfoModel.appKey" disabled="true"/>
         </el-form-item>
         <el-form-item label="应用密钥" prop="appsecret">
           <el-input v-model="appInfoModel.appSecret"/>

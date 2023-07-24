@@ -38,6 +38,7 @@ public class SendMessageRequestProcessor implements SmsAdatperProcessor<Map<Stri
         String templateId = param.get("templateId");
         String mobile = param.get("mobile");
         String templateParam = param.get("templateParam");
+
         // 查询该模版下的绑定渠道
         List<TSmsTemplateBinding> bindingList = bindingDAO.selectBindingsByTemplateId(Long.valueOf(templateId));
         SmsSenderResult smsSenderResult = new SmsSenderResult(null);

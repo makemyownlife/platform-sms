@@ -257,13 +257,21 @@ export default {
       })
     },
     handleUpdate(row) {
-      this.resetModel()
-      this.templateModel = Object.assign({}, row)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+      var bindingCount = row.bindingList.length;
+      if( bindingCount > 0) {
+        this.$message({
+          message: '模版已绑定渠道，无法修改',
+          type: 'error'
+        })
+      } else {
+          this.resetModel()
+          this.templateModel = Object.assign({}, row)
+          this.dialogStatus = 'update'
+          this.dialogFormVisible = true
+          this.$nextTick(() => {
+            this.$refs['dataForm'].clearValidate()
+          })
+      }
     },
     handleDelete(row) {
       this.$confirm('删除模版信息后模版无法使用', '确定删除模版信息', {
