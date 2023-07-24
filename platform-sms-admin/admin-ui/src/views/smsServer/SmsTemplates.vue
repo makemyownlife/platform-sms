@@ -353,6 +353,7 @@ export default {
         message: '绑定渠道成功',
         type: 'success'
       })
+      this.fetchData();
       this.bindingInfo.dialogFormVisible = false;
     })
     },
