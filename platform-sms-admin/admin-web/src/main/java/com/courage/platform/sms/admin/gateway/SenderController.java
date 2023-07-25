@@ -36,12 +36,12 @@ public class SenderController {
             String appKey = request.getParameter("appKey");
             String time = request.getParameter("time");
             String random = request.getParameter("random");
+
             //构造唯一请求 id
             String uniqueId = time + random;
             logger.info("q:" + q + " appKey:" + appKey + " uniqueId:" + uniqueId);
 
             JSONObject jsonObject = JSON.parseObject(q);
-
             // 短信请求参数
             Map<String, String> data = new HashMap<>();
             data.put("mobile", jsonObject.getString("mobile"));
@@ -50,7 +50,7 @@ public class SenderController {
             data.put("templateParam", jsonObject.getString("templateParam"));
 
             ProcessorResponse processorResponse = smsAdapterService.processRequest(ProcessorRequestCode.SEND_MESSAGE, new ProcessorRequest(data));
-            return new SmsSenderResult(SmsSenderResult.FAIL_CODE, "发送失败");
+            return new SmsSenderResult(SmsSenderResult.SUCCESS_CODE, "发送失败");
         } catch (Exception e) {
             logger.error("sendSingle error: ", e);
             return new SmsSenderResult(SmsSenderResult.FAIL_CODE, "发送失败");

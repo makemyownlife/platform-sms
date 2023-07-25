@@ -98,12 +98,12 @@ export const constantRoutes = [
         meta: {title: '绑定渠道',hideInMenu: true },
         hidden : true
       },
-      // {
-      //   path: 'smsList',
-      //   name: '短信管理',
-      //   component: () => import('@/views/smsServer/SmsList'),
-      //   meta: { title: '短信管理', icon: 'form' }
-      // }
+      {
+        path: 'smsList',
+        name: '短信管理',
+        component: () => import('@/views/smsServer/SmsList'),
+        meta: { title: '短信管理', icon: 'form' }
+      }
       //   ,
       //   {
       //   path: 'ruleList',
