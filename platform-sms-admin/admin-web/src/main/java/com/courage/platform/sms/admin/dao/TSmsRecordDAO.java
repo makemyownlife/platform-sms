@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TSmsRecordDAO extends MyBatisBaseDao<TSmsRecord, Long> {
+
+    
 }

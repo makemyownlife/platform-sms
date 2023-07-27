@@ -25,6 +25,8 @@ public class AliyunAdapter implements OuterAdapter {
 
     private Client client;
 
+    private final static int SUCCESS_CODE =  200;
+
     @Override
     public void init(SmsChannelConfig smsChannelConfig) throws Exception {
         this.smsChannelConfig = smsChannelConfig;
@@ -49,7 +51,7 @@ public class AliyunAdapter implements OuterAdapter {
                     setTemplateParam(sendSmsCommand.getTemplateParam());
             com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
             com.aliyun.dysmsapi20170525.models.SendSmsResponse resp = client.sendSmsWithOptions(sendSmsRequest, runtime);
-            if (200 == resp.getStatusCode()) {
+            if (SUCCESS_CODE == resp.getStatusCode()) {
                 return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, JSON.toJSONString(resp.getBody()));
             }
             return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, resp.getBody().getMessage());
@@ -69,7 +71,7 @@ public class AliyunAdapter implements OuterAdapter {
             addSmsTemplateRequest.setTemplateName(addSmsTemplateCommand.getTemplateName());
             AddSmsTemplateResponse resp = client.addSmsTemplate(addSmsTemplateRequest);
             logger.info("resp=" + JSON.toJSONString(resp));
-            if (200 == resp.getStatusCode()) {
+            if (SUCCESS_CODE == resp.getStatusCode()) {
                 AddSmsTemplateResponseBody body = resp.getBody();
                 Map<String, String> bodyMap = new HashMap<>();
                 bodyMap.put("templateCode", body.getTemplateCode());
