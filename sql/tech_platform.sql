@@ -49,53 +49,19 @@ CREATE TABLE `t_sms_channel` (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sms_record`;
 CREATE TABLE `t_sms_record` (
-                                `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键 雪花算法',
-                                `mobile` text NOT NULL COMMENT '手机号 ，群发手机号以逗号分隔',
-                                `nationcode` varchar(10) NOT NULL DEFAULT '86' COMMENT '区位码',
-                                `app_id` varchar(30) DEFAULT NULL COMMENT '调用服务方',
-                                `type` tinyint(4) DEFAULT '0' COMMENT '0：普通短信  1 ：营销短信 （群发）',
-                                `template_id` bigint(20) NOT NULL COMMENT '模版编号',
-                                `attime` varchar(30) DEFAULT '' COMMENT '指定发送时间',
-                                `send_status` tinyint(4) NOT NULL DEFAULT '-1' COMMENT '-1：待发送 / 0：已发送  /1  : 发送失败',
-                                `sender_ip` varchar(40) DEFAULT NULL,
-                                `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                PRIMARY KEY (`id`)
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键 雪花算法',
+  `mobile` text NOT NULL COMMENT '手机号 ，群发手机号以逗号分隔',
+  `nationcode` varchar(10) NOT NULL DEFAULT '86' COMMENT '区位码',
+  `app_id` varchar(30) DEFAULT NULL COMMENT '调用服务方',
+  `record_type` tinyint(4) DEFAULT '0' COMMENT '0：普通短信  1 ：营销短信 （群发）',
+  `template_id` bigint(20) NOT NULL COMMENT '模版编号',
+  `attime` varchar(30) DEFAULT '' COMMENT '指定发送时间',
+  `send_status` tinyint(4) NOT NULL DEFAULT '-1' COMMENT '-1：待发送 / 0：已发送  /1  : 发送失败',
+  `sender_ip` varchar(40) DEFAULT NULL,
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_sms_record
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
--- Table structure for t_sms_record_detail
--- ----------------------------
-DROP TABLE IF EXISTS `t_sms_record_detail`;
-CREATE TABLE `t_sms_record_detail` (
-                                       `id` bigint(20) NOT NULL COMMENT '自增Id',
-                                       `record_id` bigint(20) NOT NULL COMMENT 't_sms_record表外键',
-                                       `app_id` varchar(30) NOT NULL COMMENT '发送方appId ',
-                                       `content` varchar(500) NOT NULL COMMENT '短信内容',
-                                       `send_status` tinyint(4) NOT NULL DEFAULT '-1' COMMENT '-1：待发送 /  0：已发送  / 1 : 发送失败',
-                                       `report_status` tinyint(4) DEFAULT NULL COMMENT '短信报告 0 ： 待回执  1：发送成功 2 : 发送失败  ',
-                                       `mobile` varchar(40) NOT NULL COMMENT '手机号码',
-                                       `msgid` varchar(40) NOT NULL COMMENT '三方短信ID',
-                                       `channel_id` varchar(10) NOT NULL COMMENT '渠道',
-                                       `sender_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '消息发送时间',
-                                       `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                       `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-                                       PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_sms_record_detail
--- ----------------------------
-BEGIN;
-COMMIT;
-
-SET FOREIGN_KEY_CHECKS = 1;
 
 -- ----------------------------
 -- Table structure for t_sms_template
