@@ -1,7 +1,7 @@
 package com.courage.platform.sms.admin.loader.processor;
 
 /**
- * 请求命令枚举
+ * 处理机接收到的请求命令
  * Created by zhangyong on 2023/7/14.
  */
 public class ProcessorRequest<T> {
