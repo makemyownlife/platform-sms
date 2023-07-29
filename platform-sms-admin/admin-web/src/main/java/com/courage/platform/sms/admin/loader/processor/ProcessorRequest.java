@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.loader.processors;
+package com.courage.platform.sms.admin.loader.processor;
 
 /**
  * 请求命令枚举

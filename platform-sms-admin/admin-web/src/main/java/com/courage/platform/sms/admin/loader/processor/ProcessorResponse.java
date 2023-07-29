@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.loader.processors;
+package com.courage.platform.sms.admin.loader.processor;
 
 public class ProcessorResponse<T> {
 
@@ -12,16 +12,12 @@ public class ProcessorResponse<T> {
 
     public static final int FAIL = 400;
 
-    public static final int NO_PERMISSION = 403;
-
     public static final int ERROR = 500;
-
-    public static final int SIGN_ERROR = 600;
 
     private ProcessorResponse() {
     }
 
-    public static <T> ProcessorResponse<T> custom(int code, String message, T data) {
+    public static <T> ProcessorResponse<T> buildResponse(int code, String message, T data) {
         ProcessorResponse<T> responseEntity = new ProcessorResponse<>();
         responseEntity.message = message;
         responseEntity.code = code;
@@ -29,14 +25,7 @@ public class ProcessorResponse<T> {
         return responseEntity;
     }
 
-    public static <T> ProcessorResponse<T> custom(int code, String message) {
-        ProcessorResponse<T> responseEntity = new ProcessorResponse<>();
-        responseEntity.message = message;
-        responseEntity.code = code;
-        return responseEntity;
-    }
-
-    public static <T> ProcessorResponse<T> custom(int code, T data) {
+    public static <T> ProcessorResponse<T> buildResponse(int code, T data) {
         ProcessorResponse<T> responseEntity = new ProcessorResponse<>();
         responseEntity.data = data;
         responseEntity.code = code;
@@ -53,21 +42,6 @@ public class ProcessorResponse<T> {
     public static <T> ProcessorResponse<T> failResult(String message) {
         ProcessorResponse<T> responseEntity = new ProcessorResponse<>();
         responseEntity.code = FAIL;
-        responseEntity.message = message;
-        return responseEntity;
-    }
-
-    public static <T> ProcessorResponse<T> failCustom(String message, T data) {
-        ProcessorResponse<T> responseEntity = new ProcessorResponse<>();
-        responseEntity.message = message;
-        responseEntity.code = FAIL;
-        responseEntity.data = data;
-        return responseEntity;
-    }
-
-    public static <T> ProcessorResponse<T> noPermissionResult(String message) {
-        ProcessorResponse<T> responseEntity = new ProcessorResponse<>();
-        responseEntity.code = NO_PERMISSION;
         responseEntity.message = message;
         return responseEntity;
     }

@@ -1,7 +1,7 @@
 package com.courage.platform.sms.admin.loader;
 
-import com.courage.platform.sms.admin.loader.processors.ProcessorRequest;
-import com.courage.platform.sms.admin.loader.processors.ProcessorResponse;
+import com.courage.platform.sms.admin.loader.processor.ProcessorRequest;
+import com.courage.platform.sms.admin.loader.processor.ProcessorResponse;
 
 /**
  * 适配器处理器接口
