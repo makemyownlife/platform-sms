@@ -49,8 +49,9 @@ public class SenderController {
             data.put("appKey", appKey);
             data.put("templateParam", jsonObject.getString("templateParam"));
 
+            // 处理请求
             ProcessorResponse processorResponse = smsAdapterService.processRequest(ProcessorRequestCode.SEND_MESSAGE, new ProcessorRequest(data));
-            return new SmsSenderResult(SmsSenderResult.SUCCESS_CODE, "发送失败");
+            return new SmsSenderResult(SmsSenderResult.SUCCESS_CODE, processorResponse.getMessage());
         } catch (Exception e) {
             logger.error("sendSingle error: ", e);
             return new SmsSenderResult(SmsSenderResult.FAIL_CODE, "发送失败");
