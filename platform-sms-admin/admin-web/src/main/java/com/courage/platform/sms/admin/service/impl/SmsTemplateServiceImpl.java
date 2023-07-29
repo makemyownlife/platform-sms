@@ -1,7 +1,7 @@
 package com.courage.platform.sms.admin.service.impl;
 
 import com.courage.platform.sms.admin.config.IdGenerator;
-import com.courage.platform.sms.admin.controller.model.BaseModel;
+import com.courage.platform.sms.admin.vo.BaseModel;
 import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.domain.TSmsTemplate;

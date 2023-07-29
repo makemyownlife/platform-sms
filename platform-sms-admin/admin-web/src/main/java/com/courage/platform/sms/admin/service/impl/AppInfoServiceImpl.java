@@ -2,7 +2,7 @@ package com.courage.platform.sms.admin.service.impl;
 
 import com.courage.platform.sms.admin.dao.TSmsAppinfoDAO;
 import com.courage.platform.sms.admin.domain.TSmsAppinfo;
-import com.courage.platform.sms.admin.controller.model.BaseModel;
+import com.courage.platform.sms.admin.vo.BaseModel;
 import com.courage.platform.sms.admin.service.AppInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

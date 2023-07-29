@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.controller.model;
+package com.courage.platform.sms.admin.vo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

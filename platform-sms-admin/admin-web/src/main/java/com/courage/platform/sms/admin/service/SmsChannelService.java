@@ -1,6 +1,6 @@
 package com.courage.platform.sms.admin.service;
 
-import com.courage.platform.sms.admin.controller.model.BaseModel;
+import com.courage.platform.sms.admin.vo.BaseModel;
 import com.courage.platform.sms.admin.domain.TSmsChannel;
 
 import java.util.List;

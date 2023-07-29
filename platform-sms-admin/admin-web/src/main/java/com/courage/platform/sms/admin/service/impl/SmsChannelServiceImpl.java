@@ -1,7 +1,6 @@
 package com.courage.platform.sms.admin.service.impl;
 
-import cn.emay.util.Md5;
-import com.courage.platform.sms.admin.controller.model.BaseModel;
+import com.courage.platform.sms.admin.vo.BaseModel;
 import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
 import com.courage.platform.sms.admin.domain.TSmsChannel;
 import com.courage.platform.sms.admin.service.SmsChannelService;

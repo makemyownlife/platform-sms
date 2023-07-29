@@ -1,7 +1,7 @@
 package com.courage.platform.sms.admin.controller;
 
-import com.courage.platform.sms.admin.controller.model.BaseModel;
-import com.courage.platform.sms.admin.controller.model.Pager;
+import com.courage.platform.sms.admin.vo.BaseModel;
+import com.courage.platform.sms.admin.vo.Pager;
 import com.courage.platform.sms.admin.service.SmsChannelService;
 import com.courage.platform.sms.admin.domain.TSmsChannel;
 import org.apache.commons.lang3.StringUtils;
