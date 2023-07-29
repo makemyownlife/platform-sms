@@ -14,9 +14,6 @@
         <module>platform-sms-adapter</module>
         <module>platform-sms-admin</module>
         <module>platform-sms-demo</module>
-        <!--
-        <module>platform-sms-worker</module>
-        -->
     </modules>
 
     <dependencyManagement>
