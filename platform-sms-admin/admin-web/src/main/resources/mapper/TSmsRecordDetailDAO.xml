@@ -1,62 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.courage.platform.sms.dao.TSmsRecordDetailDAO">
+<mapper namespace="com.courage.platform.sms.admin.dao.TSmsRecordDetailDAO">
   <resultMap id="BaseResultMap" type="com.courage.platform.sms.admin.domain.TSmsRecordDetail">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="record_id" jdbcType="BIGINT" property="recordId" />
+    <result column="app_id" jdbcType="VARCHAR" property="appId" />
     <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="send_status" jdbcType="TINYINT" property="sendStatus" />
     <result column="report_status" jdbcType="TINYINT" property="reportStatus" />
-    <result column="report_time" jdbcType="TIMESTAMP" property="reportTime" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="msgid" jdbcType="VARCHAR" property="msgid" />
-    <result column="channel" jdbcType="VARCHAR" property="channel" />
-    <result column="app_key" jdbcType="VARCHAR" property="appKey" />
+    <result column="channel_id" jdbcType="VARCHAR" property="channelId" />
     <result column="sender_time" jdbcType="TIMESTAMP" property="senderTime" />
-    <result column="receive_time" jdbcType="TIMESTAMP" property="receiveTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="send_status" jdbcType="TINYINT" property="sendStatus" />
   </resultMap>
+
   <sql id="Base_Column_List">
-    id, record_id, content, report_status, report_time, mobile, msgid, channel, app_key, 
-    sender_time, receive_time, create_time, update_time, send_status
+    id, record_id, app_id, content, send_status, report_status, mobile, msgid, channel_id, 
+    sender_time, create_time, update_time
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_sms_record_detail
     where id = #{id,jdbcType=BIGINT}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_sms_record_detail
     where id = #{id,jdbcType=BIGINT}
   </delete>
+
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsRecordDetail" useGeneratedKeys="true">
-    insert into t_sms_record_detail (record_id, content, report_status, 
-      report_time, mobile, msgid, 
-      channel, app_key, sender_time, 
-      receive_time, create_time, update_time, 
-      send_status)
-    values (#{recordId,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{reportStatus,jdbcType=TINYINT}, 
-      #{reportTime,jdbcType=TIMESTAMP}, #{mobile,jdbcType=VARCHAR}, #{msgid,jdbcType=VARCHAR}, 
-      #{channel,jdbcType=VARCHAR}, #{appKey,jdbcType=VARCHAR}, #{senderTime,jdbcType=TIMESTAMP}, 
-      #{receiveTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{sendStatus,jdbcType=TINYINT})
+    insert into t_sms_record_detail (record_id, app_id, content, 
+      send_status, report_status, mobile, 
+      msgid, channel_id, sender_time, 
+      create_time, update_time)
+    values (#{recordId,jdbcType=BIGINT}, #{appId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{sendStatus,jdbcType=TINYINT}, #{reportStatus,jdbcType=TINYINT}, #{mobile,jdbcType=VARCHAR}, 
+      #{msgid,jdbcType=VARCHAR}, #{channelId,jdbcType=VARCHAR}, #{senderTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
+
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsRecordDetail" useGeneratedKeys="true">
     insert into t_sms_record_detail
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="recordId != null">
         record_id,
       </if>
+      <if test="appId != null">
+        app_id,
+      </if>
       <if test="content != null">
         content,
       </if>
+      <if test="sendStatus != null">
+        send_status,
+      </if>
       <if test="reportStatus != null">
         report_status,
-      </if>
-      <if test="reportTime != null">
-        report_time,
       </if>
       <if test="mobile != null">
         mobile,
@@ -64,17 +68,11 @@
       <if test="msgid != null">
         msgid,
       </if>
-      <if test="channel != null">
-        channel,
-      </if>
-      <if test="appKey != null">
-        app_key,
+      <if test="channelId != null">
+        channel_id,
       </if>
       <if test="senderTime != null">
         sender_time,
-      </if>
-      <if test="receiveTime != null">
-        receive_time,
       </if>
       <if test="createTime != null">
         create_time,
@@ -82,22 +80,22 @@
       <if test="updateTime != null">
         update_time,
       </if>
-      <if test="sendStatus != null">
-        send_status,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="recordId != null">
         #{recordId,jdbcType=BIGINT},
       </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
       </if>
+      <if test="sendStatus != null">
+        #{sendStatus,jdbcType=TINYINT},
+      </if>
       <if test="reportStatus != null">
         #{reportStatus,jdbcType=TINYINT},
-      </if>
-      <if test="reportTime != null">
-        #{reportTime,jdbcType=TIMESTAMP},
       </if>
       <if test="mobile != null">
         #{mobile,jdbcType=VARCHAR},
@@ -105,17 +103,11 @@
       <if test="msgid != null">
         #{msgid,jdbcType=VARCHAR},
       </if>
-      <if test="channel != null">
-        #{channel,jdbcType=VARCHAR},
-      </if>
-      <if test="appKey != null">
-        #{appKey,jdbcType=VARCHAR},
+      <if test="channelId != null">
+        #{channelId,jdbcType=VARCHAR},
       </if>
       <if test="senderTime != null">
         #{senderTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="receiveTime != null">
-        #{receiveTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -123,25 +115,26 @@
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="sendStatus != null">
-        #{sendStatus,jdbcType=TINYINT},
-      </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.domain.TSmsRecordDetail">
     update t_sms_record_detail
     <set>
       <if test="recordId != null">
         record_id = #{recordId,jdbcType=BIGINT},
       </if>
+      <if test="appId != null">
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
       <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
       </if>
+      <if test="sendStatus != null">
+        send_status = #{sendStatus,jdbcType=TINYINT},
+      </if>
       <if test="reportStatus != null">
         report_status = #{reportStatus,jdbcType=TINYINT},
-      </if>
-      <if test="reportTime != null">
-        report_time = #{reportTime,jdbcType=TIMESTAMP},
       </if>
       <if test="mobile != null">
         mobile = #{mobile,jdbcType=VARCHAR},
@@ -149,17 +142,11 @@
       <if test="msgid != null">
         msgid = #{msgid,jdbcType=VARCHAR},
       </if>
-      <if test="channel != null">
-        channel = #{channel,jdbcType=VARCHAR},
-      </if>
-      <if test="appKey != null">
-        app_key = #{appKey,jdbcType=VARCHAR},
+      <if test="channelId != null">
+        channel_id = #{channelId,jdbcType=VARCHAR},
       </if>
       <if test="senderTime != null">
         sender_time = #{senderTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="receiveTime != null">
-        receive_time = #{receiveTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -167,27 +154,24 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="sendStatus != null">
-        send_status = #{sendStatus,jdbcType=TINYINT},
-      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.domain.TSmsRecordDetail">
     update t_sms_record_detail
     set record_id = #{recordId,jdbcType=BIGINT},
+      app_id = #{appId,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
+      send_status = #{sendStatus,jdbcType=TINYINT},
       report_status = #{reportStatus,jdbcType=TINYINT},
-      report_time = #{reportTime,jdbcType=TIMESTAMP},
       mobile = #{mobile,jdbcType=VARCHAR},
       msgid = #{msgid,jdbcType=VARCHAR},
-      channel = #{channel,jdbcType=VARCHAR},
-      app_key = #{appKey,jdbcType=VARCHAR},
+      channel_id = #{channelId,jdbcType=VARCHAR},
       sender_time = #{senderTime,jdbcType=TIMESTAMP},
-      receive_time = #{receiveTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      send_status = #{sendStatus,jdbcType=TINYINT}
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
 </mapper>

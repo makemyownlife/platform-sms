@@ -38,10 +38,10 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_sms_record
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+      delete from t_sms_record
+      where id = #{id,jdbcType=BIGINT}
+    </delete>
 
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsRecord" useGeneratedKeys="true">
       INSERT INTO t_sms_record

@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.config;
+package com.courage.platform.sms.admin.common.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

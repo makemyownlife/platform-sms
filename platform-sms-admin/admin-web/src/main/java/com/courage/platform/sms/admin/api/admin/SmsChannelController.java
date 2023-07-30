@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.controller;
+package com.courage.platform.sms.admin.api.admin;
 
 import com.courage.platform.sms.admin.vo.BaseModel;
 import com.courage.platform.sms.admin.vo.Pager;

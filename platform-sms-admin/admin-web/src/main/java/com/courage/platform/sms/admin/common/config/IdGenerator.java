@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.config;
+package com.courage.platform.sms.admin.common.config;
 
 import com.courage.platform.sms.admin.common.sharding.LocalSequence;
 import com.courage.platform.sms.admin.common.sharding.ShardingConstants;

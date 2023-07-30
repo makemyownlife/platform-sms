@@ -15,19 +15,24 @@ public class TSmsRecordDetail implements Serializable {
     private Long recordId;
 
     /**
+     * 发送方appId 
+     */
+    private String appId;
+
+    /**
      * 短信内容
      */
     private String content;
 
     /**
-     * 短信报告状态
+     * -1：待发送 /  0：已发送  / 1 : 发送失败
      */
-    private Byte reportStatus;
+    private Byte sendStatus;
 
     /**
-     * 短信状态报告时间
+     * 短信报告 0 ： 待回执  1：发送成功 2 : 发送失败  
      */
-    private Date reportTime;
+    private Byte reportStatus;
 
     /**
      * 手机号码
@@ -35,29 +40,19 @@ public class TSmsRecordDetail implements Serializable {
     private String mobile;
 
     /**
-     * 短信ID
+     * 三方短信ID
      */
     private String msgid;
 
     /**
      * 渠道
      */
-    private String channel;
-
-    /**
-     * 发送方appkey
-     */
-    private String appKey;
+    private String channelId;
 
     /**
      * 消息发送时间
      */
     private Date senderTime;
-
-    /**
-     * 短信接收时间
-     */
-    private Date receiveTime;
 
     /**
      * 创建时间
@@ -68,11 +63,6 @@ public class TSmsRecordDetail implements Serializable {
      * 更新时间
      */
     private Date updateTime;
-
-    /**
-     * -1：待发送 / 0：已发送  /1 : 发送失败
-     */
-    private Byte sendStatus;
 
     private static final long serialVersionUID = 1L;
 
@@ -92,6 +82,14 @@ public class TSmsRecordDetail implements Serializable {
         this.recordId = recordId;
     }
 
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
     public String getContent() {
         return content;
     }
@@ -100,20 +98,20 @@ public class TSmsRecordDetail implements Serializable {
         this.content = content;
     }
 
+    public Byte getSendStatus() {
+        return sendStatus;
+    }
+
+    public void setSendStatus(Byte sendStatus) {
+        this.sendStatus = sendStatus;
+    }
+
     public Byte getReportStatus() {
         return reportStatus;
     }
 
     public void setReportStatus(Byte reportStatus) {
         this.reportStatus = reportStatus;
-    }
-
-    public Date getReportTime() {
-        return reportTime;
-    }
-
-    public void setReportTime(Date reportTime) {
-        this.reportTime = reportTime;
     }
 
     public String getMobile() {
@@ -132,20 +130,12 @@ public class TSmsRecordDetail implements Serializable {
         this.msgid = msgid;
     }
 
-    public String getChannel() {
-        return channel;
+    public String getChannelId() {
+        return channelId;
     }
 
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
-
-    public String getAppKey() {
-        return appKey;
-    }
-
-    public void setAppKey(String appKey) {
-        this.appKey = appKey;
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 
     public Date getSenderTime() {
@@ -154,14 +144,6 @@ public class TSmsRecordDetail implements Serializable {
 
     public void setSenderTime(Date senderTime) {
         this.senderTime = senderTime;
-    }
-
-    public Date getReceiveTime() {
-        return receiveTime;
-    }
-
-    public void setReceiveTime(Date receiveTime) {
-        this.receiveTime = receiveTime;
     }
 
     public Date getCreateTime() {
@@ -180,14 +162,6 @@ public class TSmsRecordDetail implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Byte getSendStatus() {
-        return sendStatus;
-    }
-
-    public void setSendStatus(Byte sendStatus) {
-        this.sendStatus = sendStatus;
-    }
-
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -202,18 +176,16 @@ public class TSmsRecordDetail implements Serializable {
         TSmsRecordDetail other = (TSmsRecordDetail) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getRecordId() == null ? other.getRecordId() == null : this.getRecordId().equals(other.getRecordId()))
+            && (this.getAppId() == null ? other.getAppId() == null : this.getAppId().equals(other.getAppId()))
             && (this.getContent() == null ? other.getContent() == null : this.getContent().equals(other.getContent()))
+            && (this.getSendStatus() == null ? other.getSendStatus() == null : this.getSendStatus().equals(other.getSendStatus()))
             && (this.getReportStatus() == null ? other.getReportStatus() == null : this.getReportStatus().equals(other.getReportStatus()))
-            && (this.getReportTime() == null ? other.getReportTime() == null : this.getReportTime().equals(other.getReportTime()))
             && (this.getMobile() == null ? other.getMobile() == null : this.getMobile().equals(other.getMobile()))
             && (this.getMsgid() == null ? other.getMsgid() == null : this.getMsgid().equals(other.getMsgid()))
-            && (this.getChannel() == null ? other.getChannel() == null : this.getChannel().equals(other.getChannel()))
-            && (this.getAppKey() == null ? other.getAppKey() == null : this.getAppKey().equals(other.getAppKey()))
+            && (this.getChannelId() == null ? other.getChannelId() == null : this.getChannelId().equals(other.getChannelId()))
             && (this.getSenderTime() == null ? other.getSenderTime() == null : this.getSenderTime().equals(other.getSenderTime()))
-            && (this.getReceiveTime() == null ? other.getReceiveTime() == null : this.getReceiveTime().equals(other.getReceiveTime()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
-            && (this.getSendStatus() == null ? other.getSendStatus() == null : this.getSendStatus().equals(other.getSendStatus()));
+            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
     }
 
     @Override
@@ -222,18 +194,16 @@ public class TSmsRecordDetail implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getRecordId() == null) ? 0 : getRecordId().hashCode());
+        result = prime * result + ((getAppId() == null) ? 0 : getAppId().hashCode());
         result = prime * result + ((getContent() == null) ? 0 : getContent().hashCode());
+        result = prime * result + ((getSendStatus() == null) ? 0 : getSendStatus().hashCode());
         result = prime * result + ((getReportStatus() == null) ? 0 : getReportStatus().hashCode());
-        result = prime * result + ((getReportTime() == null) ? 0 : getReportTime().hashCode());
         result = prime * result + ((getMobile() == null) ? 0 : getMobile().hashCode());
         result = prime * result + ((getMsgid() == null) ? 0 : getMsgid().hashCode());
-        result = prime * result + ((getChannel() == null) ? 0 : getChannel().hashCode());
-        result = prime * result + ((getAppKey() == null) ? 0 : getAppKey().hashCode());
+        result = prime * result + ((getChannelId() == null) ? 0 : getChannelId().hashCode());
         result = prime * result + ((getSenderTime() == null) ? 0 : getSenderTime().hashCode());
-        result = prime * result + ((getReceiveTime() == null) ? 0 : getReceiveTime().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
-        result = prime * result + ((getSendStatus() == null) ? 0 : getSendStatus().hashCode());
         return result;
     }
 
@@ -245,18 +215,16 @@ public class TSmsRecordDetail implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", recordId=").append(recordId);
+        sb.append(", appId=").append(appId);
         sb.append(", content=").append(content);
+        sb.append(", sendStatus=").append(sendStatus);
         sb.append(", reportStatus=").append(reportStatus);
-        sb.append(", reportTime=").append(reportTime);
         sb.append(", mobile=").append(mobile);
         sb.append(", msgid=").append(msgid);
-        sb.append(", channel=").append(channel);
-        sb.append(", appKey=").append(appKey);
+        sb.append(", channelId=").append(channelId);
         sb.append(", senderTime=").append(senderTime);
-        sb.append(", receiveTime=").append(receiveTime);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
-        sb.append(", sendStatus=").append(sendStatus);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

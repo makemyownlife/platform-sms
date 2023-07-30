@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.config;
+package com.courage.platform.sms.admin.common.config;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

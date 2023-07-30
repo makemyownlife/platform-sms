@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.gateway;
+package com.courage.platform.sms.admin.api.gateway;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
