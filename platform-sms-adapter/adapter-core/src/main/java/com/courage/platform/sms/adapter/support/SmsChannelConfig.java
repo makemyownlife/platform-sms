@@ -72,4 +72,5 @@ public class SmsChannelConfig {
     public void setChannelAppsecret(String channelAppsecret) {
         this.channelAppsecret = channelAppsecret;
     }
+
 }

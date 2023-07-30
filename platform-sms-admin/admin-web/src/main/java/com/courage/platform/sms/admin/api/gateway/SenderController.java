@@ -37,7 +37,7 @@ public class SenderController {
             String time = request.getParameter("time");
             String random = request.getParameter("random");
 
-            //构造唯一请求 id
+            // 构造唯一请求 id
             String uniqueId = time + random;
             logger.info("q:" + q + " appKey:" + appKey + " uniqueId:" + uniqueId);
 
@@ -50,7 +50,10 @@ public class SenderController {
             data.put("templateParam", jsonObject.getString("templateParam"));
 
             // 处理请求
-            ProcessorResponse processorResponse = smsAdapterService.processRequest(ProcessorRequestCode.SEND_MESSAGE, new ProcessorRequest(data));
+            ProcessorResponse processorResponse = smsAdapterService.processRequest(
+                    ProcessorRequestCode.SEND_MESSAGE,
+                    new ProcessorRequest<Map<String, String>>(data)
+            );
             return new SmsSenderResult(SmsSenderResult.SUCCESS_CODE, processorResponse.getMessage());
         } catch (Exception e) {
             logger.error("sendSingle error: ", e);

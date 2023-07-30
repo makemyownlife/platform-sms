@@ -26,7 +26,7 @@
           {{ scope.row.templateName }}
         </template>
       </el-table-column>
-      <el-table-column label="模版类型" min-width="36" align="center">
+      <el-table-column label="模版类型" min-width="20" align="center">
         <template slot-scope="scope">
           <span  v-if="scope.row.templateType === '0'">
             验证码
@@ -43,7 +43,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="模版内容" min-width="105" align="center">
+      <el-table-column label="模版内容" min-width="50" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.content }}</span>
         </template>
@@ -57,11 +57,6 @@
             <el-table-column property="status" label="状态" :formatter="bindingStatus">
             </el-table-column>
           </el-table>
-          <!--
-          <el-tag v-for="binding in scope.row.bindingList" :key="binding.id" effect="dark" type="">
-             {{ binding.channelName }}
-          </el-tag>
-          -->
         </template>
       </el-table-column>
 

@@ -2,7 +2,7 @@ package com.courage.platform.sms.admin.api.admin;
 
 import com.courage.platform.sms.admin.vo.BaseModel;
 import com.courage.platform.sms.admin.vo.Pager;
-import com.courage.platform.sms.admin.service.SmsChannelService;
+import com.courage.platform.sms.admin.loader.service.SmsChannelService;
 import com.courage.platform.sms.admin.domain.TSmsChannel;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

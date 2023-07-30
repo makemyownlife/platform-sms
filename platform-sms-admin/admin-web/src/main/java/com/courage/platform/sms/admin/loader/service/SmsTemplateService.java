@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.service;
+package com.courage.platform.sms.admin.loader.service;
 
 
 import com.courage.platform.sms.admin.vo.BaseModel;
