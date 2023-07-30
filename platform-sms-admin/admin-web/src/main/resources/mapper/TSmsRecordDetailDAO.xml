@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.courage.platform.sms.admin.dao.TSmsRecordDetailDAO">
 
-  <resultMap id="BaseResultMap" type="com.courage.platform.sms.admin.domain.TSmsRecordDetail">
+  <resultMap id="BaseResultMap" type="com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="record_id" jdbcType="BIGINT" property="recordId" />
     <result column="app_id" jdbcType="VARCHAR" property="appId" />
@@ -34,7 +34,7 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
 
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsRecordDetail" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail" useGeneratedKeys="true">
     insert into t_sms_record_detail (record_id, app_id, content, 
       send_status, report_status, mobile, 
       msgid, channel_id, sender_time, 
@@ -45,7 +45,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
 
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsRecordDetail" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail" useGeneratedKeys="true">
     insert into t_sms_record_detail
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="recordId != null">
@@ -119,7 +119,7 @@
     </trim>
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.domain.TSmsRecordDetail">
+  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail">
     update t_sms_record_detail
     <set>
       <if test="recordId != null">
@@ -159,7 +159,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.domain.TSmsRecordDetail">
+  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail">
     update t_sms_record_detail
     set record_id = #{recordId,jdbcType=BIGINT},
       app_id = #{appId,jdbcType=VARCHAR},
@@ -175,6 +175,30 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <select id="queryRecordDetailList" parameterType="java.util.HashMap" resultMap=""
+  <select id="queryRecordDetailList" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    <bind name="start" value="(page - 1) * size"/>
+    <bind name="end" value="size"/>
+    select
+    <include refid="Base_Column_List" />
+    from t_sms_record_detail
+    <where>
+      <if test="mobile != null and mobile != ''">
+        and mobile like CONCAT('%', #{mobile}, '%')
+      </if>
+    </where>
+    order by t.create_time desc
+    LIMIT #{start}, #{end}
+  </select>
+
+  <select id="queryCountRecordDetail" parameterType="java.util.HashMap" resultType="java.lang.Long">
+    select
+    count(1)
+    from t_sms_record_detail
+    <where>
+      <if test="mobile != null and mobile != ''">
+         mobile =  #{mobile,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
 
 </mapper>

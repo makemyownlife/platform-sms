@@ -1,7 +1,7 @@
 package com.courage.platform.sms.admin.loader.processor.impl;
 
 import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
-import com.courage.platform.sms.admin.domain.TSmsTemplateBinding;
+import com.courage.platform.sms.admin.dao.domain.TSmsTemplateBinding;
 import com.courage.platform.sms.admin.loader.SmsAdapterLoader;
 import com.courage.platform.sms.admin.loader.SmsAdatperProcessor;
 import com.courage.platform.sms.admin.loader.processor.ProcessorRequest;

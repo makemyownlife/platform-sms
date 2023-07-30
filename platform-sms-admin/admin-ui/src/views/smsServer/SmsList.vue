@@ -7,6 +7,8 @@
       <el-button class="filter-item" type="info" @click="fetchData()">刷新列表</el-button>
     </div>
     <el-table
+      v-loading="listLoading"
+      element-loading-text="Loading"
       :data="list"
       border
       fit
@@ -83,13 +85,13 @@ export default {
   },
   methods: {
     fetchData() {
-      //this.listLoading = true
-      // getSmsChannels(this.listQuery).then(res => {
-      //   this.list = res.data.items
-      //   this.count = res.data.count
-      // }).finally(() => {
-      //   this.listLoading = false
-      // })
+      this.listLoading = true
+      getSmsRecords(this.listQuery).then(res => {
+        this.list = res.data.items
+        this.count = res.data.count
+      }).finally(() => {
+        this.listLoading = false
+      })
     },
     queryData() {
       this.listQuery.page = 1

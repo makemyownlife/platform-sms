@@ -1,6 +1,6 @@
-package com.courage.platform.sms.admin.loader.service;
+package com.courage.platform.sms.admin.service;
 
-import com.courage.platform.sms.admin.domain.TSmsRecordDetail;
+import com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail;
 
 import java.util.List;
 import java.util.Map;

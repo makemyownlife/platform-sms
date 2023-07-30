@@ -3,7 +3,7 @@
 
 <mapper namespace="com.courage.platform.sms.admin.dao.TSmsChannelDAO">
 
-  <resultMap id="BaseResultMap" type="com.courage.platform.sms.admin.domain.TSmsChannel">
+  <resultMap id="BaseResultMap" type="com.courage.platform.sms.admin.dao.domain.TSmsChannel">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="channel_type" jdbcType="TINYINT" property="channelType" />
     <result column="channel_appkey" jdbcType="VARCHAR" property="channelAppkey" />
@@ -42,7 +42,7 @@
     delete from t_sms_channel
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsChannel" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsChannel" useGeneratedKeys="true">
     insert into t_sms_channel (id, channel_type,channel_name,
                                channel_appkey, channel_appsecret,
                                channel_domain, ext_properties,  `status`,
@@ -55,7 +55,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{sendOrder,jdbcType=INTEGER},#{md5Value,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsChannel" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsChannel" useGeneratedKeys="true">
     insert into t_sms_channel
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="channelId != null">
@@ -134,7 +134,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.domain.TSmsChannel">
+  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsChannel">
     update t_sms_channel
     <set>
       <if test="channelType != null">
@@ -174,7 +174,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.domain.TSmsChannel">
+  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsChannel">
     update t_sms_channel
     set
       channel_type = #{channelType,jdbcType=TINYINT},

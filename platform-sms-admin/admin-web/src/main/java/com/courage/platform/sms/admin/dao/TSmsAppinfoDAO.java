@@ -1,6 +1,6 @@
 package com.courage.platform.sms.admin.dao;
 
-import com.courage.platform.sms.admin.domain.TSmsAppinfo;
+import com.courage.platform.sms.admin.dao.domain.TSmsAppinfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.domain;
+package com.courage.platform.sms.admin.dao.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;

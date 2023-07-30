@@ -1,15 +1,15 @@
-package com.courage.platform.sms.admin.loader.service.impl;
+package com.courage.platform.sms.admin.service.impl;
 
 import com.courage.platform.sms.admin.common.config.IdGenerator;
 import com.courage.platform.sms.admin.vo.BaseModel;
 import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
-import com.courage.platform.sms.admin.domain.TSmsTemplate;
-import com.courage.platform.sms.admin.domain.TSmsTemplateBinding;
+import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
+import com.courage.platform.sms.admin.dao.domain.TSmsTemplateBinding;
 import com.courage.platform.sms.admin.loader.SmsAdapterService;
 import com.courage.platform.sms.admin.loader.processor.ProcessorRequest;
 import com.courage.platform.sms.admin.loader.processor.ProcessorRequestCode;
-import com.courage.platform.sms.admin.loader.service.SmsTemplateService;
+import com.courage.platform.sms.admin.service.SmsTemplateService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package com.courage.platform.sms.admin.api.admin;
 
-import com.courage.platform.sms.admin.domain.TSmsRecordDetail;
-import com.courage.platform.sms.admin.loader.service.SmsRecordService;
+import com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail;
+import com.courage.platform.sms.admin.service.SmsRecordService;
 import com.courage.platform.sms.admin.vo.BaseModel;
 import com.courage.platform.sms.admin.vo.Pager;
 import org.slf4j.Logger;

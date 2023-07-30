@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import com.courage.platform.sms.admin.common.ThreadFactoryImpl;
 import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
-import com.courage.platform.sms.admin.domain.TSmsChannel;
+import com.courage.platform.sms.admin.dao.domain.TSmsChannel;
 import com.courage.platform.sms.admin.loader.processor.ProcessorRequest;
 import com.courage.platform.sms.admin.loader.processor.ProcessorRequestCode;
 import com.courage.platform.sms.admin.loader.processor.ProcessorResponse;

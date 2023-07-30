@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.domain;
+package com.courage.platform.sms.admin.dao.domain;
 
 import java.io.Serializable;
 import java.util.Date;

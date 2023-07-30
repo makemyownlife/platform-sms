@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.loader.service;
+package com.courage.platform.sms.admin.service;
 
 public interface SendMessageService {
 

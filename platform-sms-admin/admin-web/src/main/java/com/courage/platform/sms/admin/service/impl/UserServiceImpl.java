@@ -1,6 +1,6 @@
-package com.courage.platform.sms.admin.loader.service.impl;
+package com.courage.platform.sms.admin.service.impl;
 
-import com.courage.platform.sms.admin.loader.service.UserService;
+import com.courage.platform.sms.admin.service.UserService;
 import org.springframework.stereotype.Service;
 
 /**
