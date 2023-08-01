@@ -21,6 +21,8 @@
         <module>adapter-aliyun</module>
         <!-- 亿美短信 -->
         <module>adapter-emay</module>
+        <!-- 腾讯短信 -->
+        <module>adapter-tencent</module>
     </modules>
 
     <dependencies>
