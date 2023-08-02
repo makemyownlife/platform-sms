@@ -1,4 +1,4 @@
-package com.courage.platform.sms.adapter.tencent;
+package com.courage.platform.sms.adapter.emay;
 
 import cn.emay.ResultModel;
 import cn.emay.eucp.inter.framework.dto.TemplateSmsIdAndMobile;
