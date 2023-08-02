@@ -1,1 +1,1 @@
-emay=com.courage.platform.sms.adapter.tencent.TencentAdapter
+emay=com.courage.platform.sms.adapter.emay.EmayAdapter
