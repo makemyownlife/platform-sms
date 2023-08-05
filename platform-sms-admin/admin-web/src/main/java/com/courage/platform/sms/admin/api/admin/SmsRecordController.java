@@ -43,9 +43,8 @@ public class SmsRecordController {
     }
 
     @PostMapping(value = "/addSmsRecord")
-    public BaseModel<Pager> addSmsRecord(String mobile, String templateId) {
-        smsRecordService.adminSendRecord(templateId, mobile);
-        return BaseModel.getInstance(null, "发送短信成功");
+    public BaseModel<String> addSmsRecord(String mobile, String templateId) {
+        return smsRecordService.adminSendRecord(templateId, mobile);
     }
 
 }

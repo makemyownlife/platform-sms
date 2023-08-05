@@ -63,7 +63,7 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<String
                         binding.setTemplateContent(templateContent);
                         binding.setStatus(status);    // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
                         tSmsTemplateBindingDAO.updateByPrimaryKeySelective(binding);
-                        return ProcessorResponse.successResult(templateCode);
+                        return ProcessorResponse.success(templateCode);
                     }
                 }
             }
@@ -71,7 +71,7 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<String
 
             }
         }
-        return ProcessorResponse.failResult("绑定失败");
+        return ProcessorResponse.fail("绑定失败");
     }
 
 }

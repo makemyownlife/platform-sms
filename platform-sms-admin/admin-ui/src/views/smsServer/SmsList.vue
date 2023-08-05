@@ -96,7 +96,6 @@ export default {
     return {
       list: null,
       listLoading: true,
-      smsChannels: [],
       count: 0,
       listQuery: {
         mobile: '',
@@ -112,7 +111,8 @@ export default {
         create: '发送短信'
       },
       rules: {
-        mobile: [{required: true, message: '手机号不能为空', trigger: 'change'}]
+        mobile: [{required: true, message: '手机号不能为空', trigger: 'change'}],
+        templateId: [{required: true, message: '模版不能为空', trigger: 'change'}],
       }
     }
   },
@@ -134,6 +134,8 @@ export default {
       this.fetchData()
     },
     resetModel() {
+      this.sendModel.mobile = null;
+      this.sendModel.templateId = null;
     },
     handleCreate() {
       this.resetModel()
