@@ -191,7 +191,6 @@ export default {
         remark: [{required: true, message: '备注不能为空', trigger: 'change'}]
       },
       dialogStatus: 'create',
-
       // 绑定信息
       bindingInfo : {
         dialogFormVisible: false ,
