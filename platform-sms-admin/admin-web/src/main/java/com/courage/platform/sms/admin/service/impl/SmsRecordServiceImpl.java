@@ -4,6 +4,7 @@ import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
 import com.courage.platform.sms.admin.dao.TSmsRecordDetailDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail;
 import com.courage.platform.sms.admin.service.SmsRecordService;
+import com.courage.platform.sms.admin.vo.BaseModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,18 @@ public class SmsRecordServiceImpl implements SmsRecordService {
 
     @Override
     public List<TSmsRecordDetail> queryRecordDetailList(Map<String, Object> param) {
-        return null;
+        return detailDAO.queryRecordDetailList(param);
     }
 
     @Override
     public Long queryCountRecordDetail(Map<String, Object> param) {
+        return detailDAO.queryCountRecordDetail(param);
+    }
+
+    @Override
+    public BaseModel<String> adminSendRecord(String mobile, String templateId) {
         return null;
     }
+
 
 }

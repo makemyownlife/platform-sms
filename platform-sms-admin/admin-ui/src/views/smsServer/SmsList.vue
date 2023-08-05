@@ -49,6 +49,38 @@
       </el-table-column>
     </el-table>
 
+    <!--   模态绑定渠道窗口 start  -->
+    <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
+      <el-form ref="dataForm"
+               :rules="rules"
+               :model="sendModel"
+               label-position="left"
+               label-width="120px"
+               style="width: 400px; margin-left:30px;">
+        <el-form-item label="手机号" prop="mobile">
+          <el-input v-model="sendModel.mobile"/>
+        </el-form-item>
+        <el-form-item label="选择模版" prop="templateId">
+          <el-select v-model="selectValue"
+                     @change="currChannelChange"
+                     filterable
+                     placeholder="渠道类型"
+                     clearable
+                     style="width: 280px">
+            <el-option v-for="item in smsChannels"
+                       :key="item.id"
+                       :label="item.channelName"
+                       :value="item.id"/>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="dataOperation()">确定</el-button>
+      </div>
+    </el-dialog>
+    <!--    模态绑定渠道窗口 end   -->
+
   </div>
 
 </template>
@@ -72,6 +104,10 @@ export default {
         size: 50
       },
       dialogFormVisible: false,
+      sendModel: {
+        templateId: null,
+        mobile: null
+      },
       textMap: {
         create: '发送短信'
       },
@@ -103,9 +139,9 @@ export default {
       this.resetModel()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      // this.$nextTick(() => {
-      //   this.$refs['dataForm'].clearValidate()
-      // })
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     dataOperation() {
       this.$refs['dataForm'].validate((valid) => {

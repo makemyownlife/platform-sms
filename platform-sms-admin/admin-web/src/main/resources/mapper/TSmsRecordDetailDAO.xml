@@ -180,7 +180,7 @@
     <bind name="end" value="size"/>
     select
     <include refid="Base_Column_List" />
-    from t_sms_record_detail
+    from t_sms_record_detail t
     <where>
       <if test="mobile != null and mobile != ''">
         and mobile like CONCAT('%', #{mobile}, '%')
@@ -193,7 +193,7 @@
   <select id="queryCountRecordDetail" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select
     count(1)
-    from t_sms_record_detail
+    from t_sms_record_detail t
     <where>
       <if test="mobile != null and mobile != ''">
          mobile =  #{mobile,jdbcType=VARCHAR}
