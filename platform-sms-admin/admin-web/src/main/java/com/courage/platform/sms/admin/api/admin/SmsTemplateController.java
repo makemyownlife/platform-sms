@@ -4,6 +4,7 @@ import com.courage.platform.sms.admin.vo.BaseModel;
 import com.courage.platform.sms.admin.vo.Pager;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.service.SmsTemplateService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,14 @@ public class SmsTemplateController {
     @PostMapping(value = "/templates")
     public BaseModel<Pager> templates(String templateName, String signName, String page, String size) {
         Map<String, Object> param = new HashMap<>();
-        param.put("templateName", templateName);
-        param.put("signName", signName);
-        param.put("page", Integer.valueOf(page));
-        param.put("size", Integer.valueOf(size));
+        if (StringUtils.isNotEmpty(templateName)) {
+            param.put("templateName", StringUtils.trimToEmpty(templateName));
+        }
+        if (StringUtils.isNotEmpty(signName)) {
+            param.put("signName", signName);
+        }
+        param.put("page", page == null ? 1 : Integer.valueOf(page));
+        param.put("size", size == null ? 10 : Integer.valueOf(size));
         List<TSmsTemplate> tSmsTemplateList = smsTemplateService.queryTemplates(param);
         Long count = smsTemplateService.queryCountTemplates(param);
         Pager pager = new Pager();

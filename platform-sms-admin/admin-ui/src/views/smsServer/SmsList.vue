@@ -39,7 +39,7 @@
           {{ scope.row.msgid }}
         </template>
       </el-table-column>
-      <el-table-column label="状态"  align="center">
+      <el-table-column label="状态" align="center">
 
       </el-table-column>
       <el-table-column class-name="status-col" label="创建时间" min-width="75" align="center">
@@ -62,14 +62,14 @@
         </el-form-item>
         <el-form-item label="选择模版" prop="templateId">
           <el-select v-model="selectValue"
-                     @change="currTemplateChange"
+                     @change="queryTemplate"
                      filterable
                      placeholder="渠道类型"
                      clearable
                      style="width: 280px">
-            <el-option v-for="item in smsChannels"
+            <el-option v-for="item in templateList"
                        :key="item.id"
-                       :label="item.channelName"
+                       :label="item.templateName"
                        :value="item.id"/>
           </el-select>
         </el-form-item>
@@ -89,16 +89,18 @@
 
 import {getSmsRecords, addSmsRecord} from '@/api/smsRecord'
 import {getSmsTemplates} from '@/api/template'
+import {getSmsChannels} from "@/api/smsChannel";
 
 export default {
-  filters: {
-  },
+  filters: {},
   data() {
     return {
       list: null,
       listLoading: true,
       count: 0,
+      //选中的模版编号
       selectValue: '',
+      templateList: [],
       listQuery: {
         mobile: '',
         page: 1,
@@ -146,12 +148,14 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+      // 加载模版列表第一页
+      this.queryTemplate('')
     },
     dataOperation() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.dialogStatus === 'create') {
-            addSmsChannel(this.channelModel).then(res => {
+            addSmsRecord(this.sendModel).then(res => {
               this.operationRes(res)
             })
           }
@@ -173,8 +177,16 @@ export default {
         })
       }
     },
-    loadTemplate() {
-
+    queryTemplate(val) {
+      var param = {
+        templateName: val,
+        page: 1,
+        size: 10
+      }
+      getSmsTemplates(null).then(res => {
+        this.templateList = res.data.items;
+      }).finally(() => {
+      });
     }
   }
 }
