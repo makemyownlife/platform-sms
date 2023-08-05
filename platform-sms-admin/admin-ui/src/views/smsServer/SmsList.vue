@@ -62,7 +62,7 @@
         </el-form-item>
         <el-form-item label="选择模版" prop="templateId">
           <el-select v-model="selectValue"
-                     @change="currChannelChange"
+                     @change="currTemplateChange"
                      filterable
                      placeholder="渠道类型"
                      clearable
@@ -88,6 +88,7 @@
 <script>
 
 import {getSmsRecords, addSmsRecord} from '@/api/smsRecord'
+import {getSmsTemplates} from '@/api/template'
 
 export default {
   filters: {
@@ -97,6 +98,7 @@ export default {
       list: null,
       listLoading: true,
       count: 0,
+      selectValue: '',
       listQuery: {
         mobile: '',
         page: 1,
@@ -171,6 +173,9 @@ export default {
         })
       }
     },
+    loadTemplate() {
+
+    }
   }
 }
 </script>

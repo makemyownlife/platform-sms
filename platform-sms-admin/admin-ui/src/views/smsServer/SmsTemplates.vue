@@ -81,7 +81,7 @@
   <!--   模版窗口 start  -->
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
       <el-form ref="dataForm" :rules="rules" :model="templateModel" label-position="left" label-width="120px"
-               style="width: 400px; margin-left:30px;">
+ style="width: 400px; margin-left:30px;">
         <el-form-item label="模版名称" prop="templateName">
           <el-input v-model="templateModel.templateName"/>
         </el-form-item>
