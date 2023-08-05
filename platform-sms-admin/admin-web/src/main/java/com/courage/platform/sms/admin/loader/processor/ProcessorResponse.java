@@ -17,7 +17,7 @@ public class ProcessorResponse<T> {
     private ProcessorResponse() {
     }
 
-    public static <T> ProcessorResponse<T> buildResponse(int code, String message, T data) {
+    public static <T> ProcessorResponse<T> build(int code, String message, T data) {
         ProcessorResponse<T> responseEntity = new ProcessorResponse<>();
         responseEntity.message = message;
         responseEntity.code = code;
@@ -25,28 +25,28 @@ public class ProcessorResponse<T> {
         return responseEntity;
     }
 
-    public static <T> ProcessorResponse<T> buildResponse(int code, T data) {
+    public static <T> ProcessorResponse<T> build(int code, T data) {
         ProcessorResponse<T> responseEntity = new ProcessorResponse<>();
         responseEntity.data = data;
         responseEntity.code = code;
         return responseEntity;
     }
 
-    public static <T> ProcessorResponse<T> successResult(T data) {
+    public static <T> ProcessorResponse<T> success(T data) {
         ProcessorResponse<T> responseEntity = new ProcessorResponse<>();
         responseEntity.data = data;
         responseEntity.code = SUCCESS;
         return responseEntity;
     }
 
-    public static <T> ProcessorResponse<T> failResult(String message) {
+    public static <T> ProcessorResponse<T> fail(String message) {
         ProcessorResponse<T> responseEntity = new ProcessorResponse<>();
         responseEntity.code = FAIL;
         responseEntity.message = message;
         return responseEntity;
     }
 
-    public static <T> ProcessorResponse<T> errorResult(String message) {
+    public static <T> ProcessorResponse<T> error(String message) {
         ProcessorResponse<T> responseEntity = new ProcessorResponse<>();
         responseEntity.code = ERROR;
         responseEntity.message = message;
