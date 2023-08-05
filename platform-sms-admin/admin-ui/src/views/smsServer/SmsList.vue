@@ -64,7 +64,7 @@
           <el-select v-model="selectValue"
                      @change="queryTemplate"
                      filterable
-                     placeholder="渠道类型"
+                     placeholder=""
                      clearable
                      style="width: 280px">
             <el-option v-for="item in templateList"
@@ -179,11 +179,12 @@ export default {
     },
     queryTemplate(val) {
       var param = {
-        templateName: val,
+      //  templateName: selectedText,
         page: 1,
         size: 10
       }
-      getSmsTemplates(null).then(res => {
+      this.selectValue = val
+      getSmsTemplates(param).then(res => {
         this.templateList = res.data.items;
       }).finally(() => {
       });
