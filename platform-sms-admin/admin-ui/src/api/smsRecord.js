@@ -8,11 +8,11 @@ export function getSmsRecords(params) {
   })
 }
 
-export function addSmsRecord(data) {
+export function addSmsRecord(params) {
   return request({
     url: '/sms/addSmsRecord',
     method: 'post',
-    data
+    params: params
   })
 }
 

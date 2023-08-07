@@ -49,7 +49,7 @@
       </el-table-column>
     </el-table>
 
-    <!--   模态绑定渠道窗口 start  -->
+    <!--   模态窗口 start  -->
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
       <el-form ref="dataForm"
                :rules="rules"
@@ -61,8 +61,9 @@
           <el-input v-model="sendModel.mobile"/>
         </el-form-item>
         <el-form-item label="选择模版" prop="templateId">
-          <el-select v-model="selectValue"
-                     @change="queryTemplate"
+          <el-select v-model="sendModel.templateId"
+                     remote
+                     :remote-method="queryTemplate"
                      filterable
                      placeholder=""
                      clearable
@@ -79,7 +80,7 @@
         <el-button type="primary" @click="dataOperation()">确定</el-button>
       </div>
     </el-dialog>
-    <!--    模态绑定渠道窗口 end   -->
+    <!--    模态窗口 end   -->
 
   </div>
 
@@ -149,7 +150,7 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
       // 加载模版列表第一页
-      this.queryTemplate('')
+       this.queryTemplate('')
     },
     dataOperation() {
       this.$refs['dataForm'].validate((valid) => {
@@ -177,16 +178,16 @@ export default {
         })
       }
     },
-    queryTemplate(val) {
+    queryTemplate(query) {
       var param = {
-      //  templateName: selectedText,
+        templateName: query,
         page: 1,
         size: 10
       }
-      this.selectValue = val
       getSmsTemplates(param).then(res => {
         this.templateList = res.data.items;
       }).finally(() => {
+
       });
     }
   }
