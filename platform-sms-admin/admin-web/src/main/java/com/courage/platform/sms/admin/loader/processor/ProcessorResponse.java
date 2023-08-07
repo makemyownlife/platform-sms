@@ -10,8 +10,6 @@ public class ProcessorResponse<T> {
 
     public static final int SUCCESS = 200;
 
-    public static final int FAIL = 400;
-
     public static final int ERROR = 500;
 
     private ProcessorResponse() {
@@ -40,13 +38,6 @@ public class ProcessorResponse<T> {
     }
 
     public static <T> ProcessorResponse<T> fail(String message) {
-        ProcessorResponse<T> responseEntity = new ProcessorResponse<>();
-        responseEntity.code = FAIL;
-        responseEntity.message = message;
-        return responseEntity;
-    }
-
-    public static <T> ProcessorResponse<T> error(String message) {
         ProcessorResponse<T> responseEntity = new ProcessorResponse<>();
         responseEntity.code = ERROR;
         responseEntity.message = message;

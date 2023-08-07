@@ -3,6 +3,8 @@ package com.courage.platform.sms.admin.service.impl;
 import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
 import com.courage.platform.sms.admin.dao.TSmsRecordDetailDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail;
+import com.courage.platform.sms.admin.loader.SmsAdapterService;
+import com.courage.platform.sms.admin.loader.processor.ProcessorRequestCode;
 import com.courage.platform.sms.admin.service.SmsRecordService;
 import com.courage.platform.sms.admin.vo.BaseModel;
 import org.slf4j.Logger;
@@ -24,6 +26,9 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     @Autowired
     private TSmsRecordDetailDAO detailDAO;
 
+    @Autowired
+    private SmsAdapterService smsAdapterService;
+
     @Override
     public List<TSmsRecordDetail> queryRecordDetailList(Map<String, Object> param) {
         return detailDAO.queryRecordDetailList(param);
@@ -37,7 +42,8 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     @Override
     public BaseModel<String> adminSendRecord(String mobile, String templateId) {
         logger.info("admin端发送短信，mobile：" + mobile + " templateId:" + templateId);
-
+        // 使用默认测试应用 appId = 1
+        smsAdapterService.processRequest(ProcessorRequestCode.SEND_MESSAGE, null);
         return BaseModel.getInstance("success");
     }
 
