@@ -32,7 +32,6 @@ public class SmsRecordController {
         param.put("endTime", endTime);
         param.put("page", Integer.valueOf(page));
         param.put("size", Integer.valueOf(size));
-        logger.info("短信记录参数 , param:" + param);
 
         Pager pager = new Pager();
         List<TSmsRecordDetail> detailList = smsRecordService.queryRecordDetailList(param);

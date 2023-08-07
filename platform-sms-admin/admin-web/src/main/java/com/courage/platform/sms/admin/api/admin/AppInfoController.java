@@ -51,8 +51,12 @@ public class AppInfoController {
 
     @PostMapping(value = "/deleteAppInfo")
     public BaseModel deleteAppInfo(String id) {
+        if (Integer.valueOf(id) == 1) {
+            logger.info("默认应用不能删除");
+            return BaseModel.getInstance("error");
+        }
         return appInfoService.deleteAppInfo(id);
-}
+    }
 
 
 }
