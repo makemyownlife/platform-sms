@@ -36,7 +36,6 @@ public final class SmsHttpClientUtils {
      * @param connectTimeout 客户端连接时间
      * @param readTimeout    服务端响应时间
      * @return 响应字符串
-     * @Date : 4:18 PM 06/06/2018
      */
     public static String doPost(String url, Map<String, String> params, int connectTimeout, int readTimeout) throws Exception {
         return doPost(url, params, DEFAULT_CHARSET, connectTimeout, readTimeout);
@@ -51,7 +50,6 @@ public final class SmsHttpClientUtils {
      * @param connectTimeout 客户端连接时间
      * @param readTimeout    服务端响应时间
      * @return 响应字符串
-     * @Date : 4:18 PM 06/06/2018
      */
     public static Map<String, Object> doPost(String url, byte[] data, Map<String, String> headers, int connectTimeout, int readTimeout) throws Exception {
         Map<String, Object> resMap = new HashMap<String, Object>();
@@ -296,7 +294,6 @@ public final class SmsHttpClientUtils {
      * @param params  请求参数
      * @param charset 字符集，如UTF-8, GBK, GB2312
      * @return 查询字符串
-     * @throws Exception
      */
     public static String buildQuery(Map<String, String> params, String charset) throws Exception {
         if (params == null || params.isEmpty()) {
@@ -422,7 +419,6 @@ public final class SmsHttpClientUtils {
      * @param value   参数值
      * @param charset 字符集
      * @return 反编码后的参数值
-     * @Author : yongwang.chen
      * @Date : 4:18 PM 06/06/2018
      */
     public static String decode(String value, String charset) {
@@ -443,7 +439,6 @@ public final class SmsHttpClientUtils {
      * @param value   参数值
      * @param charset 字符集
      * @return 编码后的参数值
-     * @Author : yongwang.chen
      * @Date : 4:18 PM 06/06/2018
      */
     public static String encode(String value, String charset) {
@@ -488,7 +483,6 @@ public final class SmsHttpClientUtils {
                 }
             }
         }
-
         return result;
     }
 
