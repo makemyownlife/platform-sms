@@ -8,9 +8,9 @@ public class ProcessorResponse<T> {
 
     private T data;
 
-    public static final int SUCCESS = 200;
+    public static final int SUCCESS = ProcessorResponseCode.SUCCESS.getCode();
 
-    public static final int ERROR = 500;
+    public static final int ERROR = ProcessorResponseCode.ERROR.getCode();
 
     private ProcessorResponse() {
     }
@@ -20,6 +20,13 @@ public class ProcessorResponse<T> {
         responseEntity.message = message;
         responseEntity.code = code;
         responseEntity.data = data;
+        return responseEntity;
+    }
+
+    public static <T> ProcessorResponse<T> build(int code, String message) {
+        ProcessorResponse<T> responseEntity = new ProcessorResponse<>();
+        responseEntity.message = message;
+        responseEntity.code = code;
         return responseEntity;
     }
 

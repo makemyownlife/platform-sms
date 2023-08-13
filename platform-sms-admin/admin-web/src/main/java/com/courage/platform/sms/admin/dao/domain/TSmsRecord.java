@@ -40,6 +40,11 @@ public class TSmsRecord implements Serializable {
     private Integer channelId;
 
     /**
+     * 模版编号
+     */
+    private Long templateId ;
+
+    /**
      * 指定发送时间
      */
     private String attime;
@@ -141,6 +146,14 @@ public class TSmsRecord implements Serializable {
 
     public void setRecordType(Integer recordType) {
         this.recordType = recordType;
+    }
+
+    public Long getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Long templateId) {
+        this.templateId = templateId;
     }
 
 }

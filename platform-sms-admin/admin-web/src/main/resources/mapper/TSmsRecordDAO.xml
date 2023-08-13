@@ -9,6 +9,7 @@
     <result column="app_id" jdbcType="VARCHAR" property="appId" />
     <result column="record_type" jdbcType="TINYINT" property="recordType" />
     <result column="channel_id" jdbcType="VARCHAR" property="channelId" />
+    <result column="template_id" jdbcType="BIGINT" property="templateId" />
     <result column="attime" jdbcType="VARCHAR" property="attime" />
     <result column="send_status" jdbcType="TINYINT" property="sendStatus" />
     <result column="sender_ip" jdbcType="VARCHAR" property="senderIp" />
@@ -21,7 +22,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, nationcode, app_id, content, `record_type`, channel_id, attime, send_status, sender_ip,
+    id, nationcode, app_id, content, `record_type`, channel_id, template_id, attime, send_status, sender_ip,
     create_time, update_time
   </sql>
 
@@ -51,7 +52,7 @@
           app_id,
           content,
           `record_type`,
-          channel,
+          channel_i,
           attime,
           send_status,
           sender_ip,
