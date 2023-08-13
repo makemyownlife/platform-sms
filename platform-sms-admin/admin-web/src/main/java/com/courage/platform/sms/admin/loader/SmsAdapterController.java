@@ -25,10 +25,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-@Component(value = "smsAdapterService")
-public class SmsAdapterService {
+@Component(value = "SmsAdapterController")
+public class SmsAdapterController {
 
-    private final static Logger logger = LoggerFactory.getLogger(SmsAdapterService.class);
+    private final static Logger logger = LoggerFactory.getLogger(SmsAdapterController.class);
 
     private volatile boolean running = false;
 
@@ -99,7 +99,7 @@ public class SmsAdapterService {
                 }
                 CHANNEL_MAPPING.put(tSmsChannel.getId(), tSmsChannel);
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             logger.error("加载渠道信息出错 ：", e);
         }
     }

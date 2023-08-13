@@ -3,7 +3,7 @@ package com.courage.platform.sms.admin.service.impl;
 import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
 import com.courage.platform.sms.admin.dao.TSmsRecordDetailDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail;
-import com.courage.platform.sms.admin.loader.SmsAdapterService;
+import com.courage.platform.sms.admin.loader.SmsAdapterController;
 import com.courage.platform.sms.admin.loader.processor.ProcessorRequest;
 import com.courage.platform.sms.admin.loader.processor.ProcessorRequestCode;
 import com.courage.platform.sms.admin.loader.processor.body.SendMessageRequestBody;
@@ -29,7 +29,7 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     private TSmsRecordDetailDAO detailDAO;
 
     @Autowired
-    private SmsAdapterService smsAdapterService;
+    private SmsAdapterController smsAdapterController;
 
     @Override
     public List<TSmsRecordDetail> queryRecordDetailList(Map<String, Object> param) {
@@ -50,7 +50,7 @@ public class SmsRecordServiceImpl implements SmsRecordService {
         sendMessageRequestBody.setTemplateId(templateId);
 
         ProcessorRequest<SendMessageRequestBody> sendMessageRequest = new ProcessorRequest<>(sendMessageRequestBody);
-        smsAdapterService.processRequest(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequest);
+        smsAdapterController.processRequest(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequest);
         return BaseModel.getInstance("success");
     }
 

@@ -2,7 +2,7 @@ package com.courage.platform.sms.admin.api.gateway;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.courage.platform.sms.admin.loader.SmsAdapterService;
+import com.courage.platform.sms.admin.loader.SmsAdapterController;
 import com.courage.platform.sms.admin.loader.processor.ProcessorRequest;
 import com.courage.platform.sms.admin.loader.processor.ProcessorRequestCode;
 import com.courage.platform.sms.admin.loader.processor.ProcessorResponse;
@@ -25,7 +25,7 @@ public class SenderController {
     private final static Logger logger = LoggerFactory.getLogger(SenderController.class);
 
     @Autowired
-    private SmsAdapterService smsAdapterService;
+    private SmsAdapterController smsAdapterController;
 
     @RequestMapping("/sendByTemplateId")
     @ResponseBody
@@ -50,7 +50,7 @@ public class SenderController {
             data.put("templateParam", jsonObject.getString("templateParam"));
 
             // 处理请求
-            ProcessorResponse processorResponse = smsAdapterService.processRequest(
+            ProcessorResponse processorResponse = smsAdapterController.processRequest(
                     ProcessorRequestCode.SEND_MESSAGE,
                     new ProcessorRequest<Map<String, String>>(data)
             );
