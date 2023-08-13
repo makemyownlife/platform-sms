@@ -6,7 +6,7 @@ import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplateBinding;
-import com.courage.platform.sms.admin.loader.SmsAdapterService;
+import com.courage.platform.sms.admin.loader.SmsAdapterController;
 import com.courage.platform.sms.admin.loader.processor.ProcessorRequest;
 import com.courage.platform.sms.admin.loader.processor.ProcessorRequestCode;
 import com.courage.platform.sms.admin.service.SmsTemplateService;
@@ -35,7 +35,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     private IdGenerator idGenerator;
 
     @Autowired
-    private SmsAdapterService smsAdapterService;
+    private SmsAdapterController smsAdapterController;
 
     @Override
     public List<TSmsTemplate> queryTemplates(Map<String, Object> params) {
@@ -114,7 +114,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
                     tSmsTemplateBindingDAO.insertSelective(binding);
                 }
                 // 向渠道申请模版
-                smsAdapterService.processRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(binding.getId()));
+                smsAdapterController.processRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(binding.getId()));
             }
             return BaseModel.getInstance("success");
         } catch (Exception e) {

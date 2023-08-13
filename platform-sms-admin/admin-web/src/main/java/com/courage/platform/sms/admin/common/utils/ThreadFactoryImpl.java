@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.common;
+package com.courage.platform.sms.admin.common.utils;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
