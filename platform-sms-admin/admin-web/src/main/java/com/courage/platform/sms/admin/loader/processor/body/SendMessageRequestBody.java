@@ -43,4 +43,5 @@ public class SendMessageRequestBody extends ProcessorRequestBody {
     public void setTemplateParam(String templateParam) {
         this.templateParam = templateParam;
     }
+
 }

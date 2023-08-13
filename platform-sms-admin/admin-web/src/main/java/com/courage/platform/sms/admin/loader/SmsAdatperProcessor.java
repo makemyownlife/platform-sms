@@ -7,8 +7,8 @@ import com.courage.platform.sms.admin.loader.processor.ProcessorResponse;
  * 适配器处理器接口
  * Created by zhangyong on 2023/5/5.
  */
-public interface SmsAdatperProcessor<P, T> {
+public interface SmsAdatperProcessor<P, R> {
 
-    ProcessorResponse<T> processRequest(ProcessorRequest<P> processorRequest);
-    
+    ProcessorResponse<R> processRequest(ProcessorRequest<P> processorRequest);
+
 }

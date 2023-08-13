@@ -58,33 +58,14 @@ public class SmsAdapterService {
         if (running) {
             return;
         }
+        logger.info("开始初始化短信适配器服务");
         long start = System.currentTimeMillis();
         // 初始化定时线程池
         this.adapterExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryImpl("adapterExecutorService"));
-        logger.info("开始初始化短信适配器服务");
         adapterExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                try {
-                    List<TSmsChannel> channelList = smsChannelDAO.queryChannels(MapUtils.EMPTY_MAP);
-                    for (TSmsChannel tSmsChannel : channelList) {
-                        TSmsChannel prewChannel = CHANNEL_MAPPING.get(tSmsChannel.getId());
-                        boolean needLoadPlugin = false;
-                        if ((prewChannel != null && !prewChannel.getMd5Value().equals(tSmsChannel.getMd5Value())) || (prewChannel == null)) {
-                            needLoadPlugin = true;
-                        }
-                        if (needLoadPlugin) {
-                            logger.info("开始加载渠道：" + JSON.toJSONString(tSmsChannel));
-                            SmsChannelConfig channelConfig = new SmsChannelConfig();
-                            BeanUtils.copyProperties(tSmsChannel, channelConfig);
-                            smsAdapterLoader.loadAdapter(channelConfig);
-                            logger.info("结束加载渠道 ，渠道编号" + tSmsChannel.getId());
-                        }
-                        CHANNEL_MAPPING.put(tSmsChannel.getId(), tSmsChannel);
-                    }
-                } catch (Exception e) {
-                    logger.error("加载渠道信息出错 ：", e);
-                }
+                scheudleLoadAdapter();
             }
         }, 0, 5, TimeUnit.SECONDS);
         PROCESSOR_MAPPING.put(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequestProcessor);
@@ -92,11 +73,35 @@ public class SmsAdapterService {
         logger.info("结束初始化短信适配器服务, 耗时：" + (System.currentTimeMillis() - start));
     }
 
-    // 处理短信网关请求
+    //处理短信网关请求
     public ProcessorResponse processRequest(int requestCode, ProcessorRequest processorRequest) {
         SmsAdatperProcessor smsAdatperProcessor = PROCESSOR_MAPPING.get(requestCode);
         ProcessorResponse response = smsAdatperProcessor.processRequest(processorRequest);
         return response;
+    }
+
+    //定时加载适配器
+    private void scheudleLoadAdapter() {
+        try {
+            List<TSmsChannel> channelList = smsChannelDAO.queryChannels(MapUtils.EMPTY_MAP);
+            for (TSmsChannel tSmsChannel : channelList) {
+                TSmsChannel prewChannel = CHANNEL_MAPPING.get(tSmsChannel.getId());
+                boolean needLoadPlugin = false;
+                if ((prewChannel != null && !prewChannel.getMd5Value().equals(tSmsChannel.getMd5Value())) || (prewChannel == null)) {
+                    needLoadPlugin = true;
+                }
+                if (needLoadPlugin) {
+                    logger.info("开始加载渠道：" + JSON.toJSONString(tSmsChannel));
+                    SmsChannelConfig channelConfig = new SmsChannelConfig();
+                    BeanUtils.copyProperties(tSmsChannel, channelConfig);
+                    smsAdapterLoader.loadAdapter(channelConfig);
+                    logger.info("结束加载渠道 ，渠道编号" + tSmsChannel.getId());
+                }
+                CHANNEL_MAPPING.put(tSmsChannel.getId(), tSmsChannel);
+            }
+        } catch (Exception e) {
+            logger.error("加载渠道信息出错 ：", e);
+        }
     }
 
     @PreDestroy
