@@ -69,9 +69,6 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<String
                     }
                 }
             }
-            if (binding.getStatus() == 1) { //待审核，查询审核结果
-
-            }
         }
         return ProcessorResponse.fail("绑定失败");
     }
