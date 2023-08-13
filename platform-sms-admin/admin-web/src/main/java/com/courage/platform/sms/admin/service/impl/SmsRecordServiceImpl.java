@@ -4,7 +4,9 @@ import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
 import com.courage.platform.sms.admin.dao.TSmsRecordDetailDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail;
 import com.courage.platform.sms.admin.loader.SmsAdapterService;
+import com.courage.platform.sms.admin.loader.processor.ProcessorRequest;
 import com.courage.platform.sms.admin.loader.processor.ProcessorRequestCode;
+import com.courage.platform.sms.admin.loader.processor.body.SendMessageRequestBody;
 import com.courage.platform.sms.admin.service.SmsRecordService;
 import com.courage.platform.sms.admin.vo.BaseModel;
 import org.slf4j.Logger;
@@ -42,8 +44,13 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     @Override
     public BaseModel<String> adminSendRecord(String mobile, String templateId) {
         logger.info("admin端发送短信，mobile：" + mobile + " templateId:" + templateId);
-        // 使用默认测试应用 appId = 1
-        smsAdapterService.processRequest(ProcessorRequestCode.SEND_MESSAGE, null);
+        SendMessageRequestBody sendMessageRequestBody = new SendMessageRequestBody();
+        sendMessageRequestBody.setAppId("1");                                           // 使用默认测试应用 appId = 1
+        sendMessageRequestBody.setMobile(mobile);
+        sendMessageRequestBody.setTemplateId(templateId);
+
+        ProcessorRequest<SendMessageRequestBody> sendMessageRequest = new ProcessorRequest<>(sendMessageRequestBody);
+        smsAdapterService.processRequest(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequest);
         return BaseModel.getInstance("success");
     }
 
