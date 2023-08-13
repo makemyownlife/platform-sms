@@ -73,7 +73,6 @@ public final class IpUtils {
 	/**
 	 * 根据十进制IP数值返回点分式IP地址
 	 *
-	 * @Author : yongwang.chen
 	 * @Date   : 7:57 PM 24/05/2018
 	 * @param addrNum 十进制IP数值
 	 * @return 点分式IP地址
@@ -94,9 +93,6 @@ public final class IpUtils {
 	/**
 	 * 获取本机ip地址
 	 * 此方法为重量级的方法，不要频繁调用
-	 * @Author : yongwang.chen
-	 * @Date   : 7:57 PM 24/05/2018
-	 * @return
 	 */
 	private static String getLocalIp() {
 
@@ -126,7 +122,7 @@ public final class IpUtils {
 	 * 获取本地机器名
 	 * 此方法为重量级的方法，不要频繁调用
 	 * 一般耗时在百毫秒，缓存使用
-	 * @Author : yongwang.chen
+
 	 * @Date   : 7:57 PM 24/05/2018
 	 * @return
 	 */
@@ -145,7 +141,7 @@ public final class IpUtils {
 	
 	/**
 	 * 判断点分式IPV4格式是否正确
-	 * @Author : yongwang.chen
+
 	 * @Date   : 7:57 PM 24/05/2018
 	 * @since 1.0
 	 * @param ipAddress

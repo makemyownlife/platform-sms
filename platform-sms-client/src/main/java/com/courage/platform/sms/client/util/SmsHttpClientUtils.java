@@ -394,7 +394,7 @@ public final class SmsHttpClientUtils {
      *
      * @param value 参数值
      * @return 反编码后的参数值
-     * @Author : yongwang.chen
+
      * @Date : 4:18 PM 06/06/2018
      */
     public static String decode(String value) {
@@ -406,7 +406,7 @@ public final class SmsHttpClientUtils {
      *
      * @param value 参数值
      * @return 编码后的参数值
-     * @Author : yongwang.chen
+
      * @Date : 4:18 PM 06/06/2018
      */
     public static String encode(String value) {
