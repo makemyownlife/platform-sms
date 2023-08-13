@@ -3,20 +3,15 @@ package com.courage.platform.sms.admin.dao.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author 
+ * 
+ */
 public class TSmsRecord implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
     /**
-     * 主键 自增
+     * 主键 雪花算法
      */
     private Long id;
-
-    /**
-     * 手机号
-     */
-    private String mobile;
-
 
     /**
      * 区位码
@@ -24,10 +19,30 @@ public class TSmsRecord implements Serializable {
     private String nationcode;
 
     /**
+     * 手机号
+     */
+    private String mobile;
+
+    /**
      * 调用服务方
      */
     private String appId;
 
+    public Integer getRecordType() {
+        return recordType;
+    }
+
+    public void setRecordType(Integer recordType) {
+        this.recordType = recordType;
+    }
+
+    public Integer getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Integer channelId) {
+        this.channelId = channelId;
+    }
 
     /**
      * 0：普通短信 / 1 ：营销短信 （群发）
@@ -42,7 +57,7 @@ public class TSmsRecord implements Serializable {
     /**
      * 模版编号
      */
-    private Long templateId ;
+    private Long templateId;
 
     /**
      * 指定发送时间
@@ -92,12 +107,12 @@ public class TSmsRecord implements Serializable {
         this.appId = appId;
     }
 
-    public Integer getChannelId() {
-        return channelId;
+    public Long getTemplateId() {
+        return templateId;
     }
 
-    public void setChannelId(Integer channelId) {
-        this.channelId = channelId;
+    public void setTemplateId(Long templateId) {
+        this.templateId = templateId;
     }
 
     public String getAttime() {
@@ -139,21 +154,4 @@ public class TSmsRecord implements Serializable {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
-
-    public Integer getRecordType() {
-        return recordType;
-    }
-
-    public void setRecordType(Integer recordType) {
-        this.recordType = recordType;
-    }
-
-    public Long getTemplateId() {
-        return templateId;
-    }
-
-    public void setTemplateId(Long templateId) {
-        this.templateId = templateId;
-    }
-
 }
