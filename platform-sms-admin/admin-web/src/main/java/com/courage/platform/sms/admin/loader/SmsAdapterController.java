@@ -65,7 +65,7 @@ public class SmsAdapterController {
         logger.info("开始初始化短信适配器服务");
         long start = System.currentTimeMillis();
         //初始化定时线程池
-        this.adapterScheduledService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryImpl("adapterScheduledService"));
+        this.adapterScheduledService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryImpl("adapterScheduledService-"));
         adapterScheduledService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
