@@ -30,7 +30,17 @@ public class SmsAdapterController {
 
     private final static Logger logger = LoggerFactory.getLogger(SmsAdapterController.class);
 
+    private final static int INIT_DELAY = 0;
+
+    private final static int PERIOD = 5;
+
     private volatile boolean running = false;
+
+    //渠道信息
+    private static final ConcurrentHashMap<Integer, TSmsChannel> CHANNEL_MAPPING = new ConcurrentHashMap<Integer, TSmsChannel>();
+
+    //处理器命令映射
+    private static final ConcurrentHashMap<Integer, SmsAdatperProcessor> PROCESSOR_MAPPING = new ConcurrentHashMap<Integer, SmsAdatperProcessor>();
 
     @Autowired
     private TSmsChannelDAO smsChannelDAO;
@@ -38,20 +48,14 @@ public class SmsAdapterController {
     @Autowired
     private SmsAdapterLoader smsAdapterLoader;
 
-    // 线程池
-    private ScheduledExecutorService adapterExecutorService;
+    //线程池
+    private ScheduledExecutorService adapterScheduledService;
 
     @Autowired
     private SendMessageRequestProcessor sendMessageRequestProcessor;
 
     @Autowired
     private ApplyTemplateRequestProcessor applyTemplateRequestProcessor;
-
-    // 渠道信息
-    private static final ConcurrentHashMap<Integer, TSmsChannel> CHANNEL_MAPPING = new ConcurrentHashMap<Integer, TSmsChannel>();
-
-    // 处理器命令映射
-    private static final ConcurrentHashMap<Integer, SmsAdatperProcessor> PROCESSOR_MAPPING = new ConcurrentHashMap<Integer, SmsAdatperProcessor>();
 
     @PostConstruct
     public synchronized void init() {
@@ -60,14 +64,15 @@ public class SmsAdapterController {
         }
         logger.info("开始初始化短信适配器服务");
         long start = System.currentTimeMillis();
-        // 初始化定时线程池
-        this.adapterExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryImpl("adapterExecutorService"));
-        adapterExecutorService.scheduleAtFixedRate(new Runnable() {
+        //初始化定时线程池
+        this.adapterScheduledService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryImpl("adapterScheduledService"));
+        adapterScheduledService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 scheudleLoadAdapter();
             }
-        }, 0, 5, TimeUnit.SECONDS);
+        }, INIT_DELAY , PERIOD , TimeUnit.SECONDS);
+        // 初始化映射处理器
         PROCESSOR_MAPPING.put(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequestProcessor);
         PROCESSOR_MAPPING.put(ProcessorRequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);
         logger.info("结束初始化短信适配器服务, 耗时：" + (System.currentTimeMillis() - start));
@@ -110,6 +115,7 @@ public class SmsAdapterController {
             long start = System.currentTimeMillis();
             logger.info("开始销毁短信适配器服务");
             //1.卸载所有的渠道
+
             //2.关闭所有的命令处理器
             running = false;
             logger.info("结束销毁短信适配器服务, 耗时：" + (System.currentTimeMillis() - start));
