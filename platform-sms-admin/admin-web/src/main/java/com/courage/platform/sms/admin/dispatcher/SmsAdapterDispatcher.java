@@ -78,7 +78,7 @@ public class SmsAdapterDispatcher {
         logger.info("结束初始化短信适配器服务, 耗时：" + (System.currentTimeMillis() - start));
     }
 
-    //处理短信网关请求
+    // 处理短信网关请求
     public ProcessorResponse dispatchRequest(int requestCode, ProcessorRequest processorRequest) {
         SmsAdatperProcessor smsAdatperProcessor = PROCESSOR_MAPPING.get(requestCode);
         ProcessorResponse response = smsAdatperProcessor.processRequest(processorRequest);
@@ -92,7 +92,8 @@ public class SmsAdapterDispatcher {
             for (TSmsChannel tSmsChannel : channelList) {
                 TSmsChannel prewChannel = CHANNEL_MAPPING.get(tSmsChannel.getId());
                 boolean needLoadPlugin = false;
-                if ((prewChannel != null && !prewChannel.getMd5Value().equals(tSmsChannel.getMd5Value())) || (prewChannel == null)) {
+                if ((prewChannel != null && !prewChannel.getMd5Value().equals(tSmsChannel.getMd5Value())) ||
+                           (prewChannel == null)) {
                     needLoadPlugin = true;
                 }
                 if (needLoadPlugin) {

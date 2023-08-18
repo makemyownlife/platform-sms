@@ -1,6 +1,7 @@
 package com.courage.platform.sms.admin.service.impl;
 
 import com.courage.platform.sms.admin.common.config.IdGenerator;
+import com.courage.platform.sms.admin.dispatcher.processor.body.ApplyTemplateRequestBody;
 import com.courage.platform.sms.admin.vo.BaseModel;
 import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
@@ -114,7 +115,8 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
                     tSmsTemplateBindingDAO.insertSelective(binding);
                 }
                 // 向渠道申请模版
-                smsAdapterController.dispatchRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(binding.getId()));
+                ApplyTemplateRequestBody requestBody = new ApplyTemplateRequestBody(binding.getId());
+                smsAdapterController.dispatchRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(requestBody));
             }
             return BaseModel.getInstance("success");
         } catch (Exception e) {

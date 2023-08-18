@@ -11,7 +11,9 @@ import com.courage.platform.sms.admin.dao.domain.TSmsTemplateBinding;
 import com.courage.platform.sms.admin.dispatcher.SmsAdapterLoader;
 import com.courage.platform.sms.admin.dispatcher.SmsAdatperProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequestBody;
 import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponse;
+import com.courage.platform.sms.admin.dispatcher.processor.body.ApplyTemplateRequestBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +22,11 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * admin后台向渠道申请模版
+ * admin 后台向渠道申请模版
  * Created by zhangyong on 2023/7/14.
  */
 @Component
-public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<String, String> {
+public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor {
 
     private static Logger logger = LoggerFactory.getLogger(ApplyTemplateRequestProcessor.class);
 
@@ -39,10 +41,11 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<String
 
     @Override
     public ProcessorResponse processRequest(ProcessorRequest processorRequest) {
-        Long bindingId = (Long) processorRequest.getData();
+        ApplyTemplateRequestBody requestBody = (ApplyTemplateRequestBody) processorRequest.getData();
+        Long bindingId = requestBody.getBindingId();
         TSmsTemplateBinding binding = tSmsTemplateBindingDAO.selectByPrimaryKey(bindingId);
         if (binding != null) {
-            if (binding.getStatus() == 0) { //待提交
+            if (binding.getStatus() == 0) { // 待提交
                 TSmsTemplate tSmsTemplate = tSmsTemplateDAO.selectByPrimaryKey(binding.getTemplateId());
                 OuterAdapter outerAdapter = smsAdapterLoader.getAdapterByChannelId(binding.getChannelId().intValue());
                 if (outerAdapter != null) {
@@ -61,7 +64,7 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<String
                         Integer status = bodyMap.get("status") == null ? (byte) 1 : Integer.valueOf(bodyMap.get("status"));
                         binding.setTemplateCode(templateCode);
                         binding.setTemplateContent(templateContent);
-                        binding.setStatus(status);    // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
+                        binding.setStatus(status);                                  // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
                         tSmsTemplateBindingDAO.updateByPrimaryKeySelective(binding);
                         return ProcessorResponse.success(templateCode);
                     }
@@ -70,5 +73,4 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<String
         }
         return ProcessorResponse.fail("绑定失败");
     }
-
 }
