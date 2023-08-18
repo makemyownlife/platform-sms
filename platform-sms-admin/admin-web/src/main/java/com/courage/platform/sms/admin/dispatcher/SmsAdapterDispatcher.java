@@ -62,7 +62,7 @@ public class SmsAdapterDispatcher {
         if (running) {
             return;
         }
-        logger.info("开始初始化短信适配器服务");
+        logger.info("开始初始化短信适配器分发服务");
         long start = System.currentTimeMillis();
         //初始化定时线程池
         this.adapterScheduledService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryImpl("adapterScheduledService-"));
@@ -75,7 +75,7 @@ public class SmsAdapterDispatcher {
         //初始化映射处理器
         PROCESSOR_MAPPING.put(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequestProcessor);
         PROCESSOR_MAPPING.put(ProcessorRequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);
-        logger.info("结束初始化短信适配器服务, 耗时：" + (System.currentTimeMillis() - start));
+        logger.info("结束初始化短信适配器分发服务, 耗时：" + (System.currentTimeMillis() - start));
     }
 
     //处理短信网关请求
@@ -114,12 +114,12 @@ public class SmsAdapterDispatcher {
     public synchronized void destroy() {
         if (running) {
             long start = System.currentTimeMillis();
-            logger.info("开始销毁短信适配器服务");
+            logger.info("开始销毁短信适配器分发服务");
             //1.卸载所有的渠道
 
             //2.关闭所有的命令处理器
             running = false;
-            logger.info("结束销毁短信适配器服务, 耗时：" + (System.currentTimeMillis() - start));
+            logger.info("结束销毁短信适配器分发服务, 耗时：" + (System.currentTimeMillis() - start));
         }
     }
 
