@@ -26,7 +26,7 @@ import java.util.Map;
  * Created by zhangyong on 2023/7/14.
  */
 @Component
-public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor {
+public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<ApplyTemplateRequestBody, String> {
 
     private static Logger logger = LoggerFactory.getLogger(ApplyTemplateRequestProcessor.class);
 
@@ -40,7 +40,7 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor {
     private TSmsTemplateBindingDAO tSmsTemplateBindingDAO;
 
     @Override
-    public ProcessorResponse processRequest(ProcessorRequest processorRequest) {
+    public ProcessorResponse<String> processRequest(ProcessorRequest<ApplyTemplateRequestBody> processorRequest) {
         ApplyTemplateRequestBody requestBody = (ApplyTemplateRequestBody) processorRequest.getData();
         Long bindingId = requestBody.getBindingId();
         TSmsTemplateBinding binding = tSmsTemplateBindingDAO.selectByPrimaryKey(bindingId);
