@@ -1,15 +1,15 @@
-package com.courage.platform.sms.admin.loader;
+package com.courage.platform.sms.admin.dispatcher;
 
 import com.alibaba.fastjson.JSON;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import com.courage.platform.sms.admin.common.utils.ThreadFactoryImpl;
 import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsChannel;
-import com.courage.platform.sms.admin.loader.processor.ProcessorRequest;
-import com.courage.platform.sms.admin.loader.processor.ProcessorRequestCode;
-import com.courage.platform.sms.admin.loader.processor.ProcessorResponse;
-import com.courage.platform.sms.admin.loader.processor.impl.ApplyTemplateRequestProcessor;
-import com.courage.platform.sms.admin.loader.processor.impl.SendMessageRequestProcessor;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequestCode;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponse;
+import com.courage.platform.sms.admin.dispatcher.processor.impl.ApplyTemplateRequestProcessor;
+import com.courage.platform.sms.admin.dispatcher.processor.impl.SendMessageRequestProcessor;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +25,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-@Component(value = "SmsAdapterController")
-public class SmsAdapterController {
+@Component(value = "smsAdapterDispatcher")
+public class SmsAdapterDispatcher {
 
-    private final static Logger logger = LoggerFactory.getLogger(SmsAdapterController.class);
+    private final static Logger logger = LoggerFactory.getLogger(SmsAdapterDispatcher.class);
 
     private final static int INIT_DELAY = 0;
 
@@ -79,7 +79,7 @@ public class SmsAdapterController {
     }
 
     //处理短信网关请求
-    public ProcessorResponse processRequest(int requestCode, ProcessorRequest processorRequest) {
+    public ProcessorResponse dispatchRequest(int requestCode, ProcessorRequest processorRequest) {
         SmsAdatperProcessor smsAdatperProcessor = PROCESSOR_MAPPING.get(requestCode);
         ProcessorResponse response = smsAdatperProcessor.processRequest(processorRequest);
         return response;

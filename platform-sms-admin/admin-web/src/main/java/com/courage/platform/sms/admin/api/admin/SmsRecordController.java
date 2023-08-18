@@ -42,8 +42,8 @@ public class SmsRecordController {
     }
 
     @PostMapping(value = "/addSmsRecord")
-    public BaseModel<String> addSmsRecord(String mobile, String templateId) {
-        return smsRecordService.adminSendRecord(mobile, templateId);
+    public BaseModel<String> addSmsRecord(String mobile, String templateId, String templateParam) {
+        return smsRecordService.adminSendRecord(mobile, templateId, templateParam);
     }
 
 }

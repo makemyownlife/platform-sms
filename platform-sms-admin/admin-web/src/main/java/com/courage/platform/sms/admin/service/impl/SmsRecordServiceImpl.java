@@ -3,10 +3,10 @@ package com.courage.platform.sms.admin.service.impl;
 import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
 import com.courage.platform.sms.admin.dao.TSmsRecordDetailDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail;
-import com.courage.platform.sms.admin.loader.SmsAdapterController;
-import com.courage.platform.sms.admin.loader.processor.ProcessorRequest;
-import com.courage.platform.sms.admin.loader.processor.ProcessorRequestCode;
-import com.courage.platform.sms.admin.loader.processor.body.SendMessageRequestBody;
+import com.courage.platform.sms.admin.dispatcher.SmsAdapterDispatcher;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequestCode;
+import com.courage.platform.sms.admin.dispatcher.processor.body.SendMessageRequestBody;
 import com.courage.platform.sms.admin.service.SmsRecordService;
 import com.courage.platform.sms.admin.vo.BaseModel;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     private TSmsRecordDetailDAO detailDAO;
 
     @Autowired
-    private SmsAdapterController smsAdapterController;
+    private SmsAdapterDispatcher smsAdapterController;
 
     @Override
     public List<TSmsRecordDetail> queryRecordDetailList(Map<String, Object> param) {
@@ -42,15 +42,16 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     }
 
     @Override
-    public BaseModel<String> adminSendRecord(String mobile, String templateId) {
+    public BaseModel<String> adminSendRecord(String mobile, String templateId, String templateParam) {
         logger.info("admin端发送短信，mobile：" + mobile + " templateId:" + templateId);
         SendMessageRequestBody sendMessageRequestBody = new SendMessageRequestBody();
-        sendMessageRequestBody.setAppId("1");                                           // 使用默认测试应用 appId = 1
+        sendMessageRequestBody.setAppId("1");                                        // 使用默认测试应用 appId = 1
         sendMessageRequestBody.setMobile(mobile);
         sendMessageRequestBody.setTemplateId(templateId);
+        sendMessageRequestBody.setTemplateParam(templateParam);
 
         ProcessorRequest<SendMessageRequestBody> sendMessageRequest = new ProcessorRequest<>(sendMessageRequestBody);
-        smsAdapterController.processRequest(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequest);
+        smsAdapterController.dispatchRequest(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequest);
         return BaseModel.getInstance("success");
     }
 

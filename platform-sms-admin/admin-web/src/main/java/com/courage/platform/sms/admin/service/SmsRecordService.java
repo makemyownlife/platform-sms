@@ -12,6 +12,6 @@ public interface SmsRecordService {
 
     Long queryCountRecordDetail(Map<String, Object> param);
 
-    BaseModel<String> adminSendRecord(String mobile, String templateId);
-    
+    BaseModel<String> adminSendRecord(String mobile, String templateId, String templateParam);
+
 }

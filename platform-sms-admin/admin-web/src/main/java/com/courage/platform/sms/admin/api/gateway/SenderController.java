@@ -3,11 +3,11 @@ package com.courage.platform.sms.admin.api.gateway;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.courage.platform.sms.admin.dao.domain.TSmsAppinfo;
-import com.courage.platform.sms.admin.loader.SmsAdapterController;
-import com.courage.platform.sms.admin.loader.processor.ProcessorRequest;
-import com.courage.platform.sms.admin.loader.processor.ProcessorRequestCode;
-import com.courage.platform.sms.admin.loader.processor.ProcessorResponse;
-import com.courage.platform.sms.admin.loader.processor.body.SendMessageRequestBody;
+import com.courage.platform.sms.admin.dispatcher.SmsAdapterDispatcher;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequestCode;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponse;
+import com.courage.platform.sms.admin.dispatcher.processor.body.SendMessageRequestBody;
 import com.courage.platform.sms.admin.service.AppInfoService;
 import com.courage.platform.sms.client.SmsSenderResult;
 import org.slf4j.Logger;
@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/gateway/")
@@ -28,7 +26,7 @@ public class SenderController {
     private final static Logger logger = LoggerFactory.getLogger(SenderController.class);
 
     @Autowired
-    private SmsAdapterController smsAdapterController;
+    private SmsAdapterDispatcher smsAdapterController;
 
     @Autowired
     private AppInfoService appInfoService;
@@ -56,7 +54,9 @@ public class SenderController {
                 sendMessageRequestBody.setMobile(jsonObject.getString("mobile"));
             }
             // 处理请求
-            ProcessorResponse<SmsSenderResult> processorResponse = smsAdapterController.processRequest(ProcessorRequestCode.SEND_MESSAGE, new ProcessorRequest<SendMessageRequestBody>(sendMessageRequestBody));
+            ProcessorResponse<SmsSenderResult> processorResponse = smsAdapterController.dispatchRequest(
+                    ProcessorRequestCode.SEND_MESSAGE,
+                    new ProcessorRequest<SendMessageRequestBody>(sendMessageRequestBody));
             return processorResponse.getData();
         } catch (Exception e) {
             logger.error("sendSingle error: ", e);

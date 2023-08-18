@@ -1,6 +1,6 @@
-package com.courage.platform.sms.admin.loader.processor.body;
+package com.courage.platform.sms.admin.dispatcher.processor.body;
 
-import com.courage.platform.sms.admin.loader.processor.ProcessorRequestBody;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequestBody;
 
 public class SendMessageRequestBody extends ProcessorRequestBody {
 

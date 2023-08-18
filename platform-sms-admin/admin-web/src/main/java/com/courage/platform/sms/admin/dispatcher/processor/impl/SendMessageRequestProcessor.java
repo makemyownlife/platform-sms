@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.loader.processor.impl;
+package com.courage.platform.sms.admin.dispatcher.processor.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.courage.platform.sms.admin.common.config.IdGenerator;
@@ -7,12 +7,12 @@ import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsRecord;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
-import com.courage.platform.sms.admin.loader.SmsAdapterLoader;
-import com.courage.platform.sms.admin.loader.SmsAdatperProcessor;
-import com.courage.platform.sms.admin.loader.processor.ProcessorRequest;
-import com.courage.platform.sms.admin.loader.processor.ProcessorResponse;
-import com.courage.platform.sms.admin.loader.processor.ProcessorResponseCode;
-import com.courage.platform.sms.admin.loader.processor.body.SendMessageRequestBody;
+import com.courage.platform.sms.admin.dispatcher.SmsAdapterLoader;
+import com.courage.platform.sms.admin.dispatcher.SmsAdatperProcessor;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponse;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponseCode;
+import com.courage.platform.sms.admin.dispatcher.processor.body.SendMessageRequestBody;
 import com.courage.platform.sms.client.SmsSenderResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

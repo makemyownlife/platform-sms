@@ -6,9 +6,9 @@ import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplateBinding;
-import com.courage.platform.sms.admin.loader.SmsAdapterController;
-import com.courage.platform.sms.admin.loader.processor.ProcessorRequest;
-import com.courage.platform.sms.admin.loader.processor.ProcessorRequestCode;
+import com.courage.platform.sms.admin.dispatcher.SmsAdapterDispatcher;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequestCode;
 import com.courage.platform.sms.admin.service.SmsTemplateService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     private IdGenerator idGenerator;
 
     @Autowired
-    private SmsAdapterController smsAdapterController;
+    private SmsAdapterDispatcher smsAdapterController;
 
     @Override
     public List<TSmsTemplate> queryTemplates(Map<String, Object> params) {
@@ -114,7 +114,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
                     tSmsTemplateBindingDAO.insertSelective(binding);
                 }
                 // 向渠道申请模版
-                smsAdapterController.processRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(binding.getId()));
+                smsAdapterController.dispatchRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(binding.getId()));
             }
             return BaseModel.getInstance("success");
         } catch (Exception e) {

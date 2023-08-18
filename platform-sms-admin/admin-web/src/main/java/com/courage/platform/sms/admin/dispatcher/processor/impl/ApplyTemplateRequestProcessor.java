@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.loader.processor.impl;
+package com.courage.platform.sms.admin.dispatcher.processor.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.courage.platform.sms.adapter.OuterAdapter;
@@ -8,17 +8,15 @@ import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplateBinding;
-import com.courage.platform.sms.admin.loader.SmsAdapterLoader;
-import com.courage.platform.sms.admin.loader.SmsAdatperProcessor;
-import com.courage.platform.sms.admin.loader.processor.ProcessorRequest;
-import com.courage.platform.sms.admin.loader.processor.ProcessorResponse;
+import com.courage.platform.sms.admin.dispatcher.SmsAdapterLoader;
+import com.courage.platform.sms.admin.dispatcher.SmsAdatperProcessor;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
+import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.util.Map;
 
 /**

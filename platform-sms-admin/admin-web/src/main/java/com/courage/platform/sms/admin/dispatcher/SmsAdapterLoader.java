@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.loader;
+package com.courage.platform.sms.admin.dispatcher;
 
 import com.courage.platform.sms.adapter.OuterAdapter;
 import com.courage.platform.sms.adapter.support.ExtensionLoader;
