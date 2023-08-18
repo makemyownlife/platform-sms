@@ -41,7 +41,7 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<ApplyT
 
     @Override
     public ProcessorResponse<String> processRequest(ProcessorRequest<ApplyTemplateRequestBody> processorRequest) {
-        ApplyTemplateRequestBody requestBody = (ApplyTemplateRequestBody) processorRequest.getData();
+        ApplyTemplateRequestBody requestBody = processorRequest.getData();
         Long bindingId = requestBody.getBindingId();
         TSmsTemplateBinding binding = tSmsTemplateBindingDAO.selectByPrimaryKey(bindingId);
         if (binding != null) {
