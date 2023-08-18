@@ -20,4 +20,6 @@ public interface AppInfoService {
 
     BaseModel deleteAppInfo(String id);
 
+    TSmsAppinfo getAppInfoByAppkey(String appkey);
+
 }

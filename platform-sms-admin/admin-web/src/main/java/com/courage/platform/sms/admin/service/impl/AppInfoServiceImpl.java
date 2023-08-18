@@ -27,6 +27,11 @@ public class AppInfoServiceImpl implements AppInfoService {
     }
 
     @Override
+    public TSmsAppinfo getAppInfoByAppkey(String appkey) {
+        return tSmsAppinfoDAO.getAppinfoByAppKey(appkey);
+    }
+
+    @Override
     public Integer selectAppInfoCount(Map<String, Object> param) {
         return tSmsAppinfoDAO.selectAppInfoCount(param);
     }
