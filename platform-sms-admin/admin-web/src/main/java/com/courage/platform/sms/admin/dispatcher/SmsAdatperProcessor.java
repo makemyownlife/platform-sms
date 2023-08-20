@@ -1,7 +1,6 @@
 package com.courage.platform.sms.admin.dispatcher;
 
 import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequestBody;
 import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponse;
 
 /**
