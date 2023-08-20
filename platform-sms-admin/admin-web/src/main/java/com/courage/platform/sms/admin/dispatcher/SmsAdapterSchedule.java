@@ -13,7 +13,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -55,7 +54,7 @@ public class SmsAdapterSchedule {
             }
         }, INIT_DELAY , PERIOD , TimeUnit.SECONDS);
         //定时处理五秒内未发送的短信记录
-        
+
     }
 
     // 定时加载适配器
