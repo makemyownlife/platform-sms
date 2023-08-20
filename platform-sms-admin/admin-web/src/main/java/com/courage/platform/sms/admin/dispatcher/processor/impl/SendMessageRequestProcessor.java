@@ -69,7 +69,9 @@ public class SendMessageRequestProcessor implements SmsAdatperProcessor<SendMess
         tSmsRecord.setCreateTime(new Date());
         smsRecordDAO.insertSelective(tSmsRecord);
 
-        // 异步执行
+        //异步执行
+
+
         SmsSenderResult smsSenderResult = new SmsSenderResult(String.valueOf(smsId));
         return ProcessorResponse.success(smsSenderResult);
     }
