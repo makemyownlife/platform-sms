@@ -1,29 +1,26 @@
 package com.courage.platform.sms.admin.dispatcher;
 
-import com.alibaba.fastjson.JSON;
-import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import com.courage.platform.sms.admin.common.utils.Pair;
 import com.courage.platform.sms.admin.common.utils.ThreadFactoryImpl;
-import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
-import com.courage.platform.sms.admin.dao.domain.TSmsChannel;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequestCode;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponse;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestCommand;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestCode;
+import com.courage.platform.sms.admin.dispatcher.processor.ResponseCommand;
+import com.courage.platform.sms.admin.dispatcher.processor.SmsAdatperProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.impl.ApplyTemplateRequestProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.impl.SendMessageRequestProcessor;
-import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.*;
 
+/**
+ * 请求分发器
+ */
 @Component(value = "smsAdapterDispatcher")
 public class SmsAdapterDispatcher {
 
@@ -52,33 +49,32 @@ public class SmsAdapterDispatcher {
         }
         logger.info("开始初始化短信适配器分发服务");
         long start = System.currentTimeMillis();
-        // 定时任务
-        smsAdapterSchedule.init();
         // 映射处理器
         this.createRecordDetailThread = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryImpl("createRecordDetailThread-"));
-        registerProcessor(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequestProcessor);                                      // 发送短信
-        registerProcessor(ProcessorRequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);                                  // 申请模版
-        registerProcessor(ProcessorRequestCode.CREATE_RECORD_DETAIL, applyTemplateRequestProcessor, createRecordDetailThread); // 创建记录详情 (异步,使用单独的线程)
+        registerProcessor(RequestCode.SEND_MESSAGE, sendMessageRequestProcessor);                                      // 发送短信
+        registerProcessor(RequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);                                  // 申请模版
+        registerProcessor(RequestCode.CREATE_RECORD_DETAIL, applyTemplateRequestProcessor, createRecordDetailThread); // 创建记录详情 (异步,使用单独的线程)
         logger.info("结束初始化短信适配器分发服务, 耗时：" + (System.currentTimeMillis() - start));
     }
 
     //分发处理请求
-    public ProcessorResponse dispatchRequest(int requestCode, ProcessorRequest processorRequest) throws InterruptedException {
+    public ResponseCommand dispatchRequest(int requestCode, RequestCommand processorRequest) throws InterruptedException {
         Pair<SmsAdatperProcessor, ExecutorService> pair = processorTable.get(requestCode);
         SmsAdatperProcessor smsAdatperProcessor = pair.getObject1();
         ExecutorService executorService = pair.getObject2();
         if (executorService == null) {
-            ProcessorResponse response = smsAdatperProcessor.processRequest(processorRequest);
+            ResponseCommand response = smsAdatperProcessor.processRequest(processorRequest);
             return response;
         }
-        //异步操作
         CountDownLatch countDownLatch = new CountDownLatch(1);
+        Pair responsePair = new Pair(new CountDownLatch(1) , );
         countDownLatch.await(5000, TimeUnit.SECONDS);
         executorService.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    ProcessorResponse response = smsAdatperProcessor.processRequest(processorRequest);
+                    ResponseCommand response = smsAdatperProcessor.processRequest(processorRequest);
+                    return response;
                 } catch (Exception e) {
                     logger.error("processRequest error:", e);
                 } finally {
@@ -86,10 +82,12 @@ public class SmsAdapterDispatcher {
                 }
             }
         });
+
+        return null;
     }
 
     //异步处理请求
-    public void invokeAsync(int requestCode, ProcessorRequest processorRequest) {
+    public void invokeAsync(int requestCode, RequestCommand processorRequest) {
         SmsAdatperProcessor smsAdatperProcessor = PROCESSOR_MAPPING.get(requestCode);
         smsAdatperProcessor.processRequest(processorRequest);
     }

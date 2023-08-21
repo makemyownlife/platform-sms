@@ -1,6 +1,5 @@
 package com.courage.platform.sms.admin.dispatcher.processor.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.courage.platform.sms.admin.common.config.IdGenerator;
 import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
@@ -9,10 +8,10 @@ import com.courage.platform.sms.admin.dao.domain.TSmsRecord;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.dispatcher.SmsAdapterLoader;
 import com.courage.platform.sms.admin.dispatcher.SmsAdapterSchedule;
-import com.courage.platform.sms.admin.dispatcher.SmsAdatperProcessor;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponse;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponseCode;
+import com.courage.platform.sms.admin.dispatcher.processor.SmsAdatperProcessor;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestCommand;
+import com.courage.platform.sms.admin.dispatcher.processor.ResponseCommand;
+import com.courage.platform.sms.admin.dispatcher.processor.ResponseCode;
 import com.courage.platform.sms.admin.dispatcher.processor.body.SendMessageRequestBody;
 import com.courage.platform.sms.client.SmsSenderResult;
 import org.slf4j.Logger;
@@ -50,14 +49,14 @@ public class SendMessageRequestProcessor implements SmsAdatperProcessor<SendMess
     private SmsAdapterSchedule smsAdapterSchedule;
 
     @Override
-    public ProcessorResponse<SmsSenderResult> processRequest(ProcessorRequest<SendMessageRequestBody> processorRequest) {
+    public ResponseCommand<SmsSenderResult> processRequest(RequestCommand<SendMessageRequestBody> processorRequest) {
         SendMessageRequestBody param = processorRequest.getData();
         String templateId = param.getTemplateId();
         TSmsTemplate tSmsTemplate = templateDAO.selectByPrimaryKey(Long.valueOf(templateId));
         if (tSmsTemplate == null) {
-            return ProcessorResponse.build(
-                    ProcessorResponseCode.TEMPLATE_NOT_EXIST.getCode(),
-                    ProcessorResponseCode.TEMPLATE_NOT_EXIST.getValue()
+            return ResponseCommand.build(
+                    ResponseCode.TEMPLATE_NOT_EXIST.getCode(),
+                    ResponseCode.TEMPLATE_NOT_EXIST.getValue()
             );
         }
         // 插入到记录 t_sms_record
@@ -74,7 +73,7 @@ public class SendMessageRequestProcessor implements SmsAdatperProcessor<SendMess
         // 异步执行
 
         SmsSenderResult smsSenderResult = new SmsSenderResult(String.valueOf(smsId));
-        return ProcessorResponse.success(smsSenderResult);
+        return ResponseCommand.success(smsSenderResult);
     }
 
 }

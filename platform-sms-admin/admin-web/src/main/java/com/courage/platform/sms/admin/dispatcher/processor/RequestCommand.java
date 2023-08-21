@@ -4,9 +4,9 @@ package com.courage.platform.sms.admin.dispatcher.processor;
  * 处理机接收到的请求命令
  * Created by zhangyong on 2023/7/14.
  */
-public class ProcessorRequest<T> {
+public class RequestCommand<T> {
 
-    public ProcessorRequest(T t) {
+    public RequestCommand(T t) {
         this.data = t;
     }
 

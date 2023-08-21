@@ -4,8 +4,8 @@ import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
 import com.courage.platform.sms.admin.dao.TSmsRecordDetailDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail;
 import com.courage.platform.sms.admin.dispatcher.SmsAdapterDispatcher;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequestCode;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestCommand;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestCode;
 import com.courage.platform.sms.admin.dispatcher.processor.body.SendMessageRequestBody;
 import com.courage.platform.sms.admin.service.SmsRecordService;
 import com.courage.platform.sms.admin.vo.BaseModel;
@@ -50,8 +50,8 @@ public class SmsRecordServiceImpl implements SmsRecordService {
         sendMessageRequestBody.setTemplateId(templateId);
         sendMessageRequestBody.setTemplateParam(templateParam);
 
-        ProcessorRequest<SendMessageRequestBody> sendMessageRequest = new ProcessorRequest<>(sendMessageRequestBody);
-        smsAdapterDispatcher.dispatchRequest(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequest);
+        RequestCommand<SendMessageRequestBody> sendMessageRequest = new RequestCommand<>(sendMessageRequestBody);
+        smsAdapterDispatcher.dispatchRequest(RequestCode.SEND_MESSAGE, sendMessageRequest);
         return BaseModel.getInstance("success");
     }
 

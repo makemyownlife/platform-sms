@@ -9,10 +9,9 @@ import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplateBinding;
 import com.courage.platform.sms.admin.dispatcher.SmsAdapterLoader;
-import com.courage.platform.sms.admin.dispatcher.SmsAdatperProcessor;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequestBody;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponse;
+import com.courage.platform.sms.admin.dispatcher.processor.SmsAdatperProcessor;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestCommand;
+import com.courage.platform.sms.admin.dispatcher.processor.ResponseCommand;
 import com.courage.platform.sms.admin.dispatcher.processor.body.ApplyTemplateRequestBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +39,8 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<ApplyT
     private TSmsTemplateBindingDAO tSmsTemplateBindingDAO;
 
     @Override
-    public ProcessorResponse<String> processRequest(ProcessorRequest<ApplyTemplateRequestBody> processorRequest) {
-        ApplyTemplateRequestBody requestBody = processorRequest.getData();
+    public ResponseCommand<String> processRequest(RequestCommand<ApplyTemplateRequestBody> requestCommand) {
+        ApplyTemplateRequestBody requestBody = requestCommand.getData();
         Long bindingId = requestBody.getBindingId();
         TSmsTemplateBinding binding = tSmsTemplateBindingDAO.selectByPrimaryKey(bindingId);
         if (binding != null) {
@@ -66,11 +65,11 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<ApplyT
                         binding.setTemplateContent(templateContent);
                         binding.setStatus(status);                                  // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
                         tSmsTemplateBindingDAO.updateByPrimaryKeySelective(binding);
-                        return ProcessorResponse.success(templateCode);
+                        return ResponseCommand.success(templateCode);
                     }
                 }
             }
         }
-        return ProcessorResponse.fail("绑定失败");
+        return ResponseCommand.fail("绑定失败");
     }
 }

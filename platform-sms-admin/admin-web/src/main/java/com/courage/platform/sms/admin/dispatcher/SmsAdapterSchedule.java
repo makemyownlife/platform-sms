@@ -5,7 +5,6 @@ import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import com.courage.platform.sms.admin.common.utils.ThreadFactoryImpl;
 import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsChannel;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequestCode;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -43,6 +43,7 @@ public class SmsAdapterSchedule {
     @Autowired
     private TSmsChannelDAO smsChannelDAO;
 
+    @PostConstruct
     public synchronized void init() {
         //初始化定时线程池
         this.adapterScheduledService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryImpl("adapterScheduledThread-"));
@@ -54,8 +55,6 @@ public class SmsAdapterSchedule {
             }
         }, INIT_DELAY , PERIOD , TimeUnit.SECONDS);
         //定时处理短信记录
-
-
     }
 
     // 定时加载适配器

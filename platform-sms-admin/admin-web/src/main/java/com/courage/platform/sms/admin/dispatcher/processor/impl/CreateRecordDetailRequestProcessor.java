@@ -1,26 +1,13 @@
 package com.courage.platform.sms.admin.dispatcher.processor.impl;
 
-import com.courage.platform.sms.admin.common.config.IdGenerator;
-import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
-import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
-import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
-import com.courage.platform.sms.admin.dao.domain.TSmsRecord;
-import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
-import com.courage.platform.sms.admin.dispatcher.SmsAdapterLoader;
-import com.courage.platform.sms.admin.dispatcher.SmsAdapterSchedule;
-import com.courage.platform.sms.admin.dispatcher.SmsAdatperProcessor;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponse;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponseCode;
-import com.courage.platform.sms.admin.dispatcher.processor.body.SendMessageRequestBody;
-import com.courage.platform.sms.client.SmsSenderResult;
+import com.courage.platform.sms.admin.dispatcher.processor.SmsAdatperProcessor;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestCommand;
+import com.courage.platform.sms.admin.dispatcher.processor.ResponseCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,9 +20,9 @@ public class CreateRecordDetailRequestProcessor implements SmsAdatperProcessor<L
     private static Logger logger = LoggerFactory.getLogger(CreateRecordDetailRequestProcessor.class);
 
     @Override
-    public ProcessorResponse<List<Long>> processRequest(ProcessorRequest<Long> recordId) {
+    public ResponseCommand<List<Long>> processRequest(RequestCommand<Long> recordId) {
         List<Long> detailList = new ArrayList<>();
-        return ProcessorResponse.success(detailList);
+        return ResponseCommand.success(detailList);
     }
 
 }

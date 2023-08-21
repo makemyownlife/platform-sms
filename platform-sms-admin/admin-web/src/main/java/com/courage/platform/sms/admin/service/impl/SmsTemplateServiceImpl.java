@@ -8,8 +8,8 @@ import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplateBinding;
 import com.courage.platform.sms.admin.dispatcher.SmsAdapterDispatcher;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequestCode;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestCommand;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestCode;
 import com.courage.platform.sms.admin.service.SmsTemplateService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -116,7 +116,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
                 }
                 // 向渠道申请模版
                 ApplyTemplateRequestBody requestBody = new ApplyTemplateRequestBody(binding.getId());
-                smsAdapterController.dispatchRequest(ProcessorRequestCode.APPLY_TEMPLATE, new ProcessorRequest(requestBody));
+                smsAdapterController.dispatchRequest(RequestCode.APPLY_TEMPLATE, new RequestCommand(requestBody));
             }
             return BaseModel.getInstance("success");
         } catch (Exception e) {

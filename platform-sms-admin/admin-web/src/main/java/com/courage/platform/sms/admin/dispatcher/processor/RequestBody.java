@@ -1,5 +1,5 @@
 package com.courage.platform.sms.admin.dispatcher.processor;
 
-public class ProcessorRequestBody {
+public class RequestBody {
 
 }

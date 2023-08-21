@@ -1,8 +1,8 @@
 package com.courage.platform.sms.admin.dispatcher.processor.body;
 
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequestBody;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestBody;
 
-public class SendMessageRequestBody extends ProcessorRequestBody {
+public class SendMessageRequestBody extends RequestBody {
 
     private String mobile;
 

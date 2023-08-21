@@ -4,9 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.courage.platform.sms.admin.dao.domain.TSmsAppinfo;
 import com.courage.platform.sms.admin.dispatcher.SmsAdapterDispatcher;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequestCode;
-import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponse;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestCommand;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestCode;
+import com.courage.platform.sms.admin.dispatcher.processor.ResponseCommand;
 import com.courage.platform.sms.admin.dispatcher.processor.body.SendMessageRequestBody;
 import com.courage.platform.sms.admin.service.AppInfoService;
 import com.courage.platform.sms.client.SmsSenderResult;
@@ -54,9 +54,9 @@ public class SenderController {
                 sendMessageRequestBody.setMobile(jsonObject.getString("mobile"));
             }
             // 处理请求
-            ProcessorResponse<SmsSenderResult> processorResponse = smsAdapterController.dispatchRequest(
-                    ProcessorRequestCode.SEND_MESSAGE,
-                    new ProcessorRequest<SendMessageRequestBody>(sendMessageRequestBody));
+            ResponseCommand<SmsSenderResult> processorResponse = smsAdapterController.dispatchRequest(
+                    RequestCode.SEND_MESSAGE,
+                    new RequestCommand<SendMessageRequestBody>(sendMessageRequestBody));
             return processorResponse.getData();
         } catch (Exception e) {
             logger.error("sendSingle error: ", e);
