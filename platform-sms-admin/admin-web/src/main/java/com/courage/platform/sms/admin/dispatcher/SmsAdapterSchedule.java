@@ -84,6 +84,7 @@ public class SmsAdapterSchedule {
 
     @PreDestroy
     public synchronized void destroy() {
+        this.adapterScheduledService.shutdown();
     }
 
 }
