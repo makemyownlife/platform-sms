@@ -25,7 +25,7 @@ public class AliyunAdapter implements OuterAdapter {
 
     private Client client;
 
-    private final static int SUCCESS_CODE =  200;
+    private final static int SUCCESS_CODE = 200;
 
     @Override
     public void init(SmsChannelConfig smsChannelConfig) throws Exception {
@@ -51,13 +51,13 @@ public class AliyunAdapter implements OuterAdapter {
                     setTemplateParam(sendSmsCommand.getTemplateParam());
             com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
             com.aliyun.dysmsapi20170525.models.SendSmsResponse resp = client.sendSmsWithOptions(sendSmsRequest, runtime);
-            if (SUCCESS_CODE == resp.getStatusCode()) {
-                return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, JSON.toJSONString(resp.getBody()));
+            if (SUCCESS_CODE == resp.getStatusCode() && "ok".equals(resp.getBody().getCode())) {
+                return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, resp.getBody().getBizId());
             }
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, resp.getBody().getMessage());
+            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE , JSON.toJSONString(resp.getBody()));
         } catch (Exception e) {
             logger.error("aliyun sendSms:", e);
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, e.getMessage());
+            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
         }
     }
 

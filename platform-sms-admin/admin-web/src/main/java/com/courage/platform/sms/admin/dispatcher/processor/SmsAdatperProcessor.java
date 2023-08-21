@@ -6,6 +6,6 @@ package com.courage.platform.sms.admin.dispatcher.processor;
  */
 public interface SmsAdatperProcessor<T, R> {
 
-    ResponseCommand<R> processRequest(RequestCommand<T> processorRequest);
+    ResponseEntity<R> processRequest(RequestEntity<T> processorRequest);
 
 }

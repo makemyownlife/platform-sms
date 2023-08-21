@@ -8,8 +8,6 @@ public enum ResponseCode {
 
     SUCCESS(200, "成功"),
 
-    FAIL(400, "失败"),
-
     ERROR(500, "异常"),
 
     TEMPLATE_NOT_EXIST(10001, "模版不存在");

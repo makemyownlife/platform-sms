@@ -1,6 +1,6 @@
 package com.courage.platform.sms.admin.dispatcher.processor;
 
-public class ResponseCommand<T> {
+public class ResponseEntity<T> {
 
     private int code;
 
@@ -12,40 +12,40 @@ public class ResponseCommand<T> {
 
     public static final int ERROR = ResponseCode.ERROR.getCode();
 
-    private ResponseCommand() {
+    private ResponseEntity() {
     }
 
-    public static <T> ResponseCommand<T> build(int code, String message, T data) {
-        ResponseCommand<T> responseEntity = new ResponseCommand<>();
+    public static <T> ResponseEntity<T> build(int code, String message, T data) {
+        ResponseEntity<T> responseEntity = new ResponseEntity<>();
         responseEntity.message = message;
         responseEntity.code = code;
         responseEntity.data = data;
         return responseEntity;
     }
 
-    public static <T> ResponseCommand<T> build(int code, String message) {
-        ResponseCommand<T> responseEntity = new ResponseCommand<>();
+    public static <T> ResponseEntity<T> build(int code, String message) {
+        ResponseEntity<T> responseEntity = new ResponseEntity<>();
         responseEntity.message = message;
         responseEntity.code = code;
         return responseEntity;
     }
 
-    public static <T> ResponseCommand<T> build(int code, T data) {
-        ResponseCommand<T> responseEntity = new ResponseCommand<>();
+    public static <T> ResponseEntity<T> build(int code, T data) {
+        ResponseEntity<T> responseEntity = new ResponseEntity<>();
         responseEntity.data = data;
         responseEntity.code = code;
         return responseEntity;
     }
 
-    public static <T> ResponseCommand<T> success(T data) {
-        ResponseCommand<T> responseEntity = new ResponseCommand<>();
+    public static <T> ResponseEntity<T> success(T data) {
+        ResponseEntity<T> responseEntity = new ResponseEntity<>();
         responseEntity.data = data;
         responseEntity.code = SUCCESS;
         return responseEntity;
     }
 
-    public static <T> ResponseCommand<T> fail(String message) {
-        ResponseCommand<T> responseEntity = new ResponseCommand<>();
+    public static <T> ResponseEntity<T> fail(String message) {
+        ResponseEntity<T> responseEntity = new ResponseEntity<>();
         responseEntity.code = ERROR;
         responseEntity.message = message;
         return responseEntity;

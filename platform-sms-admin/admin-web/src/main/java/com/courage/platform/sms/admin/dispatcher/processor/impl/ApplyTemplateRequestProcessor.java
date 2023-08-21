@@ -10,8 +10,8 @@ import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplateBinding;
 import com.courage.platform.sms.admin.dispatcher.SmsAdapterLoader;
 import com.courage.platform.sms.admin.dispatcher.processor.SmsAdatperProcessor;
-import com.courage.platform.sms.admin.dispatcher.processor.RequestCommand;
-import com.courage.platform.sms.admin.dispatcher.processor.ResponseCommand;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
+import com.courage.platform.sms.admin.dispatcher.processor.ResponseEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.body.ApplyTemplateRequestBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<ApplyT
     private TSmsTemplateBindingDAO tSmsTemplateBindingDAO;
 
     @Override
-    public ResponseCommand<String> processRequest(RequestCommand<ApplyTemplateRequestBody> requestCommand) {
+    public ResponseEntity<String> processRequest(RequestEntity<ApplyTemplateRequestBody> requestCommand) {
         ApplyTemplateRequestBody requestBody = requestCommand.getData();
         Long bindingId = requestBody.getBindingId();
         TSmsTemplateBinding binding = tSmsTemplateBindingDAO.selectByPrimaryKey(bindingId);
@@ -65,11 +65,11 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<ApplyT
                         binding.setTemplateContent(templateContent);
                         binding.setStatus(status);                                  // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
                         tSmsTemplateBindingDAO.updateByPrimaryKeySelective(binding);
-                        return ResponseCommand.success(templateCode);
+                        return ResponseEntity.success(templateCode);
                     }
                 }
             }
         }
-        return ResponseCommand.fail("绑定失败");
+        return ResponseEntity.fail("绑定失败");
     }
 }

@@ -25,7 +25,7 @@ public class TSmsTemplateBinding implements Serializable {
     /**
      * 渠道编号
      */
-    private Long channelId;
+    private Integer channelId;
 
     /**
      * 渠道名称
@@ -81,11 +81,11 @@ public class TSmsTemplateBinding implements Serializable {
         this.templateContent = templateContent;
     }
 
-    public Long getChannelId() {
+    public Integer getChannelId() {
         return channelId;
     }
 
-    public void setChannelId(Long channelId) {
+    public void setChannelId(Integer channelId) {
         this.channelId = channelId;
     }
 

@@ -9,8 +9,8 @@ import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.dispatcher.SmsAdapterLoader;
 import com.courage.platform.sms.admin.dispatcher.SmsAdapterSchedule;
 import com.courage.platform.sms.admin.dispatcher.processor.SmsAdatperProcessor;
-import com.courage.platform.sms.admin.dispatcher.processor.RequestCommand;
-import com.courage.platform.sms.admin.dispatcher.processor.ResponseCommand;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
+import com.courage.platform.sms.admin.dispatcher.processor.ResponseEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.ResponseCode;
 import com.courage.platform.sms.admin.dispatcher.processor.body.SendMessageRequestBody;
 import com.courage.platform.sms.client.SmsSenderResult;
@@ -49,12 +49,12 @@ public class SendMessageRequestProcessor implements SmsAdatperProcessor<SendMess
     private SmsAdapterSchedule smsAdapterSchedule;
 
     @Override
-    public ResponseCommand<SmsSenderResult> processRequest(RequestCommand<SendMessageRequestBody> processorRequest) {
+    public ResponseEntity<SmsSenderResult> processRequest(RequestEntity<SendMessageRequestBody> processorRequest) {
         SendMessageRequestBody param = processorRequest.getData();
         String templateId = param.getTemplateId();
         TSmsTemplate tSmsTemplate = templateDAO.selectByPrimaryKey(Long.valueOf(templateId));
         if (tSmsTemplate == null) {
-            return ResponseCommand.build(
+            return ResponseEntity.build(
                     ResponseCode.TEMPLATE_NOT_EXIST.getCode(),
                     ResponseCode.TEMPLATE_NOT_EXIST.getValue()
             );
@@ -73,7 +73,7 @@ public class SendMessageRequestProcessor implements SmsAdatperProcessor<SendMess
         // 异步执行
 
         SmsSenderResult smsSenderResult = new SmsSenderResult(String.valueOf(smsId));
-        return ResponseCommand.success(smsSenderResult);
+        return ResponseEntity.success(smsSenderResult);
     }
 
 }

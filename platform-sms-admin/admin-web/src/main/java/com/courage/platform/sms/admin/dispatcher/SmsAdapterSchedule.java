@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -54,7 +55,6 @@ public class SmsAdapterSchedule {
                 scheudleLoadAdapter();
             }
         }, INIT_DELAY , PERIOD , TimeUnit.SECONDS);
-        //定时处理短信记录
     }
 
     // 定时加载适配器
@@ -82,8 +82,8 @@ public class SmsAdapterSchedule {
         }
     }
 
+    @PreDestroy
     public synchronized void destroy() {
-
     }
 
 }
