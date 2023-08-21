@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.concurrent.*;
 
 /**
@@ -51,45 +52,44 @@ public class SmsAdapterDispatcher {
         long start = System.currentTimeMillis();
         // 映射处理器
         this.createRecordDetailThread = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryImpl("createRecordDetailThread-"));
-        registerProcessor(RequestCode.SEND_MESSAGE, sendMessageRequestProcessor);                                      // 发送短信
-        registerProcessor(RequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);                                  // 申请模版
-        registerProcessor(RequestCode.CREATE_RECORD_DETAIL, applyTemplateRequestProcessor, createRecordDetailThread); // 创建记录详情 (异步,使用单独的线程)
+        {
+            registerProcessor(RequestCode.SEND_MESSAGE, sendMessageRequestProcessor);                                      // 发送短信
+            registerProcessor(RequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);                                  // 申请模版
+            registerProcessor(RequestCode.CREATE_RECORD_DETAIL, applyTemplateRequestProcessor, createRecordDetailThread); // 创建记录详情 (异步,使用单独的线程)
+        }
         logger.info("结束初始化短信适配器分发服务, 耗时：" + (System.currentTimeMillis() - start));
     }
 
-    //分发处理请求
-    public ResponseCommand dispatchRequest(int requestCode, RequestCommand processorRequest) throws InterruptedException {
+    // 分发处理请求
+    public ResponseCommand dispatchRequest(int requestCode, RequestCommand processorRequest) {
         Pair<SmsAdatperProcessor, ExecutorService> pair = processorTable.get(requestCode);
         SmsAdatperProcessor smsAdatperProcessor = pair.getObject1();
         ExecutorService executorService = pair.getObject2();
         if (executorService == null) {
-            ResponseCommand response = smsAdatperProcessor.processRequest(processorRequest);
-            return response;
-        }
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        Pair responsePair = new Pair(new CountDownLatch(1) , );
-        countDownLatch.await(5000, TimeUnit.SECONDS);
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ResponseCommand response = smsAdatperProcessor.processRequest(processorRequest);
-                    return response;
-                } catch (Exception e) {
-                    logger.error("processRequest error:", e);
-                } finally {
-                    countDownLatch.countDown();
-                }
+            ResponseCommand responseCommand = smsAdatperProcessor.processRequest(processorRequest);
+            return responseCommand;
+        } else {
+            Pair<CountDownLatch, ResponseCommand> responsePair = new Pair(new CountDownLatch(1), null);
+            try {
+                responsePair.getObject1().await(5000, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
             }
-        });
-
-        return null;
-    }
-
-    //异步处理请求
-    public void invokeAsync(int requestCode, RequestCommand processorRequest) {
-        SmsAdatperProcessor smsAdatperProcessor = PROCESSOR_MAPPING.get(requestCode);
-        smsAdatperProcessor.processRequest(processorRequest);
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    ResponseCommand response = null;
+                    try {
+                        response = smsAdatperProcessor.processRequest(processorRequest);
+                        responsePair.setObject2(response);
+                    } catch (Throwable e) {
+                        logger.error("processRequest error:", e);
+                    } finally {
+                        responsePair.getObject1().countDown();
+                    }
+                }
+            });
+            return responsePair.getObject2();
+        }
     }
 
     public void registerProcessor(int requestCode, SmsAdatperProcessor smsAdatperProcessor) {
