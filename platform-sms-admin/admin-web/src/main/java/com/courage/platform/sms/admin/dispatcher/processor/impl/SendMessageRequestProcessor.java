@@ -8,6 +8,7 @@ import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsRecord;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.dispatcher.SmsAdapterLoader;
+import com.courage.platform.sms.admin.dispatcher.SmsAdapterSchedule;
 import com.courage.platform.sms.admin.dispatcher.SmsAdatperProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.ProcessorRequest;
 import com.courage.platform.sms.admin.dispatcher.processor.ProcessorResponse;
@@ -45,10 +46,12 @@ public class SendMessageRequestProcessor implements SmsAdatperProcessor<SendMess
     @Autowired
     private IdGenerator idGenerator;
 
+    @Autowired
+    private SmsAdapterSchedule smsAdapterSchedule;
+
     @Override
     public ProcessorResponse<SmsSenderResult> processRequest(ProcessorRequest<SendMessageRequestBody> processorRequest) {
         SendMessageRequestBody param = processorRequest.getData();
-        logger.info("开始处理处理短信请求，参数:" + JSON.toJSONString(param));
         String templateId = param.getTemplateId();
         TSmsTemplate tSmsTemplate = templateDAO.selectByPrimaryKey(Long.valueOf(templateId));
         if (tSmsTemplate == null) {
@@ -68,9 +71,7 @@ public class SendMessageRequestProcessor implements SmsAdatperProcessor<SendMess
         tSmsRecord.setUpdateTime(new Date());
         tSmsRecord.setCreateTime(new Date());
         smsRecordDAO.insertSelective(tSmsRecord);
-
-        //异步执行
-
+        // 异步执行
 
         SmsSenderResult smsSenderResult = new SmsSenderResult(String.valueOf(smsId));
         return ProcessorResponse.success(smsSenderResult);

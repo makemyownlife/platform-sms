@@ -29,7 +29,7 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     private TSmsRecordDetailDAO detailDAO;
 
     @Autowired
-    private SmsAdapterDispatcher smsAdapterController;
+    private SmsAdapterDispatcher smsAdapterDispatcher;
 
     @Override
     public List<TSmsRecordDetail> queryRecordDetailList(Map<String, Object> param) {
@@ -51,7 +51,7 @@ public class SmsRecordServiceImpl implements SmsRecordService {
         sendMessageRequestBody.setTemplateParam(templateParam);
 
         ProcessorRequest<SendMessageRequestBody> sendMessageRequest = new ProcessorRequest<>(sendMessageRequestBody);
-        smsAdapterController.dispatchRequest(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequest);
+        smsAdapterDispatcher.dispatchRequest(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequest);
         return BaseModel.getInstance("success");
     }
 

@@ -10,4 +10,6 @@ public class ProcessorRequestCode {
 
     public static final int APPLY_TEMPLATE = 11;
 
+    public static final int CREATE_RECORD_DETAIL = 12;
+
 }

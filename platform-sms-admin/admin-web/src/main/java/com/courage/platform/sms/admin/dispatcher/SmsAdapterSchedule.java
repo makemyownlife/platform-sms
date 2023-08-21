@@ -53,7 +53,8 @@ public class SmsAdapterSchedule {
                 scheudleLoadAdapter();
             }
         }, INIT_DELAY , PERIOD , TimeUnit.SECONDS);
-        //定时处理五秒内未发送的短信记录
+        //定时处理短信记录
+
 
     }
 

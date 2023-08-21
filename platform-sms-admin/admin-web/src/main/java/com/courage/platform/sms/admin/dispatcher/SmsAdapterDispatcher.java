@@ -2,6 +2,7 @@ package com.courage.platform.sms.admin.dispatcher;
 
 import com.alibaba.fastjson.JSON;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
+import com.courage.platform.sms.admin.common.utils.Pair;
 import com.courage.platform.sms.admin.common.utils.ThreadFactoryImpl;
 import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsChannel;
@@ -19,11 +20,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @Component(value = "smsAdapterDispatcher")
 public class SmsAdapterDispatcher {
@@ -31,7 +30,7 @@ public class SmsAdapterDispatcher {
     private final static Logger logger = LoggerFactory.getLogger(SmsAdapterDispatcher.class);
 
     //处理器命令映射
-    private static final ConcurrentHashMap<Integer, SmsAdatperProcessor> PROCESSOR_MAPPING = new ConcurrentHashMap<Integer, SmsAdatperProcessor>();
+    protected final HashMap<Integer/* request code */, Pair<SmsAdatperProcessor, ExecutorService>> processorTable = new HashMap<Integer, Pair<SmsAdatperProcessor, ExecutorService>>(64);
 
     private volatile boolean running = false;
 
@@ -44,6 +43,8 @@ public class SmsAdapterDispatcher {
     @Autowired
     private ApplyTemplateRequestProcessor applyTemplateRequestProcessor;
 
+    private ExecutorService createRecordDetailThread;
+
     @PostConstruct
     public synchronized void init() {
         if (running) {
@@ -51,19 +52,55 @@ public class SmsAdapterDispatcher {
         }
         logger.info("开始初始化短信适配器分发服务");
         long start = System.currentTimeMillis();
-        //初始化定时任务
+        // 定时任务
         smsAdapterSchedule.init();
-        //初始化映射处理器
-        PROCESSOR_MAPPING.put(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequestProcessor);
-        PROCESSOR_MAPPING.put(ProcessorRequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);
+        // 映射处理器
+        this.createRecordDetailThread = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryImpl("createRecordDetailThread-"));
+        registerProcessor(ProcessorRequestCode.SEND_MESSAGE, sendMessageRequestProcessor);                                      // 发送短信
+        registerProcessor(ProcessorRequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);                                  // 申请模版
+        registerProcessor(ProcessorRequestCode.CREATE_RECORD_DETAIL, applyTemplateRequestProcessor, createRecordDetailThread); // 创建记录详情 (异步,使用单独的线程)
         logger.info("结束初始化短信适配器分发服务, 耗时：" + (System.currentTimeMillis() - start));
     }
 
-    //处理短信网关请求
-    public ProcessorResponse dispatchRequest(int requestCode, ProcessorRequest processorRequest) {
+    //分发处理请求
+    public ProcessorResponse dispatchRequest(int requestCode, ProcessorRequest processorRequest) throws InterruptedException {
+        Pair<SmsAdatperProcessor, ExecutorService> pair = processorTable.get(requestCode);
+        SmsAdatperProcessor smsAdatperProcessor = pair.getObject1();
+        ExecutorService executorService = pair.getObject2();
+        if (executorService == null) {
+            ProcessorResponse response = smsAdatperProcessor.processRequest(processorRequest);
+            return response;
+        }
+        //异步操作
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        countDownLatch.await(5000, TimeUnit.SECONDS);
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ProcessorResponse response = smsAdatperProcessor.processRequest(processorRequest);
+                } catch (Exception e) {
+                    logger.error("processRequest error:", e);
+                } finally {
+                    countDownLatch.countDown();
+                }
+            }
+        });
+    }
+
+    //异步处理请求
+    public void invokeAsync(int requestCode, ProcessorRequest processorRequest) {
         SmsAdatperProcessor smsAdatperProcessor = PROCESSOR_MAPPING.get(requestCode);
-        ProcessorResponse response = smsAdatperProcessor.processRequest(processorRequest);
-        return response;
+        smsAdatperProcessor.processRequest(processorRequest);
+    }
+
+    public void registerProcessor(int requestCode, SmsAdatperProcessor smsAdatperProcessor) {
+        registerProcessor(requestCode, smsAdatperProcessor, null);
+    }
+
+    public void registerProcessor(int requestCode, SmsAdatperProcessor smsAdatperProcessor, ExecutorService executorService) {
+        Pair<SmsAdatperProcessor, ExecutorService> pair = new Pair<SmsAdatperProcessor, ExecutorService>(smsAdatperProcessor, executorService);
+        this.processorTable.put(requestCode, pair);
     }
 
     @PreDestroy
