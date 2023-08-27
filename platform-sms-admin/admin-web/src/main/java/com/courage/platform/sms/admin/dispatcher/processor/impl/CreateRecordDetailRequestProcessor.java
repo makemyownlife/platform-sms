@@ -106,7 +106,7 @@ public class CreateRecordDetailRequestProcessor implements SmsAdatperProcessor<L
         tSmsRecord.setSendStatus(sendFlag ? 0 : 1);
         tSmsRecord.setUpdateTime(new Date());
         tSmsRecord.setId(recordId);
-        smsRecordDAO.updateByPrimaryKey(tSmsRecord);
+        smsRecordDAO.updateByPrimaryKeySelective(tSmsRecord);
         return ResponseEntity.success(detailIdList);
     }
 

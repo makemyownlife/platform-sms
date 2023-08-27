@@ -35,11 +35,11 @@
   </delete>
 
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail" useGeneratedKeys="true">
-    insert into t_sms_record_detail (record_id, app_id, content, 
+    insert into t_sms_record_detail (id, record_id, app_id, content,
       send_status, report_status, mobile, 
       msgid, channel_id, sender_time, 
       create_time, update_time)
-    values (#{recordId,jdbcType=BIGINT}, #{appId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+    values (#{id}, #{recordId,jdbcType=BIGINT}, #{appId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
       #{sendStatus,jdbcType=TINYINT}, #{reportStatus,jdbcType=TINYINT}, #{mobile,jdbcType=VARCHAR}, 
       #{msgid,jdbcType=VARCHAR}, #{channelId,jdbcType=VARCHAR}, #{senderTime,jdbcType=TIMESTAMP}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
@@ -48,6 +48,9 @@
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail" useGeneratedKeys="true">
     insert into t_sms_record_detail
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="recordId != null">
         record_id,
       </if>
@@ -83,6 +86,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
       <if test="recordId != null">
         #{recordId,jdbcType=BIGINT},
       </if>
