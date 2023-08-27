@@ -92,6 +92,7 @@ public class CreateRecordDetailRequestProcessor implements SmsAdatperProcessor<L
                     detail.setRecordId(recordId);
                     detail.setContent(StringUtils.EMPTY);
                     detail.setMsgid(msgId);
+                    detail.setSenderTime(new Date());
                     detail.setSendStatus(sendFlag ? 0 : 1);
                     detailDAO.insert(detail);
                 }
@@ -100,9 +101,10 @@ public class CreateRecordDetailRequestProcessor implements SmsAdatperProcessor<L
                 }
             }
         }
-        //修改记录表状态
+        // 修改记录表状态
         TSmsRecord tSmsRecord = new TSmsRecord();
         tSmsRecord.setSendStatus(sendFlag ? 0 : 1);
+        tSmsRecord.setUpdateTime(new Date());
         tSmsRecord.setId(recordId);
         smsRecordDAO.updateByPrimaryKey(tSmsRecord);
         return ResponseEntity.success(detailIdList);

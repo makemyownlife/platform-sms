@@ -51,10 +51,11 @@ public class AliyunAdapter implements OuterAdapter {
                     setTemplateParam(sendSmsCommand.getTemplateParam());
             com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
             com.aliyun.dysmsapi20170525.models.SendSmsResponse resp = client.sendSmsWithOptions(sendSmsRequest, runtime);
-            if (SUCCESS_CODE == resp.getStatusCode() && "ok".equals(resp.getBody().getCode())) {
+            logger.info("aliyun resp code:{} body:{}" , resp.getStatusCode() , JSON.toJSON(resp.getBody()));
+            if (SUCCESS_CODE == resp.getStatusCode() && "OK".equals(resp.getBody().getCode())) {
                 return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, resp.getBody().getBizId());
             }
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE , JSON.toJSONString(resp.getBody()));
+            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
         } catch (Exception e) {
             logger.error("aliyun sendSms:", e);
             return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);

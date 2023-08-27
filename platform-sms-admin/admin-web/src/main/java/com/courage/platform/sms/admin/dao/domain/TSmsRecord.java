@@ -28,12 +28,6 @@ public class TSmsRecord implements Serializable {
      * 0：普通短信 / 1 ：营销短信 （群发）
      */
     private Integer recordType;
-
-    /**
-     * 渠道
-     */
-    private Integer channelId;
-
     /**
      * 模版编号
      */
@@ -136,14 +130,6 @@ public class TSmsRecord implements Serializable {
 
     public void setRecordType(Integer recordType) {
         this.recordType = recordType;
-    }
-
-    public Integer getChannelId() {
-        return channelId;
-    }
-
-    public void setChannelId(Integer channelId) {
-        this.channelId = channelId;
     }
 
     public String getTemplateParam() {

@@ -66,6 +66,7 @@ public class SendMessageRequestProcessor implements SmsAdatperProcessor<SendMess
         tSmsRecord.setId(smsId);
         tSmsRecord.setTemplateId(Long.valueOf(param.getTemplateId()));
         tSmsRecord.setAppId(param.getAppId());
+        tSmsRecord.setTemplateParam(param.getTemplateParam());
         tSmsRecord.setMobile(param.getMobile());
         tSmsRecord.setSendStatus(-1);
         tSmsRecord.setUpdateTime(new Date());
