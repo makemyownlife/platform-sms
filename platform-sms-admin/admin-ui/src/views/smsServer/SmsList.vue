@@ -31,7 +31,7 @@
       </el-table-column>
       <el-table-column label="内容" min-width="120" align="center">
         <template slot-scope="scope">
-          {{ scope.row.channelDomain }}
+          {{ scope.row.content }}
         </template>
       </el-table-column>
       <el-table-column label="三方短信编号" min-width="120" align="center">
