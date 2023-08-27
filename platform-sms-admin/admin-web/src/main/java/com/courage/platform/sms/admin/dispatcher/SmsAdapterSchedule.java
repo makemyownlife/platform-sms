@@ -5,6 +5,8 @@ import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import com.courage.platform.sms.admin.common.utils.ThreadFactoryImpl;
 import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsChannel;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestCode;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +38,7 @@ public class SmsAdapterSchedule {
     private final static int PERIOD = 5;
 
     //线程池
-    private ScheduledExecutorService adapterScheduledService;
+    private ScheduledExecutorService scheduledExecutorService;
 
     @Autowired
     private SmsAdapterLoader smsAdapterLoader;
@@ -44,17 +46,20 @@ public class SmsAdapterSchedule {
     @Autowired
     private TSmsChannelDAO smsChannelDAO;
 
+    @Autowired
+    private SmsAdapterDispatcher smsAdapterDispatcher;
+
     @PostConstruct
     public synchronized void init() {
         //初始化定时线程池
-        this.adapterScheduledService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryImpl("adapterScheduledThread-"));
+        this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryImpl("adapterScheduledThread-"));
         //定时加载适配器
-        adapterScheduledService.scheduleAtFixedRate(new Runnable() {
+        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 scheudleLoadAdapter();
             }
-        }, INIT_DELAY , PERIOD , TimeUnit.SECONDS);
+        }, INIT_DELAY, PERIOD, TimeUnit.SECONDS);
     }
 
     // 定时加载适配器
@@ -64,8 +69,7 @@ public class SmsAdapterSchedule {
             for (TSmsChannel tSmsChannel : channelList) {
                 TSmsChannel prewChannel = CHANNEL_MAPPING.get(tSmsChannel.getId());
                 boolean needLoadPlugin = false;
-                if ((prewChannel != null && !prewChannel.getMd5Value().equals(tSmsChannel.getMd5Value())) ||
-                        (prewChannel == null)) {
+                if ((prewChannel != null && !prewChannel.getMd5Value().equals(tSmsChannel.getMd5Value())) || (prewChannel == null)) {
                     needLoadPlugin = true;
                 }
                 if (needLoadPlugin) {
@@ -82,9 +86,23 @@ public class SmsAdapterSchedule {
         }
     }
 
+    public void createRecordDetailImmediately(Long recordId) {
+        scheduledExecutorService.schedule(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    RequestEntity<Long> requestEntity = new RequestEntity<>(recordId);
+                    smsAdapterDispatcher.dispatchAsyncRequest(RequestCode.CREATE_RECORD_DETAIL, requestEntity);
+                } catch (Throwable e) {
+                    logger.error("schedule createRecordDetailImmediately error:", e);
+                }
+            }
+        }, 0, TimeUnit.SECONDS);
+    }
+
     @PreDestroy
     public synchronized void destroy() {
-        this.adapterScheduledService.shutdown();
+        this.scheduledExecutorService.shutdown();
     }
 
 }

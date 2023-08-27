@@ -61,6 +61,7 @@ public class SendMessageRequestProcessor implements SmsAdatperProcessor<SendMess
         }
         // 插入到记录 t_sms_record
         Long smsId = idGenerator.createUniqueId(param.getAppId());
+        logger.info("appId:" + param.getAppId() + " smsId:" + smsId);
         TSmsRecord tSmsRecord = new TSmsRecord();
         tSmsRecord.setId(smsId);
         tSmsRecord.setTemplateId(Long.valueOf(param.getTemplateId()));
@@ -70,7 +71,9 @@ public class SendMessageRequestProcessor implements SmsAdatperProcessor<SendMess
         tSmsRecord.setUpdateTime(new Date());
         tSmsRecord.setCreateTime(new Date());
         smsRecordDAO.insertSelective(tSmsRecord);
+
         // 异步执行
+        smsAdapterSchedule.createRecordDetailImmediately(smsId);
 
         SmsSenderResult smsSenderResult = new SmsSenderResult(String.valueOf(smsId));
         return ResponseEntity.success(smsSenderResult);

@@ -54,7 +54,7 @@ public class SenderController {
                 sendMessageRequestBody.setMobile(jsonObject.getString("mobile"));
             }
             // 处理请求
-            ResponseEntity<SmsSenderResult> processorResponse = smsAdapterController.dispatchRequest(
+            ResponseEntity<SmsSenderResult> processorResponse = smsAdapterController.dispatchSyncRequest(
                     RequestCode.SEND_MESSAGE,
                     new RequestEntity<SendMessageRequestBody>(sendMessageRequestBody));
             return processorResponse.getData();

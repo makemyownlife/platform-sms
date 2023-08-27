@@ -48,10 +48,11 @@ public class SmsRecordServiceImpl implements SmsRecordService {
         sendMessageRequestBody.setAppId("1");                                        // 使用默认测试应用 appId = 1
         sendMessageRequestBody.setMobile(mobile);
         sendMessageRequestBody.setTemplateId(templateId);
+        templateParam = "{\"code\":\"1111\"}";
         sendMessageRequestBody.setTemplateParam(templateParam);
 
         RequestEntity<SendMessageRequestBody> sendMessageRequest = new RequestEntity<>(sendMessageRequestBody);
-        smsAdapterDispatcher.dispatchRequest(RequestCode.SEND_MESSAGE, sendMessageRequest);
+        smsAdapterDispatcher.dispatchSyncRequest(RequestCode.SEND_MESSAGE, sendMessageRequest);
         return BaseModel.getInstance("success");
     }
 

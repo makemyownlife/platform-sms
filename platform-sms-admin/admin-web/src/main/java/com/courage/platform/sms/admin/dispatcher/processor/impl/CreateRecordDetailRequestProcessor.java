@@ -72,6 +72,7 @@ public class CreateRecordDetailRequestProcessor implements SmsAdatperProcessor<L
                     smsCommand.setSignName(template.getSignName());
                     smsCommand.setTemplateContent(template.getContent());
                     smsCommand.setTemplateCode(tSmsTemplateBinding.getTemplateCode());
+                    smsCommand.setTemplateParam(record.getTemplateParam());
                     SmsResponseCommand smsResponseCommand = outerAdapter.sendSmsByTemplateId(smsCommand);
                     // 三方编号
                     String msgId = StringUtils.EMPTY;
@@ -91,6 +92,7 @@ public class CreateRecordDetailRequestProcessor implements SmsAdatperProcessor<L
                     detail.setRecordId(recordId);
                     detail.setContent(StringUtils.EMPTY);
                     detail.setMsgid(msgId);
+                    detail.setSendStatus(sendFlag ? 0 : 1);
                     detailDAO.insert(detail);
                 }
                 if (sendFlag) {

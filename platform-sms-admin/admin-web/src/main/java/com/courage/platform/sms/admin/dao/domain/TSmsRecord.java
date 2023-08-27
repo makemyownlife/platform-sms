@@ -24,22 +24,6 @@ public class TSmsRecord implements Serializable {
      */
     private String appId;
 
-    public Integer getRecordType() {
-        return recordType;
-    }
-
-    public void setRecordType(Integer recordType) {
-        this.recordType = recordType;
-    }
-
-    public Integer getChannelId() {
-        return channelId;
-    }
-
-    public void setChannelId(Integer channelId) {
-        this.channelId = channelId;
-    }
-
     /**
      * 0：普通短信 / 1 ：营销短信 （群发）
      */
@@ -56,6 +40,11 @@ public class TSmsRecord implements Serializable {
     private Long templateId;
 
     /**
+     * 模版参数
+     */
+    private String templateParam;
+
+    /**
      * 指定发送时间
      */
     private String attime;
@@ -64,8 +53,6 @@ public class TSmsRecord implements Serializable {
      * -1：待发送 / 0：已发送  /1  : 发送失败
      */
     private Integer sendStatus;
-
-    private String senderIp;
 
     private Date createTime;
 
@@ -127,14 +114,6 @@ public class TSmsRecord implements Serializable {
         this.sendStatus = sendStatus;
     }
 
-    public String getSenderIp() {
-        return senderIp;
-    }
-
-    public void setSenderIp(String senderIp) {
-        this.senderIp = senderIp;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -150,4 +129,29 @@ public class TSmsRecord implements Serializable {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    public Integer getRecordType() {
+        return recordType;
+    }
+
+    public void setRecordType(Integer recordType) {
+        this.recordType = recordType;
+    }
+
+    public Integer getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Integer channelId) {
+        this.channelId = channelId;
+    }
+
+    public String getTemplateParam() {
+        return templateParam;
+    }
+
+    public void setTemplateParam(String templateParam) {
+        this.templateParam = templateParam;
+    }
+
 }

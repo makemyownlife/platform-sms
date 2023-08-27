@@ -15,7 +15,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, template_name, template_type, content, `status`, remark , create_time, update_time
+    id, template_name, template_type, content, sign_name , `status`, remark , create_time, update_time
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">

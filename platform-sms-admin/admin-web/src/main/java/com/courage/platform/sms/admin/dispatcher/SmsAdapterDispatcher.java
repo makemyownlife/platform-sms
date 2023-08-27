@@ -7,6 +7,7 @@ import com.courage.platform.sms.admin.dispatcher.processor.RequestCode;
 import com.courage.platform.sms.admin.dispatcher.processor.ResponseEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.SmsAdatperProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.impl.ApplyTemplateRequestProcessor;
+import com.courage.platform.sms.admin.dispatcher.processor.impl.CreateRecordDetailRequestProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.impl.SendMessageRequestProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,9 @@ public class SmsAdapterDispatcher {
     @Autowired
     private ApplyTemplateRequestProcessor applyTemplateRequestProcessor;
 
+    @Autowired
+    private CreateRecordDetailRequestProcessor createRecordDetailRequestProcessor;
+
     private ExecutorService createRecordDetailThread;
 
     @PostConstruct
@@ -51,13 +55,13 @@ public class SmsAdapterDispatcher {
         {
             registerProcessor(RequestCode.SEND_MESSAGE, sendMessageRequestProcessor);                                      // 发送短信
             registerProcessor(RequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);                                  // 申请模版
-            registerProcessor(RequestCode.CREATE_RECORD_DETAIL, applyTemplateRequestProcessor, createRecordDetailThread); // 创建记录详情 (异步,使用单独的线程)
+            registerProcessor(RequestCode.CREATE_RECORD_DETAIL, createRecordDetailRequestProcessor, createRecordDetailThread); // 创建记录详情 (异步,使用单独的线程)
         }
         logger.info("结束初始化短信适配器分发服务, 耗时：" + (System.currentTimeMillis() - start));
     }
 
     // 分发处理请求
-    public ResponseEntity dispatchRequest(int requestCode, RequestEntity processorRequest) {
+    public ResponseEntity dispatchSyncRequest(int requestCode, RequestEntity processorRequest) {
         Pair<SmsAdatperProcessor, ExecutorService> pair = processorTable.get(requestCode);
         SmsAdatperProcessor smsAdatperProcessor = pair.getObject1();
         ExecutorService executorService = pair.getObject2();
@@ -66,10 +70,6 @@ public class SmsAdapterDispatcher {
             return responseCommand;
         } else {
             Pair<CountDownLatch, ResponseEntity> responsePair = new Pair(new CountDownLatch(1), null);
-            try {
-                responsePair.getObject1().await(5000, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-            }
             executorService.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -84,8 +84,31 @@ public class SmsAdapterDispatcher {
                     }
                 }
             });
+            try {
+                responsePair.getObject1().await(5000, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+            }
             return responsePair.getObject2();
         }
+    }
+
+    public void dispatchAsyncRequest(int requestCode, RequestEntity processorRequest) {
+        Pair<SmsAdatperProcessor, ExecutorService> pair = processorTable.get(requestCode);
+        SmsAdatperProcessor smsAdatperProcessor = pair.getObject1();
+        ExecutorService executorService = pair.getObject2();
+        if (executorService == null) {
+            smsAdatperProcessor.processRequest(processorRequest);
+        }
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    smsAdatperProcessor.processRequest(processorRequest);
+                } catch (Throwable e) {
+                    logger.error("processRequest error:", e);
+                }
+            }
+        });
     }
 
     public void registerProcessor(int requestCode, SmsAdatperProcessor smsAdatperProcessor) {

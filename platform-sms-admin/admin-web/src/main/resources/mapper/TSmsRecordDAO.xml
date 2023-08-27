@@ -9,7 +9,8 @@
     <result column="template_id" jdbcType="BIGINT" property="templateId" />
     <result column="attime" jdbcType="VARCHAR" property="attime" />
     <result column="send_status" jdbcType="TINYINT" property="sendStatus" />
-    <result column="sender_ip" jdbcType="VARCHAR" property="senderIp" />
+    <result column="template_param" jdbcType="VARCHAR" property="templateParam" />
+    <result column="template_param" jdbcType="VARCHAR" property="templateParam" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -17,7 +18,7 @@
     <result column="mobile" jdbcType="LONGVARCHAR" property="mobile" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, nationcode, app_id, record_type, template_id, attime, send_status, sender_ip, 
+    id, nationcode, app_id, record_type, template_id, attime, send_status, template_param, 
     create_time, update_time
   </sql>
   <sql id="Blob_Column_List">
@@ -36,18 +37,21 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecord" useGeneratedKeys="true">
-    insert into t_sms_record (nationcode, app_id, record_type, 
+    insert into t_sms_record (id , nationcode, app_id, record_type,
       template_id, attime, send_status, 
-      sender_ip, create_time, update_time, 
+      template_param, create_time, update_time, 
       mobile)
-    values (#{nationcode,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{recordType,jdbcType=TINYINT}, 
+    values (#{id}, #{nationcode,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{recordType,jdbcType=TINYINT},
       #{templateId,jdbcType=BIGINT}, #{attime,jdbcType=VARCHAR}, #{sendStatus,jdbcType=TINYINT}, 
-      #{senderIp,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{templateParam,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{mobile,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecord" useGeneratedKeys="true">
     insert into t_sms_record
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="nationcode != null">
         nationcode,
       </if>
@@ -66,8 +70,8 @@
       <if test="sendStatus != null">
         send_status,
       </if>
-      <if test="senderIp != null">
-        sender_ip,
+      <if test="templateParam != null">
+        template_param,
       </if>
       <if test="createTime != null">
         create_time,
@@ -80,6 +84,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
       <if test="nationcode != null">
         #{nationcode,jdbcType=VARCHAR},
       </if>
@@ -98,8 +105,8 @@
       <if test="sendStatus != null">
         #{sendStatus,jdbcType=TINYINT},
       </if>
-      <if test="senderIp != null">
-        #{senderIp,jdbcType=VARCHAR},
+      <if test="templateParam != null">
+        #{templateParam,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -112,6 +119,7 @@
       </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecord">
     update t_sms_record
     <set>
@@ -133,8 +141,8 @@
       <if test="sendStatus != null">
         send_status = #{sendStatus,jdbcType=TINYINT},
       </if>
-      <if test="senderIp != null">
-        sender_ip = #{senderIp,jdbcType=VARCHAR},
+      <if test="templateParam != null">
+        template_param = #{templateParam,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -148,6 +156,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecord">
     update t_sms_record
     set nationcode = #{nationcode,jdbcType=VARCHAR},
@@ -156,12 +165,13 @@
       template_id = #{templateId,jdbcType=BIGINT},
       attime = #{attime,jdbcType=VARCHAR},
       send_status = #{sendStatus,jdbcType=TINYINT},
-      sender_ip = #{senderIp,jdbcType=VARCHAR},
+      template_param = #{templateParam,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       mobile = #{mobile,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecord">
     update t_sms_record
     set nationcode = #{nationcode,jdbcType=VARCHAR},
@@ -170,7 +180,7 @@
       template_id = #{templateId,jdbcType=BIGINT},
       attime = #{attime,jdbcType=VARCHAR},
       send_status = #{sendStatus,jdbcType=TINYINT},
-      sender_ip = #{senderIp,jdbcType=VARCHAR},
+      template_param = #{templateParam,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

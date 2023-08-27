@@ -116,7 +116,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
                 }
                 // 向渠道申请模版
                 ApplyTemplateRequestBody applyTemplateRequestBody = new ApplyTemplateRequestBody(binding.getId());
-                smsAdapterController.dispatchRequest(RequestCode.APPLY_TEMPLATE, new RequestEntity(applyTemplateRequestBody));
+                smsAdapterController.dispatchSyncRequest(RequestCode.APPLY_TEMPLATE, new RequestEntity(applyTemplateRequestBody));
             }
             return BaseModel.getInstance("success");
         } catch (Exception e) {
