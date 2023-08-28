@@ -61,7 +61,7 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     public SmsSenderResult sendMessage(SendMessageRequestBody sendMessageRequestBody) {
         ResponseEntity<SmsSenderResult> processorResponse = smsAdapterDispatcher.dispatchSyncRequest(
                 RequestCode.SEND_MESSAGE,
-                new RequestEntity<SendMessageRequestBody>(sendMessageRequestBody));
+                new RequestEntity(sendMessageRequestBody));
         return processorResponse.getData();
     }
 
