@@ -4,12 +4,13 @@ import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
 import com.courage.platform.sms.admin.dao.TSmsRecordDetailDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail;
 import com.courage.platform.sms.admin.dispatcher.SmsAdapterDispatcher;
-import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.RequestCode;
+import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
+import com.courage.platform.sms.admin.dispatcher.processor.ResponseEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.body.SendMessageRequestBody;
 import com.courage.platform.sms.admin.service.SmsRecordService;
 import com.courage.platform.sms.admin.vo.BaseModel;
-import com.courage.platform.sms.admin.vo.RecordVO;
+import com.courage.platform.sms.client.SmsSenderResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,14 @@ public class SmsRecordServiceImpl implements SmsRecordService {
         RequestEntity<SendMessageRequestBody> sendMessageRequest = new RequestEntity<>(sendMessageRequestBody);
         smsAdapterDispatcher.dispatchSyncRequest(RequestCode.SEND_MESSAGE, sendMessageRequest);
         return BaseModel.getInstance("success");
+    }
+
+    public SmsSenderResult sendMessage(SendMessageRequestBody sendMessageRequestBody) {
+        // 处理请求
+        ResponseEntity<SmsSenderResult> processorResponse = smsAdapterDispatcher.dispatchSyncRequest(
+                RequestCode.SEND_MESSAGE,
+                new RequestEntity<SendMessageRequestBody>(sendMessageRequestBody));
+        return processorResponse.getData();
     }
 
 }

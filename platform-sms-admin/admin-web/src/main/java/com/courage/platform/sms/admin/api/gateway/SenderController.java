@@ -3,12 +3,9 @@ package com.courage.platform.sms.admin.api.gateway;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.courage.platform.sms.admin.dao.domain.TSmsAppinfo;
-import com.courage.platform.sms.admin.dispatcher.SmsAdapterDispatcher;
-import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
-import com.courage.platform.sms.admin.dispatcher.processor.RequestCode;
-import com.courage.platform.sms.admin.dispatcher.processor.ResponseEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.body.SendMessageRequestBody;
 import com.courage.platform.sms.admin.service.AppInfoService;
+import com.courage.platform.sms.admin.service.SmsRecordService;
 import com.courage.platform.sms.client.SmsSenderResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +23,10 @@ public class SenderController {
     private final static Logger logger = LoggerFactory.getLogger(SenderController.class);
 
     @Autowired
-    private SmsAdapterDispatcher smsAdapterController;
+    private AppInfoService appInfoService;
 
     @Autowired
-    private AppInfoService appInfoService;
+    private SmsRecordService smsRecordService;
 
     @RequestMapping("/sendByTemplateId")
     @ResponseBody
@@ -53,11 +50,8 @@ public class SenderController {
                 sendMessageRequestBody.setAppId(tSmsAppinfo.getAppKey());
                 sendMessageRequestBody.setMobile(jsonObject.getString("mobile"));
             }
-            // 处理请求
-            ResponseEntity<SmsSenderResult> processorResponse = smsAdapterController.dispatchSyncRequest(
-                    RequestCode.SEND_MESSAGE,
-                    new RequestEntity<SendMessageRequestBody>(sendMessageRequestBody));
-            return processorResponse.getData();
+
+            return smsRecordService.sendMessage(sendMessageRequestBody);
         } catch (Exception e) {
             logger.error("sendSingle error: ", e);
             return new SmsSenderResult(SmsSenderResult.FAIL_CODE, "发送失败");
