@@ -52,7 +52,7 @@ public class SmsAdapterSchedule {
     @PostConstruct
     public synchronized void init() {
         //初始化定时线程池
-        this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryImpl("adapterScheduledThread-"));
+        this.scheduledExecutorService = Executors.newScheduledThreadPool(2, new ThreadFactoryImpl("adapterScheduledThread-"));
         //定时加载适配器
         scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override

@@ -59,7 +59,6 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     }
 
     public SmsSenderResult sendMessage(SendMessageRequestBody sendMessageRequestBody) {
-        // 处理请求
         ResponseEntity<SmsSenderResult> processorResponse = smsAdapterDispatcher.dispatchSyncRequest(
                 RequestCode.SEND_MESSAGE,
                 new RequestEntity<SendMessageRequestBody>(sendMessageRequestBody));
