@@ -37,19 +37,19 @@ public class SenderController {
             String appKey = request.getParameter("appKey");
             String time = request.getParameter("time");
             String random = request.getParameter("random");
+
             // 构造唯一请求 id
             String uniqueId = time + random;
             logger.info("q:" + q + " appKey:" + appKey + " uniqueId:" + uniqueId);
+
             // 短信请求参数
             SendMessageRequestBody sendMessageRequestBody = new SendMessageRequestBody();
-            {
-                JSONObject jsonObject = JSON.parseObject(q);
-                sendMessageRequestBody.setTemplateId(jsonObject.getString("templateId"));
-                sendMessageRequestBody.setTemplateParam(jsonObject.getString("templateParam"));
-                TSmsAppinfo tSmsAppinfo = appInfoService.getAppInfoByAppkey(appKey);
-                sendMessageRequestBody.setAppId(tSmsAppinfo.getAppKey());
-                sendMessageRequestBody.setMobile(jsonObject.getString("mobile"));
-            }
+            JSONObject jsonObject = JSON.parseObject(q);
+            sendMessageRequestBody.setTemplateId(jsonObject.getString("templateId"));
+            sendMessageRequestBody.setTemplateParam(jsonObject.getString("templateParam"));
+            TSmsAppinfo tSmsAppinfo = appInfoService.getAppInfoByAppkey(appKey);
+            sendMessageRequestBody.setAppId(tSmsAppinfo.getAppKey());
+            sendMessageRequestBody.setMobile(jsonObject.getString("mobile"));
 
             return smsRecordService.sendMessage(sendMessageRequestBody);
         } catch (Exception e) {

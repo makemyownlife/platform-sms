@@ -16,6 +16,43 @@ import java.util.Map;
 public class EmayUnitTest {
 
     @Test
+    public void sendSingleSMS() {
+        String appId = "EUCP-EMY-SMS1-0BIGB";// 请联系销售，或者在页面中 获取
+        // 密钥
+        String secretKey = "69C5DCC5531E15BF";// 请联系销售，或者在页面中 获取
+        // 接口地址
+        String host = "http://www.btom.cn:8080"; // 请联系销售获取
+        // 加密算法
+        String algorithm = "AES/ECB/PKCS5Padding";
+        // 编码
+        String encode = "UTF-8";
+        // 是否压缩
+        boolean isGizp = true;
+        String templateId = "22222";
+        // 扩展 code
+        String extendedCode = "111";
+        TemplateSmsSendRequest pamars = new TemplateSmsSendRequest();
+        TemplateSmsIdAndMobile[] customSmsIdAndMobiles =
+                new TemplateSmsIdAndMobile[]{new TemplateSmsIdAndMobile("15011319235", "1"),
+                        new TemplateSmsIdAndMobile("17607197036", "2")};
+        pamars.setSmses(customSmsIdAndMobiles);
+        pamars.setTemplateId(templateId);
+        pamars.setExtendedCode(extendedCode);
+        pamars.setRequestTime(System.currentTimeMillis());
+        System.out.println(JsonHelper.toJsonString(pamars));
+        ResultModel result = request(appId, secretKey, algorithm, pamars, host + "/inter/sendTemplateNormalSMS", isGizp, encode);
+        System.out.println("result code :" + result.getCode());
+        if ("SUCCESS".equals(result.getCode())) {
+            SmsResponse[] response = JsonHelper.fromJson(SmsResponse[].class, result.getResult());
+            if (response != null) {
+                for (SmsResponse d : response) {
+                    System.out.println("data:" + d.getMobile() + "," + d.getSmsId() + "," + d.getCustomSmsId());
+                }
+            }
+        }
+    }
+
+    @Test
     public void sendTemplate() {
         String appId = "EUCP-EMY-SMS1-0BIGB";// 请联系销售，或者在页面中 获取
         // 密钥
