@@ -17,21 +17,12 @@ public class EmayAdapter implements OuterAdapter {
 
     private final static Logger logger = LoggerFactory.getLogger(EmayAdapter.class);
 
-    private final static String algorithm = "AES/ECB/PKCS5Padding";
-
-    private final static boolean isGizp = true;
-
-    private final static String encode = "UTF-8";
-
-    private final static String extendCode = "111";
-
     private SmsChannelConfig smsChannelConfig;
 
     @Override
     public void init(SmsChannelConfig smsChannelConfig) {
         logger.info("初始化亿美短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "]");
         this.smsChannelConfig = smsChannelConfig;
-
     }
 
     @Override
