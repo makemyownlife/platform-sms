@@ -31,7 +31,7 @@ public class EmayAdapter implements OuterAdapter {
 
     @Override
     public void init(SmsChannelConfig smsChannelConfig) throws SDKParamsException {
-        logger.info("初始化亿美短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "]");
+        logger.info("初始化亿美短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "] 实例Id:" + instanceId);
         this.smsChannelConfig = smsChannelConfig;
         String channelDomain = smsChannelConfig.getChannelDomain();
         String appId = smsChannelConfig.getChannelAppkey();
@@ -44,11 +44,10 @@ public class EmayAdapter implements OuterAdapter {
         String mobile = smsSendRequest.getPhoneNumbers();
         String signName = smsSendRequest.getSignName();
         String content = "【张勇的博客】短信内容";
-        String customSmsId = "1";
+        String customSmsId = UUID.randomUUID().toString().replaceAll("-", "");
         SmsSingleRequest request = new SmsSingleRequest(mobile, content, customSmsId, extendedCode, "");
         ResultModel<SmsResponse> result = client.sendSingleSms(request);
         if ("SUCCESS".equals(result.getCode())) {
-
         }
         return null;
     }
@@ -60,7 +59,7 @@ public class EmayAdapter implements OuterAdapter {
 
     @Override
     public void destroy() {
-        logger.warn("销毁亿美短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "]");
+        logger.warn("销毁亿美短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "] 实例Id:" + instanceId);
     }
 
 }
