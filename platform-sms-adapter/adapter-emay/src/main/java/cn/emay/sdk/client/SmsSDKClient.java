@@ -70,7 +70,11 @@ public class SmsSDKClient {
 		if (!ip.toLowerCase().startsWith("http://")) {
 			ip = "http://" + ip;
 		}
-		host = ip + ":" + port;
+		if(port == -1) {
+			host = ip;
+		} else {
+			host = ip + ":" + port;
+		}
 		CommonConstants.isBest = true;
 		CommonConstants.bestUrl = host;
 		service = new SDKSecurityServiceImpl();
