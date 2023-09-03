@@ -2,8 +2,8 @@ package com.courage.platform.sms.admin.dispatcher.processor.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.courage.platform.sms.adapter.OuterAdapter;
-import com.courage.platform.sms.adapter.command.AddSmsTemplateCommand;
-import com.courage.platform.sms.adapter.command.SmsResponseCommand;
+import com.courage.platform.sms.adapter.command.request.AddSmsTemplateCommand;
+import com.courage.platform.sms.adapter.command.response.SmsResponseCommand;
 import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
@@ -49,6 +49,7 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<ApplyT
                 OuterAdapter outerAdapter = smsAdapterLoader.getAdapterByChannelId(binding.getChannelId().intValue());
                 if (outerAdapter != null) {
                     AddSmsTemplateCommand addSmsTemplateCommand = new AddSmsTemplateCommand();
+                    addSmsTemplateCommand.setSignName(tSmsTemplate.getSignName());
                     addSmsTemplateCommand.setTemplateName(tSmsTemplate.getTemplateName());
                     addSmsTemplateCommand.setTemplateContent(tSmsTemplate.getContent());
                     addSmsTemplateCommand.setRemark(tSmsTemplate.getRemark());

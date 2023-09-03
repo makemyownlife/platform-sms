@@ -62,7 +62,7 @@ public class SmsSDKClient {
 	 * @throws SDKParamsException
 	 */
 	public SmsSDKClient(String ip, int port, String appId, String secretkey) throws SDKParamsException {
-		if (StringUtil.isEmpty(appId) || StringUtil.isEmpty(secretkey) || StringUtil.isEmpty(ip) || port <= 0) {
+		if (StringUtil.isEmpty(appId) || StringUtil.isEmpty(secretkey) || StringUtil.isEmpty(ip)) {
 			throw new SDKParamsException("SDK params error");
 		}
 		this.appId = appId;
@@ -82,7 +82,7 @@ public class SmsSDKClient {
 
 	/**
 	 * @param appId
-	 *            亿美服务帐号
+	 *            亿美服务帐号ilxw
 	 * @param secretkey
 	 *            亿美服务密码
 	 * @throws SDKParamsException

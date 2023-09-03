@@ -1,8 +1,8 @@
 package com.courage.platform.sms.admin.dispatcher.processor.impl;
 
 import com.courage.platform.sms.adapter.OuterAdapter;
-import com.courage.platform.sms.adapter.command.SendSmsCommand;
-import com.courage.platform.sms.adapter.command.SmsResponseCommand;
+import com.courage.platform.sms.adapter.command.request.SendSmsCommand;
+import com.courage.platform.sms.adapter.command.response.SmsResponseCommand;
 import com.courage.platform.sms.admin.common.config.IdGenerator;
 import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
 import com.courage.platform.sms.admin.dao.TSmsRecordDetailDAO;

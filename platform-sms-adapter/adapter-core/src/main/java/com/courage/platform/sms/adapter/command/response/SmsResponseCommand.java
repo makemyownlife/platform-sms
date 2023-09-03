@@ -1,4 +1,4 @@
-package com.courage.platform.sms.adapter.command;
+package com.courage.platform.sms.adapter.command.response;
 
 /**
  * 短信发送结果(适配器)

@@ -1,10 +1,12 @@
-package com.courage.platform.sms.adapter.command;
+package com.courage.platform.sms.adapter.command.request;
 
 /**
  * 添加短信模版请求
  * Created by zhangyong on 2023/7/4.
  */
-public class AddSmsTemplateCommand extends SmsRequestCommand{
+public class AddSmsTemplateCommand extends SmsRequestCommand {
+
+    public String signName;
 
     public String templateContent;
 
@@ -44,6 +46,14 @@ public class AddSmsTemplateCommand extends SmsRequestCommand{
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getSignName() {
+        return signName;
+    }
+
+    public void setSignName(String signName) {
+        this.signName = signName;
     }
 
 }

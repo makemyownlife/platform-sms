@@ -1,9 +1,9 @@
 package com.courage.platform.sms.adapter;
 
 
-import com.courage.platform.sms.adapter.command.AddSmsTemplateCommand;
-import com.courage.platform.sms.adapter.command.SendSmsCommand;
-import com.courage.platform.sms.adapter.command.SmsResponseCommand;
+import com.courage.platform.sms.adapter.command.request.AddSmsTemplateCommand;
+import com.courage.platform.sms.adapter.command.request.SendSmsCommand;
+import com.courage.platform.sms.adapter.command.response.SmsResponseCommand;
 import com.courage.platform.sms.adapter.support.SPI;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 

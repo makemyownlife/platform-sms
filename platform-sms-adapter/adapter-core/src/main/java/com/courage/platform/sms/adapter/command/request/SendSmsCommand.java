@@ -1,4 +1,6 @@
-package com.courage.platform.sms.adapter.command;
+package com.courage.platform.sms.adapter.command.request;
+
+import com.courage.platform.sms.adapter.command.request.SmsRequestCommand;
 
 /**
  * 短信发送请求(适配器)
