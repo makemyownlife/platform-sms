@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.vo;
+package com.courage.platform.sms.admin.domain.vo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

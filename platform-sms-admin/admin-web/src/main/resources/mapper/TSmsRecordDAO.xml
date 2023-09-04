@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.courage.platform.sms.admin.dao.TSmsRecordDAO">
-  <resultMap id="BaseResultMap" type="com.courage.platform.sms.admin.dao.domain.TSmsRecord">
+  <resultMap id="BaseResultMap" type="com.courage.platform.sms.admin.domain.TSmsRecord">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="nationcode" jdbcType="VARCHAR" property="nationcode" />
     <result column="app_id" jdbcType="VARCHAR" property="appId" />
@@ -14,7 +14,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.courage.platform.sms.admin.dao.domain.TSmsRecord">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.courage.platform.sms.admin.domain.TSmsRecord">
     <result column="mobile" jdbcType="LONGVARCHAR" property="mobile" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -36,7 +36,7 @@
     delete from t_sms_record
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecord">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsRecord">
     insert into t_sms_record (id , nationcode, app_id, record_type,
       template_id, attime, send_status, 
       template_param, create_time, update_time, 
@@ -46,7 +46,7 @@
       #{templateParam,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{mobile,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecord">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsRecord">
     insert into t_sms_record
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -120,7 +120,7 @@
     </trim>
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecord">
+  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.domain.TSmsRecord">
     update t_sms_record
     <set>
       <if test="nationcode != null">
@@ -157,7 +157,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecord">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.courage.platform.sms.admin.domain.TSmsRecord">
     update t_sms_record
     set nationcode = #{nationcode,jdbcType=VARCHAR},
       app_id = #{appId,jdbcType=VARCHAR},
@@ -172,7 +172,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsRecord">
+  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.domain.TSmsRecord">
     update t_sms_record
     set nationcode = #{nationcode,jdbcType=VARCHAR},
       app_id = #{appId,jdbcType=VARCHAR},

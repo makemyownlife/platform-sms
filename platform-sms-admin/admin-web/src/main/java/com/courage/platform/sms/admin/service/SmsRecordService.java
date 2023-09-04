@@ -1,8 +1,8 @@
 package com.courage.platform.sms.admin.service;
 
-import com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail;
+import com.courage.platform.sms.admin.domain.TSmsRecordDetail;
 import com.courage.platform.sms.admin.dispatcher.processor.body.SendMessageRequestBody;
-import com.courage.platform.sms.admin.vo.BaseModel;
+import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.client.SmsSenderResult;
 
 import java.util.List;

@@ -2,11 +2,11 @@ package com.courage.platform.sms.admin.service.impl;
 
 import com.courage.platform.sms.admin.common.config.IdGenerator;
 import com.courage.platform.sms.admin.dispatcher.processor.body.ApplyTemplateRequestBody;
-import com.courage.platform.sms.admin.vo.BaseModel;
+import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
-import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
-import com.courage.platform.sms.admin.dao.domain.TSmsTemplateBinding;
+import com.courage.platform.sms.admin.domain.TSmsTemplate;
+import com.courage.platform.sms.admin.domain.TSmsTemplateBinding;
 import com.courage.platform.sms.admin.dispatcher.SmsAdapterDispatcher;
 import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.RequestCode;

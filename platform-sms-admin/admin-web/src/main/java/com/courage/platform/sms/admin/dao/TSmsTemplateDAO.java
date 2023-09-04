@@ -1,6 +1,6 @@
 package com.courage.platform.sms.admin.dao;
 
-import com.courage.platform.sms.admin.dao.domain.TSmsTemplate;
+import com.courage.platform.sms.admin.domain.TSmsTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

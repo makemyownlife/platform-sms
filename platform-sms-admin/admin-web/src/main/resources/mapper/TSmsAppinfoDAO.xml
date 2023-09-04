@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.courage.platform.sms.admin.dao.TSmsAppinfoDAO">
-  <resultMap id="BaseResultMap" type="com.courage.platform.sms.admin.dao.domain.TSmsAppinfo">
+  <resultMap id="BaseResultMap" type="com.courage.platform.sms.admin.domain.TSmsAppinfo">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="app_key" jdbcType="VARCHAR" property="appKey" />
     <result column="app_name" jdbcType="VARCHAR" property="appName" />
@@ -24,7 +24,7 @@
     delete from t_sms_appinfo
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsAppinfo" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsAppinfo" useGeneratedKeys="true">
     insert into t_sms_appinfo (app_key, app_name, app_secret, 
       `status`, remark, create_time, 
       update_time)
@@ -32,7 +32,7 @@
       #{status,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsAppinfo" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsAppinfo" useGeneratedKeys="true">
     insert into t_sms_appinfo
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="appKey != null">
@@ -81,7 +81,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsAppinfo">
+  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.domain.TSmsAppinfo">
     update t_sms_appinfo
     <set>
       <if test="appKey != null">
@@ -108,7 +108,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.dao.domain.TSmsAppinfo">
+  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.domain.TSmsAppinfo">
     update t_sms_appinfo
     set app_key = #{appKey,jdbcType=VARCHAR},
       app_name = #{appName,jdbcType=VARCHAR},

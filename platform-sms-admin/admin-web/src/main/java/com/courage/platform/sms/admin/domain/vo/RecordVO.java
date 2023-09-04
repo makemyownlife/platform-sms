@@ -1,6 +1,6 @@
-package com.courage.platform.sms.admin.vo;
+package com.courage.platform.sms.admin.domain.vo;
 
-import com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail;
+import com.courage.platform.sms.admin.domain.TSmsRecordDetail;
 
 public class RecordVO extends TSmsRecordDetail {
 

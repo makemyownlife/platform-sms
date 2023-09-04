@@ -1,9 +1,9 @@
 package com.courage.platform.sms.admin.api.admin;
 
-import com.courage.platform.sms.admin.dao.domain.TSmsRecordDetail;
+import com.courage.platform.sms.admin.domain.TSmsRecordDetail;
 import com.courage.platform.sms.admin.service.SmsRecordService;
-import com.courage.platform.sms.admin.vo.BaseModel;
-import com.courage.platform.sms.admin.vo.Pager;
+import com.courage.platform.sms.admin.domain.vo.BaseModel;
+import com.courage.platform.sms.admin.domain.vo.Pager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

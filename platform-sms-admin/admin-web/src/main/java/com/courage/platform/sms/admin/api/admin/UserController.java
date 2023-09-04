@@ -1,7 +1,7 @@
 package com.courage.platform.sms.admin.api.admin;
 
-import com.courage.platform.sms.admin.vo.AdminUser;
-import com.courage.platform.sms.admin.vo.BaseModel;
+import com.courage.platform.sms.admin.domain.vo.AdminUser;
+import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import org.slf4j.Logger;
