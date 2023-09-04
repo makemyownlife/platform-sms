@@ -24,7 +24,7 @@ public class SmsTemplateUtil {
      * @return 短信内容(不包含签名)
      */
     public static String renderContentWithSignName(Map<String, String> templateParam, String templateContent, String signName) {
-        String result = StringUtils.EMPTY;
+        String result = templateContent;
         String prefix = StringUtils.isEmpty(signName) ? StringUtils.EMPTY : "【" + signName + "】";
         // 遍历模板中的参数占位符，并替换为对应的参数值
         for (Map.Entry<String, String> entry : templateParam.entrySet()) {
@@ -34,4 +34,5 @@ public class SmsTemplateUtil {
         }
         return prefix + result;
     }
+
 }

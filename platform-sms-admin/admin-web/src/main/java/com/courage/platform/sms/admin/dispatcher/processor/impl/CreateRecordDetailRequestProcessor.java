@@ -3,6 +3,7 @@ package com.courage.platform.sms.admin.dispatcher.processor.impl;
 import com.courage.platform.sms.adapter.OuterAdapter;
 import com.courage.platform.sms.adapter.command.request.SendSmsCommand;
 import com.courage.platform.sms.adapter.command.response.SmsResponseCommand;
+import com.courage.platform.sms.adapter.support.SmsTemplateUtil;
 import com.courage.platform.sms.admin.common.config.IdGenerator;
 import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
 import com.courage.platform.sms.admin.dao.TSmsRecordDetailDAO;
@@ -90,7 +91,7 @@ public class CreateRecordDetailRequestProcessor implements SmsAdatperProcessor<L
                     detail.setMobile(record.getMobile());
                     detail.setChannelId(String.valueOf(channelId));
                     detail.setRecordId(recordId);
-                    detail.setContent(StringUtils.EMPTY);
+                    detail.setContent(SmsTemplateUtil.renderContentWithSignName(smsCommand.getTemplateParam(), smsCommand.getTemplateContent(), smsCommand.getSignName()));
                     detail.setMsgid(msgId);
                     detail.setSenderTime(new Date());
                     detail.setSendStatus(sendFlag ? 0 : 1);
