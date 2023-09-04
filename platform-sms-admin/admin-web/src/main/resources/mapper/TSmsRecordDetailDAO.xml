@@ -196,6 +196,21 @@
     LIMIT #{start}, #{end}
   </select>
 
+  <select id="queryRecordVOList" parameterType="java.util.HashMap" resultType="com.courage.platform.sms.admin.domain.vo.RecordVO">
+    <bind name="start" value="(page - 1) * size"/>
+    <bind name="end" value="size"/>
+    select
+    <include refid="Base_Column_List" />
+    from t_sms_record_detail t
+    <where>
+      <if test="mobile != null and mobile != ''">
+        and mobile like CONCAT('%', #{mobile}, '%')
+      </if>
+    </where>
+    order by t.create_time desc
+    LIMIT #{start}, #{end}
+  </select>
+
   <select id="queryCountRecordDetail" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select
     count(1)

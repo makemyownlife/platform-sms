@@ -1,6 +1,7 @@
 package com.courage.platform.sms.admin.api.admin;
 
 import com.courage.platform.sms.admin.domain.TSmsRecordDetail;
+import com.courage.platform.sms.admin.domain.vo.RecordVO;
 import com.courage.platform.sms.admin.service.SmsRecordService;
 import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.admin.domain.vo.Pager;
@@ -34,7 +35,7 @@ public class SmsRecordController {
         param.put("size", Integer.valueOf(size));
 
         Pager pager = new Pager();
-        List<TSmsRecordDetail> detailList = smsRecordService.queryRecordDetailList(param);
+        List<RecordVO> detailList = smsRecordService.queryRecordVOList(param);
         Long count = smsRecordService.queryCountRecordDetail(param);
         pager.setItems(detailList);
         pager.setCount(count);

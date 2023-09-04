@@ -8,6 +8,7 @@ import com.courage.platform.sms.admin.dispatcher.processor.RequestCode;
 import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.ResponseEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.body.SendMessageRequestBody;
+import com.courage.platform.sms.admin.domain.vo.RecordVO;
 import com.courage.platform.sms.admin.service.SmsRecordService;
 import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.client.SmsSenderResult;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class SmsRecordServiceImpl implements SmsRecordService {
@@ -36,6 +38,14 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     @Override
     public List<TSmsRecordDetail> queryRecordDetailList(Map<String, Object> param) {
         return detailDAO.queryRecordDetailList(param);
+    }
+
+    @Override
+    public List<RecordVO> queryRecordVOList(Map<String, Object> param) {
+        List<RecordVO> recordVOList = detailDAO.queryRecordVOList(param);
+        List<Long> appIdList = recordVOList.stream().map(RecordVO::getId).collect(Collectors.toList());                      // 应用列表
+        List<String> channelIdList = recordVOList.stream().map(RecordVO::getChannelId).collect(Collectors.toList());         // 渠道列表
+        return recordVOList;
     }
 
     @Override
@@ -59,9 +69,7 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     }
 
     public SmsSenderResult sendMessage(SendMessageRequestBody sendMessageRequestBody) {
-        ResponseEntity<SmsSenderResult> processorResponse = smsAdapterDispatcher.dispatchSyncRequest(
-                RequestCode.SEND_MESSAGE,
-                new RequestEntity(sendMessageRequestBody));
+        ResponseEntity<SmsSenderResult> processorResponse = smsAdapterDispatcher.dispatchSyncRequest(RequestCode.SEND_MESSAGE, new RequestEntity(sendMessageRequestBody));
         return processorResponse.getData();
     }
 
