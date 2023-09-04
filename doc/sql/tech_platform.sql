@@ -43,7 +43,6 @@ CREATE TABLE `t_sms_channel` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
-
 -- ----------------------------
 -- Table structure for t_sms_record
 -- ----------------------------

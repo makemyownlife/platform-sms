@@ -34,7 +34,7 @@ public class SenderController {
         try {
             // 接收请求参数
             String q = request.getParameter("q");
-            String appKey = request.getParameter("appKey");
+            String appKey = request.getParameter("appkey");
             String time = request.getParameter("time");
             String random = request.getParameter("random");
 
