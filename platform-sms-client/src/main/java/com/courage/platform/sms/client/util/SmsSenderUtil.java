@@ -1,9 +1,11 @@
 package com.courage.platform.sms.client.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomUtils;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.UUID;
 
 
 public class SmsSenderUtil {
@@ -13,8 +15,9 @@ public class SmsSenderUtil {
     }
 
     public static String getRandom() {
-        long random =  (new Random(SmsSenderUtil.getCurrentTime())).nextLong() % 900000 + 100000;
-        return String.valueOf(random);
+        //long random =  (new Random(SmsSenderUtil.getCurrentTime())).nextLong() % 900000 + 100000;
+        //return String.valueOf(random);
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
     public static String calculateSignature(String appSecret, String random, String time,

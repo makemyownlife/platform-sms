@@ -33,7 +33,7 @@ public class SmsSenderClient {
         // 构造参数
         Map<String, String> param = new HashMap<String, String>(4);
         param.put("time", time);
-        param.put("time", appKey);
+        param.put("appKey", appKey);
         param.put("random", random);
         Map<String, Object> queryParam = new HashMap<String, Object>(4);
         queryParam.put("mobile", mobile);
