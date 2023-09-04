@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -64,6 +65,7 @@ public class CreateRecordDetailRequestProcessor implements SmsAdatperProcessor<L
             Long templateId = record.getTemplateId();
             TSmsTemplate template = tSmsTemplateDAO.selectByPrimaryKey(templateId);
             List<TSmsTemplateBinding> bindingList = bindingDAO.selectBindingsByTemplateId(templateId);
+            Collections.shuffle(bindingList);
             for (TSmsTemplateBinding tSmsTemplateBinding : bindingList) {
                 Integer channelId = tSmsTemplateBinding.getChannelId();
                 OuterAdapter outerAdapter = smsAdapterLoader.getAdapterByChannelId(channelId);
