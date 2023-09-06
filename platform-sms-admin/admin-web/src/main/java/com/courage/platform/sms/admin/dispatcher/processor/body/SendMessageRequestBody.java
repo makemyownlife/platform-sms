@@ -8,7 +8,7 @@ public class SendMessageRequestBody extends RequestBody {
 
     private String templateId;
 
-    private String appId;
+    private Integer appId;
 
     private String templateParam;
 
@@ -28,11 +28,11 @@ public class SendMessageRequestBody extends RequestBody {
         this.templateId = templateId;
     }
 
-    public String getAppId() {
+    public Integer getAppId() {
         return appId;
     }
 
-    public void setAppId(String appId) {
+    public void setAppId(Integer appId) {
         this.appId = appId;
     }
 
@@ -45,3 +45,4 @@ public class SendMessageRequestBody extends RequestBody {
     }
 
 }
+

@@ -60,7 +60,7 @@ public class SendMessageRequestProcessor implements SmsAdatperProcessor<SendMess
             );
         }
         // 插入到记录 t_sms_record
-        Long smsId = idGenerator.createUniqueId(param.getAppId());
+        Long smsId = idGenerator.createUniqueId(String.valueOf(param.getAppId()));
         logger.info("appId:" + param.getAppId() + " smsId:" + smsId);
         TSmsRecord tSmsRecord = new TSmsRecord();
         tSmsRecord.setId(smsId);

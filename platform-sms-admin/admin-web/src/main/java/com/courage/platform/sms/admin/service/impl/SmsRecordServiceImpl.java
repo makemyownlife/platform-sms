@@ -60,7 +60,7 @@ public class SmsRecordServiceImpl implements SmsRecordService {
             List<Integer> channelIdList = recordVOList.stream().map(RecordVO::getChannelId).collect(Collectors.toList());         // 渠道ID列表
             List<TSmsAppinfo> smsAppinfoList = appinfoDAO.selectAppInfoListByIds(appIdList);                                     // 应用信息列表
             List<TSmsChannel> smsChannelList = channelDAO.selectChannelsByIds(channelIdList);
-            Map<Long, TSmsAppinfo> appinfoMap = smsAppinfoList.stream().collect(Collectors.toMap(TSmsAppinfo::getId, appInfo -> appInfo));
+            Map<Integer, TSmsAppinfo> appinfoMap = smsAppinfoList.stream().collect(Collectors.toMap(TSmsAppinfo::getId, appInfo -> appInfo));
             Map<Integer, TSmsChannel> channelMap = smsChannelList.stream().collect(Collectors.toMap(TSmsChannel::getId, tSmsChannel -> tSmsChannel));
             for (RecordVO recordVO : recordVOList) {
                 recordVO.setChannelName(channelMap.get(recordVO.getChannelId()).getChannelName());
@@ -79,7 +79,7 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     public BaseModel<String> adminSendRecord(String mobile, String templateId, String templateParam) {
         logger.info("admin端发送短信，mobile：" + mobile + " templateId:" + templateId);
         SendMessageRequestBody sendMessageRequestBody = new SendMessageRequestBody();
-        sendMessageRequestBody.setAppId("1");                                        // 使用默认测试应用 appId = 1
+        sendMessageRequestBody.setAppId(1);                                          // 使用默认测试应用 appId = 1
         sendMessageRequestBody.setMobile(mobile);
         sendMessageRequestBody.setTemplateId(templateId);
         templateParam = "{\"code\":\"1111\"}";

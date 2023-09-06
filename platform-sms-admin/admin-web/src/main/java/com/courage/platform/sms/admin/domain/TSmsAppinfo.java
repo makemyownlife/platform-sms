@@ -7,7 +7,7 @@ public class TSmsAppinfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private Integer id;
 
     private String appKey;
 
@@ -26,12 +26,11 @@ public class TSmsAppinfo implements Serializable {
 
     private Date updateTime;
 
-
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -75,7 +75,7 @@ public class AppInfoServiceImpl implements AppInfoService {
     @Override
     public BaseModel deleteAppInfo(String id) {
         try {
-            tSmsAppinfoDAO.deleteByPrimaryKey(Long.valueOf(id));
+            tSmsAppinfoDAO.deleteByPrimaryKey(Integer.valueOf(id));
             return BaseModel.getInstance("success");
         } catch (Exception e) {
             logger.error("deleteSmsChannel error:", e);

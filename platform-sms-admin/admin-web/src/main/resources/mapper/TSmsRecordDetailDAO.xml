@@ -17,8 +17,23 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
+  <resultMap id="BaseResultMap2" type="com.courage.platform.sms.admin.domain.vo.RecordVO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="record_id" jdbcType="BIGINT" property="recordId" />
+    <result column="app_id" jdbcType="BIGINT" property="appId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="send_status" jdbcType="TINYINT" property="sendStatus" />
+    <result column="report_status" jdbcType="TINYINT" property="reportStatus" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="msgid" jdbcType="VARCHAR" property="msgid" />
+    <result column="channel_id" jdbcType="BIGINT" property="channelId" />
+    <result column="sender_time" jdbcType="TIMESTAMP" property="senderTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
   <sql id="Base_Column_List">
-    id, record_id, app_id, content, send_status, report_status, mobile, msgid, channel_id, 
+    id, record_id, app_id, content, send_status, report_status, mobile, msgid, channel_id,
     sender_time, create_time, update_time
   </sql>
 
@@ -196,7 +211,7 @@
     LIMIT #{start}, #{end}
   </select>
 
-  <select id="queryRecordVOList" parameterType="java.util.HashMap" resultType="com.courage.platform.sms.admin.domain.vo.RecordVO">
+  <select id="queryRecordVOList" parameterType="java.util.HashMap" resultMap="BaseResultMap2">
     <bind name="start" value="(page - 1) * size"/>
     <bind name="end" value="size"/>
     select
@@ -204,7 +219,7 @@
     from t_sms_record_detail t
     <where>
       <if test="mobile != null and mobile != ''">
-        and mobile like CONCAT('%', #{mobile}, '%')
+        and t.mobile like CONCAT('%', #{mobile}, '%')
       </if>
     </where>
     order by t.create_time desc
@@ -217,7 +232,7 @@
     from t_sms_record_detail t
     <where>
       <if test="mobile != null and mobile != ''">
-         mobile =  #{mobile,jdbcType=VARCHAR}
+         t.mobile =  #{mobile,jdbcType=VARCHAR}
       </if>
     </where>
   </select>
