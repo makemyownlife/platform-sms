@@ -88,10 +88,7 @@
       </div>
     </el-dialog>
     <!--    模态窗口 end   -->
-
   </div>
-
-
 
 </template>
 
@@ -100,8 +97,10 @@
 import {getSmsRecords, addSmsRecord} from '@/api/smsRecord'
 import {getSmsTemplates} from '@/api/template'
 import {getSmsChannels} from "@/api/smsChannel";
+import Pagination from '@/components/Pagination'
 
 export default {
+  components: { Pagination },
   filters: {},
   data() {
     return {
