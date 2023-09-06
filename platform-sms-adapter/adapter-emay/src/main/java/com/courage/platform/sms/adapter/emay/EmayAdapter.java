@@ -95,6 +95,7 @@ public class EmayAdapter implements OuterAdapter {
 
     @Override
     public SmsResponseCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateCommand querySmsTemplateCommand) {
+        // 亿美默认模版申请成功
         return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 2);
     }
 
