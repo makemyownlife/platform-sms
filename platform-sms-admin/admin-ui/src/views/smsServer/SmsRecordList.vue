@@ -40,7 +40,11 @@
         </template>
       </el-table-column>
       <el-table-column label="状态" align="center">
-
+        <template slot-scope="scope">
+          <font v-if="scope.row.sendStatus === -1" color="gray">待发送</font>
+          <font v-if="scope.row.sendStatus === 0" color="green">成功</font>
+          <font v-if="scope.row.sendStatus === 1" color="red">失败</font>
+        </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="创建时间" min-width="75" align="center">
         <template slot-scope="scope">
@@ -48,6 +52,9 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.size"
+                @pagination="fetchData()"/>
 
     <!--   模态窗口 start  -->
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="580px">
@@ -83,6 +90,8 @@
     <!--    模态窗口 end   -->
 
   </div>
+
+
 
 </template>
 

@@ -101,7 +101,7 @@ export const constantRoutes = [
       {
         path: 'smsList',
         name: '短信管理',
-        component: () => import('@/views/smsServer/SmsList'),
+        component: () => import('@/views/smsServer/SmsRecordList'),
         meta: { title: '短信管理', icon: 'form' }
       }
       //   ,
