@@ -1,5 +1,6 @@
 package com.courage.platform.sms.admin.common.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private ApiInterceptor apiInterceptor;
 
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilter() {
@@ -44,6 +48,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // api网关
+        registry.addInterceptor(apiInterceptor).addPathPatterns("/gateway/**");
+        
+        // 控制台接口
         registry.addInterceptor(new HandlerInterceptor() {
 
             @Override

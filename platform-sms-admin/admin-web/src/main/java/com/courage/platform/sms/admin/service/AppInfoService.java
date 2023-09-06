@@ -1,7 +1,7 @@
 package com.courage.platform.sms.admin.service;
 
-import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.admin.domain.TSmsAppinfo;
+import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +11,8 @@ import java.util.Map;
 public interface AppInfoService {
 
     List<TSmsAppinfo> selectAppInfoListPage(Map<String, Object> param);
+
+    TSmsAppinfo getAppinfoByAppKeyFromLocalCache(String appKey);
 
     Integer selectAppInfoCount(Map<String, Object> param);
 
