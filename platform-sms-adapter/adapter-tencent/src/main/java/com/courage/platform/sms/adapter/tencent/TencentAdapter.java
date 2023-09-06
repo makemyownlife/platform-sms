@@ -2,12 +2,15 @@ package com.courage.platform.sms.adapter.tencent;
 
 import com.courage.platform.sms.adapter.OuterAdapter;
 import com.courage.platform.sms.adapter.command.request.AddSmsTemplateCommand;
+import com.courage.platform.sms.adapter.command.request.QuerySmsTemplateCommand;
 import com.courage.platform.sms.adapter.command.request.SendSmsCommand;
 import com.courage.platform.sms.adapter.command.response.SmsResponseCommand;
 import com.courage.platform.sms.adapter.support.SPI;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 @SPI("tencent")
 public class TencentAdapter implements OuterAdapter {
@@ -23,12 +26,17 @@ public class TencentAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsResponseCommand sendSmsByTemplateId(SendSmsCommand smsSendRequest) {
+    public SmsResponseCommand<String> sendSmsByTemplateId(SendSmsCommand smsSendRequest) {
         return null;
     }
 
     @Override
-    public SmsResponseCommand addSmsTemplate(AddSmsTemplateCommand addSmsTemplateCommand) {
+    public SmsResponseCommand<Map<String, String>> addSmsTemplate(AddSmsTemplateCommand addSmsTemplateCommand) {
+        return null;
+    }
+
+    @Override
+    public SmsResponseCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateCommand querySmsTemplateCommand) {
         return null;
     }
 
