@@ -11,7 +11,7 @@
     <result column="report_status" jdbcType="TINYINT" property="reportStatus" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="msgid" jdbcType="VARCHAR" property="msgid" />
-    <result column="channel_id" jdbcType="VARCHAR" property="channelId" />
+    <result column="channel_id" jdbcType="BIGINT" property="channelId" />
     <result column="sender_time" jdbcType="TIMESTAMP" property="senderTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />

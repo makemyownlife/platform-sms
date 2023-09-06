@@ -14,4 +14,6 @@ public interface TSmsChannelDAO extends MyBatisBaseDao<TSmsChannel, Integer> {
 
     TSmsChannel queryChannelByAppkeyAndChannelType(@Param("channelAppkey") String appkey, @Param("channelType") String channelType);
 
+    List<TSmsChannel> selectChannelsByIds(@Param("ids") List<Integer> ids);
+
 }

@@ -161,4 +161,15 @@
    </select>
   <!-- 按条件分页查询 end  -->
 
+  <!-- 批量查询  -->
+  <select id="selectAppInfoListByIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sms_appinfo
+    where id IN
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </select>
+
 </mapper>

@@ -48,7 +48,7 @@ public class TSmsRecordDetail implements Serializable {
     /**
      * 渠道
      */
-    private String channelId;
+    private Integer channelId;
 
     /**
      * 消息发送时间
@@ -115,14 +115,6 @@ public class TSmsRecordDetail implements Serializable {
         this.msgid = msgid;
     }
 
-    public String getChannelId() {
-        return channelId;
-    }
-
-    public void setChannelId(String channelId) {
-        this.channelId = channelId;
-    }
-
     public Date getSenderTime() {
         return senderTime;
     }
@@ -161,6 +153,14 @@ public class TSmsRecordDetail implements Serializable {
 
     public void setSendStatus(Integer sendStatus) {
         this.sendStatus = sendStatus;
+    }
+
+    public Integer getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Integer channelId) {
+        this.channelId = channelId;
     }
 
 }

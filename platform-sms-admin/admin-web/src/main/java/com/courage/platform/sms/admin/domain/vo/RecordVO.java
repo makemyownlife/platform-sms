@@ -8,6 +8,19 @@ public class RecordVO extends TSmsRecordDetail {
 
     private String appName;
 
-    private String content;
+    public String getChannelName() {
+        return channelName;
+    }
 
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
 }

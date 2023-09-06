@@ -134,6 +134,7 @@
       </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.domain.TSmsChannel">
     update t_sms_channel
     <set>
@@ -217,5 +218,14 @@
      channel_type = #{channelType,jdbcType=VARCHAR}
   </select>
 
+  <select id="selectChannelsByIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sms_channel
+    where id IN
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </select>
 
 </mapper>

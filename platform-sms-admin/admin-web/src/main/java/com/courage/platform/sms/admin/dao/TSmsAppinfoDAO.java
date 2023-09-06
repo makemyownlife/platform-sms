@@ -18,4 +18,6 @@ public interface TSmsAppinfoDAO extends MyBatisBaseDao<TSmsAppinfo, Long> {
 
     Integer selectAppInfoCount(Map<String, Object> param);
 
+    List<TSmsAppinfo> selectAppInfoListByIds(@Param("ids") List<Long> ids);
+
 }

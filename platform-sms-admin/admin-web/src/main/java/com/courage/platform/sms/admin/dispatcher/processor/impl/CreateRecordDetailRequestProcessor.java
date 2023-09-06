@@ -91,7 +91,7 @@ public class CreateRecordDetailRequestProcessor implements SmsAdatperProcessor<L
                     detail.setCreateTime(new Date());
                     detail.setUpdateTime(new Date());
                     detail.setMobile(record.getMobile());
-                    detail.setChannelId(String.valueOf(channelId));
+                    detail.setChannelId(channelId);
                     detail.setRecordId(recordId);
                     detail.setContent(SmsTemplateUtil.renderContentWithSignName(smsCommand.getTemplateParam(), smsCommand.getTemplateContent(), smsCommand.getSignName()));
                     detail.setMsgid(msgId);
