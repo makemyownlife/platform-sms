@@ -83,7 +83,7 @@ public class CreateRecordDetailRequestProcessor implements SmsAdatperProcessor<L
                         sendFlag = true;
                         msgId = (String) smsResponseCommand.getData();
                     }
-                    Long detailId = idGenerator.createUniqueId(record.getAppId());
+                    Long detailId = idGenerator.createUniqueId(String.valueOf(record.getAppId()));
                     // 插入详情表
                     TSmsRecordDetail detail = new TSmsRecordDetail();
                     detail.setId(detailId);

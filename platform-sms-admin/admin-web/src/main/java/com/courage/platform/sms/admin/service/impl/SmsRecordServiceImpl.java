@@ -56,7 +56,7 @@ public class SmsRecordServiceImpl implements SmsRecordService {
         // 此处代码为什么这么写，主要是向同学们展示批量操作 教学使用
         List<RecordVO> recordVOList = detailDAO.queryRecordVOList(param);
         if (CollectionUtils.isNotEmpty(recordVOList)) {
-            List<Long> appIdList = recordVOList.stream().map(RecordVO::getId).collect(Collectors.toList());                      // 应用ID列表
+            List<Integer> appIdList = recordVOList.stream().map(RecordVO::getAppId).collect(Collectors.toList());                      // 应用ID列表
             List<Integer> channelIdList = recordVOList.stream().map(RecordVO::getChannelId).collect(Collectors.toList());         // 渠道ID列表
             List<TSmsAppinfo> smsAppinfoList = appinfoDAO.selectAppInfoListByIds(appIdList);                                     // 应用信息列表
             List<TSmsChannel> smsChannelList = channelDAO.selectChannelsByIds(channelIdList);

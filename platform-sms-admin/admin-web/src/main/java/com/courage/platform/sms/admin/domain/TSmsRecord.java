@@ -22,7 +22,7 @@ public class TSmsRecord implements Serializable {
     /**
      * 调用服务方
      */
-    private String appId;
+    private Integer appId;
 
     /**
      * 0：普通短信 / 1 ：营销短信 （群发）
@@ -76,11 +76,11 @@ public class TSmsRecord implements Serializable {
         this.nationcode = nationcode;
     }
 
-    public String getAppId() {
+    public Integer getAppId() {
         return appId;
     }
 
-    public void setAppId(String appId) {
+    public void setAppId(Integer appId) {
         this.appId = appId;
     }
 

@@ -5,7 +5,7 @@
   <resultMap id="BaseResultMap" type="com.courage.platform.sms.admin.domain.TSmsRecordDetail">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="record_id" jdbcType="BIGINT" property="recordId" />
-    <result column="app_id" jdbcType="VARCHAR" property="appId" />
+    <result column="app_id" jdbcType="BIGINT" property="appId" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="send_status" jdbcType="TINYINT" property="sendStatus" />
     <result column="report_status" jdbcType="TINYINT" property="reportStatus" />
@@ -39,7 +39,7 @@
       send_status, report_status, mobile, 
       msgid, channel_id, sender_time, 
       create_time, update_time)
-    values (#{id}, #{recordId,jdbcType=BIGINT}, #{appId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
+    values (#{id}, #{recordId,jdbcType=BIGINT}, #{appId,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR},
       #{sendStatus,jdbcType=TINYINT}, #{reportStatus,jdbcType=TINYINT}, #{mobile,jdbcType=VARCHAR}, 
       #{msgid,jdbcType=VARCHAR}, #{channelId,jdbcType=VARCHAR}, #{senderTime,jdbcType=TIMESTAMP}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
@@ -93,7 +93,7 @@
         #{recordId,jdbcType=BIGINT},
       </if>
       <if test="appId != null">
-        #{appId,jdbcType=VARCHAR},
+        #{appId,jdbcType=BIGINT},
       </if>
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
@@ -132,7 +132,7 @@
         record_id = #{recordId,jdbcType=BIGINT},
       </if>
       <if test="appId != null">
-        app_id = #{appId,jdbcType=VARCHAR},
+        app_id = #{appId,jdbcType=BIGINT},
       </if>
       <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
@@ -168,7 +168,7 @@
   <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.domain.TSmsRecordDetail">
     update t_sms_record_detail
     set record_id = #{recordId,jdbcType=BIGINT},
-      app_id = #{appId,jdbcType=VARCHAR},
+      app_id = #{appId,jdbcType=BIGINT},
       content = #{content,jdbcType=VARCHAR},
       send_status = #{sendStatus,jdbcType=TINYINT},
       report_status = #{reportStatus,jdbcType=TINYINT},

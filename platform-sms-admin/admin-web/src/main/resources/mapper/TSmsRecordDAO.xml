@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.courage.platform.sms.admin.domain.TSmsRecord">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="nationcode" jdbcType="VARCHAR" property="nationcode" />
-    <result column="app_id" jdbcType="VARCHAR" property="appId" />
+    <result column="app_id" jdbcType="BIGINT" property="appId" />
     <result column="record_type" jdbcType="TINYINT" property="recordType" />
     <result column="template_id" jdbcType="BIGINT" property="templateId" />
     <result column="attime" jdbcType="VARCHAR" property="attime" />
@@ -41,7 +41,7 @@
       template_id, attime, send_status, 
       template_param, create_time, update_time, 
       mobile)
-    values (#{id}, #{nationcode,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{recordType,jdbcType=TINYINT},
+    values (#{id}, #{nationcode,jdbcType=VARCHAR}, #{appId,jdbcType=BIGINT}, #{recordType,jdbcType=TINYINT},
       #{templateId,jdbcType=BIGINT}, #{attime,jdbcType=VARCHAR}, #{sendStatus,jdbcType=TINYINT}, 
       #{templateParam,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{mobile,jdbcType=LONGVARCHAR})
@@ -91,7 +91,7 @@
         #{nationcode,jdbcType=VARCHAR},
       </if>
       <if test="appId != null">
-        #{appId,jdbcType=VARCHAR},
+        #{appId,jdbcType=BIGINT},
       </if>
       <if test="recordType != null">
         #{recordType,jdbcType=TINYINT},
@@ -127,7 +127,7 @@
         nationcode = #{nationcode,jdbcType=VARCHAR},
       </if>
       <if test="appId != null">
-        app_id = #{appId,jdbcType=VARCHAR},
+        app_id = #{appId,jdbcType=BIGINT},
       </if>
       <if test="recordType != null">
         record_type = #{recordType,jdbcType=TINYINT},
@@ -160,7 +160,7 @@
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.courage.platform.sms.admin.domain.TSmsRecord">
     update t_sms_record
     set nationcode = #{nationcode,jdbcType=VARCHAR},
-      app_id = #{appId,jdbcType=VARCHAR},
+      app_id = #{appId,jdbcType=BIGINT},
       record_type = #{recordType,jdbcType=TINYINT},
       template_id = #{templateId,jdbcType=BIGINT},
       attime = #{attime,jdbcType=VARCHAR},
@@ -175,7 +175,7 @@
   <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.domain.TSmsRecord">
     update t_sms_record
     set nationcode = #{nationcode,jdbcType=VARCHAR},
-      app_id = #{appId,jdbcType=VARCHAR},
+      app_id = #{appId,jdbcType=BIGINT},
       record_type = #{recordType,jdbcType=TINYINT},
       template_id = #{templateId,jdbcType=BIGINT},
       attime = #{attime,jdbcType=VARCHAR},

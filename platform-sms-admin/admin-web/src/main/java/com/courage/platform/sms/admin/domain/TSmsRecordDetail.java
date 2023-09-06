@@ -18,7 +18,7 @@ public class TSmsRecordDetail implements Serializable {
     /**
      * 发送方appId 
      */
-    private String appId;
+    private Integer appId;
 
     /**
      * 短信内容
@@ -81,14 +81,6 @@ public class TSmsRecordDetail implements Serializable {
 
     public void setRecordId(Long recordId) {
         this.recordId = recordId;
-    }
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
     }
 
     public String getContent() {
@@ -163,4 +155,11 @@ public class TSmsRecordDetail implements Serializable {
         this.channelId = channelId;
     }
 
+    public Integer getAppId() {
+        return appId;
+    }
+
+    public void setAppId(Integer appId) {
+        this.appId = appId;
+    }
 }
