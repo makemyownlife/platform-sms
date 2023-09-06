@@ -2,10 +2,10 @@ package com.courage.platform.sms.adapter.aliyun;
 
 import com.alibaba.fastjson.JSON;
 import com.aliyun.dysmsapi20170525.Client;
-import com.aliyun.dysmsapi20170525.models.AddSmsTemplateResponse;
-import com.aliyun.dysmsapi20170525.models.AddSmsTemplateResponseBody;
+import com.aliyun.dysmsapi20170525.models.*;
 import com.courage.platform.sms.adapter.OuterAdapter;
 import com.courage.platform.sms.adapter.command.request.AddSmsTemplateCommand;
+import com.courage.platform.sms.adapter.command.request.QuerySmsTemplateCommand;
 import com.courage.platform.sms.adapter.command.request.SendSmsCommand;
 import com.courage.platform.sms.adapter.command.response.SmsResponseCommand;
 import com.courage.platform.sms.adapter.support.SPI;
@@ -51,7 +51,7 @@ public class AliyunAdapter implements OuterAdapter {
                     setTemplateParam(sendSmsCommand.getTemplateParam());
             com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
             com.aliyun.dysmsapi20170525.models.SendSmsResponse resp = client.sendSmsWithOptions(sendSmsRequest, runtime);
-            logger.info("aliyun resp code:{} body:{}" , resp.getStatusCode() , JSON.toJSON(resp.getBody()));
+            logger.info("aliyun resp code:{} body:{}", resp.getStatusCode(), JSON.toJSON(resp.getBody()));
             if (SUCCESS_CODE == resp.getStatusCode() && "OK".equals(resp.getBody().getCode())) {
                 return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, resp.getBody().getBizId());
             }
@@ -82,6 +82,41 @@ public class AliyunAdapter implements OuterAdapter {
             return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
         } catch (Exception e) {
             logger.error("aliyun addSmsTemplate error :", e);
+            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, e.getMessage());
+        }
+    }
+
+    @Override
+    public SmsResponseCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateCommand querySmsTemplateCommand) {
+        try {
+            com.aliyun.dysmsapi20170525.models.QuerySmsTemplateRequest querySmsTemplateRequest = new QuerySmsTemplateRequest();
+            querySmsTemplateRequest.setTemplateCode(querySmsTemplateCommand.getTemplateCode());
+            QuerySmsTemplateResponse resp = client.querySmsTemplate(querySmsTemplateRequest);
+            logger.info("resp=" + JSON.toJSONString(resp));
+            if (SUCCESS_CODE == resp.getStatusCode() && "OK".equals(resp.getBody().getCode())) {
+                QuerySmsTemplateResponseBody body = new QuerySmsTemplateResponseBody();
+                Integer templateStatus = body.getTemplateStatus();
+                //模板审核状态
+                //0：审核中。
+                //1：审核通过。
+                //2：审核未通过，请在返回参数Reason中查看审核失败原因。
+                //10：取消审核。
+                if (templateStatus == 0) {
+                    return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 1);
+                }
+                if (templateStatus == 1) {
+                    return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 2);
+                }
+                if (templateStatus == 2) {
+                    return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 3);
+                }
+                if (templateStatus == 10) {
+                    return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 3);
+                }
+            }
+            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
+        } catch (Exception e) {
+            logger.error("aliyun querySmsTemplate error :", e);
             return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, e.getMessage());
         }
     }

@@ -9,6 +9,7 @@ import cn.emay.sdk.util.exception.SDKParamsException;
 import com.alibaba.fastjson.JSON;
 import com.courage.platform.sms.adapter.OuterAdapter;
 import com.courage.platform.sms.adapter.command.request.AddSmsTemplateCommand;
+import com.courage.platform.sms.adapter.command.request.QuerySmsTemplateCommand;
 import com.courage.platform.sms.adapter.command.request.SendSmsCommand;
 import com.courage.platform.sms.adapter.command.response.SmsResponseCommand;
 import com.courage.platform.sms.adapter.support.SPI;
@@ -90,6 +91,11 @@ public class EmayAdapter implements OuterAdapter {
             return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, bodyMap);
         }
         return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
+    }
+
+    @Override
+    public SmsResponseCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateCommand querySmsTemplateCommand) {
+        return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 2);
     }
 
     @Override
