@@ -31,6 +31,9 @@ public interface OuterAdapter {
      */
     SmsResponseCommand<Map<String, String>> addSmsTemplate(AddSmsTemplateCommand addSmsTemplateCommand);
 
+    /**
+     * 按照模版编号查询模版状态
+     */
     SmsResponseCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateCommand querySmsTemplateCommand);
 
     /**
