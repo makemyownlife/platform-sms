@@ -47,7 +47,7 @@ public class SenderController {
             JSONObject jsonObject = JSON.parseObject(q);
             sendMessageRequestBody.setTemplateId(jsonObject.getString("templateId"));
             sendMessageRequestBody.setTemplateParam(jsonObject.getString("templateParam"));
-            TSmsAppinfo tSmsAppinfo = appInfoService.getAppInfoByAppkey(appKey);
+            TSmsAppinfo tSmsAppinfo = appInfoService.getAppinfoByAppKeyFromLocalCache(appKey);
             sendMessageRequestBody.setAppId(tSmsAppinfo.getId());
             sendMessageRequestBody.setMobile(jsonObject.getString("mobile"));
 
