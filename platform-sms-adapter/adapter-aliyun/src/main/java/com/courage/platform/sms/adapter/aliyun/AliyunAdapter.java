@@ -15,22 +15,25 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @SPI("aliyun")
 public class AliyunAdapter implements OuterAdapter {
 
     private final static Logger logger = LoggerFactory.getLogger(AliyunAdapter.class);
 
+    private String instanceId = UUID.randomUUID().toString().replaceAll("-", "");
+
+    private final static int SUCCESS_CODE = 200;
+
     private SmsChannelConfig smsChannelConfig;
 
     private Client client;
 
-    private final static int SUCCESS_CODE = 200;
-
     @Override
     public void init(SmsChannelConfig smsChannelConfig) throws Exception {
         this.smsChannelConfig = smsChannelConfig;
-        logger.info("阿里云短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "]");
+        logger.info("阿里云短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "] 实例Id:" + instanceId);
         com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
                 // 必填，您的 AccessKey ID
                 .setAccessKeyId(smsChannelConfig.getChannelAppkey())
@@ -123,7 +126,7 @@ public class AliyunAdapter implements OuterAdapter {
 
     @Override
     public void destroy() {
-        logger.info("销毁阿里云短信客户端渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "]");
+        logger.info("销毁阿里云短信客户端渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "] 实例Id:" + instanceId);
     }
 
 }
