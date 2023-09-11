@@ -172,6 +172,10 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.dialogStatus === 'create') {
+            var param = {};
+            for (var item in this.paramArray) {
+              param[item.name] = item.value;
+            }
             addSmsRecord(this.sendModel).then(res => {
               this.operationRes(res)
             })
