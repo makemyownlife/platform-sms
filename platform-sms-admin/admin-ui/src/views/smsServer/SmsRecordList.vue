@@ -173,9 +173,11 @@ export default {
         if (valid) {
           if (this.dialogStatus === 'create') {
             var param = {};
-            for (var item in this.paramArray) {
+            for (var index in this.paramArray) {
+              var item = this.paramArray[index];
               param[item.name] = item.value;
             }
+            this.sendModel.templateParam = JSON.stringify(param)
             addSmsRecord(this.sendModel).then(res => {
               this.operationRes(res)
             })
