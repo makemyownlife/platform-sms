@@ -77,7 +77,7 @@ public class SmsRecordServiceImpl implements SmsRecordService {
 
     @Override
     public BaseModel<String> adminSendRecord(String mobile, String templateId, String templateParam) {
-        logger.info("admin端发送短信，mobile：" + mobile + " templateId:" + templateId);
+        logger.info("admin端发送短信，mobile：" + mobile + " templateId:" + templateId + " templateParam：" + templateParam);
         SendMessageRequestBody sendMessageRequestBody = new SendMessageRequestBody();
         sendMessageRequestBody.setAppId(1);                                          // 使用默认测试应用 appId = 1
         sendMessageRequestBody.setMobile(mobile);

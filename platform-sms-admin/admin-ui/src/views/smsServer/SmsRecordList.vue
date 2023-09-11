@@ -202,11 +202,30 @@ export default {
 
       });
     },
+    //解析模版内容
+    parsePlaceholders(str) {
+      const regex = /\$\{([^}]+)\}/g;
+      const placeholders = [];
+      let match;
+      while ((match = regex.exec(str)) !== null) {
+        placeholders.push(match[1]);
+      }
+      return placeholders;
+    },
     createDynamicTemplateParam( value , e ) {
       var templateId = this.sendModel.templateId;
+      console.log("templateId:" + templateId);
       // 从自定义属性获取模版值
-
+      const selectedTemplate = this.templateList.find(item => item.id === templateId);
+      if (selectedTemplate) {
+        // 获取自定义属性 content 的值
+        const contentValue = selectedTemplate.content;
+        // 现在您可以使用 contentValue 做其他操作
+        const placeholders = this.parsePlaceholders(contentValue);
+        console.log(placeholders);
+      }
     }
+
   }
 }
 </script>
