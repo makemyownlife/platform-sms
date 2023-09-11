@@ -2,9 +2,9 @@ package com.courage.platform.sms.admin.dispatcher;
 
 import com.courage.platform.sms.admin.common.utils.Pair;
 import com.courage.platform.sms.admin.common.utils.ThreadFactoryImpl;
-import com.courage.platform.sms.admin.dispatcher.processor.RequestCode;
-import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
-import com.courage.platform.sms.admin.dispatcher.processor.ResponseEntity;
+import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestCode;
+import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
+import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.AdatperProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.impl.ApplyTemplateRequestProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.impl.CreateRecordDetailRequestProcessor;

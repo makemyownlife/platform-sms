@@ -1,5 +1,8 @@
 package com.courage.platform.sms.admin.dispatcher.processor;
 
+import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
+import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
+
 /**
  * 适配器处理器接口
  * Created by zhangyong on 2023/5/5.

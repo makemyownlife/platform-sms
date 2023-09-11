@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.dispatcher.processor;
+package com.courage.platform.sms.admin.dispatcher.processor.response;
 
 /**
  * 处理器响应码

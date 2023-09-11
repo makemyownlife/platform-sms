@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.dispatcher.processor;
+package com.courage.platform.sms.admin.dispatcher.processor.requeset;
 
 /**
  * 处理机接收到的请求命令

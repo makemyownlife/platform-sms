@@ -3,7 +3,7 @@ package com.courage.platform.sms.admin.api.gateway;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.courage.platform.sms.admin.domain.TSmsAppinfo;
-import com.courage.platform.sms.admin.dispatcher.processor.body.SendMessageRequestBody;
+import com.courage.platform.sms.admin.dispatcher.processor.requeset.body.SendMessageRequestBody;
 import com.courage.platform.sms.admin.service.AppInfoService;
 import com.courage.platform.sms.admin.service.SmsRecordService;
 import com.courage.platform.sms.client.SmsSenderResult;

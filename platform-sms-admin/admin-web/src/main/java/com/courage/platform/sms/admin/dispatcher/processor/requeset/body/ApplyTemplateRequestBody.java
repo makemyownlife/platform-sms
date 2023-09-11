@@ -1,6 +1,6 @@
-package com.courage.platform.sms.admin.dispatcher.processor.body;
+package com.courage.platform.sms.admin.dispatcher.processor.requeset.body;
 
-import com.courage.platform.sms.admin.dispatcher.processor.RequestBody;
+import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestBody;
 
 public class ApplyTemplateRequestBody extends RequestBody {
 
