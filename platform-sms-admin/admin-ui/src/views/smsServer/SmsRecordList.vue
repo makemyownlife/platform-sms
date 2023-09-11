@@ -83,6 +83,10 @@
                        :value="item.id"/>
           </el-select>
         </el-form-item>
+        <!-- 动态生成模版值 -->
+        <el-form-item v-for="(item, index) in paramArray" :key="index" :label="item.name">
+          <el-input v-model="item.value"></el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -204,8 +208,8 @@ export default {
     },
     //解析模版内容
     parsePlaceholders(str) {
-      const regex = /\$\{([^}]+)\}/g;
-      const placeholders = [];
+      var regex = /\$\{([^}]+)\}/g;
+      var placeholders = [];
       let match;
       while ((match = regex.exec(str)) !== null) {
         placeholders.push(match[1]);
@@ -213,16 +217,20 @@ export default {
       return placeholders;
     },
     createDynamicTemplateParam( value , e ) {
+      this.paramArray = [];
       var templateId = this.sendModel.templateId;
       console.log("templateId:" + templateId);
       // 从自定义属性获取模版值
       const selectedTemplate = this.templateList.find(item => item.id === templateId);
       if (selectedTemplate) {
         // 获取自定义属性 content 的值
-        const contentValue = selectedTemplate.content;
+        var contentValue = selectedTemplate.content;
         // 现在您可以使用 contentValue 做其他操作
-        const placeholders = this.parsePlaceholders(contentValue);
-        console.log(placeholders);
+        var placeholders = this.parsePlaceholders(contentValue);
+        this.paramArray = placeholders.map(function (item) {
+          return { name: item, value: '' };                      // 将''替换为您想要的值
+        });
+        console.log(this.paramArray)
       }
     }
 
