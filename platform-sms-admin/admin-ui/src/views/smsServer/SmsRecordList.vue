@@ -71,12 +71,14 @@
           <el-select v-model="sendModel.templateId"
                      remote
                      :remote-method="queryTemplate"
+                     @change='createDynamicTemplateParam'
                      filterable
                      placeholder=""
                      clearable
                      style="width: 280px">
             <el-option v-for="item in templateList"
                        :key="item.id"
+                       :content="item.content"
                        :label="item.templateName"
                        :value="item.id"/>
           </el-select>
@@ -96,20 +98,20 @@
 
 import {getSmsRecords, addSmsRecord} from '@/api/smsRecord'
 import {getSmsTemplates} from '@/api/template'
-import {getSmsChannels} from "@/api/smsChannel";
 import Pagination from '@/components/Pagination'
 
 export default {
-  components: { Pagination },
+  components: {Pagination},
   filters: {},
   data() {
     return {
+      dialogStatus: null,
       list: null,
       listLoading: true,
       count: 0,
-      //选中的模版编号
-      selectValue: '',
       templateList: [],
+      // 模版参数
+      paramArray: [],
       listQuery: {
         mobile: '',
         page: 1,
@@ -118,7 +120,8 @@ export default {
       dialogFormVisible: false,
       sendModel: {
         templateId: null,
-        mobile: null
+        mobile: null,
+        templateParam: null
       },
       textMap: {
         create: '发送短信'
@@ -149,6 +152,7 @@ export default {
     resetModel() {
       this.sendModel.mobile = null;
       this.sendModel.templateId = null;
+      this.sendModel.templateParam = null;
     },
     handleCreate() {
       this.resetModel()
@@ -158,7 +162,7 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
       // 加载模版列表第一页
-       this.queryTemplate('')
+      this.queryTemplate('')
     },
     dataOperation() {
       this.$refs['dataForm'].validate((valid) => {
@@ -197,6 +201,11 @@ export default {
       }).finally(() => {
 
       });
+    },
+    createDynamicTemplateParam( value , e ) {
+      var templateId = this.sendModel.templateId;
+      // 从自定义属性获取模版值
+
     }
   }
 }
