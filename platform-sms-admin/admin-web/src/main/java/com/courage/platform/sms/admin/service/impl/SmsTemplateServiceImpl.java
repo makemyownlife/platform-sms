@@ -7,7 +7,7 @@ import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.domain.TSmsTemplateBinding;
-import com.courage.platform.sms.admin.dispatcher.SmsAdapterDispatcher;
+import com.courage.platform.sms.admin.dispatcher.AdapterDispatcher;
 import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.RequestCode;
 import com.courage.platform.sms.admin.service.SmsTemplateService;
@@ -36,7 +36,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     private IdGenerator idGenerator;
 
     @Autowired
-    private SmsAdapterDispatcher smsAdapterController;
+    private AdapterDispatcher smsAdapterController;
 
     @Override
     public List<TSmsTemplate> queryTemplates(Map<String, Object> params) {

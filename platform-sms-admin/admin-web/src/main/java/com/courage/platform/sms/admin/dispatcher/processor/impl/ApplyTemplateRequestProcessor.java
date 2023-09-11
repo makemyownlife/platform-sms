@@ -8,8 +8,8 @@ import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.domain.TSmsTemplateBinding;
-import com.courage.platform.sms.admin.dispatcher.SmsAdapterLoader;
-import com.courage.platform.sms.admin.dispatcher.processor.SmsAdatperProcessor;
+import com.courage.platform.sms.admin.dispatcher.AdapterLoader;
+import com.courage.platform.sms.admin.dispatcher.processor.AdatperProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.ResponseEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.body.ApplyTemplateRequestBody;
@@ -25,12 +25,12 @@ import java.util.Map;
  * Created by zhangyong on 2023/7/14.
  */
 @Component
-public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<ApplyTemplateRequestBody, String> {
+public class ApplyTemplateRequestProcessor implements AdatperProcessor<ApplyTemplateRequestBody, String> {
 
     private static Logger logger = LoggerFactory.getLogger(ApplyTemplateRequestProcessor.class);
 
     @Autowired
-    private SmsAdapterLoader smsAdapterLoader;
+    private AdapterLoader adapterLoader;
 
     @Autowired
     private TSmsTemplateDAO tSmsTemplateDAO;
@@ -46,7 +46,7 @@ public class ApplyTemplateRequestProcessor implements SmsAdatperProcessor<ApplyT
         if (binding != null) {
             if (binding.getStatus() == 0) { // 待提交
                 TSmsTemplate tSmsTemplate = tSmsTemplateDAO.selectByPrimaryKey(binding.getTemplateId());
-                OuterAdapter outerAdapter = smsAdapterLoader.getAdapterByChannelId(binding.getChannelId().intValue());
+                OuterAdapter outerAdapter = adapterLoader.getAdapterByChannelId(binding.getChannelId().intValue());
                 if (outerAdapter != null) {
                     AddSmsTemplateCommand addSmsTemplateCommand = new AddSmsTemplateCommand();
                     addSmsTemplateCommand.setSignName(tSmsTemplate.getSignName());

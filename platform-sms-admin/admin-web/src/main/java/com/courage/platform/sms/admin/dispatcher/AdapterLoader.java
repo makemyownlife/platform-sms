@@ -13,9 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * 适配器加载器
  */
 @Component
-public class SmsAdapterLoader {
+public class AdapterLoader {
 
-    private final static Logger logger = LoggerFactory.getLogger(SmsAdapterLoader.class);
+    private final static Logger logger = LoggerFactory.getLogger(AdapterLoader.class);
 
     private static ExtensionLoader<OuterAdapter> EXTENSION_LOADER = ExtensionLoader.getExtensionLoader(OuterAdapter.class);
 

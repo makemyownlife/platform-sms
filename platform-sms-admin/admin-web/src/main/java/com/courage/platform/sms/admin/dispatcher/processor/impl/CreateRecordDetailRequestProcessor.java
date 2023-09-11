@@ -13,8 +13,8 @@ import com.courage.platform.sms.admin.domain.TSmsRecord;
 import com.courage.platform.sms.admin.domain.TSmsRecordDetail;
 import com.courage.platform.sms.admin.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.domain.TSmsTemplateBinding;
-import com.courage.platform.sms.admin.dispatcher.SmsAdapterLoader;
-import com.courage.platform.sms.admin.dispatcher.processor.SmsAdatperProcessor;
+import com.courage.platform.sms.admin.dispatcher.AdapterLoader;
+import com.courage.platform.sms.admin.dispatcher.processor.AdatperProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.ResponseEntity;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +33,7 @@ import java.util.List;
  * Created by zhangyong on 2023/8/20.
  */
 @Component
-public class CreateRecordDetailRequestProcessor implements SmsAdatperProcessor<Long, List<Long>> {
+public class CreateRecordDetailRequestProcessor implements AdatperProcessor<Long, List<Long>> {
 
     private static Logger logger = LoggerFactory.getLogger(CreateRecordDetailRequestProcessor.class);
 
@@ -50,7 +50,7 @@ public class CreateRecordDetailRequestProcessor implements SmsAdatperProcessor<L
     private TSmsTemplateBindingDAO bindingDAO;
 
     @Autowired
-    private SmsAdapterLoader smsAdapterLoader;
+    private AdapterLoader smsAdapterLoader;
 
     @Autowired
     private IdGenerator idGenerator;

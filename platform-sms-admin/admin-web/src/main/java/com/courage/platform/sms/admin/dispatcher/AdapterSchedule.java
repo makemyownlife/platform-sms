@@ -26,9 +26,9 @@ import java.util.concurrent.TimeUnit;
  * 适配器定时任务
  */
 @Component
-public class SmsAdapterSchedule {
+public class AdapterSchedule {
 
-    private final static Logger logger = LoggerFactory.getLogger(SmsAdapterSchedule.class);
+    private final static Logger logger = LoggerFactory.getLogger(AdapterSchedule.class);
 
     //渠道信息
     private static final ConcurrentHashMap<Integer, TSmsChannel> CHANNEL_MAPPING = new ConcurrentHashMap<Integer, TSmsChannel>();
@@ -41,13 +41,13 @@ public class SmsAdapterSchedule {
     private ScheduledExecutorService scheduledExecutorService;
 
     @Autowired
-    private SmsAdapterLoader smsAdapterLoader;
+    private AdapterLoader smsAdapterLoader;
 
     @Autowired
     private TSmsChannelDAO smsChannelDAO;
 
     @Autowired
-    private SmsAdapterDispatcher smsAdapterDispatcher;
+    private AdapterDispatcher smsAdapterDispatcher;
 
     @PostConstruct
     public synchronized void init() {

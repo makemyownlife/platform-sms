@@ -6,9 +6,9 @@ import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
 import com.courage.platform.sms.admin.domain.TSmsRecord;
 import com.courage.platform.sms.admin.domain.TSmsTemplate;
-import com.courage.platform.sms.admin.dispatcher.SmsAdapterLoader;
-import com.courage.platform.sms.admin.dispatcher.SmsAdapterSchedule;
-import com.courage.platform.sms.admin.dispatcher.processor.SmsAdatperProcessor;
+import com.courage.platform.sms.admin.dispatcher.AdapterLoader;
+import com.courage.platform.sms.admin.dispatcher.AdapterSchedule;
+import com.courage.platform.sms.admin.dispatcher.processor.AdatperProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.ResponseEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.ResponseCode;
@@ -26,15 +26,9 @@ import java.util.Date;
  * Created by zhangyong on 2023/7/14.
  */
 @Component
-public class SendMessageRequestProcessor implements SmsAdatperProcessor<SendMessageRequestBody, SmsSenderResult> {
+public class SendMessageRequestProcessor implements AdatperProcessor<SendMessageRequestBody, SmsSenderResult> {
 
     private static Logger logger = LoggerFactory.getLogger(SendMessageRequestProcessor.class);
-
-    @Autowired
-    private SmsAdapterLoader smsAdapterLoader;
-
-    @Autowired
-    private TSmsTemplateBindingDAO bindingDAO;
 
     @Autowired
     private TSmsTemplateDAO templateDAO;
@@ -46,7 +40,7 @@ public class SendMessageRequestProcessor implements SmsAdatperProcessor<SendMess
     private IdGenerator idGenerator;
 
     @Autowired
-    private SmsAdapterSchedule smsAdapterSchedule;
+    private AdapterSchedule smsAdapterSchedule;
 
     @Override
     public ResponseEntity<SmsSenderResult> processRequest(RequestEntity<SendMessageRequestBody> processorRequest) {

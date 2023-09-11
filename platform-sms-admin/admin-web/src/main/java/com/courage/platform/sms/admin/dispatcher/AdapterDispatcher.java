@@ -5,7 +5,7 @@ import com.courage.platform.sms.admin.common.utils.ThreadFactoryImpl;
 import com.courage.platform.sms.admin.dispatcher.processor.RequestCode;
 import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.ResponseEntity;
-import com.courage.platform.sms.admin.dispatcher.processor.SmsAdatperProcessor;
+import com.courage.platform.sms.admin.dispatcher.processor.AdatperProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.impl.ApplyTemplateRequestProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.impl.CreateRecordDetailRequestProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.impl.SendMessageRequestProcessor;
@@ -26,12 +26,12 @@ import java.util.concurrent.TimeUnit;
  * 请求分发器
  */
 @Component(value = "smsAdapterDispatcher")
-public class SmsAdapterDispatcher {
+public class AdapterDispatcher {
 
-    private final static Logger logger = LoggerFactory.getLogger(SmsAdapterDispatcher.class);
+    private final static Logger logger = LoggerFactory.getLogger(AdapterDispatcher.class);
 
     //处理器命令映射
-    protected final HashMap<Integer/* request code */, Pair<SmsAdatperProcessor, ExecutorService>> processorTable = new HashMap<Integer, Pair<SmsAdatperProcessor, ExecutorService>>(64);
+    protected final HashMap<Integer/* request code */, Pair<AdatperProcessor, ExecutorService>> processorTable = new HashMap<Integer, Pair<AdatperProcessor, ExecutorService>>(64);
 
     private volatile boolean running = false;
 
@@ -63,8 +63,8 @@ public class SmsAdapterDispatcher {
 
     // 分发处理请求
     public ResponseEntity dispatchSyncRequest(int requestCode, RequestEntity processorRequest) {
-        Pair<SmsAdatperProcessor, ExecutorService> pair = processorTable.get(requestCode);
-        SmsAdatperProcessor smsAdatperProcessor = pair.getObject1();
+        Pair<AdatperProcessor, ExecutorService> pair = processorTable.get(requestCode);
+        AdatperProcessor smsAdatperProcessor = pair.getObject1();
         ExecutorService executorService = pair.getObject2();
         if (executorService == null) {
             ResponseEntity responseCommand = smsAdatperProcessor.processRequest(processorRequest);
@@ -94,8 +94,8 @@ public class SmsAdapterDispatcher {
     }
 
     public void dispatchAsyncRequest(int requestCode, RequestEntity processorRequest) {
-        Pair<SmsAdatperProcessor, ExecutorService> pair = processorTable.get(requestCode);
-        SmsAdatperProcessor smsAdatperProcessor = pair.getObject1();
+        Pair<AdatperProcessor, ExecutorService> pair = processorTable.get(requestCode);
+        AdatperProcessor smsAdatperProcessor = pair.getObject1();
         ExecutorService executorService = pair.getObject2();
         if (executorService == null) {
             smsAdatperProcessor.processRequest(processorRequest);
@@ -112,12 +112,12 @@ public class SmsAdapterDispatcher {
         });
     }
 
-    public void registerProcessor(int requestCode, SmsAdatperProcessor smsAdatperProcessor) {
+    public void registerProcessor(int requestCode, AdatperProcessor smsAdatperProcessor) {
         registerProcessor(requestCode, smsAdatperProcessor, null);
     }
 
-    public void registerProcessor(int requestCode, SmsAdatperProcessor smsAdatperProcessor, ExecutorService executorService) {
-        Pair<SmsAdatperProcessor, ExecutorService> pair = new Pair<SmsAdatperProcessor, ExecutorService>(smsAdatperProcessor, executorService);
+    public void registerProcessor(int requestCode, AdatperProcessor adatperProcessor, ExecutorService executorService) {
+        Pair<AdatperProcessor, ExecutorService> pair = new Pair<AdatperProcessor, ExecutorService>(adatperProcessor, executorService);
         this.processorTable.put(requestCode, pair);
     }
 

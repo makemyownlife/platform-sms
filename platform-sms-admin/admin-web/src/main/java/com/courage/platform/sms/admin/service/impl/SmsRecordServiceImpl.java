@@ -4,7 +4,7 @@ import com.courage.platform.sms.admin.dao.TSmsAppinfoDAO;
 import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
 import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
 import com.courage.platform.sms.admin.dao.TSmsRecordDetailDAO;
-import com.courage.platform.sms.admin.dispatcher.SmsAdapterDispatcher;
+import com.courage.platform.sms.admin.dispatcher.AdapterDispatcher;
 import com.courage.platform.sms.admin.dispatcher.processor.RequestCode;
 import com.courage.platform.sms.admin.dispatcher.processor.RequestEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.ResponseEntity;
@@ -44,7 +44,7 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     private TSmsRecordDetailDAO detailDAO;
 
     @Autowired
-    private SmsAdapterDispatcher smsAdapterDispatcher;
+    private AdapterDispatcher smsAdapterDispatcher;
 
     @Override
     public List<TSmsRecordDetail> queryRecordDetailList(Map<String, Object> param) {
