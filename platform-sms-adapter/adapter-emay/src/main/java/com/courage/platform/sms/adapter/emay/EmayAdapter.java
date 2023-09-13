@@ -69,7 +69,7 @@ public class EmayAdapter implements OuterAdapter {
         // 亿美模版: "templateContent":"【亿美软通】尊敬的{#name#},您好！您已成功注册，您的初始秘钥为{#password#},
         //  					登录后可在个人中心修改，欢迎加入。",
         String emayTemplateContent = "【" + addSmsTemplateCommand.getSignName() + "】" +
-                templateContent.replaceAll("\\{", "\\{#").replaceAll("\\}", "#\\}").replaceAll("\\$", "");
+                templateContent.replaceAll("\\$", "").replaceAll("\\{", "\\{#").replaceAll("\\}", "#\\}");
         templateMap.put("templateContent", emayTemplateContent);
         templateMap.put("requestTime", String.valueOf(System.currentTimeMillis()));
         templateMap.put("requestValidPeriod", "60");
