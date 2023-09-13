@@ -68,14 +68,15 @@
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="handleUpdate(scope.row)">修改模版</el-dropdown-item>
-              <el-dropdown-item @click.native="autoBinding(scope.row)">自动绑定</el-dropdown-item>
               <el-dropdown-item @click.native="handBinding(scope.row)">手工绑定</el-dropdown-item>
+              <el-dropdown-item @click.native="autoBinding(scope.row)">自动绑定</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </template>
     </el-table-column>
 
   </el-table>
+
   <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.size"
               @pagination="fetchData()"/>
 
@@ -130,6 +131,9 @@
                        :value="item.id"/>
           </el-select>
         </el-form-item>
+        <el-form-item label="三方模版编号" prop="templateCode"  v-if="bindingInfo.handSwitch">
+          <el-input v-model="bindingInfo.templateCode" class="filter-item"/>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitAutoBinding()">确定</el-button>
@@ -156,9 +160,6 @@ export default {
     return {
       list: null,
       listLoading: true,
-      listLoading2: true,
-      // 当前选择的模版
-
       // 渠道属性 start
       selectValue: '',
       smsChannels: [],
@@ -195,8 +196,10 @@ export default {
       // 绑定信息
       bindingInfo : {
         dialogFormVisible: false ,
+        handSwitch : false ,
         templateId : null ,
-        channelIds : null
+        channelIds : null ,
+        templateCode : ''
       }
     }
   },
@@ -333,10 +336,11 @@ export default {
       this.bindingInfo.templateId = row.id;
       this.bindingInfo.channelIds = null;
       this.loadSelectChannel();
+
     },
-    // 手工绑定渠道
     handBinding(row) {
-      
+      this.bindingInfo.handSwitch = true ;
+      this.autoBinding(row);
     },
     clearSelectedValue() {
       this.selectValue = null;
@@ -345,7 +349,8 @@ export default {
     submitAutoBinding(){
       var data = {
         templateId: this.bindingInfo.templateId,
-        channelIds: this.bindingInfo.channelIds
+        channelIds: this.bindingInfo.channelIds,
+        templateCode: this.bindingInfo.templateCode
       }
       autoBindChannel(data).then(res => {
         this.$message({
@@ -354,6 +359,7 @@ export default {
       })
       this.fetchData();
       this.bindingInfo.dialogFormVisible = false;
+      this.bindingInfo.handSwitch = false;
     })
     },
     bindingStatus(row, column) {

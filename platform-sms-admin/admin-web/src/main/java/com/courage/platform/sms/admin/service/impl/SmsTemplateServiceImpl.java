@@ -95,6 +95,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
 
     @Override
     public BaseModel autoBindChannel(String channelIds, Long templateId) {
+        logger.info("channelIds:" + channelIds + " templateId:" + templateId);
         try {
             String[] channelIdsArr = StringUtils.split(channelIds, ',');
             for (String channelId : channelIdsArr) {
@@ -123,6 +124,34 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
             logger.error("autoBindChannel error:", e);
             return BaseModel.getInstance("fail");
         }
+    }
+
+    @Override
+    public BaseModel handBindChannel(String channelIds, Long templateId, String templateCode) {
+        String[] channelIdsArr = StringUtils.split(channelIds, ',');
+        for (String channelId : channelIdsArr) {
+            TSmsTemplateBinding binding = tSmsTemplateBindingDAO.selectBindingByTemplateIdAndChannelId(templateId, Long.valueOf(channelId));
+            if (binding == null) {
+                Long bindingId = idGenerator.createUniqueId(String.valueOf(templateId));
+                binding = new TSmsTemplateBinding();
+                binding.setId(bindingId);
+                binding.setTemplateId(templateId);
+                binding.setChannelId(Integer.valueOf(channelId));
+                // 0 : 待提交 1：待审核  2：审核成功 3：审核失败
+                binding.setStatus(2);  // 默认审核成功
+                binding.setTemplateContent(StringUtils.EMPTY);
+                binding.setTemplateCode(templateCode);
+                binding.setCreateTime(new Date());
+                binding.setUpdateTime(new Date());
+                tSmsTemplateBindingDAO.insertSelective(binding);
+            } else {
+                binding.setTemplateCode(templateCode);
+                binding.setUpdateTime(new Date());
+                binding.setStatus(2);
+                tSmsTemplateBindingDAO.updateByPrimaryKeySelective(binding);
+            }
+        }
+        return BaseModel.getInstance("success");
     }
 
 }

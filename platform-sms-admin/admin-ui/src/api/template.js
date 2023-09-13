@@ -41,7 +41,7 @@ export function getSmsTemplatesBinding(data) {
 
 export function autoBindChannel(data) {
   return request({
-    url: '/sms/autoBindChannel?templateId=' + data.templateId + "&channelIds=" +  data.channelIds,
+    url: '/sms/autoBindChannel?templateId=' + data.templateId + "&channelIds=" +  data.channelIds + "&templateCode=" + data.templateCode,
     method: 'post'
   })
 }

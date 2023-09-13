@@ -61,8 +61,12 @@ public class SmsTemplateController {
     }
 
     @PostMapping(value = "/autoBindChannel")
-    public BaseModel autoBindChannel(String channelIds, Long templateId) {
-        return smsTemplateService.autoBindChannel(channelIds, templateId);
+    public BaseModel autoBindChannel(String channelIds, Long templateId, String templateCode) {
+        if (StringUtils.isNotEmpty(templateCode)) {
+            return smsTemplateService.handBindChannel(channelIds, templateId, templateCode);
+        } else {
+            return smsTemplateService.autoBindChannel(channelIds, templateId);
+        }
     }
 
 }

@@ -21,4 +21,6 @@ public interface SmsTemplateService {
 
     BaseModel autoBindChannel(String channelIds, Long templateId);
 
+    BaseModel handBindChannel(String channelIds, Long templateId, String templateCode);
+
 }
