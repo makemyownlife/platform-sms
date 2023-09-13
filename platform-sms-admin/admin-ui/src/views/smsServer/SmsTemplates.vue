@@ -69,6 +69,7 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="handleUpdate(scope.row)">修改模版</el-dropdown-item>
               <el-dropdown-item @click.native="autoBinding(scope.row)">自动绑定</el-dropdown-item>
+              <el-dropdown-item @click.native="handBinding(scope.row)">手工绑定</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </template>
@@ -332,6 +333,10 @@ export default {
       this.bindingInfo.templateId = row.id;
       this.bindingInfo.channelIds = null;
       this.loadSelectChannel();
+    },
+    // 手工绑定渠道
+    handBinding(row) {
+      
     },
     clearSelectedValue() {
       this.selectValue = null;
