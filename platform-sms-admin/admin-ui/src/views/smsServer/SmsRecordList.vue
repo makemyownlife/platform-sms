@@ -157,6 +157,7 @@ export default {
       this.sendModel.mobile = null;
       this.sendModel.templateId = null;
       this.sendModel.templateParam = null;
+      this.paramArray = [];
     },
     handleCreate() {
       this.resetModel()

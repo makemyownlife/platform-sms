@@ -1,20 +1,22 @@
 package com.courage.platform.sms.admin.dispatcher.processor.impl;
 
 import com.courage.platform.sms.admin.common.config.IdGenerator;
+import com.courage.platform.sms.admin.common.utils.RedisKeyConstants;
 import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
-import com.courage.platform.sms.admin.domain.TSmsRecord;
-import com.courage.platform.sms.admin.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.dispatcher.AdapterSchedule;
 import com.courage.platform.sms.admin.dispatcher.processor.AdatperProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
-import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
-import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseCode;
 import com.courage.platform.sms.admin.dispatcher.processor.requeset.body.SendMessageRequestBody;
+import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseCode;
+import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
+import com.courage.platform.sms.admin.domain.TSmsRecord;
+import com.courage.platform.sms.admin.domain.TSmsTemplate;
 import com.courage.platform.sms.client.SmsSenderResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -40,16 +42,16 @@ public class SendMessageRequestProcessor implements AdatperProcessor<SendMessage
     @Autowired
     private AdapterSchedule smsAdapterSchedule;
 
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
     @Override
     public ResponseEntity<SmsSenderResult> processRequest(RequestEntity<SendMessageRequestBody> processorRequest) {
         SendMessageRequestBody param = processorRequest.getData();
         String templateId = param.getTemplateId();
         TSmsTemplate tSmsTemplate = templateDAO.selectByPrimaryKey(Long.valueOf(templateId));
         if (tSmsTemplate == null) {
-            return ResponseEntity.build(
-                    ResponseCode.TEMPLATE_NOT_EXIST.getCode(),
-                    ResponseCode.TEMPLATE_NOT_EXIST.getValue()
-            );
+            return ResponseEntity.build(ResponseCode.TEMPLATE_NOT_EXIST.getCode(), ResponseCode.TEMPLATE_NOT_EXIST.getValue());
         }
         // 插入到记录 t_sms_record
         Long smsId = idGenerator.createUniqueId(String.valueOf(param.getAppId()));
@@ -61,9 +63,13 @@ public class SendMessageRequestProcessor implements AdatperProcessor<SendMessage
         tSmsRecord.setTemplateParam(param.getTemplateParam());
         tSmsRecord.setMobile(param.getMobile());
         tSmsRecord.setSendStatus(-1);
-        tSmsRecord.setUpdateTime(new Date());
-        tSmsRecord.setCreateTime(new Date());
+        Date currentDate = new Date();
+        tSmsRecord.setUpdateTime(currentDate);
+        tSmsRecord.setCreateTime(currentDate);
         smsRecordDAO.insertSelective(tSmsRecord);
+
+        // 将数据添加到Redis的zset容器中
+        redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_LIST, String.valueOf(smsId), currentDate.getTime());
 
         // 异步执行
         smsAdapterSchedule.createRecordDetailImmediately(smsId);

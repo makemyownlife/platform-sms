@@ -5,22 +5,24 @@ import com.courage.platform.sms.adapter.command.request.SendSmsCommand;
 import com.courage.platform.sms.adapter.command.response.SmsResponseCommand;
 import com.courage.platform.sms.adapter.support.SmsTemplateUtil;
 import com.courage.platform.sms.admin.common.config.IdGenerator;
+import com.courage.platform.sms.admin.common.utils.RedisKeyConstants;
 import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
 import com.courage.platform.sms.admin.dao.TSmsRecordDetailDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
-import com.courage.platform.sms.admin.domain.TSmsRecord;
-import com.courage.platform.sms.admin.domain.TSmsRecordDetail;
-import com.courage.platform.sms.admin.domain.TSmsTemplate;
-import com.courage.platform.sms.admin.domain.TSmsTemplateBinding;
 import com.courage.platform.sms.admin.dispatcher.AdapterLoader;
 import com.courage.platform.sms.admin.dispatcher.processor.AdatperProcessor;
 import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
+import com.courage.platform.sms.admin.domain.TSmsRecord;
+import com.courage.platform.sms.admin.domain.TSmsRecordDetail;
+import com.courage.platform.sms.admin.domain.TSmsTemplate;
+import com.courage.platform.sms.admin.domain.TSmsTemplateBinding;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -54,6 +56,9 @@ public class CreateRecordDetailRequestProcessor implements AdatperProcessor<Long
 
     @Autowired
     private IdGenerator idGenerator;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     @Override
     public ResponseEntity<List<Long>> processRequest(RequestEntity<Long> requestCommand) {
@@ -110,6 +115,10 @@ public class CreateRecordDetailRequestProcessor implements AdatperProcessor<Long
         tSmsRecord.setUpdateTime(new Date());
         tSmsRecord.setId(recordId);
         smsRecordDAO.updateByPrimaryKeySelective(tSmsRecord);
+
+        // 从 redis zset 中删除待发送记录
+        redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_LIST, String.valueOf(recordId));
+
         return ResponseEntity.success(detailIdList);
     }
 

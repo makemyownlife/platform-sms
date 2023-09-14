@@ -60,6 +60,7 @@ public class AdapterSchedule {
                 scheudleLoadAdapter();
             }
         }, INIT_DELAY, PERIOD, TimeUnit.SECONDS);
+
     }
 
     // 定时加载适配器
