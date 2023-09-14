@@ -69,7 +69,7 @@ public class SendMessageRequestProcessor implements AdatperProcessor<SendMessage
         smsRecordDAO.insertSelective(tSmsRecord);
 
         // 将数据添加到Redis的zset容器中
-        redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_LIST, String.valueOf(smsId), currentDate.getTime());
+        redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_LIST, String.valueOf(smsId), currentDate.getTime() + 30 * 1000);
 
         // 异步执行
         smsAdapterSchedule.createRecordDetailImmediately(smsId);
