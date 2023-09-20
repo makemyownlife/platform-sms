@@ -2,22 +2,27 @@ package com.courage.platform.sms.admin.dispatcher;
 
 import com.alibaba.fastjson.JSON;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
+import com.courage.platform.sms.admin.common.utils.RedisKeyConstants;
 import com.courage.platform.sms.admin.common.utils.ThreadFactoryImpl;
 import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
 import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestCode;
 import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
 import com.courage.platform.sms.admin.domain.TSmsChannel;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -34,6 +39,8 @@ public class AdapterSchedule {
     //渠道信息
     private static final ConcurrentHashMap<Integer, TSmsChannel> CHANNEL_MAPPING = new ConcurrentHashMap<Integer, TSmsChannel>();
 
+    private final static int SCHEDULE_THREAD_COUNT = 4;
+
     private final static int INIT_DELAY = 0;
 
     private final static int PERIOD = 5;
@@ -42,7 +49,7 @@ public class AdapterSchedule {
     private ScheduledExecutorService scheduledExecutorService;
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     @Autowired
     private AdapterLoader smsAdapterLoader;
@@ -65,7 +72,7 @@ public class AdapterSchedule {
     @PostConstruct
     public synchronized void init() {
         //初始化定时线程池
-        this.scheduledExecutorService = Executors.newScheduledThreadPool(2, new ThreadFactoryImpl("adapterScheduledThread-"));
+        this.scheduledExecutorService = Executors.newScheduledThreadPool(SCHEDULE_THREAD_COUNT, new ThreadFactoryImpl("adapterScheduledThread-"));
         //定时加载适配器
         scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
@@ -102,16 +109,45 @@ public class AdapterSchedule {
     }
 
     private synchronized void startDelayThread() {
-        if (!delayServiceRunning) {
+        if (delayServiceRunning) {
             return;
         }
         delayServiceRunning = true;
-        this.delayThread = new Thread(new Runnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
-
+                while (delayServiceRunning) {
+                    synchronized (notifyObject) {
+                        try {
+                            Set<ZSetOperations.TypedTuple<String>> recordIds = redisTemplate.opsForZSet().rangeWithScores(RedisKeyConstants.WAITING_SEND_ZSET, 0, 1);
+                            if (CollectionUtils.isNotEmpty(recordIds)) {
+                                ZSetOperations.TypedTuple<String> recordIdTuple = recordIds.iterator().next();
+                                String recordId = recordIdTuple.getValue();
+                                Long triggerTime = recordIdTuple.getScore().longValue();
+                                logger.info("短信记录recordId:" + recordId + " triggerTime:" + triggerTime);
+                                if (StringUtils.isNotEmpty(recordId)) {
+                                    Long currentTime = System.currentTimeMillis();
+                                    if (currentTime - triggerTime >= 0) {
+                                        logger.info("短信记录recordId:" + recordId + " 可以发送了");
+                                        redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(recordId));
+                                        createRecordDetailImmediately(Long.valueOf(recordId));
+                                    } else {
+                                        long diff = triggerTime - currentTime;
+                                        logger.info("短信记录recordId:" + recordId + " 需要等待:" + diff);
+                                        notifyObject.wait(diff);
+                                    }
+                                }
+                            } else {
+                                notifyObject.wait(1000);
+                            }
+                        } catch (Exception e) {
+                            logger.error("delayService error:", e);
+                        }
+                    }
+                }
             }
-        }, "delayThread");
+        };
+        this.delayThread = new Thread(runnable, "delayThread");
         this.delayThread.start();
     }
 

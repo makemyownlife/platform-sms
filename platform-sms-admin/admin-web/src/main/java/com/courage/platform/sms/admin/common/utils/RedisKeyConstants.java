@@ -5,6 +5,8 @@ package com.courage.platform.sms.admin.common.utils;
  */
 public class RedisKeyConstants {
 
-    public static final String WAITING_SEND_LIST = "sms:waiting:send:list";
+    public static final String WAITING_SEND_ZSET = "sms:waiting:send:zset";
+
+    public static final String WAITING_SEND_HASH = "sms:waiting:send:hash";
 
 }

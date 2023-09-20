@@ -67,6 +67,10 @@ public class CreateRecordDetailRequestProcessor implements AdatperProcessor<Long
         Long recordId = requestCommand.getData();
         TSmsRecord record = smsRecordDAO.selectByPrimaryKey(recordId);
         if (record != null) {
+            if (record.getSendStatus() != -1) {
+                logger.warn("短信记录 recordId:" + recordId + "已发送");
+                return ResponseEntity.success(detailIdList);
+            }
             Long templateId = record.getTemplateId();
             TSmsTemplate template = tSmsTemplateDAO.selectByPrimaryKey(templateId);
             List<TSmsTemplateBinding> bindingList = bindingDAO.selectBindingsByTemplateId(templateId);
@@ -116,8 +120,8 @@ public class CreateRecordDetailRequestProcessor implements AdatperProcessor<Long
         tSmsRecord.setId(recordId);
         smsRecordDAO.updateByPrimaryKeySelective(tSmsRecord);
 
-        // 从 redis zset 中删除待发送记录
-        redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_LIST, String.valueOf(recordId));
+        // 从 redis zset & hash 中删除待发送记录
+        redisTemplate.opsForHash().delete(RedisKeyConstants.WAITING_SEND_HASH, String.valueOf(recordId));
 
         return ResponseEntity.success(detailIdList);
     }
