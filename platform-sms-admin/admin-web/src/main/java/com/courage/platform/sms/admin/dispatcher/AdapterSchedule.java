@@ -4,14 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.courage.platform.sms.adapter.support.SmsChannelConfig;
 import com.courage.platform.sms.admin.common.utils.ThreadFactoryImpl;
 import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
-import com.courage.platform.sms.admin.domain.TSmsChannel;
 import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestCode;
 import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
+import com.courage.platform.sms.admin.domain.TSmsChannel;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -37,8 +38,11 @@ public class AdapterSchedule {
 
     private final static int PERIOD = 5;
 
-    //线程池
+    // 线程池
     private ScheduledExecutorService scheduledExecutorService;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
     private AdapterLoader smsAdapterLoader;
@@ -48,6 +52,15 @@ public class AdapterSchedule {
 
     @Autowired
     private AdapterDispatcher smsAdapterDispatcher;
+
+    // 延迟服务是否启动
+    private volatile boolean delayServiceRunning = false;
+
+    // 延迟服务通知对象
+    private Object notifyObject = new Object();
+
+    // 延迟处理线程
+    private Thread delayThread;
 
     @PostConstruct
     public synchronized void init() {
@@ -60,7 +73,8 @@ public class AdapterSchedule {
                 scheudleLoadAdapter();
             }
         }, INIT_DELAY, PERIOD, TimeUnit.SECONDS);
-
+        //启动延迟服务
+        startDelayThread();
     }
 
     // 定时加载适配器
@@ -83,8 +97,22 @@ public class AdapterSchedule {
                 CHANNEL_MAPPING.put(tSmsChannel.getId(), tSmsChannel);
             }
         } catch (Throwable e) {
-            logger.error("加载渠道信息出错 ：", e);
+            logger.error("加载渠道信息出错：", e);
         }
+    }
+
+    private synchronized void startDelayThread() {
+        if (!delayServiceRunning) {
+            return;
+        }
+        delayServiceRunning = true;
+        this.delayThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }, "delayThread");
+        this.delayThread.start();
     }
 
     public void createRecordDetailImmediately(Long recordId) {
@@ -104,6 +132,9 @@ public class AdapterSchedule {
     @PreDestroy
     public synchronized void destroy() {
         this.scheduledExecutorService.shutdown();
+        if (this.delayServiceRunning) {
+            this.delayServiceRunning = false;
+        }
     }
 
 }
