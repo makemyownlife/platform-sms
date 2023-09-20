@@ -138,7 +138,7 @@ public class AdapterSchedule {
                                     }
                                 }
                             } else {
-                                notifyObject.wait(1000);
+                                notifyObject.wait(500L);
                             }
                         } catch (Exception e) {
                             logger.error("delayService error:", e);
