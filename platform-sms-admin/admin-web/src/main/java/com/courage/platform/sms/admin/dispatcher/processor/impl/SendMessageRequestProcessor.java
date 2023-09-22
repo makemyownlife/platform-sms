@@ -51,7 +51,10 @@ public class SendMessageRequestProcessor implements AdatperProcessor<SendMessage
         String templateId = param.getTemplateId();
         TSmsTemplate tSmsTemplate = templateDAO.selectByPrimaryKey(Long.valueOf(templateId));
         if (tSmsTemplate == null) {
-            return ResponseEntity.build(ResponseCode.TEMPLATE_NOT_EXIST.getCode(), ResponseCode.TEMPLATE_NOT_EXIST.getValue());
+            return ResponseEntity.build(
+                    ResponseCode.TEMPLATE_NOT_EXIST.getCode(),
+                    ResponseCode.TEMPLATE_NOT_EXIST.getValue()
+            );
         }
         // 插入到记录 t_sms_record
         Long smsId = idGenerator.createUniqueId(String.valueOf(param.getAppId()));
@@ -71,7 +74,7 @@ public class SendMessageRequestProcessor implements AdatperProcessor<SendMessage
         // 将数据添加到 Redis 的 zset 容器中
         Long triggerTime = currentDate.getTime() + 30 * 1000;
         redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(smsId), triggerTime);
-        
+
         // 异步执行
         smsAdapterSchedule.createRecordDetailImmediately(smsId);
 
