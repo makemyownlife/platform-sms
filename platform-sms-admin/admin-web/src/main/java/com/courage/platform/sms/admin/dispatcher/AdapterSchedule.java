@@ -118,6 +118,7 @@ public class AdapterSchedule {
             public void run() {
                 while (delayServiceRunning) {
                     synchronized (notifyObject) {
+                        long waitTime = 100L;
                         try {
                             // 1. 首先通过redis的setnx命令 ，添加分布式锁
                             // 2. 判断zset的第一个元素是否需要执行时，若到期了，则取出来，并放入到生成详情的消费者执行
@@ -137,9 +138,8 @@ public class AdapterSchedule {
                                         createRecordDetailImmediately(Long.valueOf(recordId));
                                         redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(recordId));
                                     } else {
-                                        long diff = triggerTime - currentTime;
-                                        logger.info("短信记录recordId:" + recordId + " 需要等待:" + diff);
-                                        notifyObject.wait(diff);
+                                        waitTime = triggerTime - currentTime;
+                                        logger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
                                     }
                                 }
                             } else {
@@ -154,6 +154,10 @@ public class AdapterSchedule {
                             } catch (Exception e) {
                                 logger.error("redisTemplate delete key error:", e);
                             }
+                        }
+                        try {
+                            notifyObject.wait(waitTime);
+                        } catch (Exception e) {
                         }
                     }
                 }
