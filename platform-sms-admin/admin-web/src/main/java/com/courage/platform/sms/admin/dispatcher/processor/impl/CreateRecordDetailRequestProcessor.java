@@ -120,9 +120,6 @@ public class CreateRecordDetailRequestProcessor implements AdatperProcessor<Long
         tSmsRecord.setId(recordId);
         smsRecordDAO.updateByPrimaryKeySelective(tSmsRecord);
 
-        // 从 redis zset & hash 中删除待发送记录
-        redisTemplate.opsForHash().delete(RedisKeyConstants.WAITING_SEND_HASH, String.valueOf(recordId));
-
         return ResponseEntity.success(detailIdList);
     }
 

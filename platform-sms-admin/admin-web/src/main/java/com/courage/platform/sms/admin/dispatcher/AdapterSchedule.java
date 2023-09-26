@@ -119,6 +119,11 @@ public class AdapterSchedule {
                 while (delayServiceRunning) {
                     synchronized (notifyObject) {
                         try {
+                            // 1. 首先通过redis的setnx命令 ，添加分布式锁
+                            // 2. 判断zset的第一个元素是否需要执行时，若到期了，则取出来，并放入到生成详情的消费者执行
+                            // 3. 从zset中删除该短信记录
+                            // 4. 删除分布式锁
+                            redisTemplate.opsForValue().setIfAbsent(RedisKeyConstants.WAITING_SEND_LOCK, "1", 1000L, TimeUnit.MILLISECONDS);
                             Set<ZSetOperations.TypedTuple<String>> recordIds = redisTemplate.opsForZSet().rangeWithScores(RedisKeyConstants.WAITING_SEND_ZSET, 0, 1);
                             if (CollectionUtils.isNotEmpty(recordIds)) {
                                 ZSetOperations.TypedTuple<String> recordIdTuple = recordIds.iterator().next();
@@ -129,8 +134,8 @@ public class AdapterSchedule {
                                     Long currentTime = System.currentTimeMillis();
                                     if (currentTime - triggerTime >= 0) {
                                         logger.info("短信记录recordId:" + recordId + " 可以发送了");
-                                        redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(recordId));
                                         createRecordDetailImmediately(Long.valueOf(recordId));
+                                        redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(recordId));
                                     } else {
                                         long diff = triggerTime - currentTime;
                                         logger.info("短信记录recordId:" + recordId + " 需要等待:" + diff);
@@ -138,10 +143,17 @@ public class AdapterSchedule {
                                     }
                                 }
                             } else {
-                                notifyObject.wait(500L);
+                                // 默认休眠100毫秒
+                                notifyObject.wait(100L);
                             }
                         } catch (Exception e) {
-                            logger.error("delayService error:", e);
+                            logger.error("delayService error: ", e);
+                        } finally {
+                            try {
+                                redisTemplate.delete(RedisKeyConstants.WAITING_SEND_LOCK);
+                            } catch (Exception e) {
+                                logger.error("redisTemplate delete key error:", e);
+                            }
                         }
                     }
                 }

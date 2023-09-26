@@ -7,6 +7,6 @@ public class RedisKeyConstants {
 
     public static final String WAITING_SEND_ZSET = "sms:waiting:send:zset";
 
-    public static final String WAITING_SEND_HASH = "sms:waiting:send:hash";
+    public static final String WAITING_SEND_LOCK = "sms:waiting:send:lock";
 
 }
