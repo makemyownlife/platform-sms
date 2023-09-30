@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/info")
-    public ResponseEntity<String> info(@RequestParam String token) {
+    public ResponseEntity<String> info(@RequestHeader(value = "X-Token") String token) {
         String userInfoStr = redisTemplate.opsForValue().get(RedisKeyConstants.LOGIN_USER + token);
         if (StringUtils.isNotEmpty(userInfoStr)) {
             return ResponseEntity.success(userInfoStr);
