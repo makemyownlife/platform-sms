@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -37,10 +38,19 @@ public class UserController {
         if (user.getUsername().equals(adminUser) && user.getPassword().equals(adminPasswd)) {
             String token = UUID.randomUUID().toString();
             tokenResp.put("token", token);
-            redisTemplate.opsForValue().set(RedisKeyConstants.LOGIN_USER + token, JSON.toJSONString(user));
+            redisTemplate.opsForValue().set(RedisKeyConstants.LOGIN_USER + token, JSON.toJSONString(user), 30, TimeUnit.MINUTES);
             return ResponseEntity.success(tokenResp);
         }
         return ResponseEntity.build(40001, "Invalid username or password");
+    }
+
+    @PostMapping(value = "/logout")
+    public ResponseEntity<String> logout(@RequestHeader(value = "X-Token") String token) {
+        String userInfoStr = redisTemplate.opsForValue().get(RedisKeyConstants.LOGIN_USER + token);
+        if (StringUtils.isNotEmpty(userInfoStr)) {
+            redisTemplate.delete(RedisKeyConstants.LOGIN_USER + token);
+        }
+        return ResponseEntity.success("success");
     }
 
     @GetMapping(value = "/info")
