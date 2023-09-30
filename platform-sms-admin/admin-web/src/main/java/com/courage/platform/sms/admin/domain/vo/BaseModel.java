@@ -2,7 +2,7 @@ package com.courage.platform.sms.admin.domain.vo;
 
 public class BaseModel<T> {
 
-    private Integer code = 20000;
+    private Integer code = 200;
 
     private String message;
 

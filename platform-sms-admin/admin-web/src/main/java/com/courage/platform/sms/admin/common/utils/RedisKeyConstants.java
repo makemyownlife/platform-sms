@@ -9,4 +9,6 @@ public class RedisKeyConstants {
 
     public static final String WAITING_SEND_LOCK = "sms:waiting:send:lock";
 
+    public static final String LOGIN_USER = "sms:login:user";
+
 }
