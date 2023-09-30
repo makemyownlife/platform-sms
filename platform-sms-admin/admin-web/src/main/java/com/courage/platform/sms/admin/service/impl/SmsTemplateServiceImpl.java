@@ -1,15 +1,16 @@
 package com.courage.platform.sms.admin.service.impl;
 
 import com.courage.platform.sms.admin.common.config.IdGenerator;
-import com.courage.platform.sms.admin.dispatcher.processor.requeset.body.ApplyTemplateRequestBody;
-import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
+import com.courage.platform.sms.admin.dispatcher.AdapterDispatcher;
+import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestCode;
+import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
+import com.courage.platform.sms.admin.dispatcher.processor.requeset.body.ApplyTemplateRequestBody;
+import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
 import com.courage.platform.sms.admin.domain.TSmsTemplate;
 import com.courage.platform.sms.admin.domain.TSmsTemplateBinding;
-import com.courage.platform.sms.admin.dispatcher.AdapterDispatcher;
-import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
-import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestCode;
+import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.admin.service.SmsTemplateService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -54,7 +55,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     }
 
     @Override
-    public BaseModel addSmsTemplate(TSmsTemplate tSmsTemplate) {
+    public ResponseEntity<String> addSmsTemplate(TSmsTemplate tSmsTemplate) {
         Long templateId = idGenerator.createUniqueId(tSmsTemplate.getSignName());
         try {
             tSmsTemplate.setId(templateId);
@@ -62,39 +63,39 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
             tSmsTemplate.setUpdateTime(new Date());
             tSmsTemplate.setStatus((byte) 0);
             tSmsTemplateDAO.insert(tSmsTemplate);
-            return BaseModel.getInstance("success");
+            return ResponseEntity.success("success");
         } catch (Exception e) {
             logger.error("addSmsTemplate error:", e);
-            return BaseModel.getInstance("fail");
+            return ResponseEntity.fail("fail");
         }
     }
 
     @Override
-    public BaseModel updateSmsTemplate(TSmsTemplate tSmsTemplate) {
+    public ResponseEntity<String> updateSmsTemplate(TSmsTemplate tSmsTemplate) {
         try {
             tSmsTemplate.setUpdateTime(new Date());
             tSmsTemplateDAO.updateByPrimaryKeySelective(tSmsTemplate);
-            return BaseModel.getInstance("success");
+            return ResponseEntity.success("success");
         } catch (Exception e) {
             logger.error("updateSmsTemplate error:", e);
-            return BaseModel.getInstance("fail");
+            return ResponseEntity.fail("fail");
         }
     }
 
     @Override
-    public BaseModel deleteSmsTemplate(Long id) {
+    public ResponseEntity<String> deleteSmsTemplate(Long id) {
         try {
             tSmsTemplateDAO.deleteByPrimaryKey(id);
             tSmsTemplateBindingDAO.deleteTemplateBindingByTemplateId(id);
-            return BaseModel.getInstance("success");
+            return ResponseEntity.success("success");
         } catch (Exception e) {
             logger.error("deleteSmsTemplate error:", e);
-            return BaseModel.getInstance("fail");
+            return ResponseEntity.fail("fail");
         }
     }
 
     @Override
-    public BaseModel autoBindChannel(String channelIds, Long templateId) {
+    public ResponseEntity<String>  autoBindChannel(String channelIds, Long templateId) {
         logger.info("channelIds:" + channelIds + " templateId:" + templateId);
         try {
             String[] channelIdsArr = StringUtils.split(channelIds, ',');
@@ -119,15 +120,15 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
                 ApplyTemplateRequestBody applyTemplateRequestBody = new ApplyTemplateRequestBody(binding.getId());
                 smsAdapterController.dispatchSyncRequest(RequestCode.APPLY_TEMPLATE, new RequestEntity(applyTemplateRequestBody));
             }
-            return BaseModel.getInstance("success");
+            return ResponseEntity.success("success");
         } catch (Exception e) {
             logger.error("autoBindChannel error:", e);
-            return BaseModel.getInstance("fail");
+            return ResponseEntity.fail("fail");
         }
     }
 
     @Override
-    public BaseModel handBindChannel(String channelIds, Long templateId, String templateCode) {
+    public ResponseEntity<String> handBindChannel(String channelIds, Long templateId, String templateCode) {
         String[] channelIdsArr = StringUtils.split(channelIds, ',');
         for (String channelId : channelIdsArr) {
             TSmsTemplateBinding binding = tSmsTemplateBindingDAO.selectBindingByTemplateIdAndChannelId(templateId, Long.valueOf(channelId));
@@ -151,7 +152,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
                 tSmsTemplateBindingDAO.updateByPrimaryKeySelective(binding);
             }
         }
-        return BaseModel.getInstance("success");
+        return ResponseEntity.success("success");
     }
 
 }

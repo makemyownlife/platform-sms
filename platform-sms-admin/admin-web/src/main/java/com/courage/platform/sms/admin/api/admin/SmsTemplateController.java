@@ -1,5 +1,6 @@
 package com.courage.platform.sms.admin.api.admin;
 
+import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
 import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.admin.domain.vo.Pager;
 import com.courage.platform.sms.admin.domain.TSmsTemplate;
@@ -27,7 +28,7 @@ public class SmsTemplateController {
     private SmsTemplateService smsTemplateService;
 
     @PostMapping(value = "/templates")
-    public BaseModel<Pager> templates(String templateName, String signName, String page, String size) {
+    public ResponseEntity<Pager> templates(String templateName, String signName, String page, String size) {
         Map<String, Object> param = new HashMap<>();
         if (StringUtils.isNotEmpty(templateName)) {
             param.put("templateName", StringUtils.trimToEmpty(templateName));
@@ -42,26 +43,26 @@ public class SmsTemplateController {
         Pager pager = new Pager();
         pager.setCount(count);
         pager.setItems(tSmsTemplateList);
-        return BaseModel.getInstance(pager);
+        return ResponseEntity.success(pager);
     }
 
     @PostMapping(value = "/addSmsTemplate")
-    public BaseModel addSmsTemplate(@RequestBody TSmsTemplate tSmsTemplate) {
+    public ResponseEntity<String> addSmsTemplate(@RequestBody TSmsTemplate tSmsTemplate) {
         return smsTemplateService.addSmsTemplate(tSmsTemplate);
     }
 
     @PostMapping(value = "/updateSmsTemplate")
-    public BaseModel updateSmsTemplate(@RequestBody TSmsTemplate tSmsTemplate) {
+    public ResponseEntity<String> updateSmsTemplate(@RequestBody TSmsTemplate tSmsTemplate) {
         return smsTemplateService.updateSmsTemplate(tSmsTemplate);
     }
 
     @PostMapping(value = "/deleteSmsTemplate")
-    public BaseModel deleteSmsTemplate(String id) {
+    public ResponseEntity<String> deleteSmsTemplate(String id) {
         return smsTemplateService.deleteSmsTemplate(Long.valueOf(id));
     }
 
     @PostMapping(value = "/autoBindChannel")
-    public BaseModel autoBindChannel(String channelIds, Long templateId, String templateCode) {
+    public ResponseEntity<String> autoBindChannel(String channelIds, Long templateId, String templateCode) {
         if (StringUtils.isNotEmpty(templateCode)) {
             return smsTemplateService.handBindChannel(channelIds, templateId, templateCode);
         } else {

@@ -1,6 +1,7 @@
 package com.courage.platform.sms.admin.service;
 
 
+import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
 import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.admin.domain.TSmsTemplate;
 
@@ -13,14 +14,14 @@ public interface SmsTemplateService {
 
     Long queryCountTemplates(Map<String, Object> param);
 
-    BaseModel addSmsTemplate(TSmsTemplate tSmsTemplate);
+    ResponseEntity<String> addSmsTemplate(TSmsTemplate tSmsTemplate);
 
-    BaseModel updateSmsTemplate(TSmsTemplate tSmsTemplate);
+    ResponseEntity<String> updateSmsTemplate(TSmsTemplate tSmsTemplate);
 
-    BaseModel deleteSmsTemplate(Long id);
+    ResponseEntity<String> deleteSmsTemplate(Long id);
 
-    BaseModel autoBindChannel(String channelIds, Long templateId);
+    ResponseEntity<String> autoBindChannel(String channelIds, Long templateId);
 
-    BaseModel handBindChannel(String channelIds, Long templateId, String templateCode);
+    ResponseEntity<String> handBindChannel(String channelIds, Long templateId, String templateCode);
 
 }
