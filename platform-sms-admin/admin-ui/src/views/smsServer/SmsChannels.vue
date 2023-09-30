@@ -236,7 +236,7 @@ export default {
       })
     },
     handleDelete(row) {
-      this.$confirm('删除渠道信息密钥无法使用', '确定删除渠道信息', {
+      this.$confirm('删除渠道信息后,密钥将无法使用', '确定删除渠道信息', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

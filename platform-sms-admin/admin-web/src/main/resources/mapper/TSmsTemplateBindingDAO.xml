@@ -162,4 +162,8 @@
      channel_id = #{channelId,jdbcType=BIGINT}
   </select>
 
+  <select id="selectCountByChannelId" parameterType="java.lang.Integer" resultType="int">
+    select count(1) from t_sms_template_binding where channel_id = #{channelId,jdbcType=BIGINT}
+  </select>
+
 </mapper>

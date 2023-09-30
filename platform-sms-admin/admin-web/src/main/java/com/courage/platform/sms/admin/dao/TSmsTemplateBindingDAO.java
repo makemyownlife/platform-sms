@@ -14,6 +14,8 @@ public interface TSmsTemplateBindingDAO extends MyBatisBaseDao<TSmsTemplateBindi
 
     Integer deleteTemplateBindingByTemplateId(Long templateId);
 
+    Integer selectCountByChannelId(Integer channelId);
+
     List<TSmsTemplateBinding> selectBindingsByTemplateId(Long templateId);
 
     TSmsTemplateBinding selectBindingByTemplateIdAndChannelId(@Param("templateId") Long templateId , @Param("channelId") Long channelId);

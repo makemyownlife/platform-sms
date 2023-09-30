@@ -1,9 +1,11 @@
 package com.courage.platform.sms.admin.service.impl;
 
-import com.courage.platform.sms.admin.service.SmsChannelService;
-import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
+import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
+import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
 import com.courage.platform.sms.admin.domain.TSmsChannel;
+import com.courage.platform.sms.admin.domain.vo.BaseModel;
+import com.courage.platform.sms.admin.service.SmsChannelService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +25,15 @@ public class SmsChannelServiceImpl implements SmsChannelService {
     @Autowired
     private TSmsChannelDAO tSmsChannelDAO;
 
+    @Autowired
+    private TSmsTemplateBindingDAO tSmsTemplateBindingDAO;
+
     public List<TSmsChannel> queryChannels(Map<String, String> param) {
         return tSmsChannelDAO.queryChannels(param);
     }
 
     @Override
-    public BaseModel addSmsChannel(TSmsChannel tSmsChannel) {
+    public ResponseEntity<String> addSmsChannel(TSmsChannel tSmsChannel) {
         try {
             TSmsChannel item = tSmsChannelDAO.queryChannelByAppkeyAndChannelType(tSmsChannel.getChannelAppkey(), tSmsChannel.getChannelType());
             tSmsChannel.setCreateTime(new Date());
@@ -36,19 +41,17 @@ public class SmsChannelServiceImpl implements SmsChannelService {
             tSmsChannel.setExtProperties(StringUtils.trimToEmpty(tSmsChannel.getExtProperties()));
             tSmsChannel.setStatus(0);
             tSmsChannel.setSendOrder(0);
-            String md5Value =  DigestUtils.md5DigestAsHex(
-                    (tSmsChannel.getId() + tSmsChannel.getChannelAppkey() + tSmsChannel.getChannelAppsecret() + tSmsChannel.getChannelDomain() + tSmsChannel.getChannelName() + tSmsChannel.getChannelType() + tSmsChannel.getExtProperties()
-                    ).getBytes("UTF-8"));
+            String md5Value = DigestUtils.md5DigestAsHex((tSmsChannel.getId() + tSmsChannel.getChannelAppkey() + tSmsChannel.getChannelAppsecret() + tSmsChannel.getChannelDomain() + tSmsChannel.getChannelName() + tSmsChannel.getChannelType() + tSmsChannel.getExtProperties()).getBytes("UTF-8"));
             tSmsChannel.setMd5Value(md5Value);
             if (item == null) {
                 tSmsChannelDAO.insert(tSmsChannel);
             } else {
                 tSmsChannelDAO.updateByPrimaryKey(tSmsChannel);
             }
-            return BaseModel.getInstance("success");
+            return ResponseEntity.success("success");
         } catch (Exception e) {
             logger.error("addSmsChannel error:", e);
-            return BaseModel.getInstance("fail");
+            return ResponseEntity.fail("fail");
         }
     }
 
@@ -58,9 +61,7 @@ public class SmsChannelServiceImpl implements SmsChannelService {
             tSmsChannel.setUpdateTime(new Date());
             tSmsChannel.setExtProperties(StringUtils.trimToEmpty(tSmsChannel.getExtProperties()));
             tSmsChannel.setStatus(0);
-            String md5Value =  DigestUtils.md5DigestAsHex(
-                    (tSmsChannel.getId() + tSmsChannel.getChannelAppkey() + tSmsChannel.getChannelAppsecret() + tSmsChannel.getChannelDomain() + tSmsChannel.getChannelName() + tSmsChannel.getChannelType() + tSmsChannel.getExtProperties()
-                    ).getBytes("UTF-8"));
+            String md5Value = DigestUtils.md5DigestAsHex((tSmsChannel.getId() + tSmsChannel.getChannelAppkey() + tSmsChannel.getChannelAppsecret() + tSmsChannel.getChannelDomain() + tSmsChannel.getChannelName() + tSmsChannel.getChannelType() + tSmsChannel.getExtProperties()).getBytes("UTF-8"));
             tSmsChannel.setMd5Value(md5Value);
             tSmsChannelDAO.updateByPrimaryKey(tSmsChannel);
             return BaseModel.getInstance("success");
@@ -71,13 +72,18 @@ public class SmsChannelServiceImpl implements SmsChannelService {
     }
 
     @Override
-    public BaseModel deleteSmsChannel(String id) {
+    public ResponseEntity<String> deleteSmsChannel(String id) {
         try {
+            //判断是否有已经绑定的模版
+            Integer count = tSmsTemplateBindingDAO.selectCountByChannelId(Integer.valueOf(id));
+            if (count > 0) {
+                return ResponseEntity.fail("该渠道已经创建了" + count + "个模版，无法删除");
+            }
             tSmsChannelDAO.deleteByPrimaryKey(Integer.valueOf(id));
-            return BaseModel.getInstance("success");
+            return ResponseEntity.success("success");
         } catch (Exception e) {
             logger.error("deleteSmsChannel error:", e);
-            return BaseModel.getInstance("fail");
+            return ResponseEntity.fail("fail");
         }
     }
 

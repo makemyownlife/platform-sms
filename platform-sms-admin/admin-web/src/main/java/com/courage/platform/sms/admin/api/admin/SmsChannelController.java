@@ -1,5 +1,6 @@
 package com.courage.platform.sms.admin.api.admin;
 
+import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
 import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.admin.domain.vo.Pager;
 import com.courage.platform.sms.admin.service.SmsChannelService;
@@ -25,7 +26,7 @@ public class SmsChannelController {
     private SmsChannelService smsChannelService;
 
     @PostMapping(value = "/channels")
-    public BaseModel<Pager> channels(String channelAppkey, String channelType) {
+    public ResponseEntity<Pager> channels(String channelAppkey, String channelType) {
         Map<String, String> param = new HashMap<>();
         param.put("channelType", StringUtils.trimToEmpty(channelType));
         param.put("channelAppkey", StringUtils.trimToEmpty(channelAppkey));
@@ -33,11 +34,11 @@ public class SmsChannelController {
         Pager pager = new Pager();
         pager.setCount(Long.valueOf(tSmsChannelList.size()));
         pager.setItems(tSmsChannelList);
-        return BaseModel.getInstance(pager);
+        return ResponseEntity.success(pager);
     }
 
     @PostMapping(value = "/addSmsChannel")
-    public BaseModel addSmsChannel(@RequestBody TSmsChannel tSmsChannel) {
+    public ResponseEntity<String> addSmsChannel(@RequestBody TSmsChannel tSmsChannel) {
         return smsChannelService.addSmsChannel(tSmsChannel);
     }
 
@@ -47,7 +48,7 @@ public class SmsChannelController {
     }
 
     @PostMapping(value = "/deleteSmsChannel")
-    public BaseModel deleteSmsChannel(String id) {
+    public ResponseEntity<String> deleteSmsChannel(String id) {
         return smsChannelService.deleteSmsChannel(id);
     }
 

@@ -1,5 +1,6 @@
 package com.courage.platform.sms.admin.service;
 
+import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
 import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.admin.domain.TSmsChannel;
 
@@ -10,10 +11,10 @@ public interface SmsChannelService {
 
     List<TSmsChannel> queryChannels(Map<String, String> param);
 
-    BaseModel addSmsChannel(TSmsChannel tSmsChannel);
+    ResponseEntity<String> addSmsChannel(TSmsChannel tSmsChannel);
 
     BaseModel updateSmsChannel(TSmsChannel tSmsChannel);
 
-    BaseModel deleteSmsChannel(String id);
+    ResponseEntity<String> deleteSmsChannel(String id);
 
 }
