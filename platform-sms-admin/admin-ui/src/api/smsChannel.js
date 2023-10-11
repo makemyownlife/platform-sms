@@ -31,3 +31,10 @@ export function updateSmsChannel(data) {
   })
 }
 
+export function channelDict() {
+  return request({
+    url: '/sms/channelDict',
+    method: 'post',
+  })
+}
+

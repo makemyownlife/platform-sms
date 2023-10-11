@@ -3,8 +3,10 @@
     <div class="filter-container">
       <el-select v-model="listQuery.channelType" placeholder="渠道类型" class="filter-item">
         <el-option key="" label="所有" value=""/>
-        <el-option key="-1" label="支付宝" value="aliyun"/>
-        <el-option key="0" label="亿美" value="emay"/>
+        <el-option v-for="item in channelTypes"
+                   :domain="item.domain"
+                   :label="item.channelName"
+                   :value="item.channelType"/>
       </el-select>
       <el-input v-model="listQuery.channelAppkey" placeholder="短信渠道appkey" style="width: 200px;" class="filter-item"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" plain @click="queryData()">查询</el-button>
@@ -109,7 +111,7 @@
 
 <script>
 
-import {getSmsChannels, addSmsChannel, deleteSmsChannel, updateSmsChannel} from '@/api/smsChannel'
+import {getSmsChannels, addSmsChannel, deleteSmsChannel, updateSmsChannel, channelDict} from '@/api/smsChannel'
 
 export default {
   filters: {
@@ -149,10 +151,7 @@ export default {
         create: '新建渠道',
         update: '修改渠道'
       },
-      channelTypes: [
-        {text: '阿里云', value: 'aliyun'},
-        {text: '亿美', value: 'emay'}
-      ],
+      channelTypes: [],
       channelModel: {
         id: undefined,
         channelType: '',
@@ -180,6 +179,12 @@ export default {
   },
   methods: {
     fetchData() {
+      //查询渠道字典表
+      channelDict().then(res => {
+        this.channelTypes = res.data;
+      }).finally(() => {
+      })
+      //加载渠道列表
       this.listLoading = true
       getSmsChannels(this.listQuery).then(res => {
         this.list = res.data.items
@@ -187,6 +192,7 @@ export default {
       }).finally(() => {
         this.listLoading = false
       })
+
     },
     queryData() {
       this.listQuery.page = 1
