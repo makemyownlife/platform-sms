@@ -1,5 +1,7 @@
 package com.courage.platform.sms.admin.api.admin;
 
+import com.alibaba.fastjson.JSON;
+import com.courage.platform.sms.admin.common.utils.ChannelDictEnum;
 import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
 import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.admin.domain.vo.Pager;
@@ -35,6 +37,19 @@ public class SmsChannelController {
         pager.setCount(Long.valueOf(tSmsChannelList.size()));
         pager.setItems(tSmsChannelList);
         return ResponseEntity.success(pager);
+    }
+
+    @PostMapping(value = "/channelDict")
+    public ResponseEntity channelDict() {
+        List<Map<String, String>> channelDicList = new ArrayList<>();
+        for (ChannelDictEnum channel : ChannelDictEnum.values()) {
+            Map<String, String> channelMap = new HashMap<>();
+            channelMap.put("channelType", channel.getChannelType());
+            channelMap.put("channelName", channel.getChannelName());
+            channelMap.put("domain", channel.getDomain());
+            channelDicList.add(channelMap);
+        }
+        return ResponseEntity.success(channelDicList);
     }
 
     @PostMapping(value = "/addSmsChannel")
