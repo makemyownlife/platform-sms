@@ -78,8 +78,10 @@
         <el-form-item label="渠道类型" prop="channelType">
           <el-select v-model="channelModel.channelType" style="width: 280px">
             <el-option key="" label="请选择" value=""/>
-            <el-option key="-1" label="支付宝" value="aliyun"/>
-            <el-option key="0" label="亿美" value="emay"/>
+            <el-option v-for="item in channelTypes"
+                       :domain="item.domain"
+                       :label="item.channelName"
+                       :value="item.channelType"/>
           </el-select>
         </el-form-item>
         <el-form-item label="渠道名称" prop="channelName">
