@@ -1,0 +1,8 @@
+server:
+  port: 8086
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+
