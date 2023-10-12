@@ -26,7 +26,7 @@ public class SmsSenderClient {
         this.smsConfig = smsConfig;
     }
 
-    public SmsSenderResult sendSmsByTemplateId(String mobile, String templateId, Map<String, String> templateParam) throws IOException {
+    public SmsSenderResult sendSmsByTemplateId(String mobile, String templateId, Map<String, String> templateParam) {
         String random = SmsSenderUtil.getRandom();
         String appKey = smsConfig.getAppKey();
         String time = String.valueOf(SmsSenderUtil.getCurrentTime());
