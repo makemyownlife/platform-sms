@@ -5,4 +5,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
 
-
+sms:
+  smsServerUrl: http://localhost:8089
+  appKey: qQjEiFzn80v8VM4h
+  appSecret: 9c465ece754bd26a9be77f3d0e2606bd
