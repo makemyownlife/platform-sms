@@ -142,9 +142,6 @@ public class AdapterSchedule {
                                         logger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
                                     }
                                 }
-                            } else {
-                                // 默认休眠100毫秒
-                                notifyObject.wait(100L);
                             }
                         } catch (Exception e) {
                             logger.error("delayService error: ", e);
