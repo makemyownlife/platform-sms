@@ -18,7 +18,7 @@ public class SmsSenderClient {
 
     private final static Logger logger = LoggerFactory.getLogger(SmsSenderClient.class);
 
-    private final static String SINGLE_SEND_URL = "/api/sendByTemplateId";
+    private final static String SINGLE_SEND_URL = "/gateway/sendByTemplateId";
 
     private SmsConfig smsConfig;
 

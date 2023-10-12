@@ -1,6 +1,8 @@
 package com.courage.platform.sms.demo.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.courage.platform.sms.client.SmsSenderClient;
+import com.courage.platform.sms.client.SmsSenderResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,8 +25,10 @@ public class TestController {
         String templateId = "523419101760679938";
         // 你好，你的信息是：${code}
         Map<String, String> param = new HashMap<String, String>();
-        smsSenderClient.sendSmsByTemplateId(mobile, templateId, param);
-        return null;
+        param.put("code", "1234");
+        SmsSenderResult senderResult = smsSenderClient.sendSmsByTemplateId(mobile, templateId, param);
+        System.out.println("senderResult:" + JSON.toJSONString(senderResult));
+        return "hello , first short message !";
     }
 
 }
