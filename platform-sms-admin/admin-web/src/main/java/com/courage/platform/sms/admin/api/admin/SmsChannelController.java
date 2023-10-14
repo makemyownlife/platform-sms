@@ -58,7 +58,7 @@ public class SmsChannelController {
     }
 
     @PostMapping(value = "/updateSmsChannel")
-    public BaseModel updateSmsChannel(@RequestBody TSmsChannel tSmsChannel) {
+    public ResponseEntity updateSmsChannel(@RequestBody TSmsChannel tSmsChannel) {
         return smsChannelService.updateSmsChannel(tSmsChannel);
     }
 
