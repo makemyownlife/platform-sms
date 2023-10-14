@@ -41,7 +41,14 @@ public class SmsChannelServiceImpl implements SmsChannelService {
             tSmsChannel.setExtProperties(StringUtils.trimToEmpty(tSmsChannel.getExtProperties()));
             tSmsChannel.setStatus(0);
             tSmsChannel.setSendOrder(0);
-            String md5Value = DigestUtils.md5DigestAsHex((tSmsChannel.getId() + tSmsChannel.getChannelAppkey() + tSmsChannel.getChannelAppsecret() + tSmsChannel.getChannelDomain() + tSmsChannel.getChannelName() + tSmsChannel.getChannelType() + tSmsChannel.getExtProperties()).getBytes("UTF-8"));
+            String md5Value = DigestUtils.md5DigestAsHex((
+                                                                         tSmsChannel.getId() +
+                                                                         tSmsChannel.getChannelAppkey() +
+                                                                         tSmsChannel.getChannelAppsecret() +
+                                                                         tSmsChannel.getChannelDomain() +
+                                                                         tSmsChannel.getChannelName() +
+                                                                         tSmsChannel.getChannelType() +
+                                                                         tSmsChannel.getExtProperties()).getBytes("UTF-8"));
             tSmsChannel.setMd5Value(md5Value);
             if (item == null) {
                 tSmsChannelDAO.insert(tSmsChannel);
@@ -56,7 +63,7 @@ public class SmsChannelServiceImpl implements SmsChannelService {
     }
 
     @Override
-    public BaseModel updateSmsChannel(TSmsChannel tSmsChannel) {
+    public ResponseEntity updateSmsChannel(TSmsChannel tSmsChannel) {
         try {
             tSmsChannel.setUpdateTime(new Date());
             tSmsChannel.setExtProperties(StringUtils.trimToEmpty(tSmsChannel.getExtProperties()));
@@ -64,10 +71,10 @@ public class SmsChannelServiceImpl implements SmsChannelService {
             String md5Value = DigestUtils.md5DigestAsHex((tSmsChannel.getId() + tSmsChannel.getChannelAppkey() + tSmsChannel.getChannelAppsecret() + tSmsChannel.getChannelDomain() + tSmsChannel.getChannelName() + tSmsChannel.getChannelType() + tSmsChannel.getExtProperties()).getBytes("UTF-8"));
             tSmsChannel.setMd5Value(md5Value);
             tSmsChannelDAO.updateByPrimaryKey(tSmsChannel);
-            return BaseModel.getInstance("success");
+            return ResponseEntity.success("success");
         } catch (Exception e) {
             logger.error("addSmsChannel error:", e);
-            return BaseModel.getInstance("fail");
+            return ResponseEntity.fail("修改渠道失败!");
         }
     }
 
