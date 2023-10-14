@@ -2,7 +2,7 @@ package com.courage.platform.sms.admin.api.admin;
 
 import com.alibaba.fastjson.JSON;
 import com.courage.platform.sms.admin.common.utils.ChannelDictEnum;
-import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
+import com.courage.platform.sms.admin.common.utils.ResponseEntity;
 import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.admin.domain.vo.Pager;
 import com.courage.platform.sms.admin.service.SmsChannelService;

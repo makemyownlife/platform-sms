@@ -1,4 +1,4 @@
-package com.courage.platform.sms.admin.dispatcher.processor.response;
+package com.courage.platform.sms.admin.common.utils;
 
 public class ResponseEntity<T> {
 

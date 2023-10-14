@@ -1,7 +1,7 @@
 package com.courage.platform.sms.admin.service.impl;
 
+import com.courage.platform.sms.admin.common.utils.ResponseEntity;
 import com.courage.platform.sms.admin.dao.TSmsAppinfoDAO;
-import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
 import com.courage.platform.sms.admin.domain.TSmsAppinfo;
 import com.courage.platform.sms.admin.service.AppInfoService;
 import com.courage.platform.sms.admin.domain.vo.BaseModel;

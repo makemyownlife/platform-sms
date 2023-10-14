@@ -1,5 +1,6 @@
 package com.courage.platform.sms.admin.service.impl;
 
+import com.courage.platform.sms.admin.common.utils.ResponseEntity;
 import com.courage.platform.sms.admin.dao.TSmsAppinfoDAO;
 import com.courage.platform.sms.admin.dao.TSmsChannelDAO;
 import com.courage.platform.sms.admin.dao.TSmsRecordDAO;
@@ -7,7 +8,6 @@ import com.courage.platform.sms.admin.dao.TSmsRecordDetailDAO;
 import com.courage.platform.sms.admin.dispatcher.AdapterDispatcher;
 import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestCode;
 import com.courage.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
-import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
 import com.courage.platform.sms.admin.dispatcher.processor.requeset.body.SendMessageRequestBody;
 import com.courage.platform.sms.admin.domain.TSmsAppinfo;
 import com.courage.platform.sms.admin.domain.TSmsChannel;
@@ -90,7 +90,11 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     }
 
     public SmsSenderResult sendMessage(SendMessageRequestBody sendMessageRequestBody) {
-        ResponseEntity<SmsSenderResult> processorResponse = smsAdapterDispatcher.dispatchSyncRequest(RequestCode.SEND_MESSAGE, new RequestEntity(sendMessageRequestBody));
+        ResponseEntity<SmsSenderResult> processorResponse =
+                                        smsAdapterDispatcher.dispatchSyncRequest(
+                                                            RequestCode.SEND_MESSAGE,
+                                                            new RequestEntity(sendMessageRequestBody)
+                                        );
         return processorResponse.getData();
     }
 
