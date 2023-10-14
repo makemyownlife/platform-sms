@@ -116,40 +116,48 @@ public class AdapterSchedule {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
+                // 1. 首先通过redis的setnx命令 ，添加分布式锁
+                // 2. 判断zset的第一个元素是否需要执行时，若到期了，则取出来，并放入到生成详情的消费者执行
+                // 3. 从zset中删除该短信记录
+                // 4. 删除分布式锁
                 while (delayServiceRunning) {
                     synchronized (notifyObject) {
+                        boolean lockFlag = false;
                         long waitTime = 100L;
                         try {
-                            // 1. 首先通过redis的setnx命令 ，添加分布式锁
-                            // 2. 判断zset的第一个元素是否需要执行时，若到期了，则取出来，并放入到生成详情的消费者执行
-                            // 3. 从zset中删除该短信记录
-                            // 4. 删除分布式锁
-                            redisTemplate.opsForValue().setIfAbsent(RedisKeyConstants.WAITING_SEND_LOCK, "1", 1000L, TimeUnit.MILLISECONDS);
-                            Set<ZSetOperations.TypedTuple<String>> recordIds = redisTemplate.opsForZSet().rangeWithScores(RedisKeyConstants.WAITING_SEND_ZSET, 0, 1);
-                            if (CollectionUtils.isNotEmpty(recordIds)) {
-                                ZSetOperations.TypedTuple<String> recordIdTuple = recordIds.iterator().next();
-                                String recordId = recordIdTuple.getValue();
-                                Long triggerTime = recordIdTuple.getScore().longValue();
-                                logger.info("短信记录recordId:" + recordId + " triggerTime:" + triggerTime);
-                                if (StringUtils.isNotEmpty(recordId)) {
-                                    Long currentTime = System.currentTimeMillis();
-                                    if (currentTime - triggerTime >= 0) {
-                                        logger.info("短信记录recordId:" + recordId + " 可以发送了");
-                                        createRecordDetailImmediately(Long.valueOf(recordId));
-                                        redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(recordId));
-                                    } else {
-                                        waitTime = triggerTime - currentTime;
-                                        logger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
+                            lockFlag = redisTemplate.opsForValue().setIfAbsent(
+                                                                        RedisKeyConstants.WAITING_SEND_LOCK,
+                                                                        "1",
+                                                                        3000,
+                                                                         TimeUnit.MILLISECONDS
+                                         );
+                            if (lockFlag) {
+                                Set<ZSetOperations.TypedTuple<String>> recordIds = redisTemplate.opsForZSet().rangeWithScores(RedisKeyConstants.WAITING_SEND_ZSET, 0, 1);
+                                if (CollectionUtils.isNotEmpty(recordIds)) {
+                                    ZSetOperations.TypedTuple<String> recordIdTuple = recordIds.iterator().next();
+                                    String recordId = recordIdTuple.getValue();
+                                    Long triggerTime = recordIdTuple.getScore().longValue();
+                                    if (StringUtils.isNotEmpty(recordId)) {
+                                        Long currentTime = System.currentTimeMillis();
+                                        if (currentTime - triggerTime >= 0) {
+                                            createRecordDetailImmediately(Long.valueOf(recordId));
+                                            redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(recordId));
+                                        } else {
+                                            waitTime = triggerTime - currentTime;
+                                            logger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
+                                        }
                                     }
                                 }
                             }
                         } catch (Exception e) {
                             logger.error("delayService error: ", e);
                         } finally {
-                            try {
-                                redisTemplate.delete(RedisKeyConstants.WAITING_SEND_LOCK);
-                            } catch (Exception e) {
-                                logger.error("redisTemplate delete key error:", e);
+                            if (lockFlag) {
+                                try {
+                                    redisTemplate.delete(RedisKeyConstants.WAITING_SEND_LOCK);
+                                } catch (Exception e) {
+                                    logger.error("redisTemplate delete key error:", e);
+                                }
                             }
                         }
                         try {
