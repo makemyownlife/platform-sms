@@ -1,6 +1,7 @@
 package com.courage.platform.sms.admin.service.impl;
 
 import com.courage.platform.sms.admin.dao.TSmsAppinfoDAO;
+import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
 import com.courage.platform.sms.admin.domain.TSmsAppinfo;
 import com.courage.platform.sms.admin.service.AppInfoService;
 import com.courage.platform.sms.admin.domain.vo.BaseModel;
@@ -64,7 +65,7 @@ public class AppInfoServiceImpl implements AppInfoService {
     }
 
     @Override
-    public BaseModel addAppInfo(TSmsAppinfo tSmsAppinfo) {
+    public ResponseEntity addAppInfo(TSmsAppinfo tSmsAppinfo) {
         try {
             TSmsAppinfo item = tSmsAppinfoDAO.getAppinfoByAppKey(tSmsAppinfo.getAppKey());
             tSmsAppinfo.setCreateTime(new Date());
@@ -72,18 +73,18 @@ public class AppInfoServiceImpl implements AppInfoService {
             tSmsAppinfo.setStatus((byte) 0);
             if (item == null) {
                 tSmsAppinfoDAO.insert(tSmsAppinfo);
-                return BaseModel.getInstance("success");
+                return ResponseEntity.success("success");
             } else {
-                return BaseModel.getInstance("fail", "应用已经存在，请仔细核对!");
+                return ResponseEntity.fail("应用已经存在，请仔细核对!");
             }
         } catch (Exception e) {
             logger.error("addAppInfo error:", e);
-            return BaseModel.getInstance("fail");
+            return ResponseEntity.fail("添加应用失败");
         }
     }
 
     @Override
-    public BaseModel updateAppInfo(TSmsAppinfo tSmsAppinfo) {
+    public ResponseEntity updateAppInfo(TSmsAppinfo tSmsAppinfo) {
         try {
             TSmsAppinfo item = tSmsAppinfoDAO.selectByPrimaryKey(tSmsAppinfo.getId());
             if (item != null) {
@@ -92,21 +93,21 @@ public class AppInfoServiceImpl implements AppInfoService {
                 tSmsAppinfo.setStatus((byte) 0);
                 tSmsAppinfoDAO.updateByPrimaryKey(tSmsAppinfo);
             }
-            return BaseModel.getInstance("success");
+            return ResponseEntity.success("success");
         } catch (Exception e) {
             logger.error("updateAppInfo error:", e);
-            return BaseModel.getInstance("fail");
+            return ResponseEntity.fail("添加应用失败");
         }
     }
 
     @Override
-    public BaseModel deleteAppInfo(String id) {
+    public ResponseEntity deleteAppInfo(String id) {
         try {
             tSmsAppinfoDAO.deleteByPrimaryKey(Integer.valueOf(id));
-            return BaseModel.getInstance("success");
+            return ResponseEntity.success("success");
         } catch (Exception e) {
             logger.error("deleteSmsChannel error:", e);
-            return BaseModel.getInstance("fail");
+            return ResponseEntity.fail("删除应用失败");
         }
     }
 

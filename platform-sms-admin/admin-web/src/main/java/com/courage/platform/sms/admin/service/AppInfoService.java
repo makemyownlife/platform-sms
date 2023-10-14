@@ -1,5 +1,6 @@
 package com.courage.platform.sms.admin.service;
 
+import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
 import com.courage.platform.sms.admin.domain.TSmsAppinfo;
 import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,11 @@ public interface AppInfoService {
 
     Integer selectAppInfoCount(Map<String, Object> param);
 
-    BaseModel addAppInfo(TSmsAppinfo tSmsAppinfo);
+    ResponseEntity addAppInfo(TSmsAppinfo tSmsAppinfo);
 
-    BaseModel updateAppInfo(TSmsAppinfo tSmsAppinfo);
+    ResponseEntity updateAppInfo(TSmsAppinfo tSmsAppinfo);
 
-    BaseModel deleteAppInfo(String id);
+    ResponseEntity deleteAppInfo(String id);
 
     TSmsAppinfo getAppInfoByAppkey(String appkey);
 

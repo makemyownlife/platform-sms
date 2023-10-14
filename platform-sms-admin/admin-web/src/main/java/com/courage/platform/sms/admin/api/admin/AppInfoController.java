@@ -1,5 +1,6 @@
 package com.courage.platform.sms.admin.api.admin;
 
+import com.courage.platform.sms.admin.dispatcher.processor.response.ResponseEntity;
 import com.courage.platform.sms.admin.domain.TSmsAppinfo;
 import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import com.courage.platform.sms.admin.domain.vo.Pager;
@@ -26,7 +27,7 @@ public class AppInfoController {
     private AppInfoService appInfoService;
 
     @PostMapping(value = "/appList")
-    public BaseModel<Pager> appList(String appkey, int page, int size) {
+    public ResponseEntity<Pager> appList(String appkey, int page, int size) {
         Map<String, Object> param = new HashMap<>();
         param.put("appkey", appkey);
         param.put("page", page);
@@ -36,24 +37,24 @@ public class AppInfoController {
         Pager pager = new Pager();
         pager.setCount(Long.valueOf(count));
         pager.setItems(appinfoList);
-        return BaseModel.getInstance(pager);
+        return ResponseEntity.success(pager);
     }
 
     @PostMapping(value = "/addAppInfo")
-    public BaseModel addAppInfo(@RequestBody TSmsAppinfo appinfo) {
+    public ResponseEntity addAppInfo(@RequestBody TSmsAppinfo appinfo) {
         return appInfoService.addAppInfo(appinfo);
     }
 
     @PostMapping(value = "/updateAppInfo")
-    public BaseModel updateAppInfo(@RequestBody TSmsAppinfo appinfo) {
+    public ResponseEntity updateAppInfo(@RequestBody TSmsAppinfo appinfo) {
         return appInfoService.updateAppInfo(appinfo);
     }
 
     @PostMapping(value = "/deleteAppInfo")
-    public BaseModel deleteAppInfo(String id) {
+    public ResponseEntity deleteAppInfo(String id) {
         if (Integer.valueOf(id) == 1) {
             logger.info("默认应用不能删除");
-            return BaseModel.getInstance("error");
+            return ResponseEntity.fail("默认应用不能删除");
         }
         return appInfoService.deleteAppInfo(id);
     }
