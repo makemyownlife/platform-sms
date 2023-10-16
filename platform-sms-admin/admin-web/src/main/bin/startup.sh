@@ -13,7 +13,7 @@ base=${bin_abs_path}/..
 export LANG=en_US.UTF-8
 export BASE=$base
 
-if [ -f $base/bin/adapter.pid ] ; then
+if [ -f $base/bin/admin.pid ] ; then
 	echo "found admin.pid , Please run stop.sh first ,then startup.sh" 2>&2
     exit 1
 fi
