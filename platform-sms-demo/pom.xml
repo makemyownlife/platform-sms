@@ -14,15 +14,17 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
+        <!-- 短信平台 客户端 start -->
         <dependency>
             <groupId>com.courage</groupId>
             <artifactId>platform-sms-client</artifactId>
             <version>${parent.version}</version>
+        </dependency>
+        <!-- 短信平台 客户端 end -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
