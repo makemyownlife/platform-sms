@@ -65,12 +65,13 @@ public class TencentAdapter implements OuterAdapter {
             });
             sendSmsRequest.setExtendCode(StringUtils.EMPTY);
             sendSmsRequest.setSenderId(StringUtils.EMPTY);
+            logger.info("tencent send sms:" + JSON.toJSONString(sendSmsRequest));
             SendSmsResponse response = client.SendSms(sendSmsRequest);
             logger.info("response:" + JSON.toJSONString(response));
             SendStatus[] sendStatuArray = response.getSendStatusSet();
             if (sendStatuArray != null && sendStatuArray.length > 0) {
                 SendStatus sendStatus = sendStatuArray[0];
-                if ("ok".equals(sendStatus.getCode())) {
+                if ("Ok".equals(sendStatus.getCode())) {
                     return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, sendStatus.getSerialNo());
                 }
             }
