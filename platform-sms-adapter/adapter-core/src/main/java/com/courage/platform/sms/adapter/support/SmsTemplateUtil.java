@@ -3,8 +3,12 @@ package com.courage.platform.sms.adapter.support;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 短信模版工具类
@@ -33,6 +37,35 @@ public class SmsTemplateUtil {
             result = result.replace(placeholder, paramValue);
         }
         return prefix + result;
+    }
+
+    public static String[] renderTemplateParamArray(String templateParam, String templateContent) {
+        Map<String, String> templateParamMap = JSON.parseObject(templateParam, HashMap.class);
+        String[] placeholders = extractPlaceholders(templateContent);
+        String[] result = new String[placeholders.length];
+        for (int i = 0; i < placeholders.length; i++) {
+            result[i] = templateParamMap.get(placeholders[i]);
+        }
+        return result;
+    }
+
+    public static String[] extractPlaceholders(String template) {
+        List<String> placeholders = new ArrayList<>();
+        // 使用正则表达式查找模板中的占位符
+        Pattern pattern = Pattern.compile("\\$\\{([a-zA-Z0-9]+)\\}");
+        Matcher matcher = pattern.matcher(template);
+        while (matcher.find()) {
+            placeholders.add(matcher.group(1));
+        }
+        return placeholders.toArray(new String[0]);
+    }
+
+    public static void main(String[] args) {
+        String template = "模版 ${code} , ${idsnb}  ${name} 123 ${number123}";
+        String[] extractedPlaceholders = extractPlaceholders(template);
+        for (String placeholder : extractedPlaceholders) {
+            System.out.println(placeholder);
+        }
     }
 
 }
