@@ -152,8 +152,20 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.courage</groupId>
+            <artifactId>adapter-tencent</artifactId>
+            <version>${project.parent.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
+            <classifier>jar-with-dependencies</classifier>
+            <scope>provided</scope>
+        </dependency>
          <!-- =====================适配器核心包 end ======================= -->
-
 
     </dependencies>
 
