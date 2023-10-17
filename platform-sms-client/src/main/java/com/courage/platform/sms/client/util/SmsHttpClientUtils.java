@@ -41,58 +41,6 @@ public final class SmsHttpClientUtils {
         return doPost(url, params, DEFAULT_CHARSET, connectTimeout, readTimeout);
     }
 
-    /**
-     * 执行HTTP POST请求。
-     *
-     * @param url            请求地址
-     * @param data           请求参数
-     * @param headers        请求头部信息
-     * @param connectTimeout 客户端连接时间
-     * @param readTimeout    服务端响应时间
-     * @return 响应字符串
-     */
-    public static Map<String, Object> doPost(String url, byte[] data, Map<String, String> headers, int connectTimeout, int readTimeout) throws Exception {
-        Map<String, Object> resMap = new HashMap<String, Object>();
-        String ctype = "application/x-www-form-urlencoded;charset=UTF-8";
-        HttpURLConnection conn = null;
-        OutputStream out = null;
-        String rsp = null;
-        try {
-            conn = getConnection(new URL(url), METHOD_POST, ctype);
-            fillHeaders(conn, headers);
-            conn.setConnectTimeout(connectTimeout);
-            conn.setReadTimeout(readTimeout);
-            out = conn.getOutputStream();
-            out.write(data);
-            String httpCode = conn.getHeaderField("result");
-            out = getResultOutputStream(conn);
-            resMap.put("httpCode", httpCode);
-            resMap.put("out", out);
-        } catch (IOException e) {
-            Map<String, String> map = getParamsFromUrl(url);
-            LOG.error(map.get("serviceId") + "访问出现错误.");
-            throw new Exception("访问远程服务失败", e);
-        } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    throw new Exception(e);
-                }
-            }
-            if (conn != null) {
-                conn.disconnect();
-            }
-        }
-        return resMap;
-    }
-
-    /**
-     * 添加头信息
-     *
-     * @param conn
-     * @param headers
-     */
     private static void fillHeaders(HttpURLConnection conn, Map<String, String> headers) {
         if (headers != null) {
             for (Entry<String, String> entry : headers.entrySet()) {
@@ -177,8 +125,7 @@ public final class SmsHttpClientUtils {
             out.write(content);
             rsp = getResponseAsString(conn);
         } catch (IOException e) {
-            Map<String, String> map = getParamsFromUrl(url);
-            LOG.error(map.get("serviceId") + "访问出现错误.");
+            LOG.error("调用 Http地址：" + url + " 访问出现错误 : ", e);
             throw new Exception("访问远程服务失败", e);
         } finally {
             if (out != null) {
@@ -224,8 +171,7 @@ public final class SmsHttpClientUtils {
             try {
                 conn = getConnection(buildGetUrl(url, query), METHOD_GET, ctype);
             } catch (IOException e) {
-                Map<String, String> map = getParamsFromUrl(url);
-                LOG.error(map.get("serviceId") + "访问出现错误.");
+                LOG.error("调用 Http地址：" + url + " 访问出现错误 : ", e);
                 throw new Exception(e);
             }
             rsp = getResponseAsString(conn);
@@ -371,7 +317,6 @@ public final class SmsHttpClientUtils {
 
     private static String getResponseCharset(String ctype) {
         String charset = DEFAULT_CHARSET;
-
         if (!SmsStringUtils.isEmpty(ctype)) {
             String[] params = ctype.split(";");
             for (String param : params) {
@@ -394,7 +339,6 @@ public final class SmsHttpClientUtils {
      *
      * @param value 参数值
      * @return 反编码后的参数值
-
      * @Date : 4:18 PM 06/06/2018
      */
     public static String decode(String value) {
@@ -406,7 +350,6 @@ public final class SmsHttpClientUtils {
      *
      * @param value 参数值
      * @return 编码后的参数值
-
      * @Date : 4:18 PM 06/06/2018
      */
     public static String encode(String value) {
