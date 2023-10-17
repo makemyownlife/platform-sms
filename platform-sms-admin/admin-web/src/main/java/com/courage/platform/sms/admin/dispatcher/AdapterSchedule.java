@@ -125,12 +125,7 @@ public class AdapterSchedule {
                         boolean lockFlag = false;
                         long waitTime = 100L;
                         try {
-                            lockFlag = redisTemplate.opsForValue().setIfAbsent(
-                                                                        RedisKeyConstants.WAITING_SEND_LOCK,
-                                                                        "1",
-                                                                        3000,
-                                                                         TimeUnit.MILLISECONDS
-                                         );
+                            lockFlag = redisTemplate.opsForValue().setIfAbsent(RedisKeyConstants.WAITING_SEND_LOCK, "1", 3000, TimeUnit.MILLISECONDS);
                             if (lockFlag) {
                                 Set<ZSetOperations.TypedTuple<String>> recordIds = redisTemplate.opsForZSet().rangeWithScores(RedisKeyConstants.WAITING_SEND_ZSET, 0, 1);
                                 if (CollectionUtils.isNotEmpty(recordIds)) {
