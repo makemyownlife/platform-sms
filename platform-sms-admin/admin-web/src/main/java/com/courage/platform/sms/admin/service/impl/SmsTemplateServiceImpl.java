@@ -1,6 +1,7 @@
 package com.courage.platform.sms.admin.service.impl;
 
 import com.courage.platform.sms.admin.common.config.IdGenerator;
+import com.courage.platform.sms.admin.common.utils.ResponseCode;
 import com.courage.platform.sms.admin.common.utils.ResponseEntity;
 import com.courage.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import com.courage.platform.sms.admin.dao.TSmsTemplateDAO;
@@ -94,7 +95,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     }
 
     @Override
-    public ResponseEntity<String>  autoBindChannel(String channelIds, Long templateId) {
+    public ResponseEntity<String> autoBindChannel(String channelIds, Long templateId) {
         logger.info("channelIds:" + channelIds + " templateId:" + templateId);
         try {
             String[] channelIdsArr = StringUtils.split(channelIds, ',');
@@ -117,7 +118,12 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
                 }
                 // 向渠道申请模版
                 ApplyTemplateRequestBody applyTemplateRequestBody = new ApplyTemplateRequestBody(binding.getId());
-                smsAdapterController.dispatchSyncRequest(RequestCode.APPLY_TEMPLATE, new RequestEntity(applyTemplateRequestBody));
+                ResponseEntity<String> response = smsAdapterController.dispatchSyncRequest(RequestCode.APPLY_TEMPLATE, new RequestEntity(applyTemplateRequestBody));
+                if (response.getCode() == ResponseCode.SUCCESS.getCode()) {
+                    return ResponseEntity.success("success");
+                }else {
+                    return ResponseEntity.fail("绑定失败");
+                }
             }
             return ResponseEntity.success("success");
         } catch (Exception e) {
