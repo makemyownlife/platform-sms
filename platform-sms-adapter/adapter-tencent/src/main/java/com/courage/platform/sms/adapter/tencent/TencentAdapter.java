@@ -20,11 +20,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @SPI("tencent")
 public class TencentAdapter implements OuterAdapter {
 
     private final static Logger logger = LoggerFactory.getLogger(TencentAdapter.class);
+
+    private String instanceId = UUID.randomUUID().toString().replaceAll("-", "");
 
     private SmsChannelConfig smsChannelConfig;
 
@@ -34,7 +37,7 @@ public class TencentAdapter implements OuterAdapter {
 
     @Override
     public void init(SmsChannelConfig smsChannelConfig) {
-        logger.info("初始化腾讯短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "]");
+        logger.info("初始化腾讯短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "] 实例Id:" + instanceId);
         this.smsChannelConfig = smsChannelConfig;
         this.appId = smsChannelConfig.getExtProperties();
         // SecretId、SecretKey 查询: https://console.cloud.tencent.com/cam/capi
@@ -85,16 +88,20 @@ public class TencentAdapter implements OuterAdapter {
             AddSmsTemplateRequest addSmsTemplateRequest = new AddSmsTemplateRequest();
             addSmsTemplateRequest.setSmsType(Long.valueOf(addSmsTemplateCommand.getTemplateType()));
             addSmsTemplateRequest.setTemplateName(addSmsTemplateCommand.getTemplateName());
-            String templateContent = StringUtils.EMPTY;
+            // 腾讯云：{1}为您的登录验证码，请于{2}分钟内填写，如非本人操作，请忽略本短信。
+            // 标准版：${code}为您的登录验证码，请于${time}分钟内填写，如非本人操作，请忽略本短信。
+            String templateContent = SmsTemplateUtil.replaceStandardToTencent(addSmsTemplateCommand.getTemplateContent());
             addSmsTemplateRequest.setTemplateContent(templateContent);
             addSmsTemplateRequest.setRemark(addSmsTemplateCommand.getRemark());
+            logger.info("tencent addSmsTemplateRequest:" + JSON.toJSONString(addSmsTemplateRequest));
             AddSmsTemplateResponse addSmsTemplateResponse = client.AddSmsTemplate(addSmsTemplateRequest);
+            logger.info("tencent addSmsTemplateResponse:" + JSON.toJSONString(addSmsTemplateResponse));
             if (addSmsTemplateResponse != null) {
                 AddTemplateStatus addTemplateStatus = addSmsTemplateResponse.getAddTemplateStatus();
                 if (addTemplateStatus != null) {
                     Map<String, String> bodyMap = new HashMap<>();
-                    // bodyMap.put("templateCode", body.getTemplateCode());
-                    // bodyMap.put("templateContent", addSmsTemplateCommand.getTemplateContent());
+                    bodyMap.put("templateCode", addTemplateStatus.getTemplateId());
+                    bodyMap.put("templateContent", templateContent);
                     return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, bodyMap);
                 }
             }
@@ -106,12 +113,43 @@ public class TencentAdapter implements OuterAdapter {
 
     @Override
     public SmsResponseCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateCommand querySmsTemplateCommand) {
-        return null;
+        try {
+            DescribeSmsTemplateListRequest describeSmsTemplateListRequest = new DescribeSmsTemplateListRequest();
+            describeSmsTemplateListRequest.setTemplateIdSet(new Long[]{Long.valueOf(querySmsTemplateCommand.getTemplateCode())});
+            describeSmsTemplateListRequest.setInternational(0L);
+            DescribeSmsTemplateListResponse response = client.DescribeSmsTemplateList(describeSmsTemplateListRequest);
+            if (response != null) {
+                DescribeTemplateListStatus[] arr = response.getDescribeTemplateStatusSet();
+                if (arr == null) {
+                    logger.error("tencent templateId:" + querySmsTemplateCommand.getTemplateCode() + " 不存在");
+                } else {
+                    Long statusCode = arr[0].getStatusCode();
+                    //腾讯:申请模板状态，其中0表示审核通过且已生效，1表示审核中，2表示审核通过待生效，-1表示审核未通过或审核失败。注：只有状态值为0时该模板才能使用。
+                    //标准: 0 : 待提交 1：待审核  2：审核成功 3：审核失败
+                    if (statusCode == 0L) {
+                        return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 2);
+                    }
+                    if (statusCode == 1L) {
+                        return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 1);
+                    }
+                    if (statusCode == -1L) {
+                        return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 3);
+                    }
+                    if (statusCode == 2L) {
+                        return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 1);
+                    }
+                }
+            }
+            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
+        } catch (Exception e) {
+            logger.error("tencent addSmsTemplate error: ", e);
+            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, e.getMessage());
+        }
     }
 
     @Override
     public void destroy() {
-        logger.warn("销毁腾讯短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "]");
+        logger.warn("销毁腾讯短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "] 实例Id:" + instanceId);
     }
 
 }

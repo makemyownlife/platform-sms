@@ -60,12 +60,41 @@ public class SmsTemplateUtil {
         return placeholders.toArray(new String[0]);
     }
 
+    public static String replaceStandardToTencent(String templateContent) {
+        String pattern = "\\$\\{([a-zA-Z0-9]+)\\}";
+        // 编译正则表达式模式
+        Pattern p = Pattern.compile(pattern);
+        // 创建Matcher对象
+        Matcher matcher = p.matcher(templateContent);
+        // 定义一个替换计数器
+        int count = 1;
+        // 开始替换
+        // 迭代匹配并替换
+        StringBuffer output = new StringBuffer();
+        while (matcher.find()) {
+            // 获取匹配到的内容，即 code 和 time
+            String match = matcher.group(1);
+            // 根据匹配的内容替换为对应的计数器
+            String replacement = "{" + count + "}";
+            matcher.appendReplacement(output, replacement);
+            // 增加计数器
+            count++;
+        }
+        matcher.appendTail(output);
+        String result = output.toString();
+        return result;
+    }
+
     public static void main(String[] args) {
         String template = "模版 ${code} , ${idsnb}  ${name} 123 ${number123}";
         String[] extractedPlaceholders = extractPlaceholders(template);
         for (String placeholder : extractedPlaceholders) {
             System.out.println(placeholder);
         }
+
+        // 转换
+        String input = "${code}为您的登录验证码，请于${time}分钟内填写，如非本人操作，请忽略本短信.";
+        System.out.println(replaceStandardToTencent(input));
     }
 
 }
