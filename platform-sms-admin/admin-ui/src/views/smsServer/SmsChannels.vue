@@ -8,7 +8,8 @@
                    :label="item.channelName"
                    :value="item.channelType"/>
       </el-select>
-      <el-input v-model="listQuery.channelAppkey" placeholder="短信渠道appkey" style="width: 200px;" class="filter-item"/>
+      <el-input v-model="listQuery.channelAppkey" placeholder="短信渠道appkey" style="width: 200px;"
+                class="filter-item"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" plain @click="queryData()">查询</el-button>
       <el-button class="filter-item" type="primary" @click="handleCreate()">新建渠道</el-button>
       <el-button class="filter-item" type="info" @click="fetchData()">刷新列表</el-button>
@@ -76,7 +77,9 @@
       <el-form ref="dataForm" :rules="rules" :model="channelModel" label-position="left" label-width="120px"
                style="width: 400px; margin-left:30px;">
         <el-form-item label="渠道类型" prop="channelType">
-          <el-select v-model="channelModel.channelType" style="width: 280px">
+          <el-select v-model="channelModel.channelType"
+                     @change='renderChannelModel'
+                     style="width: 280px">
             <el-option key="" label="请选择" value=""/>
             <el-option v-for="item in channelTypes"
                        :domain="item.domain"
@@ -280,6 +283,15 @@ export default {
         })
       }
     },
+    renderChannelModel(value, e) {
+      var channelType = this.channelModel.channelType;
+      console.log("channelType:" + channelType);
+      // 从自定义属性获取模版值
+      const selectedChannel = this.channelTypes.find(item => item.channelType === channelType);
+      if (selectedChannel) {
+        this.channelModel.channelDomain = selectedChannel.domain;
+      }
+    }
   }
 }
 </script>
