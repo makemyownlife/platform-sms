@@ -13,13 +13,12 @@ import com.tencentcloudapi.common.Credential;
 import com.tencentcloudapi.common.profile.ClientProfile;
 import com.tencentcloudapi.common.profile.HttpProfile;
 import com.tencentcloudapi.sms.v20210111.SmsClient;
-import com.tencentcloudapi.sms.v20210111.models.SendSmsRequest;
-import com.tencentcloudapi.sms.v20210111.models.SendSmsResponse;
-import com.tencentcloudapi.sms.v20210111.models.SendStatus;
+import com.tencentcloudapi.sms.v20210111.models.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @SPI("tencent")
@@ -60,9 +59,7 @@ public class TencentAdapter implements OuterAdapter {
             sendSmsRequest.setTemplateId(sendSmsCommand.getTemplateCode());
             // 模板参数的个数需要与 TemplateId 对应模板的变量个数保持一致，若无模板参数，则设置为空
             sendSmsRequest.setTemplateParamSet(SmsTemplateUtil.renderTemplateParamArray(sendSmsCommand.getTemplateParam(), sendSmsCommand.getTemplateContent()));
-            sendSmsRequest.setPhoneNumberSet(new String[]{
-                    "+86" + sendSmsCommand.getPhoneNumbers()
-            });
+            sendSmsRequest.setPhoneNumberSet(new String[]{"+86" + sendSmsCommand.getPhoneNumbers()});
             sendSmsRequest.setExtendCode(StringUtils.EMPTY);
             sendSmsRequest.setSenderId(StringUtils.EMPTY);
             logger.info("tencent send sms:" + JSON.toJSONString(sendSmsRequest));
@@ -84,7 +81,27 @@ public class TencentAdapter implements OuterAdapter {
 
     @Override
     public SmsResponseCommand<Map<String, String>> addSmsTemplate(AddSmsTemplateCommand addSmsTemplateCommand) {
-        return null;
+        try {
+            AddSmsTemplateRequest addSmsTemplateRequest = new AddSmsTemplateRequest();
+            addSmsTemplateRequest.setSmsType(Long.valueOf(addSmsTemplateCommand.getTemplateType()));
+            addSmsTemplateRequest.setTemplateName(addSmsTemplateCommand.getTemplateName());
+            String templateContent = StringUtils.EMPTY;
+            addSmsTemplateRequest.setTemplateContent(templateContent);
+            addSmsTemplateRequest.setRemark(addSmsTemplateCommand.getRemark());
+            AddSmsTemplateResponse addSmsTemplateResponse = client.AddSmsTemplate(addSmsTemplateRequest);
+            if (addSmsTemplateResponse != null) {
+                AddTemplateStatus addTemplateStatus = addSmsTemplateResponse.getAddTemplateStatus();
+                if (addTemplateStatus != null) {
+                    Map<String, String> bodyMap = new HashMap<>();
+                    // bodyMap.put("templateCode", body.getTemplateCode());
+                    // bodyMap.put("templateContent", addSmsTemplateCommand.getTemplateContent());
+                    return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, bodyMap);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("tencent addSmsTemplate error: ", e);
+        }
+        return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
     }
 
     @Override
