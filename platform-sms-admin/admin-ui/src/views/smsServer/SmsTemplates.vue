@@ -332,15 +332,19 @@ export default {
     // 点击绑定渠道按钮
     autoBinding(row) {
       this.bindingInfo.dialogFormVisible = true;
+      this.bindingInfo.handSwitch = false ;
       this.clearSelectedValue();
       this.bindingInfo.templateId = row.id;
       this.bindingInfo.channelIds = null;
       this.loadSelectChannel();
-
     },
     handBinding(row) {
+      this.bindingInfo.dialogFormVisible = true;
       this.bindingInfo.handSwitch = true ;
-      this.autoBinding(row);
+      this.clearSelectedValue();
+      this.bindingInfo.templateId = row.id;
+      this.bindingInfo.channelIds = null;
+      this.loadSelectChannel();
     },
     clearSelectedValue() {
       this.selectValue = null;
