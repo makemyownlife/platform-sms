@@ -68,7 +68,7 @@ public class CreateRecordDetailRequestProcessor implements AdatperProcessor<Long
         TSmsRecord record = smsRecordDAO.selectByPrimaryKey(recordId);
         if (record != null) {
             if (record.getSendStatus() != -1) {
-                logger.warn("短信记录 recordId:" + recordId + "已发送");
+                logger.warn("短信记录 recordId:【" + recordId + "]已发送");
                 return ResponseEntity.success(detailIdList);
             }
             Long templateId = record.getTemplateId();
