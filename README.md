@@ -1,4 +1,5 @@
-![](https://javayong.cn/pics/shipinhao/gongzhonghaonew.png)
+![](doc/images/gongzhonghaonew.png)
+
 
 # 简介
 
