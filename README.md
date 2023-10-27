@@ -77,11 +77,9 @@ bin/startup.sh
 
 ![](doc/images/createchannel.png)
 
-当前支持支付宝、
+> 注意：因为腾讯云的 SDK 请求 中需要携带 APPID ，所以 Beta 版中将 appId 存储在 附件使用中。
 
 ## 5.4 创建模版
-
-
 
 
 
