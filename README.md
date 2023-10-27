@@ -61,15 +61,11 @@ bin/startup.sh
 
 ## 5.1 登录页面
 
+服务启动后，访问地址：`http://localhost:8089` 。
 
+![](doc/images/login.png)
 
-
-
-
-
-
-
-
+> 用户名和密码存储在 `conf` 目录的 `application.yml`，默认用户名密码分别是：admin/admin1984 。
 
 ## 5.2 新建应用
 
