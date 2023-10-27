@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-select v-model="listQuery.channelType" placeholder="渠道类型" class="filter-item">
         <el-option key="" label="所有" value="" />
-        <el-option key="-1" label="支付宝" value="aliyun" />
+        <el-option key="-1" label="阿里云" value="aliyun" />
         <el-option key="0" label="亿美" value="emay" />
         <el-option key="1" label="绿城" value="greencity" />
       </el-select>

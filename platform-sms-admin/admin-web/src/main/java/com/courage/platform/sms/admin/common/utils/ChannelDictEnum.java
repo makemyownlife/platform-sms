@@ -5,7 +5,7 @@ package com.courage.platform.sms.admin.common.utils;
  */
 public enum ChannelDictEnum {
 
-    ALIYUN("aliyun", "支付宝", "https://dysmsapi.aliyuncs.com"),
+    ALIYUN("aliyun", "阿里云", "https://dysmsapi.aliyuncs.com"),
     EMAY("emay", "艺美", ""),
     TENCENT("tencent", "腾讯云", "https://sms.tencentcloudapi.com");
 

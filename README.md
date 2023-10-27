@@ -71,29 +71,23 @@ bin/startup.sh
 
 ![](doc/images/createapp.png)
 
-
+应用信息包含应用名称、应用 `appKey` , `应用秘钥`，`备注`。其中，应用 key 和 密钥在使用客户端 SDK 时需要配置 。 
 
 ## 5.3 新建渠道
 
+![](doc/images/createchannel.png)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+当前支持支付宝、
 
 ## 5.4 创建模版
+
+
+
+
+
+
+
+
 
 
 
