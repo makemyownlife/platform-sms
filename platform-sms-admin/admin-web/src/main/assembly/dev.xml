@@ -29,6 +29,7 @@
                 <include>application.yml</include>
                 <include>logback.xml</include>
                 <include>public/**</include>
+                <include>mapper/**</include>
             </includes>
         </fileSet>
         <fileSet>
