@@ -27,14 +27,15 @@
 
 ## 3.1 环境准备
 
+短信平台服务是 JAVA 应用，所以必须安装 JDK（1.8或更高版本），安装并配置环境变量JAVA_HOME，然后将包含在 JAVA_HOME 中的 bin 目录追加到 PATH 变量中。
 
+如果您的环境中已经存在这些设置，您可以跳过这一步。 
 
-
-
-
+短信平台服务依赖外部 MySQL 和 Redis 两个服务 ，所以在部署之前必须安装好前置数据库。
 
 ## 3.2 部署流程
 
+**1、创建数据库以及相关表**
 
 
 
@@ -42,11 +43,17 @@
 
 
 
+**2、修改部署包配置**
 
+从 Release 下载 `platform-sms-admin.tar` ，解压缩后，进入 `conf `目录 。
 
+![](doc/images/adminconfdir.png)
+
+编辑 `application.yml ` 文件：
+
+![](doc/images/prepare.png)
 
 ## 3.3 操作流程
-
 
 
 
