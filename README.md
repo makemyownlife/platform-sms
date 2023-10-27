@@ -69,13 +69,7 @@ bin/startup.sh
 
 ## 5.2 新建应用
 
-
-
-
-
-
-
-
+![](doc/images/createapp.png)
 
 
 
@@ -91,7 +85,19 @@ bin/startup.sh
 
 
 
+
+
+
+
+
+
+
+
 ## 5.4 创建模版
+
+
+
+
 
 
 
