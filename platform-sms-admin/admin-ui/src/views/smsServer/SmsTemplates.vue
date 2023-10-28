@@ -69,9 +69,9 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="handleUpdate(scope.row)">修改模版</el-dropdown-item>
               <el-dropdown-item @click.native="handBinding(scope.row)">手工绑定</el-dropdown-item>
-              <!-- 暂时屏蔽掉 自动绑定  start -->
+              <!-- 暂时屏蔽掉 自动绑定
               <el-dropdown-item @click.native="autoBinding(scope.row)">自动绑定</el-dropdown-item>
-              <!-- 暂时屏蔽掉 自动绑定  end -->
+              暂时屏蔽掉 自动绑定  end -->
             </el-dropdown-menu>
         </el-dropdown>
       </template>
