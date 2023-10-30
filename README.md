@@ -95,7 +95,6 @@ bin/startup.sh
 **2、绑定渠道**
 
 ![](doc/images/bingdingtemplate.png)
-=======
 
 绑定完成之后，可以在模版管理页面查看模版列表 。
 
