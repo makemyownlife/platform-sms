@@ -102,23 +102,67 @@ bin/startup.sh
 
 ## 5.5 发送短信
 
+发送短信可以参考 DEMO 模块：
 
+![](doc/images/demoproject.png)
 
+### 01 添加依赖
 
+```xml
+<dependency>
+    <groupId>com.courage</groupId>
+    <artifactId>platform-sms-client</artifactId>
+    <version>${parent.version}</version>
+</dependency>
+```
 
+### 02 客户端配置
 
+```
+@Configuration
+public class SmsConfiguration {
 
+​    @Value("${sms.smsServerUrl}")
+​    private String smsServerUrl;
 
+​    @Value("${sms.appKey}")
+​    private String appKey;
 
+​    @Value("${sms.appSecret}")
+​    private String appSecret;
 
+​    @Bean
+​    public SmsSenderClient createClient() {
+​        SmsConfig smsConfig = new SmsConfig();
+​        smsConfig.setAppKey(appKey);
+​        smsConfig.setSmsServerUrl(smsServerUrl);
+​        smsConfig.setAppSecret(appSecret);
+​        SmsSenderClient smsSenderClient = new SmsSenderClient(smsConfig);
+​        return smsSenderClient;
+​    }
 
+}
 
+```
 
+### 03 单发短信
 
+```java
+@Autowired
+private SmsSenderClient smsSenderClient;
 
-
-
-
+@GetMapping("/test")
+public String test() {
+    String mobile = "15011319235";
+    String templateId = "523419101760679938";
+    // 你好，你的信息是：${code}
+    Map<String, String> param = new HashMap<String, String>();
+    param.put("code", "1234");
+    SmsSenderResult senderResult = smsSenderClient.sendSmsByTemplateId(mobile, templateId, param);
+    System.*out*.println("senderResult:" + JSON.*toJSONString*(senderResult));
+    return "hello , first short message !";
+}
+```
 
 
 
