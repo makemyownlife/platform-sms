@@ -118,6 +118,17 @@ bin/startup.sh
 
 ### 02 客户端配置
 
+首先在 `application.yml `中配置如下：
+
+```yaml
+sms:
+  smsServerUrl: http://localhost:8089
+  appKey: qQjEiFzn80v8VM4h
+  appSecret: 9c465ece754bd26a9be77f3d0e2606bd
+```
+
+然后编写配置类：
+
 ```
 @Configuration
 public class SmsConfiguration {
