@@ -76,7 +76,7 @@ bin/startup.sh
 
 在`模版管理`模块，点击`新建模版`按钮。
 
-![](doc/images/createTemplate.png)
+![](doc/images/createtemplate.png)
 
 **新建模版时，签名名称必须和渠道申请的签名必须一致。** 
 
