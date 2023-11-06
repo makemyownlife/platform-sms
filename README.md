@@ -9,7 +9,7 @@
 
 # 2 工作原理
 
-![](doc/images/smsliucheng.png)
+![](doc/images/server.png)
 
 核心流程如下：
 
