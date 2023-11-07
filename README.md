@@ -1,6 +1,8 @@
 ![](doc/images/gongzhonghaonew.png)
 
 
+阅读须知：[Java应用中如何发送短信](doc/服务端模式.md)
+
 # 1 简介
 
 一个简单易用的短信网关服务，提供客户端 SDK ，支持阿里云，腾讯云，亿美短信发送，适用于中小型公司。
@@ -175,3 +177,6 @@ public String test() {
     return "hello , first short message !";
 }
 ```
+---
+本工程参考了如下开源项目：
+- canal
