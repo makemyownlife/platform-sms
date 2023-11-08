@@ -27,6 +27,8 @@
 
 短信平台服务依赖外部 **MySQL** 和 **Redis** 两个服务 ，所以在部署之前必须安装好前置数据库。
 
+![](https://javayong.cn/pics/sms/platformsmsmysqlredis.png?a=2)
+
 # 4 部署流程
 
 ## 4.1 创建数据库以及相关表
