@@ -76,7 +76,7 @@ bin/startup.sh
 
 ![](doc/images/createchannel.png)
 
-> 注意：因为腾讯云的 SDK 请求 中需要携带 APPID ，所以 Beta 版中将 appId 存储在 附件使用中。
+> 注意：因为腾讯云的 SDK 请求 中需要携带 APPID ，所以 Beta 版中将 appId 存储在附件属性。
 
 ## 5.4 创建模版
 
@@ -176,7 +176,7 @@ public String test() {
     Map<String, String> param = new HashMap<String, String>();
     param.put("code", "1234");
     SmsSenderResult senderResult = smsSenderClient.sendSmsByTemplateId(mobile, templateId, param);
-    System.*out*.println("senderResult:" + JSON.*toJSONString*(senderResult));
+    System.out.println("senderResult:" + JSON.toJSONString*(senderResult));
     return "hello , first short message !";
 }
 ```
