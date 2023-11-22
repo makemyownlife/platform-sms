@@ -25,6 +25,15 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
+        <!-- 添加测试用例 start -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- 添加测试用例 end -->
+
     </dependencies>
 
 </project>
