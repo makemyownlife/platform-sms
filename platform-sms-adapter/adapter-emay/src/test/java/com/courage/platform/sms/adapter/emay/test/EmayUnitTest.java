@@ -14,9 +14,9 @@ public class EmayUnitTest {
 
     @Test
     public void sendSingleSMS() throws SDKParamsException {
-        String appId = "EUCP-EMY-SMS1-0BIGB";// 请联系销售，或者在页面中 获取
+        String appId = "xxxx";// 请联系销售，或者在页面中 获取
         // 密钥
-        String secretKey = "69C5DCC5531E15BF";// 请联系销售，或者在页面中 获取
+        String secretKey = "xxx";// 请联系销售，或者在页面中 获取
         // 接口地址
         String host = "http://www.btom.cn"; // 请联系销售获取
         SmsSDKClient client = new SmsSDKClient(host, 8080, appId, secretKey);
