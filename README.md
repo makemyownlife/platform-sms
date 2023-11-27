@@ -42,7 +42,7 @@
 
 ## 4.1 修改部署包配置
 
-从 Release 下载 `platform-sms-admin.tar` ，解压缩后，进入 `conf `目录 。
+从 Release 下载 `platform-sms-admin.tar.gz` ，解压缩后，进入 `conf `目录 。
 
 ![](doc/images/adminconfdir.png)
 
@@ -181,5 +181,3 @@ public String test() {
 }
 ```
 ---
-本工程参考了如下开源项目：
-- canal
