@@ -26,38 +26,38 @@ import java.util.regex.Pattern;
  */
 public class ExtensionLoader<T> {
 
-    private static final Logger                                      logger                     = LoggerFactory.getLogger(ExtensionLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExtensionLoader.class);
 
-    private static final String                                      SERVICES_DIRECTORY         = "META-INF/services/";
+    private static final String SERVICES_DIRECTORY = "META-INF/services/";
 
-    private static final String                                      SMS_DIRECTORY            = "META-INF/sms/";
+    private static final String SMS_DIRECTORY = "META-INF/sms/";
 
-    private static final String                                      DEFAULT_CLASSLOADER_POLICY = "internal";
+    private static final String DEFAULT_CLASSLOADER_POLICY = "internal";
 
-    private static final String                                      WORKER_DIR_NAME = "platform-sms-admin";
+    private static final String WORKER_DIR_NAME = "platform-sms-admin";
 
-    private static final Pattern                                     NAME_SEPARATOR             = Pattern
-        .compile("\\s*[,]+\\s*");
+    private static final Pattern NAME_SEPARATOR = Pattern
+            .compile("\\s*[,]+\\s*");
 
-    private static final ConcurrentMap<Class<?>, ExtensionLoader<?>> EXTENSION_LOADERS          = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<Class<?>, ExtensionLoader<?>> EXTENSION_LOADERS = new ConcurrentHashMap<>();
 
-    private static final ConcurrentMap<Class<?>, Object>             EXTENSION_INSTANCES        = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<Class<?>, Object> EXTENSION_INSTANCES = new ConcurrentHashMap<>();
 
-    private static final ConcurrentMap<String, Object>               EXTENSION_KEY_INSTANCE     = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, Object> EXTENSION_KEY_INSTANCE = new ConcurrentHashMap<>();
 
-    private final Class<?>                                           type;
+    private final Class<?> type;
 
-    private final String                                             classLoaderPolicy;
+    private final String classLoaderPolicy;
 
-    private final ConcurrentMap<Class<?>, String>                    cachedNames                = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Class<?>, String> cachedNames = new ConcurrentHashMap<>();
 
-    private final Holder<Map<String, Class<?>>>                      cachedClasses              = new Holder<>();
+    private final Holder<Map<String, Class<?>>> cachedClasses = new Holder<>();
 
-    private final ConcurrentMap<String, Holder<Object>>              cachedInstances            = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, Holder<Object>> cachedInstances = new ConcurrentHashMap<>();
 
-    private String                                                   cachedDefaultName;
+    private String cachedDefaultName;
 
-    private ConcurrentHashMap<String, IllegalStateException>         exceptions                 = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, IllegalStateException> exceptions = new ConcurrentHashMap<>();
 
     private static <T> boolean withExtensionAnnotation(Class<T> type) {
         return type.isAnnotationPresent(SPI.class);
@@ -75,7 +75,7 @@ public class ExtensionLoader<T> {
         }
         if (!withExtensionAnnotation(type)) {
             throw new IllegalArgumentException("Extension type(" + type + ") is not extension, because WITHOUT @"
-                                               + SPI.class.getSimpleName() + " Annotation!");
+                    + SPI.class.getSimpleName() + " Annotation!");
         }
 
         ExtensionLoader<T> loader = (ExtensionLoader<T>) EXTENSION_LOADERS.get(type);
@@ -86,7 +86,7 @@ public class ExtensionLoader<T> {
         return loader;
     }
 
-    private ExtensionLoader(Class<?> type, String classLoaderPolicy){
+    private ExtensionLoader(Class<?> type, String classLoaderPolicy) {
         this.type = type;
         this.classLoaderPolicy = classLoaderPolicy;
     }
@@ -99,7 +99,7 @@ public class ExtensionLoader<T> {
      */
     @SuppressWarnings("unchecked")
     public T getExtension(String name) {
-        if (name == null || name.length() == 0)  {
+        if (name == null || name.length() == 0) {
             throw new IllegalArgumentException("Extension name == null");
         }
         if ("true".equals(name)) {
@@ -121,6 +121,13 @@ public class ExtensionLoader<T> {
             }
         }
         return (T) instance;
+    }
+
+    public T getExtensionDirectly(String name) {
+        if (name == null || name.length() == 0) {
+            throw new IllegalArgumentException("Extension name == null");
+        }
+        return createExtensionDirectly(name);
     }
 
     @SuppressWarnings("unchecked")
@@ -164,7 +171,7 @@ public class ExtensionLoader<T> {
         Class<?> clazz = getExtensionClasses().get(name);
         if (clazz == null) {
             throw new IllegalStateException("Extension instance(name: " + name + ", class: " + type
-                                            + ")  could not be instantiated: class could not be found");
+                    + ")  could not be instantiated: class could not be found");
         }
         try {
             T instance = (T) EXTENSION_INSTANCES.get(clazz);
@@ -175,8 +182,8 @@ public class ExtensionLoader<T> {
             return instance;
         } catch (Throwable t) {
             throw new IllegalStateException("Extension instance(name: " + name + ", class: " + type
-                                            + ")  could not be instantiated: " + t.getMessage(),
-                t);
+                    + ")  could not be instantiated: " + t.getMessage(),
+                    t);
         }
     }
 
@@ -185,7 +192,7 @@ public class ExtensionLoader<T> {
         Class<?> clazz = getExtensionClasses().get(name);
         if (clazz == null) {
             throw new IllegalStateException("Extension instance(name: " + name + ", class: " + type
-                                            + ")  could not be instantiated: class could not be found");
+                    + ")  could not be instantiated: class could not be found");
         }
         try {
             T instance = (T) EXTENSION_KEY_INSTANCE.get(name + "-" + key);
@@ -196,8 +203,24 @@ public class ExtensionLoader<T> {
             return instance;
         } catch (Throwable t) {
             throw new IllegalStateException("Extension instance(name: " + name + ", class: " + type
-                                            + ")  could not be instantiated: " + t.getMessage(),
-                t);
+                    + ")  could not be instantiated: " + t.getMessage(),
+                    t);
+        }
+    }
+
+    private T createExtensionDirectly(String name) {
+        Class<?> clazz = getExtensionClasses().get(name);
+        if (clazz == null) {
+            throw new IllegalStateException("Extension instance(name: " + name + ", class: " + type
+                    + ")  could not be instantiated: class could not be found");
+        }
+        try {
+            T instance = (T) clazz.newInstance();
+            return instance;
+        } catch (Throwable t) {
+            throw new IllegalStateException("Extension instance(name: " + name + ", class: " + type
+                    + ")  could not be instantiated: " + t.getMessage(),
+                    t);
         }
     }
 
@@ -226,17 +249,17 @@ public class ExtensionLoader<T> {
             dirtyPath = file.getAbsolutePath();
         }
         String jarPath = dirtyPath.replaceAll("^.*file:/", ""); // removes
-                                                                // file:/ and
-                                                                // everything
-                                                                // before it
+        // file:/ and
+        // everything
+        // before it
         jarPath = jarPath.replaceAll("jar!.*", "jar"); // removes everything
-                                                       // after .jar, if .jar
-                                                       // exists in dirtyPath
+        // after .jar, if .jar
+        // exists in dirtyPath
         jarPath = jarPath.replaceAll("%20", " "); // necessary if path has
-                                                  // spaces within
+        // spaces within
         if (!jarPath.endsWith(".jar")) { // this is needed if you plan to run
-                                         // the app using Spring Tools Suit play
-                                         // button.
+            // the app using Spring Tools Suit play
+            // button.
             jarPath = jarPath.replaceAll("/classes/.*", "/classes/");
         }
         Path path = Paths.get(jarPath).getParent(); // Paths - from java 8
@@ -254,7 +277,7 @@ public class ExtensionLoader<T> {
                 String[] names = NAME_SEPARATOR.split(value);
                 if (names.length > 1) {
                     throw new IllegalStateException("more than 1 default extension name on extension " + type.getName()
-                                                    + ": " + Arrays.toString(names));
+                            + ": " + Arrays.toString(names));
                 }
                 if (names.length == 1) cachedDefaultName = names[0];
             }
@@ -268,7 +291,7 @@ public class ExtensionLoader<T> {
         File externalLibDir = new File(dir);
         if (!externalLibDir.exists()) {
             externalLibDir = new File(File.separator + this.getJarDirectoryPath() + File.separator + WORKER_DIR_NAME
-                                      + File.separator + "plugin");
+                    + File.separator + "plugin");
         }
         logger.info("extension classpath dir: " + externalLibDir.getAbsolutePath());
         if (externalLibDir.exists()) {
@@ -285,10 +308,10 @@ public class ExtensionLoader<T> {
                     ClassLoader parent = Thread.currentThread().getContextClassLoader();
                     URLClassLoader localClassLoader;
                     if (classLoaderPolicy == null || "".equals(classLoaderPolicy)
-                        || DEFAULT_CLASSLOADER_POLICY.equalsIgnoreCase(classLoaderPolicy)) {
-                        localClassLoader = new URLClassExtensionLoader(new URL[] { url });
+                            || DEFAULT_CLASSLOADER_POLICY.equalsIgnoreCase(classLoaderPolicy)) {
+                        localClassLoader = new URLClassExtensionLoader(new URL[]{url});
                     } else {
-                        localClassLoader = new URLClassLoader(new URL[] { url }, parent);
+                        localClassLoader = new URLClassLoader(new URL[]{url}, parent);
                     }
 
                     loadFile(extensionClasses, SMS_DIRECTORY, localClassLoader);
@@ -381,15 +404,15 @@ public class ExtensionLoader<T> {
                         }
                     } catch (Throwable t) {
                         logger.error("Exception when load extension class(interface: " + type + ", class file: " + url
-                                     + ") in " + url,
-                            t);
+                                        + ") in " + url,
+                                t);
                     }
                 } // end of while urls
             }
         } catch (Throwable t) {
             logger.error(
-                "Exception when load extension class(interface: " + type + ", description file: " + fileName + ").",
-                t);
+                    "Exception when load extension class(interface: " + type + ", description file: " + fileName + ").",
+                    t);
         }
     }
 

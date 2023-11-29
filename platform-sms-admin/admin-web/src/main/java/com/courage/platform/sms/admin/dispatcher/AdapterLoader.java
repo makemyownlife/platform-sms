@@ -24,7 +24,8 @@ public class AdapterLoader {
     public void loadAdapter(SmsChannelConfig smsChannelConfig) {
         String adapterName = smsChannelConfig.getChannelType();
         try {
-            OuterAdapter adapter = EXTENSION_LOADER.getExtension(adapterName);
+            // 直接通过 Class 创建实例对象
+            OuterAdapter adapter = EXTENSION_LOADER.getExtensionDirectly(adapterName);
             ClassLoader cl = Thread.currentThread().getContextClassLoader();
             // 替换 ClassLoader
             Thread.currentThread().setContextClassLoader(adapter.getClass().getClassLoader());
