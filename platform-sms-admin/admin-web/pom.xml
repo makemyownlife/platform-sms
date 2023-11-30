@@ -306,7 +306,7 @@
                                 <descriptor>${basedir}/src/main/assembly/dev.xml</descriptor>
                             </descriptors>
                             <finalName>platform-sms-admin</finalName>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <outputDirectory>${project.basedir}/target</outputDirectory>
                         </configuration>
                     </plugin>
                 </plugins>
