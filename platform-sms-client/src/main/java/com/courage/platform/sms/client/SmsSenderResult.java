@@ -21,6 +21,12 @@ public class SmsSenderResult {
         this.smsId = smsId;
     }
 
+    public SmsSenderResult(String smsId, int code, String msg) {
+        this.code = code;
+        this.smsId = smsId;
+        this.msg = msg;
+    }
+
     public SmsSenderResult(int code, String msg) {
         this.code = code;
         this.msg = msg;

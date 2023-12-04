@@ -1,6 +1,8 @@
 package com.courage.platform.sms.client;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.courage.platform.sms.client.util.LoadBalancer;
 import com.courage.platform.sms.client.util.SmsHttpClientUtils;
 import com.courage.platform.sms.client.util.SmsSenderUtil;
 import org.slf4j.Logger;
@@ -18,12 +20,15 @@ public class SmsSenderClient {
 
     private final static Logger logger = LoggerFactory.getLogger(SmsSenderClient.class);
 
-    private final static String SINGLE_SEND_URL = "/gateway/sendByTemplateId";
+    private final static String SINGLE_SEND_REQUEST_URL = "/gateway/sendByTemplateId";
 
     private SmsConfig smsConfig;
 
+    private LoadBalancer loadBalancer;
+
     public SmsSenderClient(SmsConfig smsConfig) {
         this.smsConfig = smsConfig;
+        this.loadBalancer = new LoadBalancer(smsConfig.getSmsServerUrl());
     }
 
     public SmsSenderResult sendSmsByTemplateId(String mobile, String templateId, Map<String, String> templateParam) {
@@ -45,13 +50,15 @@ public class SmsSenderClient {
         param.put("sign", sign);
         // 发送请求
         try {
-            String result = SmsHttpClientUtils.doPost(smsConfig.getSmsServerUrl() + SINGLE_SEND_URL, param, 5000, 5000);
-            SmsSenderResult senderResult = JSON.parseObject(result, SmsSenderResult.class);
-            return senderResult;
+            JSONObject jsonResult = loadBalancer.doSendRequest(SINGLE_SEND_REQUEST_URL, param);
+            if (jsonResult != null) {
+                SmsSenderResult senderResult = jsonResult.toJavaObject(SmsSenderResult.class);
+                return senderResult;
+            }
         } catch (Exception e) {
             logger.error("smsClient sendSingle error:", e);
-            return new SmsSenderResult(SmsSenderResult.FAIL_CODE, "系统异常");
         }
+        return new SmsSenderResult(SmsSenderResult.FAIL_CODE, "系统异常");
     }
 
 }
