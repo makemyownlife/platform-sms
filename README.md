@@ -32,6 +32,10 @@
 
 # 4 部署流程
 
+选择最新的部署包：
+
+![](doc/images/smsbinary.png)
+
 ## 4.1 创建数据库以及相关表
 
 创建数据库`tech_platform` ，执行`  doc/sql` 目录下的 ` tech_platform.sql`。
