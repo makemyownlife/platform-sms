@@ -44,7 +44,7 @@ if [ ! -f "$pidfile" ];then
 fi
 
 pid=`cat $pidfile`
-if [ "$pid" == "" ] ; then
+if [ "$pid" = "" ] ; then
 	pid=`get_pid "appName=sms-admin"`
 fi
 
@@ -55,7 +55,7 @@ LOOPS=0
 while (true); 
 do 
 	gpid=`get_pid "appName=sms-admin" "$pid"`
-    if [ "$gpid" == "" ] ; then
+    if [ "$gpid" = "" ] ; then
     	echo "Oook! cost:$LOOPS"
     	`rm $pidfile`
     	break;
