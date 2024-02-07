@@ -240,6 +240,7 @@ public class ExtensionLoader<T> {
     }
 
     private String getJarDirectoryPath() {
+        String userDir = System.getProperty("user.dir");
         URL url = Thread.currentThread().getContextClassLoader().getResource("");
         String dirtyPath;
         if (url != null) {
@@ -262,8 +263,10 @@ public class ExtensionLoader<T> {
             // button.
             jarPath = jarPath.replaceAll("/classes/.*", "/classes/");
         }
+        logger.info("jarPath:" + jarPath);
         Path path = Paths.get(jarPath).getParent(); // Paths - from java 8
         if (path != null) {
+            logger.info("getJarDirectoryPath:" + path);
             return path.toString();
         }
         return null;
@@ -285,12 +288,18 @@ public class ExtensionLoader<T> {
 
         Map<String, Class<?>> extensionClasses = new HashMap<>();
 
+        String jarDirectoryPath = this.getJarDirectoryPath();
+        // compatible with jdk17
+        if (jarDirectoryPath.endsWith("lib") || jarDirectoryPath.endsWith("bin")) {
+            jarDirectoryPath = jarDirectoryPath.replaceAll("lib", "").replace("bin", "");
+        }
+
         // 1. plugin folder，customized extension classLoader （jar_dir/plugin）
-        String dir = File.separator + this.getJarDirectoryPath() + File.separator + "plugin";
+        String dir = File.separator + jarDirectoryPath + File.separator + "plugin";
 
         File externalLibDir = new File(dir);
         if (!externalLibDir.exists()) {
-            externalLibDir = new File(File.separator + this.getJarDirectoryPath() + File.separator + WORKER_DIR_NAME
+            externalLibDir = new File(File.separator + jarDirectoryPath + File.separator + WORKER_DIR_NAME
                     + File.separator + "plugin");
         }
         logger.info("extension classpath dir: " + externalLibDir.getAbsolutePath());

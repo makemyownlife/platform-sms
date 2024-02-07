@@ -83,13 +83,22 @@ for i in $base/lib/*;
     do CLASSPATH=$i:"$CLASSPATH";
 done
 
+if [ ! -d $base/logs ] ; then
+    mkdir -p $base/logs
+fi
+
+# 定义日志文件路径
+LOG_FILE=$base/logs/console.log
+
 CLASSPATH="$base/conf:$CLASSPATH";
 
 echo "cd to $bin_abs_path for workaround relative path"
 cd $bin_abs_path
 
 echo CLASSPATH :$CLASSPATH
-$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $APP_OPTS -classpath .:$CLASSPATH com.courage.platform.sms.admin.SmsAdminApplication 1>>/dev/null 2>&1 &
+# $JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $APP_OPTS -classpath .:$CLASSPATH com.courage.platform.sms.admin.SmsAdminApplication 1>>/dev/null 2>&1 &
+$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $APP_OPTS -classpath .:$CLASSPATH com.courage.platform.sms.admin.SmsAdminApplication >> $LOG_FILE 2>&1 &
+
 echo $! > $base/bin/admin.pid
 
 echo "cd to $current_path for continue"
