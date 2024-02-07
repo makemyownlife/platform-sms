@@ -222,7 +222,9 @@
                     </archive>
                     <excludes>
                         <exclude>**/*.properties</exclude>
+                        <!--
                         <exclude>**/*.xml</exclude>
+                        -->
                         <exclude>**/*.yml</exclude>
                         <exclude>static/**</exclude>
                         <exclude>public/**</exclude>
