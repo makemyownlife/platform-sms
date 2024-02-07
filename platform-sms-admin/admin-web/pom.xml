@@ -226,6 +226,7 @@
                         <exclude>**/*.xml</exclude>
                         -->
                         <exclude>**/*.yml</exclude>
+                        <exclude>logback.xml</exclude>
                         <exclude>static/**</exclude>
                         <exclude>public/**</exclude>
                         <exclude>templates/**</exclude>
