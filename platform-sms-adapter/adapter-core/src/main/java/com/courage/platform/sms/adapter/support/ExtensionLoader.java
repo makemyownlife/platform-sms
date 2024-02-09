@@ -297,6 +297,8 @@ public class ExtensionLoader<T> {
         // 1. plugin folder，customized extension classLoader （jar_dir/plugin）
         String dir = File.separator + jarDirectoryPath + File.separator + "plugin";
 
+        logger.info("dir:" + dir);
+
         File externalLibDir = new File(dir);
         if (!externalLibDir.exists()) {
             externalLibDir = new File(File.separator + jarDirectoryPath + File.separator + WORKER_DIR_NAME
