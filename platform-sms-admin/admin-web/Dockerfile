@@ -23,3 +23,5 @@ CMD ["/app/bin/app.sh"]
 
 # 使用 docker build -t platformsms . 打包
 
+# docker run --name sms --volume=/Users/zhangyong/docker/platformsms/conf/application.yml:/app/conf/application.yml --workdir=/app -p 8089:8089 --runtime=runc -d platformsms:latest
+
