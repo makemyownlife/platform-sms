@@ -51,7 +51,8 @@ public class SenderController {
             sendMessageRequestBody.setAppId(tSmsAppinfo.getId());
             sendMessageRequestBody.setMobile(jsonObject.getString("mobile"));
 
-            return smsRecordService.sendMessage(sendMessageRequestBody);
+            SmsSenderResult smsSenderResult = smsRecordService.sendMessage(sendMessageRequestBody);
+            return smsSenderResult;
         } catch (Exception e) {
             logger.error("sendSingle error: ", e);
             return new SmsSenderResult(SmsSenderResult.FAIL_CODE, "发送失败");

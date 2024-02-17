@@ -53,7 +53,8 @@ public class SendMessageRequestProcessor implements AdatperProcessor<SendMessage
         if (tSmsTemplate == null) {
             return ResponseEntity.build(
                     ResponseCode.TEMPLATE_NOT_EXIST.getCode(),
-                    ResponseCode.TEMPLATE_NOT_EXIST.getValue()
+                    ResponseCode.TEMPLATE_NOT_EXIST.getValue(),
+                    new SmsSenderResult(ResponseCode.TEMPLATE_NOT_EXIST.getCode(), ResponseCode.TEMPLATE_NOT_EXIST.getValue())
             );
         }
         // 插入到记录 t_sms_record

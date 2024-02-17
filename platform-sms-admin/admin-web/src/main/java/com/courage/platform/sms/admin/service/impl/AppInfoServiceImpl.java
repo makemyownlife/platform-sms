@@ -29,6 +29,10 @@ public class AppInfoServiceImpl implements AppInfoService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    private static String APPKEY_PREFIX = "APPKEY_PREFIX_";
+
+    private static String APPID_PREFIX = "APPID_PREFIX_";
+
     private final static ConcurrentHashMap<String, TSmsAppinfo> localAppCache = new ConcurrentHashMap<String, TSmsAppinfo>(1024);
 
     @PostConstruct
@@ -39,7 +43,8 @@ public class AppInfoServiceImpl implements AppInfoService {
         try {
             List<TSmsAppinfo> appinfoList = tSmsAppinfoDAO.selectAll();
             appinfoList.forEach(item -> {
-                localAppCache.put(item.getAppKey(), item);
+                localAppCache.put(APPKEY_PREFIX + item.getAppKey(), item);
+                localAppCache.put(APPID_PREFIX + item.getId(), item);
             });
         } catch (Exception e) {
             logger.error("startLoadAppInfo error: ", e);
@@ -55,7 +60,7 @@ public class AppInfoServiceImpl implements AppInfoService {
 
     @Override
     public TSmsAppinfo getAppinfoByAppKeyFromLocalCache(String appKey) {
-        return localAppCache.get(appKey);
+        return localAppCache.get(APPKEY_PREFIX + appKey);
     }
 
     @Override
@@ -63,9 +68,14 @@ public class AppInfoServiceImpl implements AppInfoService {
         logger.info("重新加载应用key:" + appKey);
         TSmsAppinfo tSmsAppinfo = tSmsAppinfoDAO.getAppinfoByAppKey(appKey);
         if (tSmsAppinfo == null) {
-            localAppCache.remove(appKey);
+            tSmsAppinfo = localAppCache.get(APPKEY_PREFIX + appKey);
+            if (tSmsAppinfo != null) {
+                localAppCache.remove(APPKEY_PREFIX + appKey);
+                localAppCache.remove(APPID_PREFIX + tSmsAppinfo.getId());
+            }
         } else {
-            localAppCache.put(appKey, tSmsAppinfo);
+            localAppCache.put(APPKEY_PREFIX + appKey, tSmsAppinfo);
+            localAppCache.put(APPID_PREFIX + tSmsAppinfo.getId(), tSmsAppinfo);
         }
     }
 
