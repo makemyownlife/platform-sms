@@ -51,7 +51,7 @@ public class AppInfoController {
 
     @PostMapping(value = "/deleteAppInfo")
     public ResponseEntity deleteAppInfo(String id) {
-        if (Integer.valueOf(id) == 1) {
+        if (Long.valueOf(id) == 1) {
             logger.info("默认应用不能删除");
             return ResponseEntity.fail("默认应用不能删除");
         }

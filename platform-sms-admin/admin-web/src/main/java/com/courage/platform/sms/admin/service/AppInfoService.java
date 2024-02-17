@@ -15,6 +15,8 @@ public interface AppInfoService {
 
     TSmsAppinfo getAppinfoByAppKeyFromLocalCache(String appKey);
 
+    void reloadAppInfoLocalCache(String appKey);
+
     Integer selectAppInfoCount(Map<String, Object> param);
 
     ResponseEntity addAppInfo(TSmsAppinfo tSmsAppinfo);

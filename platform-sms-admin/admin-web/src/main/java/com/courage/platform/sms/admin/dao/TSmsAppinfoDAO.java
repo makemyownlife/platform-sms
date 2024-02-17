@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface TSmsAppinfoDAO extends MyBatisBaseDao<TSmsAppinfo, Integer> {
+public interface TSmsAppinfoDAO extends MyBatisBaseDao<TSmsAppinfo, Long> {
 
     TSmsAppinfo getAppinfoByAppKey(@Param("appKey") String appKey);
 
@@ -18,6 +18,6 @@ public interface TSmsAppinfoDAO extends MyBatisBaseDao<TSmsAppinfo, Integer> {
 
     Integer selectAppInfoCount(Map<String, Object> param);
 
-    List<TSmsAppinfo> selectAppInfoListByIds(@Param("ids") List<Integer> ids);
+    List<TSmsAppinfo> selectAppInfoListByIds(@Param("ids") List<Long> ids);
 
 }

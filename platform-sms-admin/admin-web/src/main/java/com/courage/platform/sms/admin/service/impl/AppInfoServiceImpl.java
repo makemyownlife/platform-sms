@@ -1,13 +1,14 @@
 package com.courage.platform.sms.admin.service.impl;
 
+import com.courage.platform.sms.admin.common.config.RedisConfig;
 import com.courage.platform.sms.admin.common.utils.ResponseEntity;
 import com.courage.platform.sms.admin.dao.TSmsAppinfoDAO;
 import com.courage.platform.sms.admin.domain.TSmsAppinfo;
 import com.courage.platform.sms.admin.service.AppInfoService;
-import com.courage.platform.sms.admin.domain.vo.BaseModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,9 @@ public class AppInfoServiceImpl implements AppInfoService {
 
     @Autowired
     private TSmsAppinfoDAO tSmsAppinfoDAO;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     private final static ConcurrentHashMap<String, TSmsAppinfo> localAppCache = new ConcurrentHashMap<String, TSmsAppinfo>(1024);
 
@@ -55,6 +59,17 @@ public class AppInfoServiceImpl implements AppInfoService {
     }
 
     @Override
+    public void reloadAppInfoLocalCache(String appKey) {
+        logger.info("重新加载应用key:" + appKey);
+        TSmsAppinfo tSmsAppinfo = tSmsAppinfoDAO.getAppinfoByAppKey(appKey);
+        if (tSmsAppinfo == null) {
+            localAppCache.remove(appKey);
+        } else {
+            localAppCache.put(appKey, tSmsAppinfo);
+        }
+    }
+
+    @Override
     public TSmsAppinfo getAppInfoByAppkey(String appkey) {
         return tSmsAppinfoDAO.getAppinfoByAppKey(appkey);
     }
@@ -73,6 +88,7 @@ public class AppInfoServiceImpl implements AppInfoService {
             tSmsAppinfo.setStatus((byte) 0);
             if (item == null) {
                 tSmsAppinfoDAO.insert(tSmsAppinfo);
+                sendMessageToChannel(tSmsAppinfo.getAppKey());
                 return ResponseEntity.success("success");
             } else {
                 return ResponseEntity.fail("应用已经存在，请仔细核对!");
@@ -92,6 +108,7 @@ public class AppInfoServiceImpl implements AppInfoService {
                 tSmsAppinfo.setUpdateTime(new Date());
                 tSmsAppinfo.setStatus((byte) 0);
                 tSmsAppinfoDAO.updateByPrimaryKey(tSmsAppinfo);
+                sendMessageToChannel(item.getAppKey());
             }
             return ResponseEntity.success("success");
         } catch (Exception e) {
@@ -103,12 +120,20 @@ public class AppInfoServiceImpl implements AppInfoService {
     @Override
     public ResponseEntity deleteAppInfo(String id) {
         try {
-            tSmsAppinfoDAO.deleteByPrimaryKey(Integer.valueOf(id));
+            TSmsAppinfo item = tSmsAppinfoDAO.selectByPrimaryKey(Long.valueOf(id));
+            if (item != null) {
+                tSmsAppinfoDAO.deleteByPrimaryKey(Long.valueOf(id));
+                sendMessageToChannel(item.getAppKey());
+            }
             return ResponseEntity.success("success");
         } catch (Exception e) {
             logger.error("deleteSmsChannel error:", e);
             return ResponseEntity.fail("删除应用失败");
         }
+    }
+
+    private void sendMessageToChannel(String appKey) {
+        redisTemplate.convertAndSend(RedisConfig.APPINFO_CHANGE_CHANNEL_TOPIC, appKey);
     }
 
 }
