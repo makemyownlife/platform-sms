@@ -30,11 +30,12 @@ public class LoadBalancer {
     public JSONObject doSendRequest(String requestPath, Map<String, String> params) {
         int size = CURRENT_SMS_NODES.size();
         int tryCount = (size >= 2) ? 2 : 1;
+        JSONObject jsonResult = null;
         for (int i = 0; i < tryCount; i++) {
             String nodeUrl = CURRENT_SMS_NODES.get(Math.abs(INDEX.intValue() % size));
             try {
                 String httpResult = SmsHttpClientUtils.doPost(nodeUrl + requestPath, params, 5000, 5000);
-                JSONObject jsonResult = JSON.parseObject(httpResult);
+                jsonResult = JSON.parseObject(httpResult);
                 int code = jsonResult.getIntValue("code");
                 if (code == 200) {
                     return jsonResult;
@@ -45,6 +46,6 @@ public class LoadBalancer {
                 INDEX.incrementAndGet();
             }
         }
-        return null;
+        return jsonResult;
     }
 }
