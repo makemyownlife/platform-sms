@@ -15,6 +15,8 @@ public interface SmsRecordService {
 
     List<RecordVO> queryRecordVOList(Map<String, Object> param);
 
+    List<RecordVO> queryOneRecordVOByAppId(String appId);
+
     Long queryCountRecordDetail(Map<String, Object> param);
 
     BaseModel<String> adminSendRecord(String mobile, String templateId, String templateParam);

@@ -226,6 +226,12 @@
     LIMIT #{start}, #{end}
   </select>
 
+  <select id="queryOneRecordVOByAppId" parameterType="java.lang.String" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from t_sms_record_detail t  where app_id = #{appId} limit 0, 1
+  </select>
+
   <select id="queryCountRecordDetail" parameterType="java.util.HashMap" resultType="java.lang.Long">
     select
     count(1)

@@ -17,6 +17,8 @@ public interface TSmsRecordDetailDAO extends MyBatisBaseDao<TSmsRecordDetail, Lo
 
     List<RecordVO> queryRecordVOList(Map<String, Object> param);
 
+    List<RecordVO> queryOneRecordVOByAppId(String appId);
+
     Long queryCountRecordDetail(Map<String, Object> param);
 
 }

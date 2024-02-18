@@ -71,6 +71,11 @@ public class SmsRecordServiceImpl implements SmsRecordService {
     }
 
     @Override
+    public List<RecordVO> queryOneRecordVOByAppId(String appId) {
+        return detailDAO.queryOneRecordVOByAppId(appId);
+    }
+
+    @Override
     public Long queryCountRecordDetail(Map<String, Object> param) {
         return detailDAO.queryCountRecordDetail(param);
     }
