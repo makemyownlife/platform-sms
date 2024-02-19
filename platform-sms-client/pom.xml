@@ -12,6 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>platform-sms-client</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
 
