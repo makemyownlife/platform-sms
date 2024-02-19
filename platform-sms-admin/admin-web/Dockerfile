@@ -22,6 +22,7 @@ EXPOSE 8089
 CMD ["/app/bin/app.sh"]
 
 # 使用 docker build -t platformsms . 打包
+# 启动时，本地需要挂载 application.yml 文件 然后执行如下命令即可。
+# docker run --name sms --mount type=bind,source=/Users/zhangyong/docker/platformsms/conf/application.yml,target=/app/conf/application.yml --workdir=/app -p 8089:8089  --runtime=runc -d platformsms:latest
 
-# docker run --name sms --volume=/Users/zhangyong/docker/platformsms/conf/application.yml:/app/conf/application.yml --workdir=/app -p 8089:8089 --runtime=runc -d platformsms:latest
 

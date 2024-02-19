@@ -45,5 +45,5 @@ CLASSPATH="$base/conf:$CLASSPATH";
 echo "cd to $bin_abs_path for workaround relative path"
 cd $bin_abs_path
 
-$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $APP_OPTS -classpath .:$CLASSPATH com.courage.platform.sms.admin.SmsAdminApplication
+$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $APP_OPTS -classpath .:$CLASSPATH cn.javayong.platform.sms.admin.SmsAdminApplication
 

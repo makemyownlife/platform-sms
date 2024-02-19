@@ -16,8 +16,8 @@ set ADAPTER_OPTS= -DappName=sms-admin
 
 set JAVA_OPTS= %JAVA_MEM_OPTS% %JAVA_OPTS_EXT% %ADAPTER_OPTS%
 
-set CMD_STR= java %JAVA_OPTS% -classpath "%CLASSPATH%" java %JAVA_OPTS% -classpath "%CLASSPATH%" com.courage.platform.sms.admin.SmsAdminApplication
+set CMD_STR= java %JAVA_OPTS% -classpath "%CLASSPATH%" java %JAVA_OPTS% -classpath "%CLASSPATH%" cn.javayong.platform.sms.admin.SmsAdminApplication
 
 echo start cmd : %CMD_STR%
 
-java %JAVA_OPTS% -classpath "%CLASSPATH%" com.courage.platform.sms.admin.SmsAdminApplication
+java %JAVA_OPTS% -classpath "%CLASSPATH%" cn.javayong.platform.sms.admin.SmsAdminApplication

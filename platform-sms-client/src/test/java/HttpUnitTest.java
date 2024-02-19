@@ -1,8 +1,7 @@
 import com.alibaba.fastjson.JSON;
-import com.courage.platform.sms.client.SmsConfig;
-import com.courage.platform.sms.client.SmsSenderClient;
-import com.courage.platform.sms.client.SmsSenderResult;
-import com.courage.platform.sms.client.util.SmsHttpClientUtils;
+import cn.javayong.platform.sms.client.SmsConfig;
+import cn.javayong.platform.sms.client.SmsSenderClient;
+import cn.javayong.platform.sms.client.SmsSenderResult;
 
 import java.util.HashMap;
 import java.util.Map;

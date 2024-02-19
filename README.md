@@ -120,7 +120,7 @@ bin/startup.sh
 
 ```xml
 <dependency>
-    <groupId>com.courage</groupId>
+    <groupId>cn.javayong</groupId>
     <artifactId>platform-sms-client</artifactId>
     <version>${parent.version}</version>
 </dependency>

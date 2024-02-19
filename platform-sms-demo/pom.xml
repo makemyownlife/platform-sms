@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>platform-sms</artifactId>
-        <groupId>com.courage</groupId>
+        <groupId>cn.javayong</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -16,7 +16,7 @@
 
         <!-- 短信平台 客户端 start -->
         <dependency>
-            <groupId>com.courage</groupId>
+            <groupId>cn.javayong</groupId>
             <artifactId>platform-sms-client</artifactId>
             <version>${parent.version}</version>
         </dependency>
@@ -85,7 +85,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.courage.platform.sms.demo.DemoMainApplication</mainClass>
+                            <mainClass>cn.javayong.platform.sms.demo.DemoMainApplication</mainClass>
                         </manifest>
                     </archive>
                     <excludes>

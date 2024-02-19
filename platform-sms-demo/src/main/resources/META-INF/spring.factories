@@ -1,1 +1,1 @@
-com.courage.platform.sms.demo.service.MyTestService = com.courage.platform.sms.demo.service.impl.FamilyTestService,com.courage.platform.sms.demo.service.impl.WorkTestService
+cn.javayong.platform.sms.demo.service.MyTestService = cn.javayong.platform.sms.demo.service.impl.FamilyTestService,cn.javayong.platform.sms.demo.service.impl.WorkTestService

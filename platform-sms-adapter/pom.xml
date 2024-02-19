@@ -5,7 +5,7 @@
 
     <parent>
         <artifactId>platform-sms</artifactId>
-        <groupId>com.courage</groupId>
+        <groupId>cn.javayong</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     
@@ -28,7 +28,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.courage</groupId>
+            <groupId>cn.javayong</groupId>
             <artifactId>platform-sms-client</artifactId>
             <version>${parent.version}</version>
         </dependency>

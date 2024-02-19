@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.courage.platform.sms.admin.dao.TSmsTemplateDAO">
+<mapper namespace="cn.javayong.platform.sms.admin.dao.TSmsTemplateDAO">
 
-  <resultMap id="BaseResultMap" type="com.courage.platform.sms.admin.domain.TSmsTemplate">
+  <resultMap id="BaseResultMap" type="cn.javayong.platform.sms.admin.domain.TSmsTemplate">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="template_name" jdbcType="VARCHAR" property="templateName" />
     <result column="template_type" jdbcType="TINYINT" property="templateType" />
@@ -30,7 +30,7 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
 
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplate" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.javayong.platform.sms.admin.domain.TSmsTemplate" useGeneratedKeys="true">
     insert into t_sms_template (id , template_name, template_type, content, sign_name,
       `status`, remark ,create_time, update_time
       )
@@ -39,7 +39,7 @@
       )
   </insert>
 
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplate" useGeneratedKeys="true" >
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.javayong.platform.sms.admin.domain.TSmsTemplate" useGeneratedKeys="true" >
     insert into t_sms_template
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="templateName != null">
@@ -95,7 +95,7 @@
     </trim>
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplate">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.javayong.platform.sms.admin.domain.TSmsTemplate">
     update t_sms_template
     <set>
       <if test="templateName != null">
@@ -123,7 +123,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="com.courage.platform.sms.admin.domain.TSmsTemplate">
+  <update id="updateByPrimaryKey" parameterType="cn.javayong.platform.sms.admin.domain.TSmsTemplate">
     update t_sms_template
     set template_name = #{templateName,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
@@ -136,7 +136,7 @@
   </update>
 
   <!-- 根据条件查询短信模板列表 -->
-  <select id="queryTemplates" parameterType="java.util.Map" resultType="com.courage.platform.sms.admin.domain.TSmsTemplate">
+  <select id="queryTemplates" parameterType="java.util.Map" resultType="cn.javayong.platform.sms.admin.domain.TSmsTemplate">
     <bind name="start" value="(page - 1) * size"/>
     <bind name="end" value="size"/>
     select id, template_name as templateName, template_type as templateType , content, sign_name as signName, `status`, remark,  create_time as createTime, update_time as updateTime
