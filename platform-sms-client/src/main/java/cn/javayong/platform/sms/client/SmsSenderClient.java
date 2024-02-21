@@ -30,9 +30,14 @@ public class SmsSenderClient {
     }
 
     public SmsSenderResult sendSmsByTemplateId(String mobile, String templateId, Map<String, String> templateParam) {
+        String time = String.valueOf(SmsSenderUtil.getCurrentTime());
+        SmsSenderResult smsSenderResult = sendSmsByTemplateId(mobile, templateId, time, templateParam);
+        return smsSenderResult;
+    }
+
+    public SmsSenderResult sendSmsByTemplateId(String mobile, String templateId, String time, Map<String, String> templateParam) {
         String random = SmsSenderUtil.getRandom();
         String appKey = smsConfig.getAppKey();
-        String time = String.valueOf(SmsSenderUtil.getCurrentTime());
         // 构造参数
         Map<String, String> param = new HashMap<String, String>(4);
         param.put("time", time);
