@@ -1,5 +1,6 @@
 package cn.javayong.platform.sms.client;
 
+import cn.javayong.platform.sms.client.util.SmsStringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import cn.javayong.platform.sms.client.util.LoadBalancer;
@@ -30,14 +31,14 @@ public class SmsSenderClient {
     }
 
     public SmsSenderResult sendSmsByTemplateId(String mobile, String templateId, Map<String, String> templateParam) {
-        String time = String.valueOf(SmsSenderUtil.getCurrentTime());
-        SmsSenderResult smsSenderResult = sendSmsByTemplateId(mobile, templateId, time, templateParam);
+        SmsSenderResult smsSenderResult = sendSmsByTemplateId(mobile, templateId, null, templateParam);
         return smsSenderResult;
     }
 
-    public SmsSenderResult sendSmsByTemplateId(String mobile, String templateId, String time, Map<String, String> templateParam) {
+    public SmsSenderResult sendSmsByTemplateId(String mobile, String templateId, String deliverTime, Map<String, String> templateParam) {
         String random = SmsSenderUtil.getRandom();
         String appKey = smsConfig.getAppKey();
+        String time = String.valueOf(SmsSenderUtil.getCurrentTime());
         // 构造参数
         Map<String, String> param = new HashMap<String, String>(4);
         param.put("time", time);
@@ -47,6 +48,9 @@ public class SmsSenderClient {
         queryParam.put("mobile", mobile);
         queryParam.put("templateId", templateId);
         queryParam.put("templateParam", templateParam);
+        if (!SmsStringUtils.isEmpty(deliverTime)) {
+            queryParam.put("deliverTime", deliverTime);
+        }
         String q = JSON.toJSONString(queryParam);
         param.put("q", JSON.toJSONString(queryParam));
         String sign = SmsSenderUtil.calculateSignature(smsConfig.getAppSecret(), random, time, q);
