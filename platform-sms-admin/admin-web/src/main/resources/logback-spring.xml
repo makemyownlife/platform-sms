@@ -33,7 +33,9 @@
 	</appender>
 
 	<root level="INFO">
+		<!-- 控制台日志 -->
 		<appender-ref ref="STDOUT"/>
+		<!-- 文件日志 -->
 		<appender-ref ref="SMS-ADMIN-ROOT" />
 	</root>
 

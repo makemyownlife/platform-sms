@@ -29,6 +29,7 @@ mybatis:
   mapper-locations: classpath:mapper/*DAO.xml
   type-aliases-package: cn.javayong.platform.sms.domain
 
+
 ## 短信管理端用户/密码
 sms:
   adminUser: admin
