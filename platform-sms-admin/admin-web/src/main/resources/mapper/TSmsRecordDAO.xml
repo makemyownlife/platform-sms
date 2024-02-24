@@ -191,8 +191,9 @@
            id  ,
            attime
     from t_sms_record t where t.attime between  #{startTime} and  #{endTime}
+    and t.send_status = -1
     <if test="startId != null">
-     and   t.id <![CDATA[>]]> #{startId,jdbcType=BIGINT}
+     and t.id <![CDATA[>]]> #{startId,jdbcType=BIGINT}
     </if>
     order by id asc limit 200
   </select>

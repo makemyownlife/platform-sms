@@ -207,19 +207,21 @@ public class AdapterSchedule {
                                     String.valueOf(nextHourFirstTimeStamp),
                                     String.valueOf(nextHourLastTimeStamp),
                                     startId);
-                            Set<ZSetOperations.TypedTuple<String>> typedTupleSet = new HashSet<>();
-                            for (Map record : recordList) {
-                                ZSetOperations.TypedTuple<String> typedTuple = new DefaultTypedTuple<String>(
-                                        String.valueOf(record.get("id")),
-                                        Double.valueOf((String) record.get("attime"))
-                                );
-                                typedTupleSet.add(typedTuple);
-                                startId = (Long) record.get("id");
-                            }
-                            if (CollectionUtils.isNotEmpty(recordList)) {
-                                redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, typedTupleSet);
-                            } else {
+                            if (CollectionUtils.isEmpty(recordList)) {
                                 break;
+                            } else {
+                                if (CollectionUtils.isNotEmpty(recordList)) {
+                                    Set<ZSetOperations.TypedTuple<String>> typedTupleSet = new HashSet<>();
+                                    for (Map record : recordList) {
+                                        ZSetOperations.TypedTuple<String> typedTuple = new DefaultTypedTuple<String>(
+                                                String.valueOf(record.get("id")),
+                                                Double.valueOf((String) record.get("attime"))
+                                        );
+                                        typedTupleSet.add(typedTuple);
+                                        startId = (Long) record.get("id");
+                                    }
+                                    redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, typedTupleSet);
+                                }
                             }
                         }
                         // 每隔15分钟 ，执行一次 （并行情况下需要加锁 )）
