@@ -1,5 +1,6 @@
 package cn.javayong.platform.sms.admin.dispatcher;
 
+import cn.javayong.platform.sms.admin.common.utils.Pair;
 import cn.javayong.platform.sms.admin.common.utils.UtilsAll;
 import cn.javayong.platform.sms.admin.dao.TSmsRecordDAO;
 import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.RequestCode;
@@ -13,6 +14,7 @@ import cn.javayong.platform.sms.admin.domain.TSmsChannel;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -160,7 +162,7 @@ public class AdapterSchedule {
                                             redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(recordId));
                                         } else {
                                             waitTime = triggerTime - currentTime;
-                                            //ogger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
+                                            logger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
                                         }
                                     }
                                 }
@@ -177,7 +179,7 @@ public class AdapterSchedule {
                             }
                         }
                         try {
-                            notifyObject.wait(waitTime > DEFAULT_DELAY_WAIT_TIME ? DEFAULT_DELAY_WAIT_TIME : waitTime);
+                            notifyObject.wait(waitTime);
                         } catch (Exception e) {
                         }
                     }
@@ -198,36 +200,59 @@ public class AdapterSchedule {
             @Override
             public void run() {
                 while (loadNextHourTaskRunning) {
+                    boolean lockFlag = false;
+                    Pair<Long, Long> pair = UtilsAll.getNextHourFirstAndLast();
+                    String nextHour = DateFormatUtils.format(pair.getObject1(), "yyyyMMddHH");
                     try {
-                        Long startId = null;
-                        Long nextHourLastTimeStamp = UtilsAll.getNextHourLastSecondTimestamp();
-                        Long nextHourFirstTimeStamp = UtilsAll.getNextHouFirstSecondTimestamp();
-                        for (; ; ) {
-                            List<Map> recordList = smsRecordDAO.queryWaitingSendSmsList(
-                                    String.valueOf(nextHourFirstTimeStamp),
-                                    String.valueOf(nextHourLastTimeStamp),
-                                    startId);
-                            if (CollectionUtils.isEmpty(recordList)) {
-                                break;
-                            } else {
-                                if (CollectionUtils.isNotEmpty(recordList)) {
-                                    Set<ZSetOperations.TypedTuple<String>> typedTupleSet = new HashSet<>();
-                                    for (Map record : recordList) {
-                                        ZSetOperations.TypedTuple<String> typedTuple = new DefaultTypedTuple<String>(
-                                                String.valueOf(record.get("id")),
-                                                Double.valueOf((String) record.get("attime"))
-                                        );
-                                        typedTupleSet.add(typedTuple);
-                                        startId = (Long) record.get("id");
+                        String loaded = (String) redisTemplate.opsForHash().get(RedisKeyConstants.LOAD_NEXT_HOUR_RESULT, nextHour);
+                        if (loaded == null) {
+                            Long nextHourLastTimeStamp = pair.getObject1();
+                            Long nextHourFirstTimeStamp = pair.getObject2();
+                            lockFlag = redisTemplate.opsForValue().setIfAbsent(RedisKeyConstants.LOAD_NEXT_HOUR_LOCK, "1", 10, TimeUnit.MINUTES);
+                            if (lockFlag) {
+                                Long startId = null;
+                                for (; ; ) {
+                                    List<Map> recordList = smsRecordDAO.queryWaitingSendSmsList(
+                                            String.valueOf(nextHourFirstTimeStamp),
+                                            String.valueOf(nextHourLastTimeStamp),
+                                            startId);
+                                    if (CollectionUtils.isEmpty(recordList)) {
+                                        break;
+                                    } else {
+                                        if (CollectionUtils.isNotEmpty(recordList)) {
+                                            Set<ZSetOperations.TypedTuple<String>> typedTupleSet = new HashSet<>();
+                                            for (Map record : recordList) {
+                                                ZSetOperations.TypedTuple<String> typedTuple = new DefaultTypedTuple<String>(
+                                                        String.valueOf(record.get("id")),
+                                                        Double.valueOf((String) record.get("attime"))
+                                                );
+                                                typedTupleSet.add(typedTuple);
+                                                startId = (Long) record.get("id");
+                                            }
+                                            redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, typedTupleSet);
+                                        }
+                                        // notify object wait
+                                        synchronized (notifyObject) {
+                                            notifyObject.notify();
+                                        }
                                     }
-                                    redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, typedTupleSet);
                                 }
+                                redisTemplate.opsForHash().put(RedisKeyConstants.LOAD_NEXT_HOUR_RESULT, nextHour, "1");
                             }
                         }
-                        // 每隔15分钟 ，执行一次 （并行情况下需要加锁 )）
-                        Thread.sleep(15 * 1000 * 60);
                     } catch (Throwable e) {
                         logger.error("load next hour record error:", e);
+                    } finally {
+                        if (lockFlag) {
+                            redisTemplate.delete(RedisKeyConstants.LOAD_NEXT_HOUR_LOCK);
+                        }
+                    }
+                    // 每隔15分钟 ，执行一次 （并行情况下需要加锁 )）
+                    try {
+                        if (loadNextHourTaskRunning) {
+                            Thread.sleep(10 * 1000 * 60);
+                        }
+                    } catch (InterruptedException e) {
                     }
                 }
             }

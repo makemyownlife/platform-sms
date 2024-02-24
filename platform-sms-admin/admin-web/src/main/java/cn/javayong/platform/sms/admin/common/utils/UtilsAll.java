@@ -37,8 +37,12 @@ public class UtilsAll {
         return milliseconds;
     }
 
+    public static Pair<Long, Long> getNextHourFirstAndLast() {
+        return new Pair<>(getNextHouFirstSecondTimestamp(), getNextHourLastSecondTimestamp());
+    }
+
     public static void main(String[] args) {
-        System.out.println("下一个小时的最后一秒的毫秒数：" +getNextHourLastSecondTimestamp());
+        System.out.println("下一个小时的最后一秒的毫秒数：" + getNextHourLastSecondTimestamp());
         LocalDateTime currentDateTime = LocalDateTime.now();
 
         // 下一个小时的时间
@@ -50,7 +54,7 @@ public class UtilsAll {
         // 转换成毫秒
         long milliseconds = nextHourLastSecond.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli();
         Date d = new Date(milliseconds);
-        System.out.println(DateFormatUtils.format(d , "yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateFormatUtils.format(d, "yyyy-MM-dd HH:mm:ss"));
 
 
         System.out.println("下一个小时的最后一秒的毫秒数：" + milliseconds);
