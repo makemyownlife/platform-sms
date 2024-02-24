@@ -82,7 +82,7 @@ public class AdapterSchedule {
 
     private Thread loadNextHourRecordThread;
 
-    private final static Long DEFAULT_DELAY_WAIT_TIME = 100L;
+    private final static Long DEFAULT_DELAY_WAIT_TIME = 300L;
 
     // 延迟服务通知对象
     private Object notifyObject = new Object();
@@ -162,7 +162,7 @@ public class AdapterSchedule {
                                             redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(recordId));
                                         } else {
                                             waitTime = triggerTime - currentTime;
-                                            logger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
+                                          // logger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
                                         }
                                     }
                                 }
