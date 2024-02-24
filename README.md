@@ -184,4 +184,25 @@ public String test() {
     return "hello , first short message !";
 }
 ```
+
+### 04 单发延时短信
+
+```java
+@Autowired
+private SmsSenderClient smsSenderClient;
+
+@GetMapping("/test")
+public String test() {
+    String mobile = "15011319235";
+    String templateId = "523419101760679938";
+    // 你好，你的信息是：${code}
+    Map<String, String> param = new HashMap<String, String>();
+    param.put("code", "1234");
+    // 1个半小时之后发送
+    String attime = String.valueOf(System.currentTimeMillis() + 3600 * 1500L);
+    SmsSenderResult senderResult = smsSenderClient.sendSmsByTemplateId(mobile, templateId, attime, param);
+    System.out.println("senderResult:" + JSON.toJSONString*(senderResult));
+    return "hello , first short message !";
+}
+```
 ---
