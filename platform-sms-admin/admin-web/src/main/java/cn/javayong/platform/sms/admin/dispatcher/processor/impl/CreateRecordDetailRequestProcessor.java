@@ -106,6 +106,7 @@ public class CreateRecordDetailRequestProcessor implements AdatperProcessor<Long
                     detail.setSenderTime(new Date());
                     detail.setSendStatus(sendFlag ? 0 : 1);
                     detailDAO.insert(detail);
+                    detailIdList.add(detailId);
                 }
                 if (sendFlag) {
                     break;
