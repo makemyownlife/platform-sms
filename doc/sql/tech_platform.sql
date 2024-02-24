@@ -62,7 +62,8 @@ CREATE TABLE `t_sms_record` (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`),
-  KEY `idx_app_id` (`app_id`) USING BTREE
+  KEY `idx_app_id` (`app_id`) USING BTREE,
+  KEY `idx_attime`(`attime`) USING BTREE COMMENT '延迟短信索引'
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
