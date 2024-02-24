@@ -12,6 +12,8 @@ public class SendMessageRequestBody extends RequestBody {
 
     private String templateParam;
 
+    private String attime;
+
     public String getMobile() {
         return mobile;
     }
@@ -28,7 +30,6 @@ public class SendMessageRequestBody extends RequestBody {
         this.templateId = templateId;
     }
 
-
     public Long getAppId() {
         return appId;
     }
@@ -43,6 +44,14 @@ public class SendMessageRequestBody extends RequestBody {
 
     public void setTemplateParam(String templateParam) {
         this.templateParam = templateParam;
+    }
+
+    public String getAttime() {
+        return attime;
+    }
+
+    public void setAttime(String attime) {
+        this.attime = attime;
     }
 
 }

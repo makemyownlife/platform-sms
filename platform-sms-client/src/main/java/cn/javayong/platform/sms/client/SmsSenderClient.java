@@ -30,12 +30,17 @@ public class SmsSenderClient {
         this.loadBalancer = new LoadBalancer(smsConfig.getSmsServerUrl());
     }
 
-    public SmsSenderResult sendSmsByTemplateId(String mobile, String templateId, Map<String, String> templateParam) {
+    public SmsSenderResult sendSmsByTemplateId(String mobile,
+                                               String templateId,
+                                               Map<String, String> templateParam) {
         SmsSenderResult smsSenderResult = sendSmsByTemplateId(mobile, templateId, null, templateParam);
         return smsSenderResult;
     }
 
-    public SmsSenderResult sendSmsByTemplateId(String mobile, String templateId, String deliverTime, Map<String, String> templateParam) {
+    public SmsSenderResult sendSmsByTemplateId(String mobile,
+                                               String templateId,
+                                               String attime,
+                                               Map<String, String> templateParam) {
         String random = SmsSenderUtil.getRandom();
         String appKey = smsConfig.getAppKey();
         String time = String.valueOf(SmsSenderUtil.getCurrentTime());
@@ -48,8 +53,9 @@ public class SmsSenderClient {
         queryParam.put("mobile", mobile);
         queryParam.put("templateId", templateId);
         queryParam.put("templateParam", templateParam);
-        if (!SmsStringUtils.isEmpty(deliverTime)) {
-            queryParam.put("deliverTime", deliverTime);
+        if (!SmsStringUtils.isEmpty(attime)) {
+            // 指定发送时间 （一般用于延迟短信 ）
+            queryParam.put("attime", attime);
         }
         String q = JSON.toJSONString(queryParam);
         param.put("q", JSON.toJSONString(queryParam));

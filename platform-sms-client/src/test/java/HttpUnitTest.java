@@ -18,12 +18,14 @@ public class HttpUnitTest {
         smsConfig.setAppSecret("9c465ece754bd26a9be77f3d0e2606bd");
         SmsSenderClient smsSenderClient = new SmsSenderClient(smsConfig);
         String mobile = "15011319235";
-        String templateId = "556233436982980609";
+        String templateId = "555829270636703745";
         // 你好，你的信息是：${code}
         Map<String, String> param = new HashMap<String, String>();
         param.put("code", "1234");
         param.put("time", "10");
-        SmsSenderResult senderResult = smsSenderClient.sendSmsByTemplateId(mobile, templateId, param);
+        // 30秒之后发送
+        String attime = String.valueOf(System.currentTimeMillis() + 30 * 1000);
+        SmsSenderResult senderResult = smsSenderClient.sendSmsByTemplateId(mobile, templateId, attime, param);
         System.out.println("senderResult:" + JSON.toJSONString(senderResult));
     }
 
