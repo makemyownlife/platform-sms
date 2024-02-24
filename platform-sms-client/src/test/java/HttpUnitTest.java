@@ -24,7 +24,7 @@ public class HttpUnitTest {
         param.put("code", "1234");
         param.put("time", "10");
         // 30秒之后发送
-        String attime = String.valueOf(System.currentTimeMillis() + 3600 * 1000L);
+        String attime = String.valueOf(System.currentTimeMillis() + 3600 * 1500L);
         SmsSenderResult senderResult = smsSenderClient.sendSmsByTemplateId(mobile, templateId, attime, param);
         System.out.println("senderResult:" + JSON.toJSONString(senderResult));
 

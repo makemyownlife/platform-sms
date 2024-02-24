@@ -179,7 +179,7 @@ public class AdapterSchedule {
                             }
                         }
                         try {
-                            notifyObject.wait(waitTime);
+                            notifyObject.wait(waitTime > DEFAULT_DELAY_WAIT_TIME ? DEFAULT_DELAY_WAIT_TIME : waitTime);
                         } catch (Exception e) {
                         }
                     }
@@ -230,10 +230,6 @@ public class AdapterSchedule {
                                                 startId = (Long) record.get("id");
                                             }
                                             redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, typedTupleSet);
-                                        }
-                                        // notify object wait
-                                        synchronized (notifyObject) {
-                                            notifyObject.notify();
                                         }
                                     }
                                 }
