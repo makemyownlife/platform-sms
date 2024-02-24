@@ -186,5 +186,15 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
+  <select id="queryWaitingSendSmsList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+    select
+           id  ,
+           attime
+    from t_sms_record t where t.attime between  #{startTime} and  #{endTime}
+    <if test="startId != null">
+     and   t.id <![CDATA[>]]> #{startId,jdbcType=BIGINT}
+    </if>
+    order by id asc limit 200
+  </select>
 
 </mapper>

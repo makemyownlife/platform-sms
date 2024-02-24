@@ -1,6 +1,7 @@
 package cn.javayong.platform.sms.admin.dispatcher;
 
 import cn.javayong.platform.sms.admin.common.utils.UtilsAll;
+import cn.javayong.platform.sms.admin.dao.TSmsRecordDAO;
 import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.RequestCode;
 import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
 import com.alibaba.fastjson.JSON;
@@ -16,13 +17,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.DefaultTypedTuple;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -54,6 +61,10 @@ public class AdapterSchedule {
 
     @Autowired
     private AdapterLoader smsAdapterLoader;
+
+
+    @Autowired
+    private TSmsRecordDAO smsRecordDAO;
 
     @Autowired
     private TSmsChannelDAO smsChannelDAO;
@@ -149,7 +160,7 @@ public class AdapterSchedule {
                                             redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(recordId));
                                         } else {
                                             waitTime = triggerTime - currentTime;
-                                            logger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
+                                            //ogger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
                                         }
                                     }
                                 }
@@ -188,11 +199,31 @@ public class AdapterSchedule {
             public void run() {
                 while (loadNextHourTaskRunning) {
                     try {
-                        // 每隔15分钟 ，执行一次 （并行情况下需要加锁 )）
-                        Thread.sleep(15 * 1000 * 60);
+                        Long startId = null;
                         Long nextHourLastTimeStamp = UtilsAll.getNextHourLastSecondTimestamp();
                         Long nextHourFirstTimeStamp = UtilsAll.getNextHouFirstSecondTimestamp();
-
+                        for (; ; ) {
+                            List<Map> recordList = smsRecordDAO.queryWaitingSendSmsList(
+                                    String.valueOf(nextHourFirstTimeStamp),
+                                    String.valueOf(nextHourLastTimeStamp),
+                                    startId);
+                            Set<ZSetOperations.TypedTuple<String>> typedTupleSet = new HashSet<>();
+                            for (Map record : recordList) {
+                                ZSetOperations.TypedTuple<String> typedTuple = new DefaultTypedTuple<String>(
+                                        String.valueOf(record.get("id")),
+                                        Double.valueOf((String) record.get("attime"))
+                                );
+                                typedTupleSet.add(typedTuple);
+                                startId = (Long) record.get("id");
+                            }
+                            if (CollectionUtils.isNotEmpty(recordList)) {
+                                redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, typedTupleSet);
+                            } else {
+                                break;
+                            }
+                        }
+                        // 每隔15分钟 ，执行一次 （并行情况下需要加锁 )）
+                        Thread.sleep(15 * 1000 * 60);
                     } catch (Throwable e) {
                         logger.error("load next hour record error:", e);
                     }
