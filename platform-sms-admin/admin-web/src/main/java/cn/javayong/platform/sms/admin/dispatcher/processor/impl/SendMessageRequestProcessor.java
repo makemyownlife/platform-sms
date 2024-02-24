@@ -1,5 +1,6 @@
 package cn.javayong.platform.sms.admin.dispatcher.processor.impl;
 
+import cn.javayong.platform.sms.admin.common.utils.UtilsAll;
 import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
 import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.body.SendMessageRequestBody;
 import cn.javayong.platform.sms.admin.common.config.IdGenerator;
@@ -20,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -64,6 +67,7 @@ public class SendMessageRequestProcessor implements AdatperProcessor<SendMessage
         logger.info("appId:" + param.getAppId() + " smsId:" + smsId);
         TSmsRecord tSmsRecord = new TSmsRecord();
         tSmsRecord.setId(smsId);
+        tSmsRecord.setAttime(param.getAttime());
         tSmsRecord.setTemplateId(Long.valueOf(param.getTemplateId()));
         tSmsRecord.setAppId(param.getAppId());
         tSmsRecord.setTemplateParam(param.getTemplateParam());
@@ -81,13 +85,13 @@ public class SendMessageRequestProcessor implements AdatperProcessor<SendMessage
         if (StringUtils.isNotEmpty(param.getAttime())) {
             createRecordDetailImmediately = false;
             Long attime = Long.valueOf(param.getAttime());
-            if (attime <= currentTime + 3600 * 1000) {
-                // 1小时之内将发送的短信，直接将数据添加到 Redis 的 zset 容器
+            if (attime <= UtilsAll.getNextHourLastSecondTimestamp()) {
+                // 两个自然小时的延迟短信，直接将数据添加到 Redis 的 zset 容器
                 redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(smsId), attime);
             }
         } else {
-            // 立即发送短信的，将数据添加到 Redis 的 zset 容器
-            redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(smsId), currentTime + 30 * 1000);
+            // 立即发送短信的，将数据添加到 Redis 的 zset 容器 ， 5 秒后做一个检测。
+            redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(smsId), currentTime + 5 * 1000);
         }
 
         if(createRecordDetailImmediately) {

@@ -1,5 +1,6 @@
 package cn.javayong.platform.sms.admin.dispatcher;
 
+import cn.javayong.platform.sms.admin.common.utils.UtilsAll;
 import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.RequestCode;
 import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
 import com.alibaba.fastjson.JSON;
@@ -63,6 +64,13 @@ public class AdapterSchedule {
     // 延迟服务是否启动
     private volatile boolean delayServiceRunning = false;
 
+    // 加载下个小时的延迟短信任务开关
+    private volatile boolean loadNextHourTaskRunning = false;
+
+    private Thread loadNextHourRecordThread;
+
+    private final static Long DEFAULT_DELAY_WAIT_TIME = 100L;
+
     // 延迟服务通知对象
     private Object notifyObject = new Object();
 
@@ -80,8 +88,10 @@ public class AdapterSchedule {
                 scheudleLoadAdapter();
             }
         }, INIT_DELAY, PERIOD, TimeUnit.SECONDS);
-        //启动延迟服务
+        // 启动延迟服务
         startDelayThread();
+        // 启动任务：加载下个小时延迟短信，并放入到 ZSET 集合
+        startLoadNextHourRecord();
     }
 
     // 定时加载适配器
@@ -123,7 +133,7 @@ public class AdapterSchedule {
                 while (delayServiceRunning) {
                     synchronized (notifyObject) {
                         boolean lockFlag = false;
-                        long waitTime = 100L;
+                        long waitTime = DEFAULT_DELAY_WAIT_TIME;
                         try {
                             lockFlag = redisTemplate.opsForValue().setIfAbsent(RedisKeyConstants.WAITING_SEND_LOCK, "1", 3000, TimeUnit.MILLISECONDS);
                             if (lockFlag) {
@@ -156,15 +166,41 @@ public class AdapterSchedule {
                             }
                         }
                         try {
-                            notifyObject.wait(waitTime);
+                            notifyObject.wait(waitTime > DEFAULT_DELAY_WAIT_TIME ? DEFAULT_DELAY_WAIT_TIME : waitTime);
                         } catch (Exception e) {
                         }
                     }
                 }
             }
         };
-        this.delayThread = new Thread(runnable, "delayThread");
-        this.delayThread.start();
+        delayThread = new Thread(runnable, "delayThread");
+        delayThread.start();
+    }
+
+    // 每隔 15 分钟 将下个小时需要发送的延迟短信 加载到 redis 中 。
+    public void startLoadNextHourRecord() {
+        if (loadNextHourTaskRunning) {
+            return;
+        }
+        loadNextHourTaskRunning = true;
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                while (loadNextHourTaskRunning) {
+                    try {
+                        // 每隔15分钟 ，执行一次 （并行情况下需要加锁 )）
+                        Thread.sleep(15 * 1000 * 60);
+                        Long nextHourLastTimeStamp = UtilsAll.getNextHourLastSecondTimestamp();
+                        Long nextHourFirstTimeStamp = UtilsAll.getNextHouFirstSecondTimestamp();
+
+                    } catch (Throwable e) {
+                        logger.error("load next hour record error:", e);
+                    }
+                }
+            }
+        };
+        loadNextHourRecordThread = new Thread(runnable, "loadNextHourRecordThread");
+        loadNextHourRecordThread.start();
     }
 
     public void createRecordDetailImmediately(Long recordId) {
@@ -184,6 +220,9 @@ public class AdapterSchedule {
     @PreDestroy
     public synchronized void destroy() {
         this.scheduledExecutorService.shutdown();
+        if (this.loadNextHourTaskRunning) {
+            this.loadNextHourTaskRunning = false;
+        }
         if (this.delayServiceRunning) {
             this.delayServiceRunning = false;
         }
