@@ -19,7 +19,7 @@ public class HttpUnitTest {
         SmsSenderClient smsSenderClient = new SmsSenderClient(smsConfig);
         String mobile = "15011319235";
         String templateId = "555829270636703745";
-        // 你好，你的信息是：${code}
+        // ${code}为您的登录验证码，请于${time}分钟内填写，如非本人操作，请忽略本短信。
         Map<String, String> param = new HashMap<String, String>();
         param.put("code", "1234");
         param.put("time", "10");
