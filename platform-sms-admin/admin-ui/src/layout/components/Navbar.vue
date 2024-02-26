@@ -43,7 +43,7 @@ export default {
   },
   data() {
     return {
-      avat: './avatar.gif'
+      avat: './avatar.png'
     }
   },
   computed: {

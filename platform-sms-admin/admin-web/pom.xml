@@ -277,7 +277,7 @@
                                             <includes>
                                                 <include>static/</include>
                                                 <include>index.html</include>
-                                                <include>avatar.gif</include>
+                                                <include>avatar.png</include>
                                                 <include>logo.png</include>
                                             </includes>
                                         </resource>
