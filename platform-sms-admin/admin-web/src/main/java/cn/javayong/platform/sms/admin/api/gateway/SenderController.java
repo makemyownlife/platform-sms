@@ -40,7 +40,7 @@ public class SenderController {
 
             // 构造唯一请求 id
             String uniqueId = time + random;
-            logger.info("q:" + q + " appKey:" + appKey + " uniqueId:" + uniqueId);
+            logger.info(" uniqueId: {} , q: {} , appKey: {}", uniqueId, q, appKey);
 
             // 短信请求参数
             SendMessageRequestBody sendMessageRequestBody = new SendMessageRequestBody();
@@ -54,6 +54,7 @@ public class SenderController {
             sendMessageRequestBody.setMobile(jsonObject.getString("mobile"));
 
             SmsSenderResult smsSenderResult = smsRecordService.sendMessage(sendMessageRequestBody);
+            logger.info(" uniqueId: {} , result:{}", uniqueId, JSON.toJSONString(smsSenderResult));
             return smsSenderResult;
         } catch (Exception e) {
             logger.error("sendSingle error: ", e);
