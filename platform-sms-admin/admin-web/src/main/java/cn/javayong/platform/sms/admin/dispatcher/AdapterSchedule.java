@@ -162,7 +162,7 @@ public class AdapterSchedule {
                                             redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(recordId));
                                         } else {
                                             waitTime = triggerTime - currentTime;
-                                          // logger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
+                                            //logger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
                                         }
                                     }
                                 }
@@ -190,7 +190,7 @@ public class AdapterSchedule {
         delayThread.start();
     }
 
-    // 每隔 15 分钟 将下个小时需要发送的延迟短信 加载到 redis 中 。
+    // 每隔 10 分钟 将下个小时需要发送的延迟短信 加载到 redis 中 。
     public void startLoadNextHourRecord() {
         if (loadNextHourTaskRunning) {
             return;
@@ -211,6 +211,7 @@ public class AdapterSchedule {
                             lockFlag = redisTemplate.opsForValue().setIfAbsent(RedisKeyConstants.LOAD_NEXT_HOUR_LOCK, "1", 10, TimeUnit.MINUTES);
                             if (lockFlag) {
                                 Long startId = null;
+                                int count = 0;
                                 for (; ; ) {
                                     List<Map> recordList = smsRecordDAO.queryWaitingSendSmsList(
                                             String.valueOf(nextHourFirstTimeStamp),
@@ -220,6 +221,7 @@ public class AdapterSchedule {
                                         break;
                                     } else {
                                         if (CollectionUtils.isNotEmpty(recordList)) {
+                                            count++;
                                             Set<ZSetOperations.TypedTuple<String>> typedTupleSet = new HashSet<>();
                                             for (Map record : recordList) {
                                                 ZSetOperations.TypedTuple<String> typedTuple = new DefaultTypedTuple<String>(
@@ -233,7 +235,8 @@ public class AdapterSchedule {
                                         }
                                     }
                                 }
-                                redisTemplate.opsForHash().put(RedisKeyConstants.LOAD_NEXT_HOUR_RESULT, nextHour, "1");
+                                logger.info("nextHour:" + nextHour + " 处理数据条数：" + count);
+                                redisTemplate.opsForHash().put(RedisKeyConstants.LOAD_NEXT_HOUR_RESULT, nextHour, String.valueOf(count));
                             }
                         }
                     } catch (Throwable e) {
@@ -243,7 +246,7 @@ public class AdapterSchedule {
                             redisTemplate.delete(RedisKeyConstants.LOAD_NEXT_HOUR_LOCK);
                         }
                     }
-                    // 每隔15分钟 ，执行一次 （并行情况下需要加锁 )）
+                    // 每隔10分钟 ，执行一次 （并行情况下需要加锁 )）
                     try {
                         if (loadNextHourTaskRunning) {
                             Thread.sleep(10 * 1000 * 60);
