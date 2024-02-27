@@ -16,11 +16,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.sql.Time;
 import java.util.HashMap;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * 请求分发器
@@ -53,11 +51,19 @@ public class AdapterDispatcher {
         }
         logger.info("开始初始化短信适配器分发服务");
         long start = System.currentTimeMillis();
-        this.createRecordDetailThreads = Executors.newFixedThreadPool(32, new ThreadFactoryImpl("createRecordDetailThread-"));
+        this.createRecordDetailThreads = new ThreadPoolExecutor(
+                32,
+                32,
+                10,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(500),
+                new ThreadFactoryImpl("createRecordDetailThread-"),
+                new ThreadPoolExecutor.CallerRunsPolicy()
+        );
         // 映射处理器
         registerProcessor(RequestCode.SEND_MESSAGE, sendMessageRequestProcessor);                                           // 发送短信
         registerProcessor(RequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);                                       // 申请模版
-        registerProcessor(RequestCode.CREATE_RECORD_DETAIL, createRecordDetailRequestProcessor, createRecordDetailThreads); // 创建记录详情 (异步,使用单独的线程)
+        registerProcessor(RequestCode.CREATE_RECORD_DETAIL, createRecordDetailRequestProcessor, createRecordDetailThreads); // 创建记录详情 ，异步调用三方接口 (使用单独的线程)
         logger.info("结束初始化短信适配器分发服务, 耗时：" + (System.currentTimeMillis() - start));
     }
 
@@ -127,7 +133,7 @@ public class AdapterDispatcher {
             long start = System.currentTimeMillis();
             logger.info("开始销毁短信适配器分发服务");
             try {
-                createRecordDetailThreads.awaitTermination(10 ,TimeUnit.SECONDS);
+                createRecordDetailThreads.awaitTermination(10, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
             }
             running = false;

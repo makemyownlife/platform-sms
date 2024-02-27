@@ -17,6 +17,7 @@ import cn.javayong.platform.sms.admin.domain.TSmsRecord;
 import cn.javayong.platform.sms.admin.domain.TSmsRecordDetail;
 import cn.javayong.platform.sms.admin.domain.TSmsTemplate;
 import cn.javayong.platform.sms.admin.domain.TSmsTemplateBinding;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +68,7 @@ public class CreateRecordDetailRequestProcessor implements AdatperProcessor<Long
         TSmsRecord record = smsRecordDAO.selectByPrimaryKey(recordId);
         if (record != null) {
             if (record.getSendStatus() != -1) {
-                logger.warn("短信记录 recordId:【" + recordId + "]已发送");
+                logger.warn("短信记录 recordId:【" + recordId + "]已处理");
                 return ResponseEntity.success(detailIdList);
             }
             Long templateId = record.getTemplateId();
