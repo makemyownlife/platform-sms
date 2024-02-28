@@ -111,7 +111,7 @@
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="remark != null">
-        `status` = #{remark,jdbcType=VARCHAR},
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},

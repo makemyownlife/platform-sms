@@ -106,7 +106,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
             }
         }
         // 5 遍历条目ID列表，组装对象列表
-        List<TSmsTemplateBinding>  queryBindingListResult = tSmsTemplateBindingDAO.queryTemplateBindingsByIds(templatesIdList);
+        List<TSmsTemplateBinding> queryBindingListResult = tSmsTemplateBindingDAO.queryTemplateBindingsByIds(templatesIdList);
         for (int index = 0; index < templatesIdList.size(); index++) {
             Long id = templatesIdList.get(index);
             TSmsTemplate tSmsTemplate = templateList.get(index);
@@ -116,7 +116,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
             }
             List<TSmsTemplateBinding> bindingList = new ArrayList<>();
             for (TSmsTemplateBinding binding : queryBindingListResult) {
-                if(binding.getTemplateId().equals(id)) {
+                if (binding.getTemplateId().equals(id)) {
                     bindingList.add(binding);
                 }
             }
@@ -139,6 +139,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
             tSmsTemplate.setUpdateTime(new Date());
             tSmsTemplate.setStatus((byte) 0);
             tSmsTemplateDAO.insert(tSmsTemplate);
+            redisTemplate.opsForValue().set(RedisKeyConstants.TEMPLATE_ID_ITEM + tSmsTemplate.getId(), tSmsTemplate, 3600, TimeUnit.SECONDS);
             return ResponseEntity.success("success");
         } catch (Exception e) {
             logger.error("addSmsTemplate error:", e);
@@ -151,6 +152,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
         try {
             tSmsTemplate.setUpdateTime(new Date());
             tSmsTemplateDAO.updateByPrimaryKeySelective(tSmsTemplate);
+            redisTemplate.delete(RedisKeyConstants.TEMPLATE_ID_ITEM + tSmsTemplate.getId());
             return ResponseEntity.success("success");
         } catch (Exception e) {
             logger.error("updateSmsTemplate error:", e);
@@ -163,6 +165,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
         try {
             tSmsTemplateDAO.deleteByPrimaryKey(id);
             tSmsTemplateBindingDAO.deleteTemplateBindingByTemplateId(id);
+            redisTemplate.delete(RedisKeyConstants.TEMPLATE_ID_ITEM + id);
             return ResponseEntity.success("success");
         } catch (Exception e) {
             logger.error("deleteSmsTemplate error:", e);
