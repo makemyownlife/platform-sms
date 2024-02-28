@@ -212,24 +212,24 @@ public class AdapterSchedule {
                                 Long triggerTime = recordIdTuple.getScore().longValue();
                                 Long currentTime = System.currentTimeMillis();
                                 if (currentTime - triggerTime >= 0) {
-                                    executeDelayCreateRecordDetail(recordId);
+                                    executeNowCreateRecordDetail(recordId);
                                     removeElementFromRetryQueue(recordId);
                                 }
                             }
                         }
                     } catch (Exception e) {
-                        logger.error("delayService error: ", e);
+                        logger.error("retry Service error: ", e);
                     } finally {
                         if (lockFlag) {
                             try {
-                                redisTemplate.delete(RedisKeyConstants.DELAY_SEND_LOCK);
+                                redisTemplate.delete(RedisKeyConstants.RETRY_SEND_LOCK);
                             } catch (Exception e) {
-                                logger.error("redisTemplate delete key error:", e);
+                                logger.error("redisTemplate delete retrylockkey error:", e);
                             }
                         }
                     }
                     try {
-                        Thread.sleep(DEFAULT_DELAY_WAIT_TIME);
+                        Thread.sleep(100);
                     } catch (Exception e) {
                     }
                 }
