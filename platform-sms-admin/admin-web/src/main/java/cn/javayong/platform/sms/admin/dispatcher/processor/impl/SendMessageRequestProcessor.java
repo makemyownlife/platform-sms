@@ -81,22 +81,22 @@ public class SendMessageRequestProcessor implements AdatperProcessor<SendMessage
         // 是否立即发送短信
         boolean createRecordDetailImmediately = true;
 
-        Long currentTime = currentDate.getTime();
+        // 延迟消息，假如是热数据，加入到延迟队列里
         if (StringUtils.isNotEmpty(param.getAttime())) {
             createRecordDetailImmediately = false;
             Long attime = Long.valueOf(param.getAttime());
             if (attime <= UtilsAll.getNextHourLastSecondTimestamp()) {
-                // 两个自然小时的延迟短信，直接将数据添加到 Redis 的 zset 容器
-                redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, smsId, attime);
+                // 两个自然小时的延迟短信，直接将数据添加到 Redis 的延迟队列  zset 容器
+                smsAdapterSchedule.addDelayQueue(smsId, attime);
             }
-        } else {
-            // 立即发送短信的，将数据添加到 Redis 的 zset 容器 ， 5 秒后做一个检测。
-            redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, smsId, currentTime + 5 * 1000);
         }
 
+        // 立即发送的短信，调用立即发送短信线程池 执行任务 , 并放入到重试队列里 5 秒后检测
         if (createRecordDetailImmediately) {
             // 异步执行
-            smsAdapterSchedule.createRecordDetailImmediately(smsId);
+            smsAdapterSchedule.executeNowCreateRecordDetail(smsId);
+            // 立即发送短信的，将数据添加到 Redis 的 重试 zset 容器 ， 5 秒后做一个检测。
+            smsAdapterSchedule.addRetryQueue(smsId, System.currentTimeMillis() + 5 * 1000);
         }
 
         SmsSenderResult smsSenderResult = new SmsSenderResult(String.valueOf(smsId));

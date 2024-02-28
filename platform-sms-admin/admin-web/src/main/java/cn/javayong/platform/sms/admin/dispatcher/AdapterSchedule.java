@@ -62,18 +62,23 @@ public class AdapterSchedule {
     // 延迟服务是否启动
     private volatile boolean delayServiceRunning = false;
 
+    // 重试服务是否启动
+    private volatile boolean retryRuning = false;
+
     // 加载下个自然小时的延迟短信任务开关
     private volatile boolean loadNextHourTaskRunning = false;
 
     private final static Long DEFAULT_DELAY_WAIT_TIME = 300L;
 
     // 延迟服务通知对象
-    private Object notifyObject = new Object();
+    private static Object notifyObject = new Object();
 
     @PostConstruct
     public synchronized void init() {
         // 启动加载适配器服务
         startLoadAdapterThread();
+        // 启动重试服务
+        startRetryThread();
         // 启动延迟服务
         startDelayThread();
         // 启动任务：加载下个小时延迟短信，并放入到 ZSET 集合
@@ -146,17 +151,17 @@ public class AdapterSchedule {
                         boolean lockFlag = false;
                         long waitTime = DEFAULT_DELAY_WAIT_TIME;
                         try {
-                            lockFlag = redisTemplate.opsForValue().setIfAbsent(RedisKeyConstants.WAITING_SEND_LOCK, "1", 3000, TimeUnit.MILLISECONDS);
+                            lockFlag = redisTemplate.opsForValue().setIfAbsent(RedisKeyConstants.DELAY_SEND_LOCK, 1, 60, TimeUnit.SECONDS);
                             if (lockFlag) {
-                                Set<ZSetOperations.TypedTuple<Long>> recordIds = redisTemplate.opsForZSet().rangeWithScores(RedisKeyConstants.WAITING_SEND_ZSET, 0, 1);
+                                Set<ZSetOperations.TypedTuple<Long>> recordIds = redisTemplate.opsForZSet().rangeWithScores(RedisKeyConstants.DELAY_SEND_ZSET, 0, 1);
                                 if (CollectionUtils.isNotEmpty(recordIds)) {
                                     ZSetOperations.TypedTuple<Long> recordIdTuple = recordIds.iterator().next();
                                     Long recordId = recordIdTuple.getValue();
                                     Long triggerTime = recordIdTuple.getScore().longValue();
                                     Long currentTime = System.currentTimeMillis();
                                     if (currentTime - triggerTime >= 0) {
-                                        createRecordDetailImmediately(Long.valueOf(recordId));
-                                        redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_ZSET, recordId);
+                                        executeDelayCreateRecordDetail(recordId);
+                                        removeElementFromDelayQueue(recordId);
                                     } else {
                                         waitTime = triggerTime - currentTime;
                                         //logger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
@@ -168,7 +173,7 @@ public class AdapterSchedule {
                         } finally {
                             if (lockFlag) {
                                 try {
-                                    redisTemplate.delete(RedisKeyConstants.WAITING_SEND_LOCK);
+                                    redisTemplate.delete(RedisKeyConstants.DELAY_SEND_LOCK);
                                 } catch (Exception e) {
                                     logger.error("redisTemplate delete key error:", e);
                                 }
@@ -184,7 +189,55 @@ public class AdapterSchedule {
         };
         Thread delayThread = new Thread(runnable, "delayThread");
         delayThread.start();
-        logger.info("启动延迟队列成功");
+        logger.info("启动延迟服务成功");
+    }
+
+    public synchronized void startRetryThread() {
+        if (this.retryRuning) {
+            return;
+        }
+        this.retryRuning = true;
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                while (retryRuning) {
+                    boolean lockFlag = false;
+                    try {
+                        lockFlag = redisTemplate.opsForValue().setIfAbsent(RedisKeyConstants.RETRY_SEND_LOCK, 1, 60, TimeUnit.SECONDS);
+                        if (lockFlag) {
+                            Set<ZSetOperations.TypedTuple<Long>> recordIds = redisTemplate.opsForZSet().rangeWithScores(RedisKeyConstants.RETRY_SEND_ZSET, 0, 1);
+                            if (CollectionUtils.isNotEmpty(recordIds)) {
+                                ZSetOperations.TypedTuple<Long> recordIdTuple = recordIds.iterator().next();
+                                Long recordId = recordIdTuple.getValue();
+                                Long triggerTime = recordIdTuple.getScore().longValue();
+                                Long currentTime = System.currentTimeMillis();
+                                if (currentTime - triggerTime >= 0) {
+                                    executeDelayCreateRecordDetail(recordId);
+                                    removeElementFromRetryQueue(recordId);
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        logger.error("delayService error: ", e);
+                    } finally {
+                        if (lockFlag) {
+                            try {
+                                redisTemplate.delete(RedisKeyConstants.DELAY_SEND_LOCK);
+                            } catch (Exception e) {
+                                logger.error("redisTemplate delete key error:", e);
+                            }
+                        }
+                    }
+                    try {
+                        Thread.sleep(DEFAULT_DELAY_WAIT_TIME);
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        };
+        Thread retryThread = new Thread(runnable, "retryThread");
+        retryThread.start();
+        logger.info("启动重试服务成功");
     }
 
     // 每隔 10 分钟 将下个小时需要发送的延迟短信 加载到 redis 中 。
@@ -222,7 +275,7 @@ public class AdapterSchedule {
                                                 typedTupleSet.add(typedTuple);
                                                 startId = (Long) record.get("id");
                                             }
-                                            redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, typedTupleSet);
+                                            redisTemplate.opsForZSet().add(RedisKeyConstants.DELAY_SEND_ZSET, typedTupleSet);
                                         }
                                     }
                                 }
@@ -234,7 +287,11 @@ public class AdapterSchedule {
                         logger.error("load next hour record error:", e);
                     } finally {
                         if (lockFlag) {
-                            redisTemplate.delete(RedisKeyConstants.LOAD_NEXT_HOUR_LOCK);
+                            try {
+                                redisTemplate.delete(RedisKeyConstants.LOAD_NEXT_HOUR_LOCK);
+                            } catch (Exception e) {
+                                logger.error("redisTemplate delete loadnexthourlock error:", e);
+                            }
                         }
                     }
                     // 每隔10分钟 ，执行一次 （并行情况下需要加锁 )）
@@ -249,23 +306,52 @@ public class AdapterSchedule {
         };
         Thread loadNextHourRecordThread = new Thread(runnable, "loadNextHourRecordThread");
         loadNextHourRecordThread.start();
-        logger.info("启动加载下个自然小时线程成功");
+        logger.info("启动加载下个自然小时服务成功");
     }
 
-    public void createRecordDetailImmediately(Long recordId) {
-        // TODO 使用 Disruptor 来做中转
+    public void executeNowCreateRecordDetail(Long recordId) {
         try {
+            // 执行线程池调用三方接口发送短信
             RequestEntity<Long> requestEntity = new RequestEntity<>(recordId);
-            smsAdapterDispatcher.dispatchAsyncRequest(RequestCode.CREATE_RECORD_DETAIL, requestEntity);
+            smsAdapterDispatcher.dispatchAsyncRequest(RequestCode.NOW_CREATE_RECORD_DETAIL, requestEntity);
         } catch (Throwable e) {
-            logger.error("schedule createRecordDetailImmediately error:", e);
+            logger.error("executeNowCreateRecordDetailImmediately error:", e);
         }
+    }
+
+    public void executeDelayCreateRecordDetail(Long recordId) {
+        try {
+            // 执行线程池调用三方接口发送短信
+            RequestEntity<Long> requestEntity = new RequestEntity<>(recordId);
+            smsAdapterDispatcher.dispatchAsyncRequest(RequestCode.DELAY_CREATE_RECORD_DETAIL, requestEntity);
+        } catch (Throwable e) {
+            logger.error("executeDelayCreateRecordDetail error:", e);
+        }
+    }
+
+    public void addRetryQueue(Long recordId, Long time) {
+        redisTemplate.opsForZSet().add(RedisKeyConstants.RETRY_SEND_ZSET, recordId, time);
+    }
+
+    public void removeElementFromRetryQueue(Long recordId) {
+        redisTemplate.opsForZSet().remove(RedisKeyConstants.RETRY_SEND_ZSET, recordId);
+    }
+
+    public void addDelayQueue(Long recordId, Long time) {
+        redisTemplate.opsForZSet().add(RedisKeyConstants.DELAY_SEND_ZSET, recordId, time);
+    }
+
+    public void removeElementFromDelayQueue(Long recordId) {
+        redisTemplate.opsForZSet().remove(RedisKeyConstants.DELAY_SEND_ZSET, recordId);
     }
 
     @PreDestroy
     public synchronized void destroy() {
         if (this.delayServiceRunning) {
             this.delayServiceRunning = false;
+        }
+        if (this.retryRuning) {
+            this.retryRuning = false;
         }
         if (this.loadAdapterRunning) {
             this.loadAdapterRunning = false;

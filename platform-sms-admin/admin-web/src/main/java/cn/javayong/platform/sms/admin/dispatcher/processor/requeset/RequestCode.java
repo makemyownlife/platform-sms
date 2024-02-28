@@ -10,6 +10,10 @@ public class RequestCode {
 
     public static final int APPLY_TEMPLATE = 11;
 
-    public static final int CREATE_RECORD_DETAIL = 12;
+    // 立即发送短信
+    public static final int NOW_CREATE_RECORD_DETAIL = 12;
+
+    // 延迟短信发送
+    public static final int DELAY_CREATE_RECORD_DETAIL = 13;
 
 }

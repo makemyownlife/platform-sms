@@ -42,7 +42,9 @@ public class AdapterDispatcher {
     @Autowired
     private CreateRecordDetailRequestProcessor createRecordDetailRequestProcessor;
 
-    private ExecutorService createRecordDetailThreads;
+    private ExecutorService nowCreateRecordDetailThreads;
+
+    private ExecutorService delayCreateRecordDetailThreads;
 
     @PostConstruct
     public synchronized void init() {
@@ -51,19 +53,32 @@ public class AdapterDispatcher {
         }
         logger.info("开始初始化短信适配器分发服务");
         long start = System.currentTimeMillis();
-        this.createRecordDetailThreads = new ThreadPoolExecutor(
-                32,
-                32,
+        // 立即发送线程池
+        this.nowCreateRecordDetailThreads = new ThreadPoolExecutor(
+                16,
+                16,
                 10,
                 TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(5000),
-                new ThreadFactoryImpl("createRecordDetailThread-"),
+                new LinkedBlockingQueue<>(2000),
+                new ThreadFactoryImpl("nowCreateRecordDetailThread-"),
                 new ThreadPoolExecutor.CallerRunsPolicy()
         );
+        // 延迟短信发送线程池
+        this.delayCreateRecordDetailThreads = new ThreadPoolExecutor(
+                8,
+                8,
+                10,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(2000),
+                new ThreadFactoryImpl("delayCreateRecordDetailThread-"),
+                new ThreadPoolExecutor.CallerRunsPolicy()
+        );
+
         // 映射处理器
         registerProcessor(RequestCode.SEND_MESSAGE, sendMessageRequestProcessor);                                           // 发送短信
         registerProcessor(RequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);                                       // 申请模版
-        registerProcessor(RequestCode.CREATE_RECORD_DETAIL, createRecordDetailRequestProcessor, createRecordDetailThreads); // 创建记录详情 ，异步调用三方接口 (使用单独的线程)
+        registerProcessor(RequestCode.NOW_CREATE_RECORD_DETAIL, createRecordDetailRequestProcessor, nowCreateRecordDetailThreads); // 立即创建记录详情 ，异步调用三方接口 (使用单独的线程)
+        registerProcessor(RequestCode.DELAY_CREATE_RECORD_DETAIL, createRecordDetailRequestProcessor, delayCreateRecordDetailThreads); // 延迟创建记录详情 ，异步调用三方接口 (使用单独的线程)
         logger.info("结束初始化短信适配器分发服务, 耗时：" + (System.currentTimeMillis() - start));
     }
 
@@ -133,7 +148,11 @@ public class AdapterDispatcher {
             long start = System.currentTimeMillis();
             logger.info("开始销毁短信适配器分发服务");
             try {
-                createRecordDetailThreads.awaitTermination(10, TimeUnit.SECONDS);
+                nowCreateRecordDetailThreads.awaitTermination(10, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+            }
+            try {
+                delayCreateRecordDetailThreads.awaitTermination(10, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
             }
             running = false;
