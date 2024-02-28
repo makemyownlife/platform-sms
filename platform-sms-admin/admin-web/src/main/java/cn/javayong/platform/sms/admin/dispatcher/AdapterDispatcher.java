@@ -56,7 +56,7 @@ public class AdapterDispatcher {
                 32,
                 10,
                 TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(500),
+                new LinkedBlockingQueue<>(5000),
                 new ThreadFactoryImpl("createRecordDetailThread-"),
                 new ThreadPoolExecutor.CallerRunsPolicy()
         );

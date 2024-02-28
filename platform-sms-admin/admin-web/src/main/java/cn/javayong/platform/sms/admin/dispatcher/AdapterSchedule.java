@@ -8,21 +8,16 @@ import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.RequestEntit
 import com.alibaba.fastjson.JSON;
 import cn.javayong.platform.sms.adapter.support.SmsChannelConfig;
 import cn.javayong.platform.sms.admin.common.utils.RedisKeyConstants;
-import cn.javayong.platform.sms.admin.common.utils.ThreadFactoryImpl;
 import cn.javayong.platform.sms.admin.dao.TSmsChannelDAO;
 import cn.javayong.platform.sms.admin.domain.TSmsChannel;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.DefaultTypedTuple;
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
@@ -33,10 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * 适配器定时任务
@@ -49,21 +41,11 @@ public class AdapterSchedule {
     //渠道信息
     private static final ConcurrentHashMap<Integer, TSmsChannel> CHANNEL_MAPPING = new ConcurrentHashMap<Integer, TSmsChannel>();
 
-    private final static int SCHEDULE_THREAD_COUNT = 4;
-
-    private final static int INIT_DELAY = 0;
-
-    private final static int PERIOD = 5;
-
-    // 线程池
-    private ScheduledExecutorService scheduledExecutorService;
-
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @Autowired
     private AdapterLoader smsAdapterLoader;
-
 
     @Autowired
     private TSmsRecordDAO smsRecordDAO;
@@ -74,37 +56,53 @@ public class AdapterSchedule {
     @Autowired
     private AdapterDispatcher smsAdapterDispatcher;
 
+    // 加载适配器任务是否运行
+    private volatile boolean loadAdapterRunning = false;
+
     // 延迟服务是否启动
     private volatile boolean delayServiceRunning = false;
 
-    // 加载下个小时的延迟短信任务开关
+    // 加载下个自然小时的延迟短信任务开关
     private volatile boolean loadNextHourTaskRunning = false;
-
-    private Thread loadNextHourRecordThread;
 
     private final static Long DEFAULT_DELAY_WAIT_TIME = 300L;
 
     // 延迟服务通知对象
     private Object notifyObject = new Object();
 
-    // 延迟处理线程
-    private Thread delayThread;
-
     @PostConstruct
     public synchronized void init() {
-        //初始化定时线程池
-        this.scheduledExecutorService = Executors.newScheduledThreadPool(SCHEDULE_THREAD_COUNT, new ThreadFactoryImpl("adapterScheduledThread-"));
-        //定时加载适配器
-        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                scheudleLoadAdapter();
-            }
-        }, INIT_DELAY, PERIOD, TimeUnit.SECONDS);
+        // 启动加载适配器服务
+        startLoadAdapterThread();
         // 启动延迟服务
         startDelayThread();
         // 启动任务：加载下个小时延迟短信，并放入到 ZSET 集合
         startLoadNextHourRecord();
+    }
+
+    private synchronized void startLoadAdapterThread() {
+        logger.info("开始加载适配器列表");
+        if (loadAdapterRunning) {
+            return;
+        }
+        loadAdapterRunning = true;
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                scheudleLoadAdapter();
+                if (countDownLatch.getCount() > 0) {
+                    countDownLatch.countDown();
+                }
+            }
+        };
+        Thread loadAdapterThread = new Thread(runnable, "loadAdapterThread");
+        loadAdapterThread.start();
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+        }
+        logger.info("结束加载适配器列表");
     }
 
     // 定时加载适配器
@@ -150,20 +148,18 @@ public class AdapterSchedule {
                         try {
                             lockFlag = redisTemplate.opsForValue().setIfAbsent(RedisKeyConstants.WAITING_SEND_LOCK, "1", 3000, TimeUnit.MILLISECONDS);
                             if (lockFlag) {
-                                Set<ZSetOperations.TypedTuple<String>> recordIds = redisTemplate.opsForZSet().rangeWithScores(RedisKeyConstants.WAITING_SEND_ZSET, 0, 1);
+                                Set<ZSetOperations.TypedTuple<Long>> recordIds = redisTemplate.opsForZSet().rangeWithScores(RedisKeyConstants.WAITING_SEND_ZSET, 0, 1);
                                 if (CollectionUtils.isNotEmpty(recordIds)) {
-                                    ZSetOperations.TypedTuple<String> recordIdTuple = recordIds.iterator().next();
-                                    String recordId = recordIdTuple.getValue();
+                                    ZSetOperations.TypedTuple<Long> recordIdTuple = recordIds.iterator().next();
+                                    Long recordId = recordIdTuple.getValue();
                                     Long triggerTime = recordIdTuple.getScore().longValue();
-                                    if (StringUtils.isNotEmpty(recordId)) {
-                                        Long currentTime = System.currentTimeMillis();
-                                        if (currentTime - triggerTime >= 0) {
-                                            createRecordDetailImmediately(Long.valueOf(recordId));
-                                            redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(recordId));
-                                        } else {
-                                            waitTime = triggerTime - currentTime;
-                                            //logger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
-                                        }
+                                    Long currentTime = System.currentTimeMillis();
+                                    if (currentTime - triggerTime >= 0) {
+                                        createRecordDetailImmediately(Long.valueOf(recordId));
+                                        redisTemplate.opsForZSet().remove(RedisKeyConstants.WAITING_SEND_ZSET, recordId);
+                                    } else {
+                                        waitTime = triggerTime - currentTime;
+                                        //logger.info("短信记录recordId:" + recordId + " 需要等待:" + waitTime);
                                     }
                                 }
                             }
@@ -186,8 +182,9 @@ public class AdapterSchedule {
                 }
             }
         };
-        delayThread = new Thread(runnable, "delayThread");
+        Thread delayThread = new Thread(runnable, "delayThread");
         delayThread.start();
+        logger.info("启动延迟队列成功");
     }
 
     // 每隔 10 分钟 将下个小时需要发送的延迟短信 加载到 redis 中 。
@@ -213,21 +210,15 @@ public class AdapterSchedule {
                                 Long startId = null;
                                 int count = 0;
                                 for (; ; ) {
-                                    List<Map> recordList = smsRecordDAO.queryWaitingSendSmsList(
-                                            String.valueOf(nextHourFirstTimeStamp),
-                                            String.valueOf(nextHourLastTimeStamp),
-                                            startId);
+                                    List<Map> recordList = smsRecordDAO.queryWaitingSendSmsList(String.valueOf(nextHourFirstTimeStamp), String.valueOf(nextHourLastTimeStamp), startId);
                                     if (CollectionUtils.isEmpty(recordList)) {
                                         break;
                                     } else {
                                         if (CollectionUtils.isNotEmpty(recordList)) {
                                             count++;
-                                            Set<ZSetOperations.TypedTuple<String>> typedTupleSet = new HashSet<>();
+                                            Set<ZSetOperations.TypedTuple<Long>> typedTupleSet = new HashSet<>();
                                             for (Map record : recordList) {
-                                                ZSetOperations.TypedTuple<String> typedTuple = new DefaultTypedTuple<String>(
-                                                        String.valueOf(record.get("id")),
-                                                        Double.valueOf((String) record.get("attime"))
-                                                );
+                                                ZSetOperations.TypedTuple<Long> typedTuple = new DefaultTypedTuple<Long>((Long) (record.get("id")), Double.valueOf((String) record.get("attime")));
                                                 typedTupleSet.add(typedTuple);
                                                 startId = (Long) record.get("id");
                                             }
@@ -256,32 +247,31 @@ public class AdapterSchedule {
                 }
             }
         };
-        loadNextHourRecordThread = new Thread(runnable, "loadNextHourRecordThread");
+        Thread loadNextHourRecordThread = new Thread(runnable, "loadNextHourRecordThread");
         loadNextHourRecordThread.start();
+        logger.info("启动加载下个自然小时线程成功");
     }
 
     public void createRecordDetailImmediately(Long recordId) {
-        scheduledExecutorService.schedule(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    RequestEntity<Long> requestEntity = new RequestEntity<>(recordId);
-                    smsAdapterDispatcher.dispatchAsyncRequest(RequestCode.CREATE_RECORD_DETAIL, requestEntity);
-                } catch (Throwable e) {
-                    logger.error("schedule createRecordDetailImmediately error:", e);
-                }
-            }
-        }, 0, TimeUnit.SECONDS);
+        // TODO 使用 Disruptor 来做中转
+        try {
+            RequestEntity<Long> requestEntity = new RequestEntity<>(recordId);
+            smsAdapterDispatcher.dispatchAsyncRequest(RequestCode.CREATE_RECORD_DETAIL, requestEntity);
+        } catch (Throwable e) {
+            logger.error("schedule createRecordDetailImmediately error:", e);
+        }
     }
 
     @PreDestroy
     public synchronized void destroy() {
-        this.scheduledExecutorService.shutdown();
-        if (this.loadNextHourTaskRunning) {
-            this.loadNextHourTaskRunning = false;
-        }
         if (this.delayServiceRunning) {
             this.delayServiceRunning = false;
+        }
+        if (this.loadAdapterRunning) {
+            this.loadAdapterRunning = false;
+        }
+        if (this.loadNextHourTaskRunning) {
+            this.loadNextHourTaskRunning = false;
         }
     }
 

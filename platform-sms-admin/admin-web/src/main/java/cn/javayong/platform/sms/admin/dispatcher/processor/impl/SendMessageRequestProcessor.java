@@ -87,14 +87,14 @@ public class SendMessageRequestProcessor implements AdatperProcessor<SendMessage
             Long attime = Long.valueOf(param.getAttime());
             if (attime <= UtilsAll.getNextHourLastSecondTimestamp()) {
                 // 两个自然小时的延迟短信，直接将数据添加到 Redis 的 zset 容器
-                redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(smsId), attime);
+                redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, smsId, attime);
             }
         } else {
             // 立即发送短信的，将数据添加到 Redis 的 zset 容器 ， 5 秒后做一个检测。
-            redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, String.valueOf(smsId), currentTime + 5 * 1000);
+            redisTemplate.opsForZSet().add(RedisKeyConstants.WAITING_SEND_ZSET, smsId, currentTime + 5 * 1000);
         }
 
-        if(createRecordDetailImmediately) {
+        if (createRecordDetailImmediately) {
             // 异步执行
             smsAdapterSchedule.createRecordDetailImmediately(smsId);
         }
