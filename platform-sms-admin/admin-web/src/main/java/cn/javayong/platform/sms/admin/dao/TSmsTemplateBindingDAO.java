@@ -1,5 +1,6 @@
 package cn.javayong.platform.sms.admin.dao;
 
+import cn.javayong.platform.sms.admin.domain.TSmsTemplate;
 import cn.javayong.platform.sms.admin.domain.TSmsTemplateBinding;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,8 @@ public interface TSmsTemplateBindingDAO extends MyBatisBaseDao<TSmsTemplateBindi
     Integer selectCountByChannelId(Integer channelId);
 
     List<TSmsTemplateBinding> selectBindingsByTemplateId(Long templateId);
+
+    List<TSmsTemplateBinding> queryTemplateBindingsByIds(@Param("idList") List<Long> idList);
 
     TSmsTemplateBinding selectBindingByTemplateIdAndChannelId(@Param("templateId") Long templateId , @Param("channelId") Long channelId);
 

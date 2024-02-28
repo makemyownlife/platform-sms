@@ -156,6 +156,29 @@
     LIMIT #{start}, #{end}
   </select>
 
+  <!-- 根据条件查询短信模板列表 -->
+  <select id="queryTemplatesIdList" parameterType="java.util.Map" resultType="java.lang.Long">
+    <bind name="start" value="(page - 1) * size"/>
+    <bind name="end" value="size"/>
+    select id
+    from t_sms_template t
+    <where>
+      <if test="templateName != null and templateName != ''">
+        and template_name like CONCAT('%', #{templateName}, '%')
+      </if>
+      <if test="signName != null and signName != ''">
+        and sign_name like CONCAT('%', #{signName}, '%')
+      </if>
+      <if test="status != null">
+        and `status` = #{status}
+      </if>
+    </where>
+    order by t.update_time desc
+    LIMIT #{start}, #{end}
+  </select>
+
+
+
   <select id="queryCountTemplates" resultType="long" parameterType="map">
     select count(*) from t_sms_template
     <where>
@@ -169,6 +192,15 @@
         AND status = #{status}
       </if>
     </where>
+  </select>
+
+  <select id="queryTemplatesByIds" resultType="cn.javayong.platform.sms.admin.domain.TSmsTemplate">
+    select id, template_name as templateName, template_type as templateType , content, sign_name as signName, `status`, remark,  create_time as createTime, update_time as updateTime
+    from t_sms_template t
+    where id in
+        <foreach collection="idList" index="index" item="id" open="(" separator="," close=")">
+          #{id}
+        </foreach>
   </select>
 
 </mapper>

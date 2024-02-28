@@ -15,4 +15,7 @@ public class RedisKeyConstants {
 
     public static final String LOGIN_USER = "sms:login:user";
 
+    public static final String TEMPLATE_ID_ITEM = "sms:template:id:";
+
+
 }

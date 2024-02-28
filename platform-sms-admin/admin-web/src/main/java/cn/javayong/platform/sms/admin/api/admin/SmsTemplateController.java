@@ -37,7 +37,7 @@ public class SmsTemplateController {
         }
         param.put("page", page == null ? 1 : Integer.valueOf(page));
         param.put("size", size == null ? 10 : Integer.valueOf(size));
-        List<TSmsTemplate> tSmsTemplateList = smsTemplateService.queryTemplates(param);
+        List<TSmsTemplate> tSmsTemplateList = smsTemplateService.queryTemplates2(param);
         Long count = smsTemplateService.queryCountTemplates(param);
         Pager pager = new Pager();
         pager.setCount(count);

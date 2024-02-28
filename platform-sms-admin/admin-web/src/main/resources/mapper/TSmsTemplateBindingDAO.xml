@@ -152,6 +152,20 @@
     a.channel_id = b.id
   </select>
 
+  <select id="queryTemplateBindingsByIds" resultMap="BaseResultMap">
+    select
+      a.id, a.template_id, a.template_code, a.template_content, a.channel_id, a.`status`, a.create_time,
+      a.update_time, b.channel_name as channelName
+    from t_sms_template_binding a , t_sms_channel b
+    where
+       a.template_id in
+          <foreach collection="idList" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+          </foreach>
+      and
+      a.channel_id = b.id
+  </select>
+
   <select id="selectBindingByTemplateIdAndChannelId" parameterType="java.util.HashMap" resultMap="BaseResultMap">
      select
     <include refid="Base_Column_List" />

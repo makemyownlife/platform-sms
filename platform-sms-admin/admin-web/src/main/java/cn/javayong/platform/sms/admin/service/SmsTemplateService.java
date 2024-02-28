@@ -10,6 +10,8 @@ public interface SmsTemplateService {
 
     List<TSmsTemplate> queryTemplates(Map<String, Object> params);
 
+    List<TSmsTemplate> queryTemplates2(Map<String, Object> params);
+
     Long queryCountTemplates(Map<String, Object> param);
 
     ResponseEntity<String> addSmsTemplate(TSmsTemplate tSmsTemplate);
