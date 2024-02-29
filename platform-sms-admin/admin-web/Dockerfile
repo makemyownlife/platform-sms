@@ -23,6 +23,6 @@ CMD ["/app/bin/app.sh"]
 
 # 使用 docker build -t platformsms . 打包
 # 启动时，本地需要挂载 application.yml 文件 然后执行如下命令即可。
-# docker run --name sms --mount type=bind,source=/Users/zhangyong/docker/platformsms/conf/application.yml,target=/app/conf/application.yml --workdir=/app -p 8089:8089  --runtime=runc -d platformsms:latest
+# docker run --name sms -e JAVA_OPTS='-Duser.timezone=GMT+08' -v /etc/localtime:/etc/localtime:ro --mount type=bind,source=/Users/zhangyong/docker/platformsms/conf/application.yml,target=/app/conf/application.yml --workdir=/app -p 8089:8089  --runtime=runc -d platformsms:latest
 
 
