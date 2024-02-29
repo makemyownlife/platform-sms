@@ -31,13 +31,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 创建记录详情
+ * 创建记录详情 真正的发送短信
  * Created by zhangyong on 2023/8/20.
  */
 @Component
-public class CreateRecordDetailRequestProcessor implements AdatperProcessor<Long, List<Long>> {
+public class SendMessagelRequestProcessor implements AdatperProcessor<Long, List<Long>> {
 
-    private static Logger logger = LoggerFactory.getLogger(CreateRecordDetailRequestProcessor.class);
+    private static Logger logger = LoggerFactory.getLogger(SendMessagelRequestProcessor.class);
 
     @Autowired
     private TSmsRecordDAO smsRecordDAO;
