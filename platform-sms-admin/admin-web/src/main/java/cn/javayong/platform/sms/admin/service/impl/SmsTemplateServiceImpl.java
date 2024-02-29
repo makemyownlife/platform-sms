@@ -7,26 +7,20 @@ import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.RequestEntit
 import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.body.ApplyTemplateRequestBody;
 import cn.javayong.platform.sms.admin.service.SmsTemplateService;
 import cn.javayong.platform.sms.admin.common.config.IdGenerator;
-import cn.javayong.platform.sms.admin.common.utils.ResponseCode;
 import cn.javayong.platform.sms.admin.common.utils.ResponseEntity;
 import cn.javayong.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import cn.javayong.platform.sms.admin.dao.TSmsTemplateDAO;
 import cn.javayong.platform.sms.admin.domain.TSmsTemplate;
 import cn.javayong.platform.sms.admin.domain.TSmsTemplateBinding;
+import cn.javayong.platform.sms.client.util.ResponseCode;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;

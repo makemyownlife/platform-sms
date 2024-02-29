@@ -35,8 +35,11 @@ public class LoadBalancer {
                 String httpResult = SmsHttpClientUtils.doPost(nodeUrl + requestPath, params, 5000, 5000);
                 jsonResult = JSON.parseObject(httpResult);
                 int code = jsonResult.getIntValue("code");
-                if (code == 200) {
+                if (code == ResponseCode.SUCCESS.getCode()) {
                     return jsonResult;
+                }
+                if(code == ResponseCode.TEMPLATE_NOT_EXIST.getCode()) {
+                    break;
                 }
             } catch (Exception e) {
                 logger.error("doSendRequest error:", e);

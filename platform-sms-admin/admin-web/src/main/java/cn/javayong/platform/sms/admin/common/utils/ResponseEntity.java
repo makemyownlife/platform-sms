@@ -1,5 +1,7 @@
 package cn.javayong.platform.sms.admin.common.utils;
 
+import cn.javayong.platform.sms.client.util.ResponseCode;
+
 public class ResponseEntity<T> {
 
     private int code;

@@ -1,4 +1,4 @@
-package cn.javayong.platform.sms.admin.common.utils;
+package cn.javayong.platform.sms.client.util;
 
 /**
  * 处理器响应码
