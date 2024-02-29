@@ -27,9 +27,9 @@ import java.util.Date;
  * Created by zhangyong on 2023/7/14.
  */
 @Component
-public class SendMessageRequestProcessor implements AdatperProcessor<SendMessageRequestBody, SmsSenderResult> {
+public class CreateSmsRecordRequestProcessor implements AdatperProcessor<SendMessageRequestBody, SmsSenderResult> {
 
-    private static Logger logger = LoggerFactory.getLogger(SendMessageRequestProcessor.class);
+    private static Logger logger = LoggerFactory.getLogger(CreateSmsRecordRequestProcessor.class);
 
     @Autowired
     private TSmsTemplateDAO templateDAO;
@@ -61,7 +61,7 @@ public class SendMessageRequestProcessor implements AdatperProcessor<SendMessage
 
         // 插入到记录 t_sms_record
         Long smsId = idGenerator.createUniqueId(String.valueOf(param.getAppId()));
-        logger.info("appId:" + param.getAppId() + " smsId:" + smsId);
+        logger.info("appId:" + param.getAppId() + " smsId:" + smsId + " mobile:" + param.getMobile());
         TSmsRecord tSmsRecord = new TSmsRecord();
         tSmsRecord.setId(smsId);
         tSmsRecord.setAttime(param.getAttime());

@@ -2,8 +2,8 @@ package cn.javayong.platform.sms.admin.dispatcher;
 
 import cn.javayong.platform.sms.admin.dispatcher.processor.AdatperProcessor;
 import cn.javayong.platform.sms.admin.dispatcher.processor.impl.ApplyTemplateRequestProcessor;
-import cn.javayong.platform.sms.admin.dispatcher.processor.impl.CreateRecordDetailRequestProcessor;
-import cn.javayong.platform.sms.admin.dispatcher.processor.impl.SendMessageRequestProcessor;
+import cn.javayong.platform.sms.admin.dispatcher.processor.impl.SendMessagelRequestProcessor;
+import cn.javayong.platform.sms.admin.dispatcher.processor.impl.CreateSmsRecordRequestProcessor;
 import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.RequestCode;
 import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
 import cn.javayong.platform.sms.admin.common.utils.Pair;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.concurrent.*;
 
@@ -33,14 +32,16 @@ public class AdapterDispatcher {
 
     private volatile boolean running = false;
 
+    // 接收请求后，先存储短信记录 不与三方渠道交互
     @Autowired
-    private SendMessageRequestProcessor sendMessageRequestProcessor;
+    private CreateSmsRecordRequestProcessor createSmsRecordRequestProcessor;
 
     @Autowired
     private ApplyTemplateRequestProcessor applyTemplateRequestProcessor;
 
+    // 调用三方渠道接口发送短信
     @Autowired
-    private CreateRecordDetailRequestProcessor createRecordDetailRequestProcessor;
+    private SendMessagelRequestProcessor sendMessagelRequestProcessor;
 
     private ExecutorService nowCreateRecordDetailThreads;
 
@@ -75,10 +76,10 @@ public class AdapterDispatcher {
         );
 
         // 映射处理器
-        registerProcessor(RequestCode.SEND_MESSAGE, sendMessageRequestProcessor);                                           // 发送短信
+        registerProcessor(RequestCode.CREATE_SMS_RECORD_MESSAGE, createSmsRecordRequestProcessor);                                           // 发送短信
         registerProcessor(RequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);                                       // 申请模版
-        registerProcessor(RequestCode.NOW_CREATE_RECORD_DETAIL, createRecordDetailRequestProcessor, nowCreateRecordDetailThreads); // 立即创建记录详情 ，异步调用三方接口 (使用单独的线程)
-        registerProcessor(RequestCode.DELAY_CREATE_RECORD_DETAIL, createRecordDetailRequestProcessor, delayCreateRecordDetailThreads); // 延迟创建记录详情 ，异步调用三方接口 (使用单独的线程)
+        registerProcessor(RequestCode.NOW_CREATE_RECORD_DETAIL, sendMessagelRequestProcessor, nowCreateRecordDetailThreads); // 立即创建记录详情 ，异步调用三方接口 (使用单独的线程)
+        registerProcessor(RequestCode.DELAY_CREATE_RECORD_DETAIL, sendMessagelRequestProcessor, delayCreateRecordDetailThreads); // 延迟创建记录详情 ，异步调用三方接口 (使用单独的线程)
         logger.info("结束初始化短信适配器分发服务, 耗时：" + (System.currentTimeMillis() - start));
     }
 

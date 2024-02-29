@@ -6,7 +6,7 @@ package cn.javayong.platform.sms.admin.dispatcher.processor.requeset;
  */
 public class RequestCode {
 
-    public static final int SEND_MESSAGE = 10;
+    public static final int CREATE_SMS_RECORD_MESSAGE = 10;
 
     public static final int APPLY_TEMPLATE = 11;
 
