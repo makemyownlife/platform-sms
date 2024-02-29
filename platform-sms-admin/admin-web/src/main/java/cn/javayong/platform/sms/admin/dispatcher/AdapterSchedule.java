@@ -24,10 +24,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.*;
 
 /**
@@ -256,9 +253,13 @@ public class AdapterSchedule {
                     try {
                         String loaded = (String) redisTemplate.opsForHash().get(RedisKeyConstants.LOAD_NEXT_HOUR_RESULT, nextHour);
                         if (loaded == null) {
-                            Long nextHourLastTimeStamp = pair.getObject1();
-                            Long nextHourFirstTimeStamp = pair.getObject2();
-                            lockFlag = redisTemplate.opsForValue().setIfAbsent(RedisKeyConstants.LOAD_NEXT_HOUR_LOCK, "1", 10, TimeUnit.MINUTES);
+                            Long nextHourFirstTimeStamp = pair.getObject1();
+                            Long nextHourLastTimeStamp = pair.getObject2();
+                            logger.info("startTime: {} endTime:{}",
+                                    DateFormatUtils.format(new Date(nextHourFirstTimeStamp), "yyyy-MM-dd HH:mm:ss"),
+                                    DateFormatUtils.format(new Date(nextHourLastTimeStamp), "yyyy-MM-dd HH:mm:ss")
+                            );
+                            lockFlag = redisTemplate.opsForValue().setIfAbsent(RedisKeyConstants.LOAD_NEXT_HOUR_LOCK, "1", 5, TimeUnit.MINUTES);
                             if (lockFlag) {
                                 Long startId = null;
                                 int count = 0;
@@ -290,7 +291,7 @@ public class AdapterSchedule {
                             try {
                                 redisTemplate.delete(RedisKeyConstants.LOAD_NEXT_HOUR_LOCK);
                             } catch (Exception e) {
-                                logger.error("redisTemplate delete loadnexthourlock error:", e);
+                                logger.error("redisTemplate delete loadnexthourlockkey error:", e);
                             }
                         }
                     }
