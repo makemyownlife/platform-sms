@@ -11,9 +11,9 @@ public class RequestCode {
     public static final int APPLY_TEMPLATE = 11;
 
     // 立即发送短信
-    public static final int NOW_CREATE_RECORD_DETAIL = 12;
+    public static final int NOW_SEND_MESSAGE = 12;
 
     // 延迟短信发送
-    public static final int DELAY_CREATE_RECORD_DETAIL = 13;
+    public static final int DELAY_SEND_MESSAGE = 13;
 
 }

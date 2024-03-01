@@ -314,7 +314,7 @@ public class AdapterSchedule {
         try {
             // 执行线程池调用三方接口发送短信
             RequestEntity<Long> requestEntity = new RequestEntity<>(recordId);
-            smsAdapterDispatcher.dispatchAsyncRequest(RequestCode.NOW_CREATE_RECORD_DETAIL, requestEntity);
+            smsAdapterDispatcher.dispatchAsyncRequest(RequestCode.NOW_SEND_MESSAGE, requestEntity);
         } catch (Throwable e) {
             logger.error("executeNowCreateRecordDetailImmediately error:", e);
         }
@@ -324,7 +324,7 @@ public class AdapterSchedule {
         try {
             // 执行线程池调用三方接口发送短信
             RequestEntity<Long> requestEntity = new RequestEntity<>(recordId);
-            smsAdapterDispatcher.dispatchAsyncRequest(RequestCode.DELAY_CREATE_RECORD_DETAIL, requestEntity);
+            smsAdapterDispatcher.dispatchAsyncRequest(RequestCode.DELAY_SEND_MESSAGE, requestEntity);
         } catch (Throwable e) {
             logger.error("executeDelayCreateRecordDetail error:", e);
         }
