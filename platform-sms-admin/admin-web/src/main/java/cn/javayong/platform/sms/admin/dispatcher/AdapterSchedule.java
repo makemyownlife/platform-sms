@@ -157,7 +157,7 @@ public class AdapterSchedule {
                                     Long triggerTime = recordIdTuple.getScore().longValue();
                                     Long currentTime = System.currentTimeMillis();
                                     if (currentTime - triggerTime >= 0) {
-                                        executeDelayCreateRecordDetail(recordId);
+                                        executeDelaySendMessage(recordId);
                                         removeElementFromDelayQueue(recordId);
                                     } else {
                                         waitTime = triggerTime - currentTime;
@@ -209,7 +209,7 @@ public class AdapterSchedule {
                                 Long triggerTime = recordIdTuple.getScore().longValue();
                                 Long currentTime = System.currentTimeMillis();
                                 if (currentTime - triggerTime >= 0) {
-                                    executeNowCreateRecordDetail(recordId);
+                                    executeNowSendMessage(recordId);
                                     removeElementFromRetryQueue(recordId);
                                 }
                             }
@@ -310,7 +310,7 @@ public class AdapterSchedule {
         logger.info("启动加载下个自然小时服务成功");
     }
 
-    public void executeNowCreateRecordDetail(Long recordId) {
+    public void executeNowSendMessage(Long recordId) {
         try {
             // 执行线程池调用三方接口发送短信
             RequestEntity<Long> requestEntity = new RequestEntity<>(recordId);
@@ -320,7 +320,7 @@ public class AdapterSchedule {
         }
     }
 
-    public void executeDelayCreateRecordDetail(Long recordId) {
+    private void executeDelaySendMessage(Long recordId) {
         try {
             // 执行线程池调用三方接口发送短信
             RequestEntity<Long> requestEntity = new RequestEntity<>(recordId);
@@ -334,7 +334,7 @@ public class AdapterSchedule {
         redisTemplate.opsForZSet().add(RedisKeyConstants.RETRY_SEND_ZSET, recordId, time);
     }
 
-    public void removeElementFromRetryQueue(Long recordId) {
+    private void removeElementFromRetryQueue(Long recordId) {
         redisTemplate.opsForZSet().remove(RedisKeyConstants.RETRY_SEND_ZSET, recordId);
     }
 

@@ -91,7 +91,7 @@ public class CreateSmsRecordRequestProcessor implements AdatperProcessor<SendMes
         // 立即发送的短信，调用立即发送短信线程池 执行任务 , 并放入到重试队列里 5 秒后检测
         if (createRecordDetailImmediately) {
             // 异步执行
-            smsAdapterSchedule.executeNowCreateRecordDetail(smsId);
+            smsAdapterSchedule.executeNowSendMessage(smsId);
             // 立即发送短信的，将数据添加到 Redis 的 重试 zset 容器 ， 5 秒后做一个检测。
             smsAdapterSchedule.addRetryQueue(smsId, System.currentTimeMillis() + 5 * 1000);
         }
