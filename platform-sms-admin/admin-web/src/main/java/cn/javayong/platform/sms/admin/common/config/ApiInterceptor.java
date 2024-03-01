@@ -58,7 +58,7 @@ public class ApiInterceptor extends HandlerInterceptorAdapter {
             }
         } catch (Exception e) {
             logger.error("preHandle error: ", e);
-            SmsSenderResult smsSenderResult = new SmsSenderResult(SmsSenderResult.FAIL_CODE, "请求异常");
+            SmsSenderResult smsSenderResult = new SmsSenderResult(ResponseCode.ERROR.getCode(), "请求异常");
             UtilsAll.responseJSONToClient(response, JSON.toJSONString(smsSenderResult));
             return false;
         }

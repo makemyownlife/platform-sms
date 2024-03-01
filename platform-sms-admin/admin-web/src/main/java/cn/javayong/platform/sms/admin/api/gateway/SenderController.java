@@ -4,6 +4,7 @@ import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.body.SendMes
 import cn.javayong.platform.sms.admin.domain.TSmsAppinfo;
 import cn.javayong.platform.sms.admin.service.AppInfoService;
 import cn.javayong.platform.sms.admin.service.SmsRecordService;
+import cn.javayong.platform.sms.client.util.ResponseCode;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import cn.javayong.platform.sms.client.SmsSenderResult;
@@ -58,7 +59,7 @@ public class SenderController {
             return smsSenderResult;
         } catch (Exception e) {
             logger.error("sendSingle error: ", e);
-            return new SmsSenderResult(SmsSenderResult.FAIL_CODE, "发送失败");
+            return new SmsSenderResult(ResponseCode.ERROR.getCode(), "发送失败");
         }
     }
 

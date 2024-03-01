@@ -1,13 +1,9 @@
 package cn.javayong.platform.sms.client;
 
+import cn.javayong.platform.sms.client.util.ResponseCode;
 import org.apache.commons.lang3.StringUtils;
 
 public class SmsSenderResult {
-
-    public static final int SUCCESS_CODE = 200;
-
-    public static final int FAIL_CODE = 500;
-
     private String msg = StringUtils.EMPTY;
 
     private int code;
@@ -15,7 +11,7 @@ public class SmsSenderResult {
     private String smsId;
 
     public SmsSenderResult(String smsId) {
-        this.code = SUCCESS_CODE;
+        this.code = ResponseCode.SUCCESS.getCode();
         this.smsId = smsId;
     }
 
