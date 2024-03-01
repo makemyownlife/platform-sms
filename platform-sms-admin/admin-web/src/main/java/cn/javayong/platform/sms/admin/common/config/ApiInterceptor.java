@@ -2,6 +2,7 @@ package cn.javayong.platform.sms.admin.common.config;
 
 import cn.javayong.platform.sms.admin.domain.TSmsAppinfo;
 import cn.javayong.platform.sms.admin.service.AppInfoService;
+import cn.javayong.platform.sms.client.util.ResponseCode;
 import com.alibaba.fastjson.JSON;
 import cn.javayong.platform.sms.admin.common.utils.UtilsAll;
 import cn.javayong.platform.sms.client.SmsSenderResult;
@@ -37,21 +38,21 @@ public class ApiInterceptor extends HandlerInterceptorAdapter {
             String random = request.getParameter("random");
             String appKey = request.getParameter("appKey");
             if (StringUtils.isEmpty(q) || StringUtils.isEmpty(sign) || StringUtils.isEmpty(time) || StringUtils.isEmpty(appKey)) {
-                SmsSenderResult smsSenderResult = new SmsSenderResult(SmsSenderResult.SIGN_CODE, "参数错误");
+                SmsSenderResult smsSenderResult = new SmsSenderResult(ResponseCode.ERROR.getCode(), "参数错误");
                 UtilsAll.responseJSONToClient(response, JSON.toJSONString(smsSenderResult));
                 return false;
             }
             //查询应用信息
             TSmsAppinfo tSmsAppinfo = appInfoService.getAppinfoByAppKeyFromLocalCache(appKey);
             if (tSmsAppinfo == null) {
-                SmsSenderResult smsSenderResult = new SmsSenderResult(SmsSenderResult.SIGN_CODE, "应用不存在");
+                SmsSenderResult smsSenderResult = new SmsSenderResult(ResponseCode.APP_NOT_EXIST.getCode(), "应用不存在");
                 UtilsAll.responseJSONToClient(response, JSON.toJSONString(smsSenderResult));
                 return false;
             }
             //验证签名开始
             String apiSign = SmsSenderUtil.calculateSignature(tSmsAppinfo.getAppSecret(), random, time, q);
             if (!StringUtils.equals(sign, apiSign)) {
-                SmsSenderResult smsSenderResult = new SmsSenderResult(SmsSenderResult.SIGN_CODE, "签名验证失败");
+                SmsSenderResult smsSenderResult = new SmsSenderResult(ResponseCode.SIGN_ERROR.getCode(), "签名验证失败");
                 UtilsAll.responseJSONToClient(response, JSON.toJSONString(smsSenderResult));
                 return false;
             }

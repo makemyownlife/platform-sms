@@ -6,8 +6,6 @@ public class SmsSenderResult {
 
     public static final int SUCCESS_CODE = 200;
 
-    public static final int SIGN_CODE = 403;
-
     public static final int FAIL_CODE = 500;
 
     private String msg = StringUtils.EMPTY;

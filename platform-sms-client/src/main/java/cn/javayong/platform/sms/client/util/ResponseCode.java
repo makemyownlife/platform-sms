@@ -10,6 +10,10 @@ public enum ResponseCode {
 
     ERROR(500, "异常"),
 
+    SIGN_ERROR(403, "验签失败"),
+
+    APP_NOT_EXIST(10000, "应用不存在"),
+
     TEMPLATE_NOT_EXIST(10001, "模版不存在");
 
     private final int code;

@@ -90,14 +90,14 @@ public class SmsRecordServiceImpl implements SmsRecordService {
         sendMessageRequestBody.setTemplateParam(templateParam);
 
         RequestEntity<SendMessageRequestBody> sendMessageRequest = new RequestEntity<>(sendMessageRequestBody);
-        smsAdapterDispatcher.dispatchSyncRequest(RequestCode.SEND_MESSAGE, sendMessageRequest);
+        smsAdapterDispatcher.dispatchSyncRequest(RequestCode.CREATE_SMS_RECORD_MESSAGE, sendMessageRequest);
         return BaseModel.getInstance("success");
     }
 
     public SmsSenderResult sendMessage(SendMessageRequestBody sendMessageRequestBody) {
         ResponseEntity<SmsSenderResult> processorResponse =
                                         smsAdapterDispatcher.dispatchSyncRequest(
-                                                            RequestCode.SEND_MESSAGE,
+                                                            RequestCode.CREATE_SMS_RECORD_MESSAGE,
                                                             new RequestEntity(sendMessageRequestBody)
                                         );
         return processorResponse.getData();
