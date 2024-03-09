@@ -73,6 +73,8 @@ public class TencentAdapter implements OuterAdapter {
                 SendStatus sendStatus = sendStatuArray[0];
                 if ("Ok".equals(sendStatus.getCode())) {
                     return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, sendStatus.getSerialNo());
+                } else {
+                    return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, null, sendStatus.getMessage());
                 }
             }
             return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);

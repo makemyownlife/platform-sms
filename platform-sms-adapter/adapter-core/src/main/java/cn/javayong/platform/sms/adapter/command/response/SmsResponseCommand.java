@@ -1,5 +1,7 @@
 package cn.javayong.platform.sms.adapter.command.response;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 短信发送结果(适配器)
  * Created by zhangyong on 2023/3/1.
@@ -14,7 +16,7 @@ public class SmsResponseCommand<T> {
 
     private T data;
 
-    private String message;
+    private String message = StringUtils.EMPTY;
 
     public SmsResponseCommand(int code) {
         this.code = code;

@@ -58,10 +58,11 @@ public class AliyunAdapter implements OuterAdapter {
             if (SUCCESS_CODE == resp.getStatusCode() && "OK".equals(resp.getBody().getCode())) {
                 return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, resp.getBody().getBizId());
             }
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
+            String erorMsg = resp.getBody().getMessage();
+            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, null, erorMsg);
         } catch (Exception e) {
             logger.error("aliyun sendSms:", e);
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
+            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, null, e.getMessage());
         }
     }
 

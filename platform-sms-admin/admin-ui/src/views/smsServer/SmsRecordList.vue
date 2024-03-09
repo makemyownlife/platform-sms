@@ -34,7 +34,7 @@
           {{ scope.row.content }}
         </template>
       </el-table-column>
-      <el-table-column label="三方短信编号" min-width="120" align="center">
+      <el-table-column label="三方短信编号" min-width="75" align="center">
         <template slot-scope="scope">
           {{ scope.row.msgid }}
         </template>
@@ -43,7 +43,11 @@
         <template slot-scope="scope">
           <font v-if="scope.row.sendStatus === -1" color="gray">待发送</font>
           <font v-if="scope.row.sendStatus === 0" color="green">成功</font>
-          <font v-if="scope.row.sendStatus === 1" color="red">失败</font>
+          <font v-if="scope.row.sendStatus === 1" color="red">
+            失败
+            <br/>
+            {{ scope.row.errorMsg }}
+          </font>
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="创建时间" min-width="75" align="center">
@@ -188,7 +192,6 @@ export default {
     },
     operationRes(res) {
       if (res.data === 'success') {
-        this.fetchData()
         this.dialogFormVisible = false
         this.$message({
           message: this.textMap[this.dialogStatus] + '成功',

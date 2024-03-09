@@ -101,6 +101,7 @@ public class SendMessagelRequestProcessor implements AdatperProcessor<Long, List
                     detail.setUpdateTime(new Date());
                     detail.setMobile(record.getMobile());
                     detail.setChannelId(channelId);
+                    detail.setErrorMsg(StringUtils.trimToEmpty(smsResponseCommand.getMessage()));
                     detail.setRecordId(recordId);
                     detail.setContent(SmsTemplateUtil.renderContentWithSignName(smsCommand.getTemplateParam(), smsCommand.getTemplateContent(), smsCommand.getSignName()));
                     detail.setMsgid(msgId);
