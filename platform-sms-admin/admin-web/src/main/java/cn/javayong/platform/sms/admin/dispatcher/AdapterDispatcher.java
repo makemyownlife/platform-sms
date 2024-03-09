@@ -75,10 +75,10 @@ public class AdapterDispatcher {
                 new ThreadPoolExecutor.CallerRunsPolicy()
         );
         // 映射处理器
-        registerProcessor(RequestCode.CREATE_SMS_RECORD_MESSAGE, createSmsRecordRequestProcessor);                                           // 发送短信
+        registerProcessor(RequestCode.CREATE_SMS_RECORD_MESSAGE, createSmsRecordRequestProcessor);                          // 创建短信记录
         registerProcessor(RequestCode.APPLY_TEMPLATE, applyTemplateRequestProcessor);                                       // 申请模版
-        registerProcessor(RequestCode.NOW_SEND_MESSAGE, sendMessagelRequestProcessor, nowCreateRecordDetailThreads); // 即时短信 立即创建记录详情 ，异步调用三方接口 (使用单独的线程)
-        registerProcessor(RequestCode.DELAY_SEND_MESSAGE, sendMessagelRequestProcessor, delayCreateRecordDetailThreads); // 延迟短信 延迟创建记录详情 ，异步调用三方接口 (使用单独的线程)
+        registerProcessor(RequestCode.NOW_SEND_MESSAGE, sendMessagelRequestProcessor, nowCreateRecordDetailThreads);        // 即时短信 异步调用三方接口 (使用单独的线程)
+        registerProcessor(RequestCode.DELAY_SEND_MESSAGE, sendMessagelRequestProcessor, delayCreateRecordDetailThreads);    // 延迟短信 延迟创建记录详情 ，异步调用三方接口 (使用单独的线程)
         logger.info("结束初始化短信适配器分发服务, 耗时：" + (System.currentTimeMillis() - start));
     }
 
