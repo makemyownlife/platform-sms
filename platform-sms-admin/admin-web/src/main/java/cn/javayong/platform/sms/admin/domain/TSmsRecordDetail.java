@@ -36,6 +36,11 @@ public class TSmsRecordDetail implements Serializable {
     private Integer reportStatus;
 
     /**
+     * 发送短信失败时，渠道返回的错误信息
+     */
+    private String errorMsg;
+
+    /**
      * 手机号码
      */
     private String mobile;
@@ -162,4 +167,13 @@ public class TSmsRecordDetail implements Serializable {
     public void setAppId(Long appId) {
         this.appId = appId;
     }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
 }

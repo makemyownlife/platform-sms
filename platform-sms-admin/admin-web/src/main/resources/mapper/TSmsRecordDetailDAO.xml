@@ -9,6 +9,7 @@
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="send_status" jdbcType="TINYINT" property="sendStatus" />
     <result column="report_status" jdbcType="TINYINT" property="reportStatus" />
+    <result column="error_msg" jdbcType="VARCHAR" property="errorMsg" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="msgid" jdbcType="VARCHAR" property="msgid" />
     <result column="channel_id" jdbcType="BIGINT" property="channelId" />
@@ -23,6 +24,7 @@
     <result column="app_id" jdbcType="BIGINT" property="appId" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="send_status" jdbcType="TINYINT" property="sendStatus" />
+    <result column="error_msg" jdbcType="VARCHAR" property="errorMsg" />
     <result column="report_status" jdbcType="TINYINT" property="reportStatus" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="msgid" jdbcType="VARCHAR" property="msgid" />
@@ -34,7 +36,7 @@
 
   <sql id="Base_Column_List">
     id, record_id, app_id, content, send_status, report_status, mobile, msgid, channel_id,
-    sender_time, create_time, update_time
+    sender_time, create_time, update_time,error_msg
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -51,13 +53,13 @@
 
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.javayong.platform.sms.admin.domain.TSmsRecordDetail" useGeneratedKeys="true">
     insert into t_sms_record_detail (id, record_id, app_id, content,
-      send_status, report_status, mobile, 
-      msgid, channel_id, sender_time, 
-      create_time, update_time)
+                                     send_status, report_status, mobile,
+                                     msgid, channel_id, sender_time,
+                                     create_time, update_time, error_msg)
     values (#{id}, #{recordId,jdbcType=BIGINT}, #{appId,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR},
-      #{sendStatus,jdbcType=TINYINT}, #{reportStatus,jdbcType=TINYINT}, #{mobile,jdbcType=VARCHAR}, 
-      #{msgid,jdbcType=VARCHAR}, #{channelId,jdbcType=VARCHAR}, #{senderTime,jdbcType=TIMESTAMP}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+            #{sendStatus,jdbcType=TINYINT}, #{reportStatus,jdbcType=TINYINT}, #{mobile,jdbcType=VARCHAR},
+            #{msgid,jdbcType=VARCHAR}, #{channelId,jdbcType=VARCHAR}, #{senderTime,jdbcType=TIMESTAMP},
+            #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{errorMsg,jdbcType=VARCHAR})
   </insert>
 
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.javayong.platform.sms.admin.domain.TSmsRecordDetail" useGeneratedKeys="true">
@@ -99,6 +101,9 @@
       <if test="updateTime != null">
         update_time,
       </if>
+      <if test="errorMsg != null">
+        error_msg,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -137,6 +142,9 @@
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="errorMsg != null">
+        #{errorMsg,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
 
@@ -154,6 +162,9 @@
       </if>
       <if test="sendStatus != null">
         send_status = #{sendStatus,jdbcType=TINYINT},
+      </if>
+      <if test="errorMsg != null">
+        errorMsg = #{errorMsg,jdbcType=VARCHAR},
       </if>
       <if test="reportStatus != null">
         report_status = #{reportStatus,jdbcType=TINYINT},

@@ -77,6 +77,7 @@ CREATE TABLE `t_sms_record_detail` (
   `content` varchar(500) NOT NULL COMMENT '短信内容',
   `send_status` tinyint(4) NOT NULL DEFAULT '-1' COMMENT '-1：待发送 /  0：已发送  / 1 : 发送失败',
   `report_status` tinyint(4) DEFAULT NULL COMMENT '短信报告 0 ： 待回执  1：发送成功 2 : 发送失败  ',
+  `error_msg` varchar(300) NULL DEFAULT '' COMMENT '发送短信失败时，渠道返回的错误信息',
   `mobile` varchar(40) NOT NULL COMMENT '手机号码',
   `msgid` varchar(40) NOT NULL COMMENT '三方短信ID',
   `channel_id` int(11) NOT NULL COMMENT '渠道',
