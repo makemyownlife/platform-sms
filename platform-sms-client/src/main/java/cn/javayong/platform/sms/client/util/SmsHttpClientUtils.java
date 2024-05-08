@@ -28,15 +28,6 @@ public final class SmsHttpClientUtils {
     private SmsHttpClientUtils() {
     }
 
-    /**
-     * 执行HTTP POST请求。
-     *
-     * @param url            请求地址
-     * @param params         请求参数
-     * @param connectTimeout 客户端连接时间
-     * @param readTimeout    服务端响应时间
-     * @return 响应字符串
-     */
     public static String doPost(String url, Map<String, String> params, int connectTimeout, int readTimeout) throws Exception {
         return doPost(url, params, DEFAULT_CHARSET, connectTimeout, readTimeout);
     }
@@ -49,11 +40,6 @@ public final class SmsHttpClientUtils {
         }
     }
 
-    /**
-     * 添加头信息
-     *
-     * @param conn
-     */
     private static void fillHeader(HttpURLConnection conn, String key, String value) {
         conn.setRequestProperty(key, value);
     }
@@ -79,16 +65,6 @@ public final class SmsHttpClientUtils {
         return outStream;
     }
 
-    /**
-     * 执行HTTP POST请求
-     *
-     * @param url            请求地址
-     * @param params         请求参数
-     * @param charset        字符集，如UTF-8, GBK, GB2312
-     * @param connectTimeout 客户端连接时间
-     * @param readTimeout    服务端响应时间
-     * @return 响应字符串
-     */
     public static String doPost(String url, Map<String, String> params, String charset, int connectTimeout, int readTimeout) throws Exception {
         String ctype = "application/x-www-form-urlencoded;charset=" + charset;
         String query = buildQuery(params, charset);
@@ -103,16 +79,6 @@ public final class SmsHttpClientUtils {
         return doPost(url, ctype, content, connectTimeout, readTimeout);
     }
 
-    /**
-     * 执行HTTP POST请求
-     *
-     * @param url            请求地址
-     * @param ctype          请求类型
-     * @param content        请求字节数组
-     * @param connectTimeout 客户端连接时间
-     * @param readTimeout    服务端响应时间
-     * @return 响应字符串
-     */
     public static String doPost(String url, String ctype, byte[] content, int connectTimeout, int readTimeout) throws Exception {
         HttpURLConnection conn = null;
         OutputStream out = null;
@@ -142,26 +108,10 @@ public final class SmsHttpClientUtils {
         return rsp;
     }
 
-    /**
-     * 执行HTTP GET请求
-     *
-     * @param url    请求地址
-     * @param params 请求参数
-     * @return 响应字符串
-     */
     public static String doGet(String url, Map<String, String> params) throws Exception {
         return doGet(url, params, DEFAULT_CHARSET);
     }
 
-    /**
-     * 执行HTTP GET请求
-     *
-     * @param url     请求地址
-     * @param params  请求参数
-     * @param charset 字符集，如UTF-8, GBK, GB2312
-     * @return 响应字符串
-     * @throws Exception
-     */
     public static String doGet(String url, Map<String, String> params, String charset) throws Exception {
         HttpURLConnection conn = null;
         String rsp = null;
@@ -184,14 +134,6 @@ public final class SmsHttpClientUtils {
         return rsp;
     }
 
-    /**
-     * 获取http连接
-     *
-     * @param url    请求地址
-     * @param method 请求方法
-     * @param ctype  请求类型
-     * @return
-     */
     public static HttpURLConnection getConnection(URL url, String method, String ctype) {
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -208,7 +150,6 @@ public final class SmsHttpClientUtils {
         }
         return null;
     }
-
 
     private static URL buildGetUrl(String strUrl, String query) throws IOException {
         StringBuffer buffer = new StringBuffer(strUrl);
@@ -234,13 +175,6 @@ public final class SmsHttpClientUtils {
         return new URL(buffer.toString());
     }
 
-    /**
-     * 构建http查询
-     *
-     * @param params  请求参数
-     * @param charset 字符集，如UTF-8, GBK, GB2312
-     * @return 查询字符串
-     */
     public static String buildQuery(Map<String, String> params, String charset) throws Exception {
         if (params == null || params.isEmpty()) {
             return null;
@@ -334,33 +268,16 @@ public final class SmsHttpClientUtils {
         return charset;
     }
 
-    /**
-     * 使用默认的UTF-8字符集反编码请求参数值
-     *
-     * @param value 参数值
-     * @return 反编码后的参数值
-     */
     public static String decode(String value) {
         return decode(value, DEFAULT_CHARSET);
     }
 
-    /**
-     * 使用默认的UTF-8字符集编码请求参数值
-     *
-     * @param value 参数值
-     * @return 编码后的参数值
-     */
+
     public static String encode(String value) {
         return encode(value, DEFAULT_CHARSET);
     }
 
-    /**
-     * 使用指定的字符集反编码请求参数值
-     *
-     * @param value   参数值
-     * @param charset 字符集
-     * @return 反编码后的参数值
-     */
+
     public static String decode(String value, String charset) {
         String result = null;
         if (!SmsStringUtils.isEmpty(value)) {
@@ -373,13 +290,6 @@ public final class SmsHttpClientUtils {
         return result;
     }
 
-    /**
-     * 使用指定的字符集编码请求参数值
-     *
-     * @param value   参数值
-     * @param charset 字符集
-     * @return 编码后的参数值
-     */
     public static String encode(String value, String charset) {
         String result = null;
         if (!SmsStringUtils.isEmpty(value)) {
@@ -404,13 +314,7 @@ public final class SmsHttpClientUtils {
         return map;
     }
 
-    /**
-     * 从URL中提取所有的参数。
-     *
-     * @param query query URL地址
-     * @return 参数映射
-     */
-    public static Map<String, String> splitUrlQuery(String query) {
+      public static Map<String, String> splitUrlQuery(String query) {
         Map<String, String> result = new HashMap<String, String>();
 
         String[] pairs = query.split("&");

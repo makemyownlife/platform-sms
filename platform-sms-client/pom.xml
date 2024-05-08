@@ -10,9 +10,37 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-
+    <groupId>cn.javayong</groupId>
+    <version>0.5.0</version>
     <artifactId>platform-sms-client</artifactId>
     <packaging>jar</packaging>
+
+    <description>simple sms client</description>
+
+    <url>https://javayong.cn/</url>
+
+    <scm>
+        <url>git@github.com:makemyownlife/platform-sms.git</url>
+        <connection>scm:git:git@github.com:makemyownlife/platform-sms.git</connection>
+        <developerConnection>scm:git:git@github.com:makemyownlife/platform-sms.git</developerConnection>
+        <tag>platform-sms-0.5.0</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>courage</id>
+            <name>courage zhang</name>
+            <url>https://javayong.cn/</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <dependencies>
 
@@ -52,18 +80,6 @@
 
     <build>
         <plugins>
-
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.7</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -92,6 +108,36 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- 生成MD5校验文件 -->
+            <plugin>
+                <groupId>net.ju-n.maven.plugins</groupId>
+                <artifactId>checksum-maven-plugin</artifactId>
+                <version>1.3</version>
+                <executions>
+                    <execution>
+                        <id>checksum-maven-plugin-files</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>files</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <fileSets>
+                        <fileSet>
+                            <directory>${project.build.directory}</directory>
+                            <includes>
+                                <include>*.jar</include>
+                                <include>*.pom</include>
+                            </includes>
+                        </fileSet>
+                    </fileSets>
+                    <algorithms>
+                        <algorithm>SHA-1</algorithm>
+                        <algorithm>MD5</algorithm>
+                    </algorithms>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
