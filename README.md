@@ -122,7 +122,7 @@ bin/startup.sh
 <dependency>
     <groupId>cn.javayong</groupId>
     <artifactId>platform-sms-client</artifactId>
-    <version>${parent.version}</version>
+    <version>0.5.0</version>
 </dependency>
 ```
 
