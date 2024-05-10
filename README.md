@@ -10,6 +10,9 @@
 > 客户端和服务端两种发送短信的模式，可以参看这篇文章：
 > [Java应用中如何发送短信](https://mp.weixin.qq.com/s/hwMRHrBe4WxgxPkNXixIvg)
 
+演示地址： 
+
+> https://javayong.cn/smsadmin
 
 # 2 工作原理
 
@@ -206,3 +209,17 @@ public String test() {
 }
 ```
 ---
+短信平台持续更新中，非常适合刚入行的 Java 工程师学习 ，有兴趣的同学可以加入勇哥的知识星球。
+
+![](doc/images/smscourse.png)
+
+如何加入星球？
+
+步骤1：添加我的微信（zhangyongtaozhe）
+
+![](doc/images/weixinhao.png)
+
+步骤2：微信扫一扫星球优惠券
+
+![](doc/images/xingqiucoupon.png)
+
