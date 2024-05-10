@@ -6,12 +6,12 @@
     <parent>
         <artifactId>platform-sms</artifactId>
         <groupId>cn.javayong</groupId>
-        <version>0.5.0</version>
+        <version>0.6.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.javayong</groupId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
     <artifactId>platform-sms-client</artifactId>
     <packaging>jar</packaging>
 
@@ -23,7 +23,7 @@
         <url>git@github.com:makemyownlife/platform-sms.git</url>
         <connection>scm:git:git@github.com:makemyownlife/platform-sms.git</connection>
         <developerConnection>scm:git:git@github.com:makemyownlife/platform-sms.git</developerConnection>
-        <tag>platform-sms-0.5.0</tag>
+        <tag>platform-sms-0.6.0</tag>
     </scm>
 
     <developers>
