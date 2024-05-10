@@ -20,10 +20,12 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +47,9 @@ public class SmsRecordServiceImpl implements SmsRecordService {
 
     @Autowired
     private AdapterDispatcher smsAdapterDispatcher;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     public List<TSmsRecordDetail> queryRecordDetailList(Map<String, Object> param) {
@@ -82,7 +87,16 @@ public class SmsRecordServiceImpl implements SmsRecordService {
 
     @Override
     public BaseModel<String> adminSendRecord(String mobile, String templateId, String templateParam) {
+
         logger.info("admin端发送短信，mobile：" + mobile + " templateId:" + templateId + " templateParam：" + templateParam);
+
+        String key  = "smslimit:" + mobile;
+        Long count =  redisTemplate.opsForValue().increment("smslimit:" + mobile , 1);
+        if(count > 3) {
+            redisTemplate.expire(key , 30  , TimeUnit.MINUTES);
+            return BaseModel.getInstance("success");
+        }
+
         SendMessageRequestBody sendMessageRequestBody = new SendMessageRequestBody();
         sendMessageRequestBody.setAppId(1L);                                          // 使用默认测试应用 appId = 1
         sendMessageRequestBody.setMobile(mobile);
