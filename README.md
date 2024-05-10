@@ -1,5 +1,8 @@
 ![](doc/images/gongzhonghaonew.png)
 
+演示地址：
+
+> https://javayong.cn/smsadmin
 
 # 1 简介
 
@@ -10,9 +13,6 @@
 > 客户端和服务端两种发送短信的模式，可以参看这篇文章：
 > [Java应用中如何发送短信](https://mp.weixin.qq.com/s/hwMRHrBe4WxgxPkNXixIvg)
 
-演示地址： 
-
-> https://javayong.cn/smsadmin
 
 # 2 工作原理
 
