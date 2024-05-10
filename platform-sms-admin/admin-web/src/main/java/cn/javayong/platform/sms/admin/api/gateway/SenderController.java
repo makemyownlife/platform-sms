@@ -8,14 +8,17 @@ import cn.javayong.platform.sms.client.util.ResponseCode;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import cn.javayong.platform.sms.client.SmsSenderResult;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/gateway/")
@@ -28,6 +31,9 @@ public class SenderController {
 
     @Autowired
     private SmsRecordService smsRecordService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @RequestMapping("/sendByTemplateId")
     @ResponseBody
@@ -49,6 +55,14 @@ public class SenderController {
             sendMessageRequestBody.setTemplateId(jsonObject.getString("templateId"));
             sendMessageRequestBody.setTemplateParam(jsonObject.getString("templateParam"));
             sendMessageRequestBody.setAttime(jsonObject.getString("attime"));
+
+            String mobile = jsonObject.getString("mobile");
+
+            Long counter = redisTemplate.opsForValue().increment("gw" + DateFormatUtils.format(new Date() , "yyyy-MM-dd"));
+            if(counter > 20) {
+                logger.info("超过限额，不能发送了");
+                return new SmsSenderResult(ResponseCode.ERROR.getCode(), "发送失败");
+            }
 
             TSmsAppinfo tSmsAppinfo = appInfoService.getAppinfoByAppKeyFromLocalCache(appKey);
             sendMessageRequestBody.setAppId(tSmsAppinfo.getId());
