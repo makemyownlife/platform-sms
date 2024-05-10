@@ -92,18 +92,17 @@ public class AdapterSchedule {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                scheudleLoadAdapter();
-                if (countDownLatch.getCount() > 0) {
-                    countDownLatch.countDown();
+                while (loadAdapterRunning) {
+                    scheudleLoadAdapter();
+                }
+                try {
+                    Thread.sleep(5000L);
+                } catch (Exception e) {
                 }
             }
         };
         Thread loadAdapterThread = new Thread(runnable, "loadAdapterThread");
         loadAdapterThread.start();
-        try {
-            countDownLatch.await();
-        } catch (InterruptedException e) {
-        }
         logger.info("结束加载适配器列表");
     }
 
