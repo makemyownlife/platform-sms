@@ -1,5 +1,7 @@
 package cn.javayong.platform.sms.admin.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -30,6 +32,7 @@ public class TSmsChannel implements Serializable {
     /**
      * 渠道密码
      */
+    @JsonIgnore
     private String channelAppsecret;
 
     /**

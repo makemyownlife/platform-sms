@@ -42,11 +42,6 @@
           <span>{{ scope.row.channelAppkey }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="appsecret" min-width="90" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.channelAppsecret }}
-        </template>
-      </el-table-column>
       <el-table-column label="请求主体" min-width="120" align="center">
         <template slot-scope="scope">
           {{ scope.row.channelDomain }}

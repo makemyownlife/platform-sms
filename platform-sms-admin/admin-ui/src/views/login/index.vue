@@ -2,9 +2,13 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
+      <div style="position: absolute;top: 300px;right: 400px;">
+      </div>
+
       <div class="title-container">
         <h3 class="title">短信平台登录</h3>
       </div>
+
 
       <el-form-item prop="username">
         <span class="svg-container">
@@ -43,11 +47,13 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
-      <div class="tips">
+      <div class="tips" style="text-align: center">
+        <font color="GREEN" style="font-size: 17px; font-weight: bold;"> 关注公众号回复"sms" 获取登录用户名/密码</font>
         <!-- <span style="margin-right:20px;">username: admin</span>
         <span> password: any</span> -->
+        <img  src="gongzhaonghaosms.png"  style="width: 280px ;height: 280px; padding-top: 20px;"/>
+        <br/>
       </div>
-
     </el-form>
   </div>
 </template>
