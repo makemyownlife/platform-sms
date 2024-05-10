@@ -92,9 +92,12 @@ public class SmsRecordServiceImpl implements SmsRecordService {
 
         String key  = "smslimit:" + mobile;
         Long count =  redisTemplate.opsForValue().increment("smslimit:" + mobile , 1);
+        if(count == 1) {
+            redisTemplate.expire(key , 30  , TimeUnit.MINUTES);
+        }
         if(count > 3) {
             redisTemplate.expire(key , 30  , TimeUnit.MINUTES);
-            return BaseModel.getInstance("success");
+            return BaseModel.getInstance("发送超过限制");
         }
 
         SendMessageRequestBody sendMessageRequestBody = new SendMessageRequestBody();
