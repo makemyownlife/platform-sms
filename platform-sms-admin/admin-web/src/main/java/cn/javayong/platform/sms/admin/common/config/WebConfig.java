@@ -31,7 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
     private ApiInterceptor apiInterceptor;
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilter() {
