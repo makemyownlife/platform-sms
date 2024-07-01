@@ -1,9 +1,15 @@
 package cn.javayong.platform.sms.admin.common.config;
 
+import cn.javayong.platform.sms.admin.common.utils.RedisKeyConstants;
+import cn.javayong.platform.sms.admin.common.utils.ResponseEntity;
+import cn.javayong.platform.sms.admin.common.utils.UtilsAll;
+import com.alibaba.fastjson.JSON;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -23,6 +29,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
     private ApiInterceptor apiInterceptor;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilter() {
@@ -48,15 +57,30 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // api网关
         registry.addInterceptor(apiInterceptor).addPathPatterns("/gateway/**");
-        
+
         // 控制台接口
         registry.addInterceptor(new HandlerInterceptor() {
 
             @Override
             public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+                String token = httpServletRequest.getHeader("X-Token");
+                if (StringUtils.isEmpty(token)) {
+                    return false;
+                }
+                String userInfoStr = (String) redisTemplate.opsForValue().get(RedisKeyConstants.LOGIN_USER + token);
+                if (StringUtils.isEmpty(userInfoStr)) {
+                    UtilsAll.responseJSONToClient(
+                            httpServletResponse,
+                            JSON.toJSONString(ResponseEntity.build(50014, "Invalid token"))
+                    );
+                    return false;
+                }
                 return true;
             }
-        }).addPathPatterns("/api/**").excludePathPatterns("/api/**/config/server_polling").excludePathPatterns("/api/**/config/instances_polling").excludePathPatterns("/api/**/config/instance_polling/**").excludePathPatterns("/api/**/user/login").excludePathPatterns("/api/**/user/logout").excludePathPatterns("/api/**/user/info");
+        }).addPathPatterns("/api/**").
+                excludePathPatterns("/api/**/user/login")
+                .excludePathPatterns("/api/**/user/logout")
+                .excludePathPatterns("/api/**/user/info");
     }
-    
+
 }
