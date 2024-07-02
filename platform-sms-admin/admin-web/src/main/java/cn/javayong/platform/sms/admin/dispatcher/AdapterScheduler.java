@@ -88,16 +88,15 @@ public class AdapterScheduler {
             return;
         }
         loadAdapterRunning = true;
-        CountDownLatch countDownLatch = new CountDownLatch(1);
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 while (loadAdapterRunning) {
                     scheudleLoadAdapter();
-                }
-                try {
-                    Thread.sleep(5000L);
-                } catch (Exception e) {
+                    try {
+                        Thread.sleep(5000L);
+                    } catch (Exception e) {
+                    }
                 }
             }
         };
