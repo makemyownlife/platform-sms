@@ -7,7 +7,7 @@ import cn.javayong.platform.sms.admin.common.config.IdGenerator;
 import cn.javayong.platform.sms.admin.common.utils.ResponseEntity;
 import cn.javayong.platform.sms.admin.dao.TSmsRecordDAO;
 import cn.javayong.platform.sms.admin.dao.TSmsTemplateDAO;
-import cn.javayong.platform.sms.admin.dispatcher.AdapterSchedule;
+import cn.javayong.platform.sms.admin.dispatcher.AdapterScheduler;
 import cn.javayong.platform.sms.admin.dispatcher.processor.AdatperProcessor;
 import cn.javayong.platform.sms.admin.domain.TSmsRecord;
 import cn.javayong.platform.sms.admin.domain.TSmsTemplate;
@@ -41,7 +41,7 @@ public class CreateSmsRecordRequestProcessor implements AdatperProcessor<SendMes
     private IdGenerator idGenerator;
 
     @Autowired
-    private AdapterSchedule smsAdapterSchedule;
+    private AdapterScheduler smsAdapterScheduler;
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -84,16 +84,16 @@ public class CreateSmsRecordRequestProcessor implements AdatperProcessor<SendMes
             Long attime = Long.valueOf(param.getAttime());
             if (attime <= UtilsAll.getNextHourLastSecondTimestamp()) {
                 // 两个自然小时的延迟短信，直接将数据添加到 Redis 的延迟队列  zset 容器
-                smsAdapterSchedule.addDelayQueue(smsId, attime);
+                smsAdapterScheduler.addDelayQueue(smsId, attime);
             }
         }
 
         // 立即发送的短信，调用立即发送短信线程池 执行任务 , 并放入到重试队列里 5 秒后检测
         if (createRecordDetailImmediately) {
             // 异步执行
-            smsAdapterSchedule.executeNowSendMessage(smsId);
+            smsAdapterScheduler.executeNowSendMessage(smsId);
             // 立即发送短信的，将数据添加到 Redis 的 重试 zset 容器 ， 5 秒后做一个检测。
-            smsAdapterSchedule.addRetryQueue(smsId, System.currentTimeMillis() + 5 * 1000);
+            smsAdapterScheduler.addRetryQueue(smsId, System.currentTimeMillis() + 5 * 1000);
         }
 
         SmsSenderResult smsSenderResult = new SmsSenderResult(String.valueOf(smsId));

@@ -31,9 +31,9 @@ import java.util.concurrent.*;
  * 适配器定时任务
  */
 @Component
-public class AdapterSchedule {
+public class AdapterScheduler {
 
-    private final static Logger logger = LoggerFactory.getLogger(AdapterSchedule.class);
+    private final static Logger logger = LoggerFactory.getLogger(AdapterScheduler.class);
 
     //渠道信息
     private static final ConcurrentHashMap<Integer, TSmsChannel> CHANNEL_MAPPING = new ConcurrentHashMap<Integer, TSmsChannel>();
