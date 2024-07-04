@@ -93,17 +93,14 @@ public class AdapterScheduler {
             @Override
             public void run() {
                 while (loadAdapterRunning) {
+                    scheudleLoadAdapter();
                     try {
                         Thread.sleep(5000L);
                     } catch (Exception e) {
                     }
-                    scheudleLoadAdapter();
                 }
             }
         };
-        // 提前执行一次
-        runnable.run();
-        // 真正启动定时加载线程
         Thread loadAdapterThread = new Thread(runnable, "loadAdapterThread");
         loadAdapterThread.start();
         logger.info("结束启动加载适配器列表线程，耗时：" + (System.currentTimeMillis() - start) + "毫秒");
@@ -111,7 +108,6 @@ public class AdapterScheduler {
 
     // 定时加载适配器
     private void scheudleLoadAdapter() {
-        logger.info("开始调度加载渠道");
         try {
             List<TSmsChannel> channelList = smsChannelDAO.queryChannels(MapUtils.EMPTY_MAP);
             for (TSmsChannel tSmsChannel : channelList) {
@@ -132,7 +128,6 @@ public class AdapterScheduler {
         } catch (Throwable e) {
             logger.error("加载渠道信息出错：", e);
         }
-        logger.info("结束调度加载渠道");
     }
 
     private synchronized void startDelayThread() {
