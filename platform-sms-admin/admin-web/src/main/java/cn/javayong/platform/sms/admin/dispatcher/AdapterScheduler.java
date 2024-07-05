@@ -31,9 +31,9 @@ import java.util.concurrent.*;
  * 适配器定时任务
  */
 @Component
-public class AdapterSchedule {
+public class AdapterScheduler {
 
-    private final static Logger logger = LoggerFactory.getLogger(AdapterSchedule.class);
+    private final static Logger logger = LoggerFactory.getLogger(AdapterScheduler.class);
 
     //渠道信息
     private static final ConcurrentHashMap<Integer, TSmsChannel> CHANNEL_MAPPING = new ConcurrentHashMap<Integer, TSmsChannel>();
@@ -83,27 +83,27 @@ public class AdapterSchedule {
     }
 
     private synchronized void startLoadAdapterThread() {
-        logger.info("开始加载适配器列表");
+        long  start = System.currentTimeMillis();
+        logger.info("开始启动加载适配器列表线程");
         if (loadAdapterRunning) {
             return;
         }
         loadAdapterRunning = true;
-        CountDownLatch countDownLatch = new CountDownLatch(1);
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 while (loadAdapterRunning) {
                     scheudleLoadAdapter();
-                }
-                try {
-                    Thread.sleep(5000L);
-                } catch (Exception e) {
+                    try {
+                        Thread.sleep(5000L);
+                    } catch (Exception e) {
+                    }
                 }
             }
         };
         Thread loadAdapterThread = new Thread(runnable, "loadAdapterThread");
         loadAdapterThread.start();
-        logger.info("结束加载适配器列表");
+        logger.info("结束启动加载适配器列表线程，耗时：" + (System.currentTimeMillis() - start) + "毫秒");
     }
 
     // 定时加载适配器
