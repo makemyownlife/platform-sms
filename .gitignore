@@ -5,3 +5,4 @@ pkg
 *.iml
 target
 .vscode/*
+.DS_Store
