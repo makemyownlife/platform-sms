@@ -98,6 +98,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
                 <configuration>
+                    <!-- 这里 需要确认下 jdk 8 和 jdk 更高版本的差别  当前的写法适用于 jdk 8 ，其他版本需要可能微调 -->
                     <javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
                 </configuration>
                 <executions>
