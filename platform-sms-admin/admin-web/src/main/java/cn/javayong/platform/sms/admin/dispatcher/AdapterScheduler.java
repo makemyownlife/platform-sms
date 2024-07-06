@@ -83,17 +83,23 @@ public class AdapterScheduler {
     }
 
     private synchronized void startLoadAdapterThread() {
-        long  start = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
         logger.info("开始启动加载适配器列表线程");
         if (loadAdapterRunning) {
             return;
         }
         loadAdapterRunning = true;
+
+        CountDownLatch firstScheduleCount = new CountDownLatch(1);
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 while (loadAdapterRunning) {
-                    scheudleLoadAdapter();
+                    scheduleLoadAdapter();
+                    // 保证启动 第一次必须执行
+                    if (firstScheduleCount.getCount() > 0) {
+                        firstScheduleCount.countDown();
+                    }
                     try {
                         Thread.sleep(5000L);
                     } catch (Exception e) {
@@ -103,11 +109,15 @@ public class AdapterScheduler {
         };
         Thread loadAdapterThread = new Thread(runnable, "loadAdapterThread");
         loadAdapterThread.start();
+        try {
+            firstScheduleCount.await();
+        } catch (Exception e) {
+        }
         logger.info("结束启动加载适配器列表线程，耗时：" + (System.currentTimeMillis() - start) + "毫秒");
     }
 
     // 定时加载适配器
-    private void scheudleLoadAdapter() {
+    private void scheduleLoadAdapter() {
         try {
             List<TSmsChannel> channelList = smsChannelDAO.queryChannels(MapUtils.EMPTY_MAP);
             for (TSmsChannel tSmsChannel : channelList) {
