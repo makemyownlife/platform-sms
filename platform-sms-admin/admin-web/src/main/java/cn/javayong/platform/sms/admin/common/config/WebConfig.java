@@ -24,6 +24,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private ApiInterceptor apiInterceptor;
 
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
@@ -54,9 +57,24 @@ public class WebConfig implements WebMvcConfigurer {
 
             @Override
             public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+                String token = httpServletRequest.getHeader("X-Token");
+                if (StringUtils.isEmpty(token)) {
+                    return false;
+                }
+                String userInfoStr = (String) redisTemplate.opsForValue().get(RedisKeyConstants.LOGIN_USER + token);
+                if (StringUtils.isEmpty(userInfoStr)) {
+                    UtilsAll.responseJSONToClient(
+                            httpServletResponse,
+                            JSON.toJSONString(ResponseEntity.build(50014, "Invalid token"))
+                    );
+                    return false;
+                }
                 return true;
             }
-        }).addPathPatterns("/api/**").excludePathPatterns("/api/**/config/server_polling").excludePathPatterns("/api/**/config/instances_polling").excludePathPatterns("/api/**/config/instance_polling/**").excludePathPatterns("/api/**/user/login").excludePathPatterns("/api/**/user/logout").excludePathPatterns("/api/**/user/info");
+        }).addPathPatterns("/api/**").
+                excludePathPatterns("/api/**/user/login")
+                .excludePathPatterns("/api/**/user/logout")
+                .excludePathPatterns("/api/**/user/info");
     }
-    
+
 }
