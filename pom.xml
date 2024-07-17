@@ -7,7 +7,7 @@
     <groupId>cn.javayong</groupId>
     <artifactId>platform-sms</artifactId>
     <packaging>pom</packaging>
-    <version>0.6.0</version>
+    <version>0.6.1</version>
 
     <modules>
         <module>platform-sms-client</module>
