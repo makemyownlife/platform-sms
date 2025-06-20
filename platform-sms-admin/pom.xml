@@ -303,7 +303,7 @@
                                     <overwrite>true</overwrite>
                                     <resources>
                                         <resource>
-                                            <directory>${project.parent.basedir}/admin-ui/target/dist</directory>
+                                            <directory>${project.parent.basedir}/platform-sms-ui/target/dist</directory>
                                             <includes>
                                                 <include>static/</include>
                                                 <include>index.html</include>
