@@ -6,6 +6,6 @@ spring:
     time-zone: GMT+8
 
 sms:
-  smsServerUrl: http://localhost:8089
+  smsServerUrl: https://javayong.cn/smsadmin
   appKey: qQjEiFzn80v8VM4h
-  appSecret: 9c465ece754bd26a9be77f3d0e2606bd
+  appSecret: 9c465ece4bd26a9be77f3d0e2606bd

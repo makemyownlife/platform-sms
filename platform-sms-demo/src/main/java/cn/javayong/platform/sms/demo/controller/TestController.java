@@ -21,10 +21,11 @@ public class TestController {
     @GetMapping("/test")
     public String test() {
         String mobile = "15011319235";
-        String templateId = "523419101760679938";
+        String templateId = "630380849452331009";
         // 你好，你的信息是：${code}
         Map<String, String> param = new HashMap<String, String>();
         param.put("code", "1234");
+        param.put("time", "10");
         SmsSenderResult senderResult = smsSenderClient.sendSmsByTemplateId(mobile, templateId, param);
         System.out.println("senderResult:" + JSON.toJSONString(senderResult));
         return "hello , first short message !";
