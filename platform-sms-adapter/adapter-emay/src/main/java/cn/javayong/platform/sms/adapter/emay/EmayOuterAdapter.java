@@ -13,7 +13,7 @@ import cn.javayong.platform.sms.adapter.OuterAdapter;
 import cn.javayong.platform.sms.adapter.command.req.AddSmsTemplateReqCommand;
 import cn.javayong.platform.sms.adapter.command.req.QuerySmsTemplateReqCommand;
 import cn.javayong.platform.sms.adapter.command.req.SendSmsReqCommand;
-import cn.javayong.platform.sms.adapter.command.resp.SmsResponseCommand;
+import cn.javayong.platform.sms.adapter.command.resp.SmsRespCommand;
 import cn.javayong.platform.sms.adapter.support.SPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class EmayOuterAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsResponseCommand sendSmsByTemplateId(SendSmsReqCommand smsSendRequest) {
+    public SmsRespCommand sendSmsByTemplateId(SendSmsReqCommand smsSendRequest) {
         String mobile = smsSendRequest.getPhoneNumbers();
         String signName = smsSendRequest.getSignName();
         String customSmsId = UUID.randomUUID().toString().replaceAll("-", "");
@@ -55,13 +55,13 @@ public class EmayOuterAdapter implements OuterAdapter {
         ResultModel<SmsResponse> result = client.sendSingleSms(request);
         logger.info("emay send result:" + JSON.toJSONString(result));
         if ("SUCCESS".equals(result.getCode())) {
-            return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, result.getResult().getSmsId());
+            return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, result.getResult().getSmsId());
         }
-        return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
+        return new SmsRespCommand(SmsRespCommand.FAIL_CODE);
     }
 
     @Override
-    public SmsResponseCommand addSmsTemplate(AddSmsTemplateReqCommand addSmsTemplateReqCommand) {
+    public SmsRespCommand addSmsTemplate(AddSmsTemplateReqCommand addSmsTemplateReqCommand) {
         // 将标准模版转换成 亿美模版 信息
         String templateContent = addSmsTemplateReqCommand.getTemplateContent();
         Map<String, String> templateMap = new HashMap<String, String>();
@@ -88,15 +88,15 @@ public class EmayOuterAdapter implements OuterAdapter {
             bodyMap.put("templateContent", emayTemplateContent);
             // 0 待提交:  1：待审核  2：审核成功 3：审核失败 亿美提交申请默认成功
             bodyMap.put("status", "2");
-            return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, bodyMap);
+            return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, bodyMap);
         }
-        return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
+        return new SmsRespCommand(SmsRespCommand.FAIL_CODE);
     }
 
     @Override
-    public SmsResponseCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateReqCommand querySmsTemplateReqCommand) {
+    public SmsRespCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateReqCommand querySmsTemplateReqCommand) {
         // 亿美默认模版申请成功
-        return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 2);
+        return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, 2);
     }
 
     @Override

@@ -7,7 +7,7 @@ import cn.javayong.platform.sms.adapter.OuterAdapter;
 import cn.javayong.platform.sms.adapter.command.req.AddSmsTemplateReqCommand;
 import cn.javayong.platform.sms.adapter.command.req.QuerySmsTemplateReqCommand;
 import cn.javayong.platform.sms.adapter.command.req.SendSmsReqCommand;
-import cn.javayong.platform.sms.adapter.command.resp.SmsResponseCommand;
+import cn.javayong.platform.sms.adapter.command.resp.SmsRespCommand;
 import cn.javayong.platform.sms.adapter.support.SPI;
 import com.tencentcloudapi.common.Credential;
 import com.tencentcloudapi.common.profile.ClientProfile;
@@ -53,7 +53,7 @@ public class TencentOuterAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsResponseCommand<String> sendSmsByTemplateId(SendSmsReqCommand sendSmsReqCommand) {
+    public SmsRespCommand<String> sendSmsByTemplateId(SendSmsReqCommand sendSmsReqCommand) {
         // 参考腾讯文档 ：https://cloud.tencent.com/document/product/382/43194
         try {
             SendSmsRequest sendSmsRequest = new SendSmsRequest();
@@ -72,20 +72,20 @@ public class TencentOuterAdapter implements OuterAdapter {
             if (sendStatuArray != null && sendStatuArray.length > 0) {
                 SendStatus sendStatus = sendStatuArray[0];
                 if ("Ok".equals(sendStatus.getCode())) {
-                    return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, sendStatus.getSerialNo());
+                    return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, sendStatus.getSerialNo());
                 } else {
-                    return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, null, sendStatus.getMessage());
+                    return new SmsRespCommand(SmsRespCommand.FAIL_CODE, null, sendStatus.getMessage());
                 }
             }
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
+            return new SmsRespCommand(SmsRespCommand.FAIL_CODE);
         } catch (Exception e) {
             logger.error("tencent sendSms error:", e);
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
+            return new SmsRespCommand(SmsRespCommand.FAIL_CODE);
         }
     }
 
     @Override
-    public SmsResponseCommand<Map<String, String>> addSmsTemplate(AddSmsTemplateReqCommand addSmsTemplateReqCommand) {
+    public SmsRespCommand<Map<String, String>> addSmsTemplate(AddSmsTemplateReqCommand addSmsTemplateReqCommand) {
         try {
             AddSmsTemplateRequest addSmsTemplateRequest = new AddSmsTemplateRequest();
             addSmsTemplateRequest.setSmsType(Long.valueOf(addSmsTemplateReqCommand.getTemplateType()));
@@ -104,17 +104,17 @@ public class TencentOuterAdapter implements OuterAdapter {
                     Map<String, String> bodyMap = new HashMap<>();
                     bodyMap.put("templateCode", addTemplateStatus.getTemplateId());
                     bodyMap.put("templateContent", templateContent);
-                    return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, bodyMap);
+                    return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, bodyMap);
                 }
             }
         } catch (Exception e) {
             logger.error("tencent addSmsTemplate error: ", e);
         }
-        return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
+        return new SmsRespCommand(SmsRespCommand.FAIL_CODE);
     }
 
     @Override
-    public SmsResponseCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateReqCommand querySmsTemplateReqCommand) {
+    public SmsRespCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateReqCommand querySmsTemplateReqCommand) {
         try {
             DescribeSmsTemplateListRequest describeSmsTemplateListRequest = new DescribeSmsTemplateListRequest();
             describeSmsTemplateListRequest.setTemplateIdSet(new Long[]{Long.valueOf(querySmsTemplateReqCommand.getTemplateCode())});
@@ -129,23 +129,23 @@ public class TencentOuterAdapter implements OuterAdapter {
                     //腾讯:申请模板状态，其中0表示审核通过且已生效，1表示审核中，2表示审核通过待生效，-1表示审核未通过或审核失败。注：只有状态值为0时该模板才能使用。
                     //标准: 0 : 待提交 1：待审核  2：审核成功 3：审核失败
                     if (statusCode == 0L) {
-                        return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 2);
+                        return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, 2);
                     }
                     if (statusCode == 1L) {
-                        return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 1);
+                        return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, 1);
                     }
                     if (statusCode == -1L) {
-                        return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 3);
+                        return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, 3);
                     }
                     if (statusCode == 2L) {
-                        return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 1);
+                        return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, 1);
                     }
                 }
             }
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
+            return new SmsRespCommand(SmsRespCommand.FAIL_CODE);
         } catch (Exception e) {
             logger.error("tencent addSmsTemplate error: ", e);
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, e.getMessage());
+            return new SmsRespCommand(SmsRespCommand.FAIL_CODE, e.getMessage());
         }
     }
 

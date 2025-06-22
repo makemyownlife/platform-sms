@@ -7,7 +7,7 @@ import cn.javayong.platform.sms.adapter.OuterAdapter;
 import cn.javayong.platform.sms.adapter.command.req.AddSmsTemplateReqCommand;
 import cn.javayong.platform.sms.adapter.command.req.QuerySmsTemplateReqCommand;
 import cn.javayong.platform.sms.adapter.command.req.SendSmsReqCommand;
-import cn.javayong.platform.sms.adapter.command.resp.SmsResponseCommand;
+import cn.javayong.platform.sms.adapter.command.resp.SmsRespCommand;
 import cn.javayong.platform.sms.adapter.support.SPI;
 import cn.javayong.platform.sms.adapter.support.SmsChannelConfig;
 import org.slf4j.Logger;
@@ -45,7 +45,7 @@ public class AliyunOuterAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsResponseCommand sendSmsByTemplateId(SendSmsReqCommand sendSmsReqCommand) {
+    public SmsRespCommand sendSmsByTemplateId(SendSmsReqCommand sendSmsReqCommand) {
         try {
             com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest().
                     setSignName(sendSmsReqCommand.getSignName()).
@@ -56,18 +56,18 @@ public class AliyunOuterAdapter implements OuterAdapter {
             com.aliyun.dysmsapi20170525.models.SendSmsResponse resp = client.sendSmsWithOptions(sendSmsRequest, runtime);
             logger.info("aliyun resp code:{} body:{}", resp.getStatusCode(), JSON.toJSON(resp.getBody()));
             if (SUCCESS_CODE == resp.getStatusCode() && "OK".equals(resp.getBody().getCode())) {
-                return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, resp.getBody().getBizId());
+                return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, resp.getBody().getBizId());
             }
             String erorMsg = resp.getBody().getMessage();
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, null, erorMsg);
+            return new SmsRespCommand(SmsRespCommand.FAIL_CODE, null, erorMsg);
         } catch (Exception e) {
             logger.error("aliyun sendSms:", e);
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, null, e.getMessage());
+            return new SmsRespCommand(SmsRespCommand.FAIL_CODE, null, e.getMessage());
         }
     }
 
     @Override
-    public SmsResponseCommand addSmsTemplate(AddSmsTemplateReqCommand addSmsTemplateReqCommand) {
+    public SmsRespCommand addSmsTemplate(AddSmsTemplateReqCommand addSmsTemplateReqCommand) {
         try {
             com.aliyun.dysmsapi20170525.models.AddSmsTemplateRequest addSmsTemplateRequest = new com.aliyun.dysmsapi20170525.models.AddSmsTemplateRequest();
             addSmsTemplateRequest.setRemark(addSmsTemplateReqCommand.getRemark());
@@ -81,17 +81,17 @@ public class AliyunOuterAdapter implements OuterAdapter {
                 Map<String, String> bodyMap = new HashMap<>();
                 bodyMap.put("templateCode", body.getTemplateCode());
                 bodyMap.put("templateContent", addSmsTemplateReqCommand.getTemplateContent());
-                return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, bodyMap);
+                return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, bodyMap);
             }
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
+            return new SmsRespCommand(SmsRespCommand.FAIL_CODE);
         } catch (Exception e) {
             logger.error("aliyun addSmsTemplate error :", e);
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, e.getMessage());
+            return new SmsRespCommand(SmsRespCommand.FAIL_CODE, e.getMessage());
         }
     }
 
     @Override
-    public SmsResponseCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateReqCommand querySmsTemplateReqCommand) {
+    public SmsRespCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateReqCommand querySmsTemplateReqCommand) {
         try {
             com.aliyun.dysmsapi20170525.models.QuerySmsTemplateRequest querySmsTemplateRequest = new QuerySmsTemplateRequest();
             querySmsTemplateRequest.setTemplateCode(querySmsTemplateReqCommand.getTemplateCode());
@@ -106,22 +106,22 @@ public class AliyunOuterAdapter implements OuterAdapter {
                 //2：审核未通过，请在返回参数Reason中查看审核失败原因。
                 //10：取消审核。
                 if (templateStatus == 0) {
-                    return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 1);
+                    return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, 1);
                 }
                 if (templateStatus == 1) {
-                    return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 2);
+                    return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, 2);
                 }
                 if (templateStatus == 2) {
-                    return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 3);
+                    return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, 3);
                 }
                 if (templateStatus == 10) {
-                    return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 3);
+                    return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, 3);
                 }
             }
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE);
+            return new SmsRespCommand(SmsRespCommand.FAIL_CODE);
         } catch (Exception e) {
             logger.error("aliyun querySmsTemplate error :", e);
-            return new SmsResponseCommand(SmsResponseCommand.FAIL_CODE, e.getMessage());
+            return new SmsRespCommand(SmsRespCommand.FAIL_CODE, e.getMessage());
         }
     }
 

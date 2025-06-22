@@ -6,7 +6,7 @@ import cn.javayong.platform.sms.adapter.command.req.QuerySmsTemplateReqCommand;
 import cn.javayong.platform.sms.adapter.command.req.SendSmsReqCommand;
 import cn.javayong.platform.sms.adapter.support.SPI;
 import cn.javayong.platform.sms.adapter.support.SmsChannelConfig;
-import cn.javayong.platform.sms.adapter.command.resp.SmsResponseCommand;
+import cn.javayong.platform.sms.adapter.command.resp.SmsRespCommand;
 
 import java.util.Map;
 
@@ -24,17 +24,17 @@ public interface OuterAdapter {
     /**
      * 按照模版编号发送短信
      */
-    SmsResponseCommand<String> sendSmsByTemplateId(SendSmsReqCommand smsSendRequest);
+    SmsRespCommand<String> sendSmsByTemplateId(SendSmsReqCommand smsSendRequest);
 
     /**
      * 按照模版编号发送短信
      */
-    SmsResponseCommand<Map<String, String>> addSmsTemplate(AddSmsTemplateReqCommand addSmsTemplateReqCommand);
+    SmsRespCommand<Map<String, String>> addSmsTemplate(AddSmsTemplateReqCommand addSmsTemplateReqCommand);
 
     /**
      * 按照模版编号查询模版状态
      */
-    SmsResponseCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateReqCommand querySmsTemplateReqCommand);
+    SmsRespCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateReqCommand querySmsTemplateReqCommand);
 
     /**
      * 外部适配器销毁接口

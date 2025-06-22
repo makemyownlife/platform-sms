@@ -2,7 +2,7 @@ package cn.javayong.platform.sms.admin.dispatcher.processor.impl;
 
 import cn.javayong.platform.sms.adapter.OuterAdapter;
 import cn.javayong.platform.sms.adapter.command.req.SendSmsReqCommand;
-import cn.javayong.platform.sms.adapter.command.resp.SmsResponseCommand;
+import cn.javayong.platform.sms.adapter.command.resp.SmsRespCommand;
 import cn.javayong.platform.sms.adapter.support.SmsTemplateUtil;
 import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
 import cn.javayong.platform.sms.admin.common.config.IdGenerator;
@@ -84,12 +84,12 @@ public class SendMessagelRequestProcessor implements AdatperProcessor<Long, List
                     smsCommand.setTemplateContent(template.getContent());
                     smsCommand.setTemplateCode(tSmsTemplateBinding.getTemplateCode());
                     smsCommand.setTemplateParam(record.getTemplateParam());
-                    SmsResponseCommand smsResponseCommand = outerAdapter.sendSmsByTemplateId(smsCommand);
+                    SmsRespCommand smsRespCommand = outerAdapter.sendSmsByTemplateId(smsCommand);
                     // 三方编号
                     String msgId = StringUtils.EMPTY;
-                    if (smsResponseCommand.getCode() == SmsResponseCommand.SUCCESS_CODE) {
+                    if (smsRespCommand.getCode() == SmsRespCommand.SUCCESS_CODE) {
                         sendFlag = true;
-                        msgId = (String) smsResponseCommand.getData();
+                        msgId = (String) smsRespCommand.getData();
                     }
                     Long detailId = idGenerator.createUniqueId(String.valueOf(record.getAppId()));
                     // 插入详情表
@@ -100,7 +100,7 @@ public class SendMessagelRequestProcessor implements AdatperProcessor<Long, List
                     detail.setUpdateTime(new Date());
                     detail.setMobile(record.getMobile());
                     detail.setChannelId(channelId);
-                    detail.setErrorMsg(StringUtils.trimToEmpty(smsResponseCommand.getMessage()));
+                    detail.setErrorMsg(StringUtils.trimToEmpty(smsRespCommand.getMessage()));
                     detail.setRecordId(recordId);
                     detail.setContent(SmsTemplateUtil.renderContentWithSignName(smsCommand.getTemplateParam(), smsCommand.getTemplateContent(), smsCommand.getSignName()));
                     detail.setMsgid(msgId);

@@ -4,7 +4,7 @@ package cn.javayong.platform.sms.adapter.command.req;
  * 短信发送请求(适配器)
  * Created by zhangyong on 2023/3/1.
  */
-public class SendSmsReqCommand extends SmsRequestCommand {
+public class SendSmsReqCommand extends SmsReqCommand {
 
     // 手机号 (逗号分隔)
     private String phoneNumbers;

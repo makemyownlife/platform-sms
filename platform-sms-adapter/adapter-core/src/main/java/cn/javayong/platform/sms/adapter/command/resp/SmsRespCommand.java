@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
  * 短信发送结果(适配器)
  * Created by zhangyong on 2023/3/1.
  */
-public class SmsResponseCommand<T> {
+public class SmsRespCommand<T> {
 
     public static final int SUCCESS_CODE = 200;
 
@@ -18,16 +18,16 @@ public class SmsResponseCommand<T> {
 
     private String message = StringUtils.EMPTY;
 
-    public SmsResponseCommand(int code) {
+    public SmsRespCommand(int code) {
         this.code = code;
     }
 
-    public SmsResponseCommand(int code, T result) {
+    public SmsRespCommand(int code, T result) {
         this.data = result;
         this.code = code;
     }
 
-    public SmsResponseCommand(int code, T result, String message) {
+    public SmsRespCommand(int code, T result, String message) {
         this.code = code;
         this.data = result;
         this.message = message;
