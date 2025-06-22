@@ -1,8 +1,8 @@
 package cn.javayong.platform.sms.admin.dispatcher.processor.impl;
 
 import cn.javayong.platform.sms.adapter.OuterAdapter;
-import cn.javayong.platform.sms.adapter.command.request.SendSmsCommand;
-import cn.javayong.platform.sms.adapter.command.response.SmsResponseCommand;
+import cn.javayong.platform.sms.adapter.command.req.SendSmsReqCommand;
+import cn.javayong.platform.sms.adapter.command.resp.SmsResponseCommand;
 import cn.javayong.platform.sms.adapter.support.SmsTemplateUtil;
 import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.RequestEntity;
 import cn.javayong.platform.sms.admin.common.config.IdGenerator;
@@ -17,7 +17,6 @@ import cn.javayong.platform.sms.admin.domain.TSmsRecord;
 import cn.javayong.platform.sms.admin.domain.TSmsRecordDetail;
 import cn.javayong.platform.sms.admin.domain.TSmsTemplate;
 import cn.javayong.platform.sms.admin.domain.TSmsTemplateBinding;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +78,7 @@ public class SendMessagelRequestProcessor implements AdatperProcessor<Long, List
                 Integer channelId = tSmsTemplateBinding.getChannelId();
                 OuterAdapter outerAdapter = smsAdapterLoader.getAdapterByChannelId(channelId);
                 if (outerAdapter != null) {
-                    SendSmsCommand smsCommand = new SendSmsCommand();
+                    SendSmsReqCommand smsCommand = new SendSmsReqCommand();
                     smsCommand.setPhoneNumbers(record.getMobile());
                     smsCommand.setSignName(template.getSignName());
                     smsCommand.setTemplateContent(template.getContent());

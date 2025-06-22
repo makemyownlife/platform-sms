@@ -10,10 +10,10 @@ import cn.javayong.platform.sms.adapter.support.SmsChannelConfig;
 import cn.javayong.platform.sms.adapter.support.SmsTemplateUtil;
 import com.alibaba.fastjson.JSON;
 import cn.javayong.platform.sms.adapter.OuterAdapter;
-import cn.javayong.platform.sms.adapter.command.request.AddSmsTemplateCommand;
-import cn.javayong.platform.sms.adapter.command.request.QuerySmsTemplateCommand;
-import cn.javayong.platform.sms.adapter.command.request.SendSmsCommand;
-import cn.javayong.platform.sms.adapter.command.response.SmsResponseCommand;
+import cn.javayong.platform.sms.adapter.command.req.AddSmsTemplateReqCommand;
+import cn.javayong.platform.sms.adapter.command.req.QuerySmsTemplateReqCommand;
+import cn.javayong.platform.sms.adapter.command.req.SendSmsReqCommand;
+import cn.javayong.platform.sms.adapter.command.resp.SmsResponseCommand;
 import cn.javayong.platform.sms.adapter.support.SPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class EmayOuterAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsResponseCommand sendSmsByTemplateId(SendSmsCommand smsSendRequest) {
+    public SmsResponseCommand sendSmsByTemplateId(SendSmsReqCommand smsSendRequest) {
         String mobile = smsSendRequest.getPhoneNumbers();
         String signName = smsSendRequest.getSignName();
         String customSmsId = UUID.randomUUID().toString().replaceAll("-", "");
@@ -61,14 +61,14 @@ public class EmayOuterAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsResponseCommand addSmsTemplate(AddSmsTemplateCommand addSmsTemplateCommand) {
+    public SmsResponseCommand addSmsTemplate(AddSmsTemplateReqCommand addSmsTemplateReqCommand) {
         // 将标准模版转换成 亿美模版 信息
-        String templateContent = addSmsTemplateCommand.getTemplateContent();
+        String templateContent = addSmsTemplateReqCommand.getTemplateContent();
         Map<String, String> templateMap = new HashMap<String, String>();
         // 标准模版： 你好，你的信息是：${code}
         // 亿美模版: "templateContent":"【亿美软通】尊敬的{#name#},您好！您已成功注册，您的初始秘钥为{#password#},
         //  					登录后可在个人中心修改，欢迎加入。",
-        String emayTemplateContent = "【" + addSmsTemplateCommand.getSignName() + "】" +
+        String emayTemplateContent = "【" + addSmsTemplateReqCommand.getSignName() + "】" +
                 templateContent.replaceAll("\\$", "").replaceAll("\\{", "\\{#").replaceAll("\\}", "#\\}");
         templateMap.put("templateContent", emayTemplateContent);
         templateMap.put("requestTime", String.valueOf(System.currentTimeMillis()));
@@ -94,7 +94,7 @@ public class EmayOuterAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsResponseCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateCommand querySmsTemplateCommand) {
+    public SmsResponseCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateReqCommand querySmsTemplateReqCommand) {
         // 亿美默认模版申请成功
         return new SmsResponseCommand(SmsResponseCommand.SUCCESS_CODE, 2);
     }

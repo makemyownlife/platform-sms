@@ -4,8 +4,8 @@ import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.RequestEntit
 import cn.javayong.platform.sms.admin.dispatcher.processor.requeset.body.ApplyTemplateRequestBody;
 import com.alibaba.fastjson.JSON;
 import cn.javayong.platform.sms.adapter.OuterAdapter;
-import cn.javayong.platform.sms.adapter.command.request.AddSmsTemplateCommand;
-import cn.javayong.platform.sms.adapter.command.response.SmsResponseCommand;
+import cn.javayong.platform.sms.adapter.command.req.AddSmsTemplateReqCommand;
+import cn.javayong.platform.sms.adapter.command.resp.SmsResponseCommand;
 import cn.javayong.platform.sms.admin.common.utils.ResponseEntity;
 import cn.javayong.platform.sms.admin.dao.TSmsTemplateBindingDAO;
 import cn.javayong.platform.sms.admin.dao.TSmsTemplateDAO;
@@ -48,14 +48,14 @@ public class ApplyTemplateRequestProcessor implements AdatperProcessor<ApplyTemp
                 TSmsTemplate tSmsTemplate = tSmsTemplateDAO.selectByPrimaryKey(binding.getTemplateId());
                 OuterAdapter outerAdapter = adapterLoader.getAdapterByChannelId(binding.getChannelId().intValue());
                 if (outerAdapter != null) {
-                    AddSmsTemplateCommand addSmsTemplateCommand = new AddSmsTemplateCommand();
-                    addSmsTemplateCommand.setSignName(tSmsTemplate.getSignName());
-                    addSmsTemplateCommand.setTemplateName(tSmsTemplate.getTemplateName());
-                    addSmsTemplateCommand.setTemplateContent(tSmsTemplate.getContent());
-                    addSmsTemplateCommand.setRemark(tSmsTemplate.getRemark());
-                    addSmsTemplateCommand.setTemplateType(tSmsTemplate.getTemplateType());
-                    logger.info("开始向渠道：" + binding.getChannelId() + " 申请添加模版 请求内容：" + JSON.toJSONString(addSmsTemplateCommand));
-                    SmsResponseCommand<Map<String, String>> smsResponseCommand = outerAdapter.addSmsTemplate(addSmsTemplateCommand);
+                    AddSmsTemplateReqCommand addSmsTemplateReqCommand = new AddSmsTemplateReqCommand();
+                    addSmsTemplateReqCommand.setSignName(tSmsTemplate.getSignName());
+                    addSmsTemplateReqCommand.setTemplateName(tSmsTemplate.getTemplateName());
+                    addSmsTemplateReqCommand.setTemplateContent(tSmsTemplate.getContent());
+                    addSmsTemplateReqCommand.setRemark(tSmsTemplate.getRemark());
+                    addSmsTemplateReqCommand.setTemplateType(tSmsTemplate.getTemplateType());
+                    logger.info("开始向渠道：" + binding.getChannelId() + " 申请添加模版 请求内容：" + JSON.toJSONString(addSmsTemplateReqCommand));
+                    SmsResponseCommand<Map<String, String>> smsResponseCommand = outerAdapter.addSmsTemplate(addSmsTemplateReqCommand);
                     logger.info("结束向渠道：" + binding.getChannelId() + " 申请添加模版 响应结果：" + JSON.toJSONString(smsResponseCommand));
                     if (smsResponseCommand.getCode() == SmsResponseCommand.SUCCESS_CODE) {
                         Map<String, String> bodyMap = smsResponseCommand.getData();

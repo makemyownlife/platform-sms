@@ -1,4 +1,4 @@
-package cn.javayong.platform.sms.adapter.command.response;
+package cn.javayong.platform.sms.adapter.command.resp;
 
 import org.apache.commons.lang3.StringUtils;
 
