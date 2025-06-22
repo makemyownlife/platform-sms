@@ -1,9 +1,5 @@
 ![](doc/images/gongzhonghaonew.png)
 
-**演示地址：**
-
-> https://javayong.cn/smsadmin
-
 # 1 简介
 
 一个简单易用的短信网关服务，提供客户端 SDK ，支持阿里云，腾讯云，亿美短信发送，适用于中小型公司。

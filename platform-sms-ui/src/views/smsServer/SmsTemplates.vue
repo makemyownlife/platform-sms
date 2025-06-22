@@ -32,7 +32,10 @@
             验证码
           </span>
           <span v-if="scope.row.templateType === '1'">
-           短信通知
+           通知
+          </span>
+          <span v-if="scope.row.templateType === '2'">
+           营销
           </span>
         </template>
       </el-table-column>
@@ -92,7 +95,8 @@
         <el-form-item label="模版类型" prop="templateType">
           <el-select v-model="templateModel.templateType" placeholder="模版类型" style="width: 280px">
             <el-option key="0" label="验证码" value="0" />
-            <el-option key="1" label="短信通知" value="1"/>
+            <el-option key="1" label="通知" value="1"/>
+            <el-option key="1" label="营销" value="2"/>
           </el-select>
         </el-form-item>
         <el-form-item label="签名名称" prop="signName">

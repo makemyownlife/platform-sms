@@ -13,6 +13,7 @@
         <module>platform-sms-client</module>
         <module>platform-sms-adapter</module>
         <module>platform-sms-admin</module>
+        <module>platform-sms-ui</module>
         <module>platform-sms-demo</module>
     </modules>
 
