@@ -1,1 +1,1 @@
-tencent=cn.javayong.platform.sms.adapter.tencent.TencentAdapter
+tencent=cn.javayong.platform.sms.adapter.tencent.TencentOuterAdapter

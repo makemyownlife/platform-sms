@@ -23,9 +23,9 @@ import java.util.Map;
 import java.util.UUID;
 
 @SPI("emay")
-public class EmayAdapter implements OuterAdapter {
+public class EmayOuterAdapter implements OuterAdapter {
 
-    private final static Logger logger = LoggerFactory.getLogger(EmayAdapter.class);
+    private final static Logger logger = LoggerFactory.getLogger(EmayOuterAdapter.class);
 
     private final static String extendedCode = "01";
 

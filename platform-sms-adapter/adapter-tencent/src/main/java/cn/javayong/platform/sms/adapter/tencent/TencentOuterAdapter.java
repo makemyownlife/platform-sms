@@ -23,9 +23,9 @@ import java.util.Map;
 import java.util.UUID;
 
 @SPI("tencent")
-public class TencentAdapter implements OuterAdapter {
+public class TencentOuterAdapter implements OuterAdapter {
 
-    private final static Logger logger = LoggerFactory.getLogger(TencentAdapter.class);
+    private final static Logger logger = LoggerFactory.getLogger(TencentOuterAdapter.class);
 
     private String instanceId = UUID.randomUUID().toString().replaceAll("-", "");
 

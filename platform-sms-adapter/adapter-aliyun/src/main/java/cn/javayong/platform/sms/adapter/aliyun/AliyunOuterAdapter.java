@@ -18,9 +18,9 @@ import java.util.Map;
 import java.util.UUID;
 
 @SPI("aliyun")
-public class AliyunAdapter implements OuterAdapter {
+public class AliyunOuterAdapter implements OuterAdapter {
 
-    private final static Logger logger = LoggerFactory.getLogger(AliyunAdapter.class);
+    private final static Logger logger = LoggerFactory.getLogger(AliyunOuterAdapter.class);
 
     private String instanceId = UUID.randomUUID().toString().replaceAll("-", "");
 
