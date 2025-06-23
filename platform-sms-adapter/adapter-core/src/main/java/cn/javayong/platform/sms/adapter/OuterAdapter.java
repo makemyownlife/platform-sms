@@ -38,6 +38,7 @@ public interface OuterAdapter {
 
 
 
+
     /**
      * 外部适配器销毁接口
      */

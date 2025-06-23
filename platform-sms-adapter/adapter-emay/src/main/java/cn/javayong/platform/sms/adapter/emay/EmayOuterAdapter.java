@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * 参考文档  https://www.b2m.cn/static/doc/sms/download.html
+ */
 @SPI("emay")
 public class EmayOuterAdapter implements OuterAdapter {
 
