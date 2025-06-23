@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ *  参考文档： https://help.aliyun.com/zh/sms/getting-started/use-sms-api
+ */
 @SPI("aliyun")
 public class AliyunOuterAdapter implements OuterAdapter {
 

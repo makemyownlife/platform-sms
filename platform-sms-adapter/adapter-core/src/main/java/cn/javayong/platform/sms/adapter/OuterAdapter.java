@@ -36,6 +36,8 @@ public interface OuterAdapter {
      */
     SmsRespCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateReqCommand querySmsTemplateReqCommand);
 
+
+
     /**
      * 外部适配器销毁接口
      */
