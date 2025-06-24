@@ -27,17 +27,25 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--  亿美依赖 start  -->
         <dependency>
-            <groupId>com.apistd.uni</groupId>
-            <artifactId>uni-sdk</artifactId>
-            <version>0.0.4</version>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.6.2</version>
         </dependency>
+        <!--  亿美依赖 end  -->
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.14</version>
         </dependency>
 
     </dependencies>
