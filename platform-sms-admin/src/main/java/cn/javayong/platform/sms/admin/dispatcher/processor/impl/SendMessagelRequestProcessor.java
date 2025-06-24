@@ -17,6 +17,7 @@ import cn.javayong.platform.sms.admin.domain.TSmsRecord;
 import cn.javayong.platform.sms.admin.domain.TSmsRecordDetail;
 import cn.javayong.platform.sms.admin.domain.TSmsTemplate;
 import cn.javayong.platform.sms.admin.domain.TSmsTemplateBinding;
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +85,7 @@ public class SendMessagelRequestProcessor implements AdatperProcessor<Long, List
                     smsCommand.setTemplateContent(template.getContent());
                     smsCommand.setTemplateCode(tSmsTemplateBinding.getTemplateCode());
                     smsCommand.setTemplateParam(record.getTemplateParam());
-                    SmsRespCommand smsRespCommand = outerAdapter.sendSmsByTemplateId(smsCommand);
+                    SmsRespCommand<String> smsRespCommand = outerAdapter.sendSmsByTemplateId(smsCommand);
                     // 三方编号
                     String msgId = StringUtils.EMPTY;
                     if (smsRespCommand.getCode() == SmsRespCommand.SUCCESS_CODE) {
@@ -102,10 +103,12 @@ public class SendMessagelRequestProcessor implements AdatperProcessor<Long, List
                     detail.setChannelId(channelId);
                     detail.setErrorMsg(StringUtils.trimToEmpty(smsRespCommand.getMessage()));
                     detail.setRecordId(recordId);
+                    detail.setErrorMsg(smsRespCommand.getMessage());
                     detail.setContent(SmsTemplateUtil.renderContentWithSignName(smsCommand.getTemplateParam(), smsCommand.getTemplateContent(), smsCommand.getSignName()));
                     detail.setMsgid(msgId);
                     detail.setSenderTime(new Date());
                     detail.setSendStatus(sendFlag ? 0 : 1);
+                    logger.info("插入短信发送详情：" + JSON.toJSONString(detail));
                     detailDAO.insert(detail);
                     detailIdList.add(detailId);
                 }
@@ -120,7 +123,6 @@ public class SendMessagelRequestProcessor implements AdatperProcessor<Long, List
         tSmsRecord.setUpdateTime(new Date());
         tSmsRecord.setId(recordId);
         smsRecordDAO.updateByPrimaryKeySelective(tSmsRecord);
-
         return ResponseEntity.success(detailIdList);
     }
 

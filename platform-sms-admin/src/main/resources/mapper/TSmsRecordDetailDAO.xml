@@ -52,15 +52,29 @@
   </delete>
 
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.javayong.platform.sms.admin.domain.TSmsRecordDetail" useGeneratedKeys="true">
-    insert into t_sms_record_detail (id, record_id, app_id, content,
-                                     send_status, report_status, mobile,
-                                     msgid, channel_id, sender_time,
-                                     create_time, update_time, error_msg)
-    values (#{id}, #{recordId,jdbcType=BIGINT}, #{appId,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR},
-            #{sendStatus,jdbcType=TINYINT}, #{reportStatus,jdbcType=TINYINT}, #{mobile,jdbcType=VARCHAR},
-            #{msgid,jdbcType=VARCHAR}, #{channelId,jdbcType=VARCHAR}, #{senderTime,jdbcType=TIMESTAMP},
-            #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{errorMsg,jdbcType=VARCHAR})
+    insert into t_sms_record_detail (
+      id, record_id, app_id, content,
+      send_status, report_status, mobile,
+      msgid, channel_id, sender_time,
+      create_time, update_time, error_msg -- 已包含 error_msg 字段
+    )
+    values (
+             #{id},
+             #{recordId,jdbcType=BIGINT},
+             #{appId,jdbcType=BIGINT},
+             #{content,jdbcType=VARCHAR},
+             #{sendStatus,jdbcType=TINYINT},
+             #{reportStatus,jdbcType=TINYINT},
+             #{mobile,jdbcType=VARCHAR},
+             #{msgid,jdbcType=VARCHAR},
+             #{channelId,jdbcType=VARCHAR},
+             #{senderTime,jdbcType=TIMESTAMP},
+             #{createTime,jdbcType=TIMESTAMP},
+             #{updateTime,jdbcType=TIMESTAMP},
+             #{errorMsg,jdbcType=VARCHAR} -- 对应实体类中的 errorMsg 属性
+           )
   </insert>
+
 
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.javayong.platform.sms.admin.domain.TSmsRecordDetail" useGeneratedKeys="true">
     insert into t_sms_record_detail

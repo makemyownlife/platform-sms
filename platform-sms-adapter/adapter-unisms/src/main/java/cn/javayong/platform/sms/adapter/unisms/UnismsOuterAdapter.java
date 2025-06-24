@@ -55,30 +55,27 @@ public class UnismsOuterAdapter implements OuterAdapter {
             // 构建HTTP请求
             HttpPost httpPost = new HttpPost(url);
             httpPost.addHeader("Content-Type", "application/json");
-
             // 构建请求体
             Map<String, Object> requestMap = new HashMap<>();
             requestMap.put("to", sendSmsReqCommand.getPhoneNumbers());
             requestMap.put("signature", sendSmsReqCommand.getSignName());
             requestMap.put("templateId", sendSmsReqCommand.getTemplateCode());
             requestMap.put("templateData", sendSmsReqCommand.getTemplateParam());
-
             // 设置请求体
             String requestBody = gson.toJson(requestMap);
+            logger.info("发送合一短信请求：" + requestBody);
             httpPost.setEntity(new StringEntity(requestBody, "UTF-8"));
-
             // 执行请求
             HttpResponse response = httpClient.execute(httpPost);
             HttpEntity entity = response.getEntity();
-
             // 处理响应
             if (entity != null) {
                 // 检查HTTP状态码
                 int statusCode = response.getStatusLine().getStatusCode();
+                String responseBody = EntityUtils.toString(entity);
+                logger.info("发送合一短信 手机号" + sendSmsReqCommand.getPhoneNumbers() + " 结果 statusCode：" + statusCode + " responseBody:" + responseBody);
                 if (statusCode == 200) {
-                    String responseBody = EntityUtils.toString(entity);
                     JsonObject jsonResponse = gson.fromJson(responseBody, JsonObject.class);
-
                     // 检查业务状态码
                     String code = jsonResponse.get("code").getAsString();
                     if ("0".equals(code)) {
@@ -95,7 +92,7 @@ public class UnismsOuterAdapter implements OuterAdapter {
                         return new SmsRespCommand<>(SmsRespCommand.FAIL_CODE, responseBody);
                     }
                 } else {
-                    return new SmsRespCommand(SmsRespCommand.FAIL_CODE, "statusCode =" + statusCode);
+                    return new SmsRespCommand(SmsRespCommand.FAIL_CODE, responseBody);
                 }
             }
             return new SmsRespCommand(SmsRespCommand.FAIL_CODE, "Empty response from server");

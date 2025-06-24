@@ -10,7 +10,6 @@
     <result column="attime" jdbcType="VARCHAR" property="attime" />
     <result column="send_status" jdbcType="TINYINT" property="sendStatus" />
     <result column="template_param" jdbcType="VARCHAR" property="templateParam" />
-    <result column="template_param" jdbcType="VARCHAR" property="templateParam" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
