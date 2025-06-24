@@ -15,6 +15,7 @@
         <module>platform-sms-admin</module>
         <module>platform-sms-ui</module>
         <module>platform-sms-demo</module>
+        <module>platform-sms-adapter/adapter-unisms</module>
     </modules>
 
     <dependencyManagement>

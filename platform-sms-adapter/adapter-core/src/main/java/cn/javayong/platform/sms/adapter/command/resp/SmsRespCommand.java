@@ -12,6 +12,8 @@ public class SmsRespCommand<T> {
 
     public static final int FAIL_CODE = 500;
 
+    public static final int NOT_SUPPORT_CODE = 401;
+
     private int code;
 
     private T data;
