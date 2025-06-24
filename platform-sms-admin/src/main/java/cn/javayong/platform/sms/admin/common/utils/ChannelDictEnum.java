@@ -7,6 +7,7 @@ public enum ChannelDictEnum {
 
     ALIYUN("aliyun", "阿里云", "https://dysmsapi.aliyuncs.com"),
     EMAY("emay", "艺美", ""),
+    UNISMS("unisms", "合一短信", "https://uni.apistd.com"),
     TENCENT("tencent", "腾讯云", "https://sms.tencentcloudapi.com");
 
     private final String channelType;
