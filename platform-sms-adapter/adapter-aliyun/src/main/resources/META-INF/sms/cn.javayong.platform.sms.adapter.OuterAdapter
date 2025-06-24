@@ -1,1 +1,1 @@
-aliyun=cn.javayong.platform.sms.adapter.aliyun.AliyunAdapter
+aliyun=cn.javayong.platform.sms.adapter.aliyun.AliyunOuterAdapter

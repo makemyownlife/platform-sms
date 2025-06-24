@@ -79,6 +79,7 @@ public class WebConfig implements WebMvcConfigurer {
             }
         }).addPathPatterns("/api/**").
                 excludePathPatterns("/api/**/user/login")
+                .excludePathPatterns("/api/unify/**") // 处理统一结果通知 上行
                 .excludePathPatterns("/api/**/user/logout")
                 .excludePathPatterns("/api/**/user/info");
     }

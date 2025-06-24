@@ -1,10 +1,10 @@
-package cn.javayong.platform.sms.adapter.command.request;
+package cn.javayong.platform.sms.adapter.command.req;
 
 /**
  * 添加短信模版请求
  * Created by zhangyong on 2023/7/4.
  */
-public class AddSmsTemplateCommand extends SmsRequestCommand {
+public class AddSmsTemplateReqCommand extends SmsReqCommand {
 
     public String signName;
 
