@@ -7,6 +7,7 @@ import cn.javayong.platform.sms.adapter.command.req.SendSmsReqCommand;
 import cn.javayong.platform.sms.adapter.command.resp.SmsRespCommand;
 import cn.javayong.platform.sms.adapter.support.SPI;
 import cn.javayong.platform.sms.adapter.support.SmsChannelConfig;
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -60,7 +61,8 @@ public class UnismsOuterAdapter implements OuterAdapter {
             requestMap.put("to", sendSmsReqCommand.getPhoneNumbers());
             requestMap.put("signature", sendSmsReqCommand.getSignName());
             requestMap.put("templateId", sendSmsReqCommand.getTemplateCode());
-            requestMap.put("templateData", sendSmsReqCommand.getTemplateParam());
+            Map<String, String> templateParamMap = JSON.parseObject(sendSmsReqCommand.getTemplateParam(), HashMap.class);
+            requestMap.put("templateData", templateParamMap);
             // 设置请求体
             String requestBody = gson.toJson(requestMap);
             logger.info("发送合一短信请求：" + requestBody);
