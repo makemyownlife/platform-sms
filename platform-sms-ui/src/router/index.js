@@ -104,13 +104,13 @@ export const constantRoutes = [
         component: () => import('@/views/smsServer/SmsRecordList'),
         meta: { title: '短信管理', icon: 'form' }
       }
-         ,
-         {
-         path: 'ruleList',
-           name: '规则管理',
-         component: () => import('@/views/smsServer/RuleList'),
-         meta: { title: '规则管理', icon: 'password' }
-       }
+       //   ,
+       //   {
+       //   path: 'ruleList',
+       //     name: '规则管理',
+       //   component: () => import('@/views/smsServer/RuleList'),
+       //   meta: { title: '规则管理', icon: 'password' }
+       // }
     ]
   },
 
