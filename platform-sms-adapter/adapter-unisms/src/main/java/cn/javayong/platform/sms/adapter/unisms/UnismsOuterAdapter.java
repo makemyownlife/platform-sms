@@ -11,9 +11,11 @@ import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -21,9 +23,11 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
 
 @SPI("unisms")
 public class UnismsOuterAdapter implements OuterAdapter {
@@ -49,22 +53,47 @@ public class UnismsOuterAdapter implements OuterAdapter {
 
     @Override
     public SmsRespCommand<String> sendSmsByTemplateId(SendSmsReqCommand sendSmsReqCommand) {
-        String url = BASE_URL + "?action=" + ACTION + "&accessKeyId=" + smsChannelConfig.getChannelAppkey();
+        String url = BASE_URL;
 
         Gson gson = new Gson();
         try {
-            // 构建HTTP请求
-            HttpPost httpPost = new HttpPost(url);
-            httpPost.addHeader("Content-Type", "application/json");
             // 构建请求体
-            Map<String, Object> requestMap = new HashMap<>();
-            requestMap.put("to", sendSmsReqCommand.getPhoneNumbers());
-            requestMap.put("signature", sendSmsReqCommand.getSignName());
-            requestMap.put("templateId", sendSmsReqCommand.getTemplateCode());
+            Map<String, Object> bodyMap = new HashMap<>();
+            bodyMap.put("to", sendSmsReqCommand.getPhoneNumbers());
+            bodyMap.put("signature", sendSmsReqCommand.getSignName());
+            bodyMap.put("templateId", sendSmsReqCommand.getTemplateCode());
             Map<String, String> templateParamMap = JSON.parseObject(sendSmsReqCommand.getTemplateParam(), HashMap.class);
-            requestMap.put("templateData", templateParamMap);
+            bodyMap.put("templateData", templateParamMap);
+
+            Map<String, Object> headerMap = new HashMap<>();
+            headerMap.put("action", ACTION);
+            headerMap.put("accessKeyId", smsChannelConfig.getChannelAppkey());
             // 设置请求体
-            String requestBody = gson.toJson(requestMap);
+            if (StringUtils.isNotEmpty(smsChannelConfig.getChannelAppsecret()) && !"-".equals(smsChannelConfig.getChannelAppsecret())) {
+                headerMap.put("algorithm", "hmac-sha256");
+                headerMap.put("timestamp", new Date().getTime());
+                headerMap.put("nonce", UUID.randomUUID().toString().replaceAll("-", ""));
+                String strToSign = queryStringify(headerMap);
+                headerMap.put("signature", getSignature(strToSign, smsChannelConfig.getChannelAppsecret()));
+            }
+
+            URIBuilder uriBuilder = new URIBuilder(smsChannelConfig.getChannelDomain());
+            for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+                uriBuilder.addParameter(entry.getKey(), entry.getValue().toString());
+            }
+
+            URI uri = null;
+            try {
+                uri = uriBuilder.build();
+            } catch (URISyntaxException e) {
+                logger.error("构建 URI 失败", e);
+            }
+
+            HttpPost httpPost = new HttpPost(uri);
+            httpPost.setHeader("Content-Type", "application/json"); // 可选，如果服务器需要
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+
+            String requestBody = gson.toJson(bodyMap);
             logger.info("发送合一短信请求：" + requestBody);
             httpPost.setEntity(new StringEntity(requestBody, "UTF-8"));
             // 执行请求
@@ -117,6 +146,43 @@ public class UnismsOuterAdapter implements OuterAdapter {
     @Override
     public void destroy() {
         logger.warn("销毁合一短信客户端 渠道编号:[" + smsChannelConfig.getId() + "] appkey:[" + smsChannelConfig.getChannelAppkey() + "] 实例Id:" + instanceId);
+    }
+
+    private static String getSignature(final String message, final String secretKey) {
+        try {
+            Mac hmac = Mac.getInstance("HmacSHA256");
+            SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(), "HmacSHA256");
+            hmac.init(secretKeySpec);
+
+            byte[] bytes = hmac.doFinal(message.getBytes());
+            return Base64.getEncoder().encodeToString(bytes);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private static String queryStringify(final Map<String, Object> params) {
+        Map<String, Object> sortedMap = new TreeMap<>(new MapKeyComparator());
+        sortedMap.putAll(params);
+        StringBuilder sb = new StringBuilder();
+        Iterator<?> iter = sortedMap.entrySet().iterator();
+
+        while (iter.hasNext()) {
+            if (sb.length() > 0) {
+                sb.append('&');
+            }
+            Map.Entry<?, ?> entry = (Map.Entry<?, ?>) iter.next();
+            sb.append(entry.getKey()).append("=").append(entry.getValue());
+        }
+
+        return sb.toString();
+    }
+
+    static class MapKeyComparator implements Comparator<String> {
+        @Override
+        public int compare(String str1, String str2) {
+            return str1.compareTo(str2);
+        }
     }
 
 }
