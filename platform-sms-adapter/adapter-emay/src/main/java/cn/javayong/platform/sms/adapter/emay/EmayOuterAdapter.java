@@ -49,7 +49,7 @@ public class EmayOuterAdapter implements OuterAdapter {
     }
 
     @Override
-    public SmsRespCommand sendSmsByTemplateId(SendSmsReqCommand smsSendRequest) {
+    public SmsRespCommand<String> sendSmsByTemplateId(SendSmsReqCommand smsSendRequest) {
         String mobile = smsSendRequest.getPhoneNumbers();
         String signName = smsSendRequest.getSignName();
         String customSmsId = UUID.randomUUID().toString().replaceAll("-", "");
@@ -60,7 +60,7 @@ public class EmayOuterAdapter implements OuterAdapter {
         if ("SUCCESS".equals(result.getCode())) {
             return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, result.getResult().getSmsId());
         }
-        return new SmsRespCommand(SmsRespCommand.FAIL_CODE);
+        return new SmsRespCommand(SmsRespCommand.FAIL_CODE, null, JSON.toJSONString(result));
     }
 
     @Override
@@ -93,7 +93,7 @@ public class EmayOuterAdapter implements OuterAdapter {
             bodyMap.put("status", "2");
             return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, bodyMap);
         }
-        return new SmsRespCommand(SmsRespCommand.FAIL_CODE);
+        return new SmsRespCommand(SmsRespCommand.FAIL_CODE, null, JSON.toJSONString(result.getResult()));
     }
 
     @Override

@@ -77,7 +77,7 @@ public class TencentOuterAdapter implements OuterAdapter {
                     return new SmsRespCommand(SmsRespCommand.FAIL_CODE, null, sendStatus.getMessage());
                 }
             }
-            return new SmsRespCommand(SmsRespCommand.FAIL_CODE);
+            return new SmsRespCommand(SmsRespCommand.FAIL_CODE, null, JSON.toJSONString(response));
         } catch (Exception e) {
             logger.error("tencent sendSms error:", e);
             return new SmsRespCommand(SmsRespCommand.FAIL_CODE);
@@ -107,6 +107,7 @@ public class TencentOuterAdapter implements OuterAdapter {
                     return new SmsRespCommand(SmsRespCommand.SUCCESS_CODE, bodyMap);
                 }
             }
+            return new SmsRespCommand(SmsRespCommand.FAIL_CODE, null, JSON.toJSONString(addSmsTemplateResponse));
         } catch (Exception e) {
             logger.error("tencent addSmsTemplate error: ", e);
         }

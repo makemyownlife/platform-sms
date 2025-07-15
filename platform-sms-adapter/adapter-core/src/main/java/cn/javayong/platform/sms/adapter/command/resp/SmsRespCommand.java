@@ -35,11 +35,6 @@ public class SmsRespCommand<T> {
         this.message = message;
     }
 
-    public SmsRespCommand(int code, String message) {
-        this.code = code;
-        this.message = message;
-    }
-
     public int getCode() {
         return code;
     }

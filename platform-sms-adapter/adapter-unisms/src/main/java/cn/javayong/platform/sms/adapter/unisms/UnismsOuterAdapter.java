@@ -65,20 +65,20 @@ public class UnismsOuterAdapter implements OuterAdapter {
             Map<String, String> templateParamMap = JSON.parseObject(sendSmsReqCommand.getTemplateParam(), HashMap.class);
             bodyMap.put("templateData", templateParamMap);
 
-            Map<String, Object> headerMap = new HashMap<>();
-            headerMap.put("action", ACTION);
-            headerMap.put("accessKeyId", smsChannelConfig.getChannelAppkey());
+            Map<String, Object> queryMap = new HashMap<>();
+            queryMap.put("action", ACTION);
+            queryMap.put("accessKeyId", smsChannelConfig.getChannelAppkey());
             // 设置请求体
             if (StringUtils.isNotEmpty(smsChannelConfig.getChannelAppsecret()) && !"-".equals(smsChannelConfig.getChannelAppsecret())) {
-                headerMap.put("algorithm", "hmac-sha256");
-                headerMap.put("timestamp", new Date().getTime());
-                headerMap.put("nonce", UUID.randomUUID().toString().replaceAll("-", ""));
-                String strToSign = queryStringify(headerMap);
-                headerMap.put("signature", getSignature(strToSign, smsChannelConfig.getChannelAppsecret()));
+                queryMap.put("algorithm", "hmac-sha256");
+                queryMap.put("timestamp", new Date().getTime());
+                queryMap.put("nonce", UUID.randomUUID().toString().replaceAll("-", ""));
+                String strToSign = queryStringify(queryMap);
+                queryMap.put("signature", getSignature(strToSign, smsChannelConfig.getChannelAppsecret()));
             }
 
             URIBuilder uriBuilder = new URIBuilder(smsChannelConfig.getChannelDomain());
-            for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+            for (Map.Entry<String, Object> entry : queryMap.entrySet()) {
                 uriBuilder.addParameter(entry.getKey(), entry.getValue().toString());
             }
 
@@ -117,30 +117,30 @@ public class UnismsOuterAdapter implements OuterAdapter {
                             String firstMessageId = messages.get(0).getAsJsonObject().get("id").getAsString();
                             return new SmsRespCommand<>(SmsRespCommand.SUCCESS_CODE, firstMessageId);
                         }
-                        return new SmsRespCommand<>(SmsRespCommand.FAIL_CODE, "No message details in response");
+                        return new SmsRespCommand<>(SmsRespCommand.FAIL_CODE, null, "No message details in response");
                     } else {
                         // 业务错误
-                        return new SmsRespCommand<>(SmsRespCommand.FAIL_CODE, responseBody);
+                        return new SmsRespCommand<>(SmsRespCommand.FAIL_CODE, null, responseBody);
                     }
                 } else {
-                    return new SmsRespCommand(SmsRespCommand.FAIL_CODE, responseBody);
+                    return new SmsRespCommand(SmsRespCommand.FAIL_CODE, null, responseBody);
                 }
             }
-            return new SmsRespCommand(SmsRespCommand.FAIL_CODE, "Empty response from server");
+            return new SmsRespCommand(SmsRespCommand.FAIL_CODE, null, "Empty response from server");
         } catch (Exception e) {
             logger.error("unisms sendSmsByTemplateId error:", e);
-            return new SmsRespCommand(SmsRespCommand.FAIL_CODE, "Empty response from server");
+            return new SmsRespCommand(SmsRespCommand.FAIL_CODE, null, "Empty response from server");
         }
     }
 
     @Override
     public SmsRespCommand<Map<String, String>> addSmsTemplate(AddSmsTemplateReqCommand addSmsTemplateReqCommand) {
-        return new SmsRespCommand(SmsRespCommand.NOT_SUPPORT_CODE, "不支持");
+        return new SmsRespCommand(SmsRespCommand.NOT_SUPPORT_CODE, null, "不支持");
     }
 
     @Override
     public SmsRespCommand<Integer> querySmsTemplateStatus(QuerySmsTemplateReqCommand querySmsTemplateReqCommand) {
-        return new SmsRespCommand(SmsRespCommand.NOT_SUPPORT_CODE, "不支持");
+        return new SmsRespCommand(SmsRespCommand.NOT_SUPPORT_CODE, null, "不支持");
     }
 
     @Override
