@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.javayong</groupId>
         <artifactId>platform-sms</artifactId>
-        <version>0.7.0</version>
+        <version>0.7.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 

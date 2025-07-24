@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.javayong</groupId>
-    <version>0.7.0</version>
+    <version>0.7.1</version>
     <artifactId>platform-sms-client</artifactId>
     <packaging>jar</packaging>
 
@@ -17,7 +17,7 @@
         <url>git@github.com:makemyownlife/platform-sms.git</url>
         <connection>scm:git:git@github.com:makemyownlife/platform-sms.git</connection>
         <developerConnection>scm:git:git@github.com:makemyownlife/platform-sms.git</developerConnection>
-        <tag>platform-sms-0.7.0</tag>
+        <tag>platform-sms-0.7.1</tag>
     </scm>
 
     <developers>

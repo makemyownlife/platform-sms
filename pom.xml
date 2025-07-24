@@ -7,7 +7,7 @@
     <groupId>cn.javayong</groupId>
     <artifactId>platform-sms</artifactId>
     <packaging>pom</packaging>
-    <version>0.7.0</version>
+    <version>0.7.1</version>
 
     <modules>
         <module>platform-sms-client</module>
@@ -15,7 +15,6 @@
         <module>platform-sms-admin</module>
         <module>platform-sms-ui</module>
         <module>platform-sms-demo</module>
-        <module>platform-sms-adapter/adapter-unisms</module>
     </modules>
 
     <dependencyManagement>
