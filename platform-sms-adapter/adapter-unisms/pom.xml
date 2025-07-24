@@ -3,11 +3,11 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
+        <artifactId>platform-sms-adapter</artifactId>
         <groupId>cn.javayong</groupId>
-        <artifactId>platform-sms</artifactId>
         <version>0.7.1</version>
-        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>adapter-unisms</artifactId>
