@@ -120,17 +120,18 @@ public class AdapterDispatcher {
         ExecutorService executorService = pair.getObject2();
         if (executorService == null) {
             smsAdatperProcessor.processRequest(processorRequest);
-        }
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    smsAdatperProcessor.processRequest(processorRequest);
-                } catch (Throwable e) {
-                    logger.error("dispatchAsyncRequest processRequest error:", e);
+        } else {
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        smsAdatperProcessor.processRequest(processorRequest);
+                    } catch (Throwable e) {
+                        logger.error("dispatchAsyncRequest processRequest error:", e);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public void registerProcessor(int requestCode, AdatperProcessor smsAdatperProcessor) {
