@@ -72,7 +72,7 @@ public class SmsSenderClient {
         } catch (Exception e) {
             logger.error("smsClient sendSingle error:", e);
         }
-        return new SmsSenderResult(ResponseCode.SUCCESS.getCode(), "系统异常");
+        return new SmsSenderResult(ResponseCode.ERROR.getCode(), "系统异常");
     }
 
 }
